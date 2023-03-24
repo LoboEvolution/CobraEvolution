@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for LoboW3C" enabled="true">
+        <sourceOutputDir name="../target/LoboW3C/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboW3C/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboW3C" />
+      </profile>
+      <profile name="Annotation profile for LoboHTML" enabled="true">
+        <sourceOutputDir name="../target/LoboHTML/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboHTML/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboHTML" />
+      </profile>
+      <profile name="Annotation profile for LoboXalan" enabled="true">
+        <sourceOutputDir name="../target/LoboXalan/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboXalan/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboXalan" />
+      </profile>
+      <profile name="Annotation profile for LoboParser" enabled="true">
+        <sourceOutputDir name="../target/LoboParser/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboParser/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboParser" />
+      </profile>
+      <profile name="Annotation profile for Cobra Evolution" enabled="true">
+        <sourceOutputDir name="../target/LoboCommon/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboCommon/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboCommon" />
+      </profile>
+      <profile name="Annotation profile for LoboApi" enabled="true">
+        <sourceOutputDir name="../target/LoboApi/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboApi/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboApi" />
+      </profile>
+      <profile name="Annotation profile for LoboUnitTest" enabled="true">
+        <sourceOutputDir name="../target/LoboUnitTest/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboUnitTest/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboUnitTest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CobraEvolution" target="1.8" />
+      <module name="LoboApi" target="1.8" />
+      <module name="LoboCommon" target="1.8" />
+      <module name="LoboHTML" target="1.8" />
+      <module name="LoboParser" target="1.8" />
+      <module name="LoboUnitTest" target="1.8" />
+      <module name="LoboW3C" target="1.8" />
+      <module name="LoboXalan" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

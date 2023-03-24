@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CobraEvolution.iml" filepath="$PROJECT_DIR$/.idea/CobraEvolution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboApi/LoboApi.iml" filepath="$PROJECT_DIR$/LoboApi/LoboApi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboCommon/LoboCommon.iml" filepath="$PROJECT_DIR$/LoboCommon/LoboCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboHTML/LoboHTML.iml" filepath="$PROJECT_DIR$/LoboHTML/LoboHTML.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboParser/LoboParser.iml" filepath="$PROJECT_DIR$/LoboParser/LoboParser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboUnitTest/LoboUnitTest.iml" filepath="$PROJECT_DIR$/LoboUnitTest/LoboUnitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboW3C/LoboW3C.iml" filepath="$PROJECT_DIR$/LoboW3C/LoboW3C.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoboXalan/LoboXalan.iml" filepath="$PROJECT_DIR$/LoboXalan/LoboXalan.iml" />
+    </modules>
+  </component>
+</project>
