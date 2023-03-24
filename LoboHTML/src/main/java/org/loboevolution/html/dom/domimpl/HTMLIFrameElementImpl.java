@@ -256,11 +256,13 @@ public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrame
 				connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
 				connection.getHeaderField("Set-Cookie");
 				connection.connect();
-				final HtmlPanel hpanel = HtmlPanel.createlocalPanel(connection, createURL.toString());
+				HtmlPanel panel = new HtmlPanel();
+				panel.setBrowserPanel(null);
+				panel = HtmlPanel.createlocalPanel(connection, panel, doc.getHtmlRendererContext(), doc.getHtmlRendererConfig(), createURL.toString());
 				if (Strings.isNotBlank(getWidth()) && Strings.isNotBlank(getHeight())) {
-					hpanel.setPreferredSize(new Dimension(Integer.parseInt(getWidth()), Integer.parseInt(getHeight())));
+					panel.setPreferredSize(new Dimension(Integer.parseInt(getWidth()), Integer.parseInt(getHeight())));
 				}
-				frameControl.add(hpanel);
+				frameControl.add(panel);
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);

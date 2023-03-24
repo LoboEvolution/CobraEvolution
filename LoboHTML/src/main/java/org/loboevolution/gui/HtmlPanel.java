@@ -506,17 +506,11 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	public static HtmlPanel createlocalPanel(URLConnection connection, String uri) throws Exception {
-		final HtmlPanel panel = new HtmlPanel();
-		panel.setBrowserPanel(null);
+	public static HtmlPanel createlocalPanel(URLConnection connection, HtmlPanel panel, HtmlRendererContext rendererContext,
+											 HtmlRendererConfig config, String uri) throws Exception {
 		try (InputStream in = HttpNetwork.openConnectionCheckRedirects(connection);
 			 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-
 			final InputSource is = new InputSourceImpl(reader, uri);
-			final UserAgentContext ucontext = new UserAgentContext(new LocalHtmlRendererConfig());
-			final HtmlRendererContext rendererContext = new LocalHtmlRendererContext(panel, ucontext);
-			final HtmlRendererConfig config = new LocalHtmlRendererConfig();
-			panel.setPreferredSize(new Dimension(800, 400));
 			final DocumentBuilderImpl builder = new DocumentBuilderImpl(rendererContext.getUserAgentContext(),rendererContext, config);
 			final Document document = builder.parse(is);
 			panel.setDocument(document, rendererContext);

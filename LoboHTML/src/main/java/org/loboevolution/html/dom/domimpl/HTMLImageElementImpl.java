@@ -23,9 +23,11 @@
 package org.loboevolution.html.dom.domimpl;
 
 import org.loboevolution.common.Urls;
+import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.control.ImgSvgControl;
 import org.loboevolution.html.dom.HTMLImageElement;
 import org.loboevolution.gui.HtmlPanel;
+import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.renderstate.ImageRenderState;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.net.UserAgent;
@@ -410,12 +412,15 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 			connection.getHeaderField("Set-Cookie");
 			connection.connect();
 
-			final HtmlPanel hpanel = HtmlPanel.createlocalPanel(connection, uri);
-			final Dimension dim = hpanel.getPreferredSize();
-			final double height = getHeight() == -1 ? dim.getHeight() : getHeight();
-			final double width = getWidth() == -1 ? dim.getWidth() : getWidth();
-			hpanel.setPreferredSize(new Dimension((int) width, (int) height));
-			imgSvgControl.add(hpanel);
+			NodeImpl mode = (NodeImpl) document;
+			HtmlPanel panel = new HtmlPanel();
+			panel.setBrowserPanel(null);
+			HtmlRendererContext htmlRendererContext = mode.getHtmlRendererContext();
+			panel = HtmlPanel.createlocalPanel(connection, panel, mode.getHtmlRendererContext(), mode.getHtmlRendererConfig(), uri);
+			final double height = getHeight() == -1 ? htmlRendererContext.getInnerWidth() : getHeight();
+			final double width = getWidth() == -1 ? htmlRendererContext.getInnerWidth() : getWidth();
+			panel.setPreferredSize(new Dimension((int) width, (int) height));
+			imgSvgControl.add(panel);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
