@@ -10,14 +10,7 @@
     <packaging>pom</packaging>
     <name>Cobra Evolution</name>
     <description>Cobra Evolution Html Parser</description>
-    <url>https://github.com/LoboEvolution/LoboEvolution</url>
-
-    <licenses>
-        <license>
-            <name>The Apache License, Version 3.0</name>
-            <url>https://github.com/LoboEvolution/LoboEvolution/blob/master/LICENSE</url>
-        </license>
-    </licenses>
+    <url>https://github.com/LoboEvolution/CobraEvolution</url>
 
     <developers>
         <developer>
