@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.oswetto</groupId>
-    <artifactId>loboevolution</artifactId>
+    <artifactId>cobraevolution</artifactId>
     <version>3.1</version>
     <packaging>pom</packaging>
     <name>Cobra Evolution</name>
