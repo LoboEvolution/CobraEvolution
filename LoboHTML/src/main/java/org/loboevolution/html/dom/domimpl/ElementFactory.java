@@ -45,6 +45,7 @@ public class ElementFactory {
 
 		final HTMLElementBuilder div = new HTMLElementBuilder.Div();
 		builders.put(HTMLTag.ARTICLE, div);
+		builders.put(HTMLTag.ADDRESS, div);
 		builders.put(HTMLTag.ASIDE, div);
 		builders.put(HTMLTag.DIV, div);
 		builders.put(HTMLTag.DT, div);
@@ -57,7 +58,10 @@ public class ElementFactory {
 		builders.put(HTMLTag.HEADER, div);
 		builders.put(HTMLTag.FOOTER, div);
 
+		builders.put(HTMLTag.MARQUEE, new HTMLElementBuilder.Marquee());
+		builders.put(HTMLTag.DIR, new HTMLElementBuilder.Dir());
 		builders.put(HTMLTag.DETAILS, new HTMLElementBuilder.Details());
+		builders.put(HTMLTag.DIALOG, new HTMLElementBuilder.Dialog());
 		builders.put(HTMLTag.DL, new HTMLElementBuilder.Dl());
 		builders.put(HTMLTag.BODY, new HTMLElementBuilder.Body());
 		builders.put(HTMLTag.CENTER, new HTMLElementBuilder.Center());
@@ -65,11 +69,12 @@ public class ElementFactory {
 		builders.put(HTMLTag.PRE, new HTMLElementBuilder.Pre());
 		builders.put(HTMLTag.P, new HTMLElementBuilder.P());
 		builders.put(HTMLTag.PROGRESS, new HTMLElementBuilder.Progress());
+		builders.put(HTMLTag.DD, new HTMLElementBuilder.Dd());
 
 		final HTMLElementBuilder quote = new HTMLElementBuilder.Quote();
 		builders.put(HTMLTag.BLOCKQUOTE, quote);
-		builders.put(HTMLTag.DD, quote);
 		builders.put(HTMLTag.FIGURE, quote);
+		builders.put(HTMLTag.Q, quote);
 
 		builders.put(HTMLTag.SPAN, new HTMLElementBuilder.Span());
 		builders.put(HTMLTag.SCRIPT, new HTMLElementBuilder.Script());
@@ -100,7 +105,10 @@ public class ElementFactory {
 		builders.put(HTMLTag.HR, new HTMLElementBuilder.Hr());
 		builders.put(HTMLTag.BR, new HTMLElementBuilder.Br());
 		builders.put(HTMLTag.OBJECT, new HTMLElementBuilder.HtmlObject());
-		builders.put(HTMLTag.EMBED, new HTMLElementBuilder.NonStandard());
+		builders.put(HTMLTag.EMBED,new HTMLElementBuilder.NonStandard());
+		builders.put(HTMLTag.NOSCRIPT, new HTMLElementBuilder.NoScript());
+		builders.put(HTMLTag.OPTGROUP, new HTMLElementBuilder.OptGroup());
+
 
 		builders.put(HTMLTag.TT, new HTMLElementBuilder.Tt());
 		builders.put(HTMLTag.SMALL, new HTMLElementBuilder.Small());
@@ -158,6 +166,7 @@ public class ElementFactory {
 		builders.put(HTMLTag.IMAGE, new HTMLElementBuilder.SVGImage());
 		builders.put(HTMLTag.LINK, new HTMLElementBuilder.Link());
 		builders.put(HTMLTag.LEGEND, new HTMLElementBuilder.Legend());
+		builders.put(HTMLTag.VIDEO, new HTMLElementBuilder.Video());
 
 		builders.put(HTMLTag.RSS, new HTMLElementBuilder.RSS());
 		builders.put(HTMLTag.CHANNEL, new HTMLElementBuilder.Channel());

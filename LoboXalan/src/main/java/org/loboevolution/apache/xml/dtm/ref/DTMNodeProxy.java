@@ -25,7 +25,7 @@ import java.util.List;
 import org.loboevolution.apache.xpath.NodeSet;
 import org.loboevolution.apache.xml.dtm.DTM;
 import org.loboevolution.apache.xml.dtm.DTMDOMException;
-import com.gargoylesoftware.css.dom.DOMException;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.*;
 import org.loboevolution.html.node.*;
 import org.loboevolution.html.node.events.Event;
@@ -189,7 +189,7 @@ public class DTMNodeProxy
     }
 
     @Override
-    public int getClientWidth() {
+    public Integer getClientWidth() {
         return 0;
     }
 
@@ -2002,6 +2002,16 @@ public class DTMNodeProxy
     @Override
     public boolean toggleAttribute(String qualifiedName) {
         return false;
+    }
+
+    @Override
+    public Node insertAdjacentElement(String where, Node insertedElement) {
+        return null;
+    }
+
+    @Override
+    public void insertAdjacentHTML(String position, String text) {
+
     }
 
     /**

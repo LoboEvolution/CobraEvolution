@@ -84,7 +84,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
      *
      * @return a {@link java.lang.Integer} object.
      */
-    int getClientWidth();
+    Integer getClientWidth();
 
     /**
      * Returns the value of element's id content attribute. Can be set to change it.
@@ -503,5 +503,22 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
      */
     boolean toggleAttribute(String qualifiedName);
 
+
+    /**
+     * <p>insertAdjacentElement.</p>
+     *
+     * @param where a {@link java.lang.String} object.
+     * @param insertedElement  {@link org.loboevolution.html.node.Node} object.
+     * @return a {@link org.loboevolution.html.node.Node} object.
+     */
+    Node insertAdjacentElement(String where, Node insertedElement);
+
+    /**
+     * <p>insertAdjacentHTML.</p>
+     *
+     * @param position a {@link java.lang.String} object.
+     * @param text a {@link java.lang.String} object.
+     */
+    void insertAdjacentHTML(String position, String text);
 }
 

@@ -22,18 +22,20 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
-import com.gargoylesoftware.css.dom.CSSStyleSheetImpl;
-import com.gargoylesoftware.css.dom.CSSValueImpl;
-import com.gargoylesoftware.css.dom.Property;
-import com.gargoylesoftware.css.parser.CSSOMParser;
-import com.gargoylesoftware.css.parser.javacc.CSS3Parser;
+import org.htmlunit.cssparser.dom.CSSStyleSheetImpl;
+import org.htmlunit.cssparser.dom.CSSValueImpl;
+import org.htmlunit.cssparser.dom.Property;
+import org.htmlunit.cssparser.parser.CSSOMParser;
+import org.htmlunit.cssparser.parser.javacc.CSS3Parser;
 import org.loboevolution.common.Strings;
+import org.loboevolution.html.CSSValues;
 import org.loboevolution.html.dom.HTMLElement;
 import org.loboevolution.html.dom.input.FormInput;
 import org.loboevolution.html.dom.nodeimpl.ElementImpl;
 import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.js.css.CSSStyleDeclarationImpl;
 import org.loboevolution.html.node.Element;
+import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.css.CSSStyleDeclaration;
 import org.loboevolution.html.node.css.ComputedCSSStyleDeclaration;
 import org.loboevolution.html.renderer.HtmlController;
@@ -244,43 +246,29 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSSProp
 		return null;
 	}
 
-	/**
-	 * <p>getOffsetHeight.</p>
-	 *
-	 * @return a double.
-	 */
+	/** {@inheritDoc} */
+	@Override
 	public double getOffsetHeight() {
 		return calculateHeight(true, true);
 	}
 
-	/**
-	 * <p>getOffsetLeft.</p>
-	 *
-	 * @return a int.
-	 */
+	/** {@inheritDoc} */
+	@Override
 	public double getOffsetLeft() {
-		final UINode uiNode = getUINode();
-		return uiNode == null ? 0 : uiNode.getBoundsRelativeToBlock().x;
+		return getBoundingClientRect().getX();
 	}
 
-	/**
-	 * <p>getOffsetTop.</p>
-	 *
-	 * @return a int.
-	 */
+	/** {@inheritDoc} */
+	@Override
 	public int getOffsetTop() {
-		// TODO: Sometimes this can be called while parsing, and
-		// browsers generally give the right answer.
-		final UINode uiNode = getUINode();
-		return uiNode == null ? 0 : uiNode.getBoundsRelativeToBlock().y;
+		return getBoundingClientRect().getY();
 	}
 
 	/**
-	 * <p>getOffsetWidth.</p>
-	 *
-	 * @return a int.
+	 * {@inheritDoc}
 	 */
-	public int getOffsetWidth() {
+	@Override
+	public Integer getOffsetWidth() {
 		return calculateWidth(true, true);
 	}
 
@@ -457,7 +445,15 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSSProp
 	/** {@inheritDoc} */
 	@Override
 	public Element getOffsetParent() {
-		// TODO Auto-generated method stub
+		Node node = getParentNode();
+		if (node instanceof HTMLElement) {
+			final HTMLElementImpl element = (HTMLElementImpl) node;
+			ComputedCSSStyleDeclaration style = element.getComputedStyle();
+			if (!CSSValues.STATIC.isEqual(style.getPosition())) {
+				return element;
+			}
+		}
+
 		return null;
 	}
 
@@ -550,6 +546,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSSProp
 			return new ArrayList<>();
 		}
 		final StyleSheetAggregator ssa = doc.getStyleSheetAggregator();
+		ssa.setDoc(doc);
 		final List<CSSStyleSheetImpl.SelectorEntry> list = ssa.getActiveStyleDeclarations(this, elementName, classes, mouseOver);
 		hasMouseOver = ssa.isMouseOver();
 		return list;
@@ -582,7 +579,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSSProp
 			properties3.add(new PropertyCssInfo(prop.getName(), propertyValue != null ? propertyValue.getCssText() : null, prop.isImportant()));
 		});
 
-		properties3.forEach(prop -> localStyleDeclarationState.setPropertyValueProcessed(prop.getName(), prop.getValue(), prop.isImportant(), false));
+		properties3.forEach(prop -> localStyleDeclarationState.setPropertyValueProcessed(prop.getName(), prop.getValue(), prop.isImportant()));
 
 		return localStyleDeclarationState;
 	}

@@ -38,6 +38,7 @@ import org.loboevolution.net.MimeType;
 import org.loboevolution.html.dom.UserDataHandler;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -170,7 +171,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 							if (CSSUtilities.matchesMedia(media, doc.getDefaultView())) {
 								Instant start = Instant.now();
 								TimingInfo info = new TimingInfo();
-								final com.gargoylesoftware.css.dom.CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getHtmlRendererConfig(), href, scriptURL, baseURI, rcontext.isTestEnabled());
+								final org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getHtmlRendererConfig(), href, scriptURL, baseURI, rcontext.isTestEnabled());
 								sheet.setHref(baseURI);
 								sheet.setDisabled(this.disabled);
 								CSSStyleSheetImpl cssStyleSheet = new CSSStyleSheetImpl(sheet);
@@ -192,7 +193,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 					}
 				}
 
-			} catch (final MalformedURLException mfe) {
+			} catch (final MalformedURLException | FileNotFoundException mfe) {
 				this.warn("Will not parse CSS. URI=[" + getHref() + "] with BaseURI=[" + baseURI + "] does not appear to be a valid URI.");
 			} catch (final Throwable err) {
 				this.warn("Unable to parse CSS. URI=[" + getHref() + "].", err);
@@ -380,7 +381,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	@Override
 	public StyleSheet getSheet() {
 		if ("stylesheet".equals(getRel())) {
-			com.gargoylesoftware.css.dom.CSSStyleSheetImpl sheet = new com.gargoylesoftware.css.dom.CSSStyleSheetImpl();
+			org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = new org.htmlunit.cssparser.dom.CSSStyleSheetImpl();
 			styleSheet = new CSSStyleSheetImpl(sheet);
 		}
 

@@ -20,15 +20,13 @@
 
 package org.loboevolution.html.dom.domimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.dom.HTMLTableRowElement;
 import org.loboevolution.html.dom.HTMLTableSectionElement;
 import org.loboevolution.html.dom.filter.ElementFilter;
 import org.loboevolution.html.renderstate.DisplayRenderState;
 import org.loboevolution.html.renderstate.RenderState;
-
-import java.util.Arrays;
 
 /**
  * <p>HTMLTableSectionElementImpl class.</p>
@@ -72,7 +70,7 @@ public class HTMLTableSectionElementImpl extends HTMLElementImpl implements HTML
 	/** {@inheritDoc} */
 	@Override
 	public HTMLCollection getRows() {
-		return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new ElementFilter("TR")).toArray()));
+		return new HTMLCollectionImpl(this, new ElementFilter("TR"));
 	}
 
 	/** {@inheritDoc} */
@@ -126,16 +124,32 @@ public class HTMLTableSectionElementImpl extends HTMLElementImpl implements HTML
 	@Override
 	protected RenderState createRenderState(RenderState prevRenderState) {
 		final String name = getNodeName();
+		int state;
 		switch (name) {
 			case "TFOOT":
-				return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_TABLE_FOOTER_GROUP);
+				state = RenderState.DISPLAY_TABLE_FOOTER_GROUP;
+				break;
 			case "TBODY":
-				return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_TABLE_ROW_GROUP);
+				state = RenderState.DISPLAY_TABLE_ROW_GROUP;
+				break;
 			case "THEAD":
-				return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_TABLE_HEADER_GROUP);
+				state = RenderState.DISPLAY_TABLE_HEADER_GROUP;
+				break;
 			default:
 				return null;
 		}
+
+		return new DisplayRenderState(prevRenderState, this, state);
+	}
+
+	@Override
+	public Integer getOffsetWidth() {
+		return null;
+	}
+
+	@Override
+	public Integer getClientWidth() {
+		return null;
 	}
 	
 	/** {@inheritDoc} */

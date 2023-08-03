@@ -22,8 +22,7 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
-import org.loboevolution.common.Objects;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
@@ -32,6 +31,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.http.UserAgentContext;
+import java.util.Objects;
 
 /**
  * <p>DOMImplementationImpl class.</p>
@@ -54,7 +54,12 @@ public class DOMImplementationImpl implements DOMImplementation {
 	public Document createDocument(String namespaceURI, String qualifiedName, DocumentType doctype) throws DOMException{
 		HTMLDocumentImpl doc = new HTMLDocumentImpl(this.context);
 		doc.setDoctype(doctype);
-		doc.setNamespaceURI(namespaceURI);
+
+		if (Strings.isNotBlank(namespaceURI)) {
+			doc.setNamespaceURI(namespaceURI);
+			doc.setXml(true);
+		}
+
 		if (doctype != null && doctype.getOwnerDocument() == null) {
 			doctype.setOwnerDocument(doc);
 		}
@@ -98,7 +103,7 @@ public class DOMImplementationImpl implements DOMImplementation {
 
 		return doc;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public Document createHTMLDocument() {
@@ -110,8 +115,10 @@ public class DOMImplementationImpl implements DOMImplementation {
 
 	@Override
 	public boolean hasFeature(String feature, String version) {
-		return ("CORE".equalsIgnoreCase(feature) || "XML".equalsIgnoreCase(feature))
-				|| ("1.0".equals(version) || "2.0".equals(version));
+		if(Strings.isNotBlank(feature)) feature = feature.toLowerCase();
+		if(Strings.isNotBlank(feature) && feature.startsWith("+")) feature = feature.substring(1).toLowerCase();
+		return "core".equals(feature) || "xml".equals(feature)
+				|| "1.0".equals(version) || "2.0".equals(version) || "3.0".equals(version);
 	}
 
 	@Override

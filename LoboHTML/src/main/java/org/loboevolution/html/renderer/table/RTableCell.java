@@ -22,6 +22,7 @@
  */
 package org.loboevolution.html.renderer.table;
 
+import org.loboevolution.html.dom.HTMLTableCellElement;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.node.css.CSSStyleDeclaration;
@@ -111,6 +112,12 @@ public class RTableCell extends RBlock {
         CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
         String heightText = props == null ? null : props.getHeight();
         if (heightText == null) {
+			if (this.cellElement instanceof HTMLTableCellElement) {
+				HTMLTableCellElement htmlTableCellElement = (HTMLTableCellElement) this.cellElement;
+				if (htmlTableCellElement.getHeight() != null) {
+					return htmlTableCellElement.getHeight();
+				}
+			}
             return this.cellElement.getCurrentStyle().getHeight();
         } else if ("inherit".equals(heightText)) {
 			return this.cellElement.getParentStyle().getWidth();
@@ -171,12 +178,18 @@ public class RTableCell extends RBlock {
 		CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
 		String widthText = props == null ? null : props.getWidth();
 		if (widthText == null) {
-        	return this.cellElement.getCurrentStyle().getWidth();
-        } else if ("inherit".equals(widthText)) {
+			if (this.cellElement instanceof HTMLTableCellElement) {
+				HTMLTableCellElement htmlTableCellElement = (HTMLTableCellElement) this.cellElement;
+				if (htmlTableCellElement.getWidth() != null) {
+					return htmlTableCellElement.getWidth();
+				}
+			}
+			return this.cellElement.getCurrentStyle().getWidth();
+		} else if ("inherit".equals(widthText)) {
 			return this.cellElement.getParentStyle().getWidth();
 		} else {
-            return widthText;
-        }
+			return widthText;
+		}
 	}
 
 	/**

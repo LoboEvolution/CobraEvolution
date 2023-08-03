@@ -22,25 +22,26 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
-import com.gargoylesoftware.css.parser.selector.Selector;
-import com.gargoylesoftware.css.parser.selector.SelectorList;
+import org.htmlunit.cssparser.dom.DOMException;
+import org.htmlunit.cssparser.parser.selector.Selector;
+import org.htmlunit.cssparser.parser.selector.SelectorList;
 import org.loboevolution.common.Nodes;
 import org.loboevolution.common.Strings;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.CSSValues;
-import org.loboevolution.html.dom.HTMLBodyElement;
-import org.loboevolution.html.dom.HTMLCollection;
+import org.loboevolution.html.dom.*;
 import org.loboevolution.html.dom.domimpl.*;
 import org.loboevolution.html.dom.filter.ClassNameFilter;
 import org.loboevolution.html.dom.filter.ElementFilter;
 import org.loboevolution.html.dom.filter.TagNameFilter;
 import org.loboevolution.html.dom.filter.TagNsNameFilter;
 import org.loboevolution.gui.HtmlPanel;
+import org.loboevolution.html.dom.svg.SVGSVGElement;
 import org.loboevolution.html.js.geom.DOMRectImpl;
 import org.loboevolution.html.js.geom.DOMRectListImpl;
 import org.loboevolution.html.node.*;
 import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.html.node.css.ComputedCSSStyleDeclaration;
 import org.loboevolution.html.node.js.Window;
 import org.loboevolution.html.node.js.geom.DOMRect;
 import org.loboevolution.html.node.js.geom.DOMRectList;
@@ -50,6 +51,7 @@ import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.html.style.CSSUtilities;
 import org.loboevolution.html.style.HtmlValues;
 import org.loboevolution.html.style.StyleSheetAggregator;
+import org.mozilla.javascript.Function;
 import org.mozilla.javascript.annotations.JSFunction;
 
 import javax.swing.*;
@@ -58,6 +60,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -79,6 +82,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	public ElementImpl(final String name) {
 		this.name = name;
 		this.map = new NamedNodeMapImpl(this, new NodeListImpl());
+
 	}
 
 	/** {@inheritDoc} */
@@ -174,6 +178,16 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 			} catch (DOMException ex1) {
 				throw new DOMException(DOMException.NOT_FOUND_ERR, "Attribute not found");
 			}
+		}
+	}
+
+	/**
+	 * @param normalName a {@link java.lang.String} object.
+	 */
+	public void removeAttributeField(String normalName) {
+		final Map<String, Function> fba = this.getFunctionByAttribute();
+		if (fba != null) {
+			fba.remove("on"+normalName);
 		}
 	}
 
@@ -275,27 +289,30 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	/** {@inheritDoc} */
 	@Override
 	public void setIdAttribute(String localName, boolean isId) throws DOMException {
-		final AttrImpl attr = (AttrImpl)getAttributeNode(name);
+		final AttrImpl attr = (AttrImpl)getAttributeNode(localName);
 		if(attr != null) attr.setNameId(isId);
 	}
 
-		/** {@inheritDoc} */
+	/** {@inheritDoc} */
 	@Override
 	public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
 		final AttrImpl attr = (AttrImpl) getAttributeNodeNS(namespaceURI, localName);
 		if (attr != null) {
 			attr.setNameId(isId);
+		} else {
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "Attribute not found");
 		}
 	}
+
 	/** {@inheritDoc} */
 	@Override
 	public void setIdAttributeNode(Attr idAttr, boolean isId) {
 		Attr checkAttr = getAttributeNode(idAttr.getName());
+
 		if(checkAttr == null) {
 			throw new DOMException(DOMException.NOT_FOUND_ERR, "Attribute not found");
 		}
-
-		final AttrImpl attr = (AttrImpl)idAttr;
+		final AttrImpl attr = (AttrImpl) idAttr;
 		attr.setNameId(isId);
 	}
 
@@ -403,12 +420,6 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	@Override
 	public int getNodeType() {
 		return Node.ELEMENT_NODE;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getNodeValue() {
-		return null;
 	}
 
 	/**
@@ -644,7 +655,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getClientWidth() {
+	public Integer getClientWidth() {
 		return calculateWidth(false, true);
 	}
 
@@ -750,6 +761,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		// TODO Auto-generated method stub
 
 	}
+
 	/** {@inheritDoc} */
 	@Override
 	public void scroll(int x, int y) {
@@ -868,52 +880,164 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		return false;
 	}
 
+	@Override
+	public Node insertAdjacentElement(String where, Node insertedElement) {
+		switch (where.toLowerCase()) {
+			case "afterbegin":
+				return prepend(insertedElement);
+			case "beforebegin":
+				if (this.parentNode != null) {
+					NodeListImpl list = ((NodeListImpl) this.parentNode.getChildNodes());
+					int idx = list.indexOf(this);
+					Node d = list.get(idx);
+					list.remove(idx);
+					list.add(idx, insertedElement);
+					list.add(idx + 1, d);
+					return insertedElement;
+				}
+			case "beforeend":
+				return appendChild(insertedElement);
+			case "afterend":
+				return insertBefore(insertedElement, getNextSibling());
+					default:
+				break;
+
+		}
+		return null;
+	}
+
+	@Override
+	public void insertAdjacentHTML(String position, String text) {
+		final HTMLDocumentImpl document = (HTMLDocumentImpl) this.document;
+		if (document != null) {
+			final XHtmlParser parser = new XHtmlParser(document.getUserAgentContext(), document, false);
+			try (Reader reader = new StringReader(text)) {
+				switch (position) {
+					case "afterbegin":
+						parser.parse(reader, this);
+						NodeListImpl list = ((NodeListImpl) this.getChildNodes());
+						Node last  = getChildNodes().item(getChildNodes().getLength()-1);
+						list.remove(last);
+						insertBefore(last, getFirstChild());
+						break;
+					case "beforebegin":
+						parser.parse(reader, this);
+						NodeListImpl nodeList = ((NodeListImpl) this.getChildNodes());
+						Node nodeLast = getChildNodes().item(getChildNodes().getLength() - 1);
+						nodeList.remove(nodeLast);
+						NodeListImpl parentList = ((NodeListImpl) this.parentNode.getChildNodes());
+						int idx = parentList.indexOf(this);
+						Node d = parentList.get(idx);
+						parentList.remove(idx);
+						parentList.add(idx, nodeLast);
+						parentList.add(idx + 1, d);
+						break;
+					case "beforeend":
+						NodeListImpl beforeEndList = ((NodeListImpl) this.getChildNodes());
+						Node beforeEndLast = getChildNodes().item(getChildNodes().getLength() - 1);
+						beforeEndList.remove(beforeEndLast);
+
+						parser.parse(reader, this);
+						appendChild(beforeEndLast);
+						break;
+					case "afterend":
+						parser.parse(reader, this);
+						NodeListImpl nodeList2 = ((NodeListImpl) this.getChildNodes());
+						Node nodeLast2 = getChildNodes().item(getChildNodes().getLength() - 1);
+						nodeList2.remove(nodeLast2);
+						appendChild(nodeLast2);
+						break;
+					default:
+						break;
+
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public DOMRect getBoundingClientRect() {
 
-		CSSStyleDeclaration currentStyle = ((HTMLElementImpl) this).getStyle();
+		CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getCurrentStyle();
 		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		final Window win = doc.getDefaultView();
 		final RenderState rs  = doc.getRenderState();
 		int width = calculateWidth(true, true);
 		int height = calculateHeight(true, true);
 		String position = currentStyle.getPosition();
-		int topLeft = currentStyle.getLength() > 0 ? 8 : 0;
-		int top = topLeft;
-		int left = topLeft;
+		int marginLeft =  HtmlValues.getPixelSize(currentStyle.getMarginLeft(), rs, win, 0);
+		int marginTop =  HtmlValues.getPixelSize(currentStyle.getMarginTop(), rs, win, 0);
 
-		if(CSSValues.ABSOLUTE.isEqual(position)){
-			top = HtmlValues.getPixelSize(currentStyle.getTop(), rs, win, 0);
-			left = HtmlValues.getPixelSize(currentStyle.getLeft(), rs, win, 0);
+		int top = 8;
+		int left = 8;
+
+		if (getParentNode() == null && getChildElementCount() == 0) {
+			top = 0;
+			left = 0;
 		}
 
-		for (Node n = getParentNode(); n != null; n = n.getParentNode()) {
+		if(CSSValues.ABSOLUTE.isEqual(position)){
+			int topLeft = HtmlValues.getPixelSize(currentStyle.getWidth(), rs, win, 0);
+			top = HtmlValues.getPixelSize(currentStyle.getTop(), rs, win, 0);
+			String leftTxt = currentStyle.getLeft();
 
-			if (!(n instanceof HTMLBodyElement) && !(n instanceof TextImpl) && !(n instanceof HTMLDocumentImpl) && CSSValues.ABSOLUTE.isEqual(position)) {
-				HTMLElementImpl p = (HTMLElementImpl) n;
-				CSSStyleDeclaration pCurrentStyle = p.getStyle();
-				String topTxt = pCurrentStyle.getTop();
-				String leftTxt = pCurrentStyle.getLeft();
-				int scrollTop = (int) p.getScrollTop();
-				int scrollLeft = (int) p.getScrollLeft();
-				if (Strings.isNotBlank(topTxt)) {
-					top += HtmlValues.getPixelSize(topTxt, rs, win, 0);
-				}
-
-				if (Strings.isNotBlank(leftTxt)) {
-					left += HtmlValues.getPixelSize(leftTxt, rs, win, 0);
-				}
-
-				top -= scrollTop;
-				left -= scrollLeft;
+			if (Strings.isBlank(leftTxt)) {
+				left = topLeft > 0 ? topLeft / 2 : topLeft;
+			} else {
+				left = HtmlValues.getPixelSize(leftTxt, rs, win, 0);
 			}
 		}
 
-		final HTMLElementImpl elem = ((HTMLElementImpl) this);
-		final int bottom = (int) (top + elem.getOffsetHeight());
-		final int right = left + 50;
-		return new DOMRectImpl(width, height, top, right, bottom, left);
+
+		for (Node n = getParentNode(); n != null; n = n.getParentNode()) {
+
+			if (!(n instanceof TextImpl) && !(n instanceof HTMLDocumentImpl)) {
+
+				HTMLElementImpl p = (HTMLElementImpl) n;
+				CSSStyleDeclaration pCurrentStyle = p.getCurrentStyle();
+				String positionTxt = pCurrentStyle.getPosition();
+				if (CSSValues.ABSOLUTE.isEqual(positionTxt)) {
+
+					String topTxt = pCurrentStyle.getTop();
+					String leftTxt = pCurrentStyle.getLeft();
+					int scrollTop = (int) p.getScrollTop();
+					int scrollLeft = (int) p.getScrollLeft();
+
+					if (Strings.isNotBlank(topTxt)) {
+						top = HtmlValues.getPixelSize(topTxt, rs, win, 0);
+					}
+
+					if (Strings.isNotBlank(leftTxt) && left == 0) {
+						left = HtmlValues.getPixelSize(leftTxt, rs, win, 0);
+					}
+
+					if (Strings.isNotBlank(pCurrentStyle.getWidth()) && !pCurrentStyle.getWidth().equals("0")) {
+						width = HtmlValues.getPixelSize(pCurrentStyle.getWidth(), rs, win, 0);
+					}
+
+					top = scrollTop > top ? scrollTop - top : top;
+					left = scrollLeft > left ? scrollLeft - left : left;
+					left = left == 0 ? 8 : left;
+				} else {
+					if (Strings.isNotBlank(pCurrentStyle.getMarginTop())) {
+						top = 0;
+						marginTop += HtmlValues.getPixelSize(pCurrentStyle.getMarginTop(), rs, win, 0);
+					}
+					if (Strings.isNotBlank(pCurrentStyle.getMarginLeft())) {
+						left = 0;
+						marginLeft += HtmlValues.getPixelSize(pCurrentStyle.getMarginLeft(), rs, win, 0);
+					}
+				}
+			}
+		}
+
+		top = top + marginTop;
+		left = left + marginLeft;
+		final int bottom = top + height;
+		return new DOMRectImpl(width, height, top, bottom, left);
 	}
 
 	/** {@inheritDoc} */
@@ -926,7 +1050,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 			for (Node n = getParentNode(); n != null; n = n.getPreviousSibling()) {
 				if (!(n instanceof HTMLBodyElement) && !(n instanceof TextImpl) && !(n instanceof HTMLDocumentImpl)) {
 					HTMLElementImpl p = (HTMLElementImpl) n;
-					CSSStyleDeclaration st = p.getStyle();
+					CSSStyleDeclaration st = p.getCurrentStyle();
 					display = st.getDisplay();
 				}
 			}
@@ -942,22 +1066,22 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	/** {@inheritDoc} */
 	@Override
 	public TypeInfo getSchemaTypeInfo() {
-		return new AttributeTypeInfo(false);
+		return new AttributeTypeInfo(this);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public HTMLCollection getElementsByClassName(String classNames) {
-		return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new ClassNameFilter(classNames)).toArray()));
+		return new HTMLCollectionImpl(this, new ClassNameFilter(classNames));
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public HTMLCollection getElementsByTagName(String tagname) {
 		if ("*".equals(tagname)) {
-			return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new ElementFilter(null)).toArray()));
+			return new HTMLCollectionImpl(this, new ElementFilter(null));
 		} else {
-			return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new TagNameFilter(tagname)).toArray()));
+			return new HTMLCollectionImpl(this, new TagNameFilter(tagname));
 		}
 	}
 
@@ -966,10 +1090,10 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	public HTMLCollection getElementsByTagNameNS(String namespaceURI, String localName) {
 
 		if("*".equals(namespaceURI) && "*".equals(localName)) {
-			return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new ElementFilter(null)).toArray()));
+			return new HTMLCollectionImpl(this, new ElementFilter(null));
 		}
 
-		return new HTMLCollectionImpl(this, Arrays.asList(this.getNodeList(new TagNsNameFilter(localName, namespaceURI)).toArray()));
+		return new HTMLCollectionImpl(this, new TagNsNameFilter(localName, namespaceURI));
 	}
 
 	/** {@inheritDoc} */
@@ -1070,6 +1194,41 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		}
 	}
 
+	@Override
+	public boolean isEqualNode(Node arg) {
+		if (!super.isEqualNode(arg)) {
+			return false;
+		}
+
+		boolean hasAttrs = hasAttributes();
+		if (hasAttrs != arg.hasAttributes()) {
+			return false;
+		}
+		if (hasAttrs) {
+			NamedNodeMap map = getAttributes();
+			NamedNodeMap mapArg = arg.getAttributes();
+			if (map.getLength() != mapArg.getLength()) {
+				return false;
+			}
+
+			for (Node n1 : Nodes.iterable(map)) {
+				if (n1.getLocalName() == null) {
+					Node n2 = mapArg.getNamedItem(n1.getNodeName());
+					if (n2 == null || !n1.isEqualNode(n2)) {
+						return false;
+					}
+				} else {
+					Node n2 = mapArg.getNamedItemNS(n1.getNamespaceURI(), n1.getLocalName());
+					if (n2 == null || !n1.isEqualNode(n2)) {
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * <p>appendOuterHTMLImpl.</p>
 	 *
@@ -1108,72 +1267,100 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 
     private boolean isHScrollable() {
         String overflow;
-        CSSStyleDeclaration currentStyle = ((HTMLElementImpl) this).getStyle();
+        CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getCurrentStyle();
         overflow = currentStyle.getOverflow();
         int widthChild = 0;
 
         for (final Node child : (NodeListImpl) this.getChildNodes()) {
-            if (child instanceof HTMLElementImpl) widthChild += ((HTMLElementImpl) child).getClientWidth();
-        }
-
+			if (child instanceof HTMLElementImpl) {
+				CSSStyleDeclaration pCurrentStyle = ((HTMLElementImpl)child).getCurrentStyle();
+				widthChild += ((HTMLElementImpl) child).getClientWidth();
+				widthChild += HtmlValues.getPixelSize(pCurrentStyle.getLeft(), null, document.getDefaultView(), 0);
+				widthChild += HtmlValues.getPixelSize(pCurrentStyle.getRight(), null, document.getDefaultView(), 0);
+			}
+		}
         return ("scroll".equals(overflow) || "auto".equals(overflow)) && (widthChild > this.getClientWidth());
     }
 
     private boolean isVScrollable() {
         String overflow;
-        CSSStyleDeclaration currentStyle = ((HTMLElementImpl) this).getStyle();
+        CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getCurrentStyle();
         overflow = currentStyle.getOverflow();
         int heightChild = 0;
 
-        for (final Node child : (NodeListImpl) this.getChildNodes()) {
-            if (child instanceof HTMLElementImpl) heightChild += ((HTMLElementImpl) child).getClientHeight();
-        }
+		for (final Node child : (NodeListImpl) this.getChildNodes()) {
+			if (child instanceof HTMLElementImpl) {
+				heightChild += ((HTMLElementImpl) child).getClientHeight();
+				CSSStyleDeclaration pCurrentStyle = ((HTMLElementImpl)child).getCurrentStyle();
+				heightChild += HtmlValues.getPixelSize(pCurrentStyle.getTop(), null, document.getDefaultView(), 0);
+			}
+		}
 
         return ("scroll".equals(overflow) || "auto".equals(overflow)) && (heightChild > this.getClientHeight());
     }
 
-	protected int calculateWidth(boolean border, boolean padding) {
+	public int calculateWidth(boolean border, boolean padding) {
 		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		final HtmlRendererContext htmlRendererContext = doc.getHtmlRendererContext();
 		final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
 		final Dimension preferredSize = htmlPanel.getPreferredSize();
-		final CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getStyle();
+		final CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getCurrentStyle();
+		final ComputedCSSStyleDeclaration computedStyle = ((HTMLElementImpl)this).getComputedStyle();
 		String width = currentStyle.getWidth();
 		String borderLeftWidth = currentStyle.getBorderLeftWidth();
 		String borderRightWidth = currentStyle.getBorderRightWidth();
 		String boxSizing = currentStyle.getBoxSizing();
-		String position = currentStyle.getPosition();
-		String display = currentStyle.getDisplay();
-		String cssFloat = currentStyle.getFloat();
+		String display = computedStyle.getDisplay();
+		int paddingRight = HtmlValues.getPixelSize(currentStyle.getPaddingRight(), null, doc.getDefaultView(), 0);
+		int paddingLeft = HtmlValues.getPixelSize(currentStyle.getPaddingLeft(), null, doc.getDefaultView(), 0);
 		int sizeWidth = preferredSize.width;
 
-		if (getParentNode() == null || CSSValues.INLINE.isEqual(display) || CSSValues.NONE.isEqual(display)) {
+		if (getParentNode() == null ||
+				CSSValues.NONE.isEqual(display) ||
+				(Strings.isBlank(width) &&
+						(this instanceof HTMLInputElement ||
+								this instanceof HTMLTextAreaElement ||
+								this instanceof HTMLDDElementImpl ||
+								this instanceof HTMLCanvasElement ||
+								this instanceof HTMLImageElement ||
+								this instanceof HTMLButtonElement ||
+								this instanceof HTMLFieldSetElement ||
+								this instanceof HTMLSelectElement ||
+								this instanceof HTMLTableCellElement ||
+								this instanceof HTMLTableCaptionElement ||
+								this instanceof HTMLTableRowElement ||
+								this instanceof HTMLTableColElement ||
+								this instanceof HTMLTableColGroupElementImpl ||
+								this instanceof HTMLTableSectionElement ||
+								this instanceof SVGSVGElement))) {
 			return 0;
 		}
 
-		if (this instanceof HTMLBodyElementImpl) {
+		if (CSSValues.INLINE.isEqual(display)) {
+			width = "0";
+			if (paddingRight <= 0 && paddingLeft <= 0) {
+				return 0;
+			}
+		}
+
+		if (this instanceof HTMLHtmlElementImpl) {
 			width = String.valueOf(doc.getDefaultView().getInnerWidth());
+		}
+
+		if (this instanceof HTMLBodyElementImpl) {
+			width = String.valueOf(doc.getDefaultView().getInnerWidth() - 16);
 		}
 
 		if(Strings.isBlank(width)){
 			width = "-1px";
 		}
 
-		final Node nodeObj = getParentNode();
+		Node nodeObj = getParentNode();
 		if (nodeObj instanceof HTMLElementImpl) {
 			HTMLElementImpl elem = (HTMLElementImpl)nodeObj;
-			if(elem.getClientHeight() != -1) {
-				sizeWidth = elem.getClientWidth();
-			}
-		}
-
-		if ((CSSValues.RIGHT.isEqual(cssFloat) || CSSValues.LEFT.isEqual(cssFloat)) ||
-				(CSSValues.ABSOLUTE.isEqual(position))) {
-
-			if (Strings.isNotBlank(getTextContent())) {
-				width = String.valueOf(getTextContent().length() * 4);
-			} else {
-				width = "0px";
+			final int client = elem.getClientWidth();
+			if(client > 0) {
+				sizeWidth = client;
 			}
 		}
 
@@ -1181,7 +1368,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 			width = "100%";
 		}
 
-		int widthSize = HtmlValues.getPixelSize(width, null, doc.getDefaultView(), -1, sizeWidth);
+		int widthSize = "-1px".equals(width) ? sizeWidth : HtmlValues.getPixelSize(width, null, doc.getDefaultView(), -1, sizeWidth);
 
 		if ("border-box".equals(boxSizing)) {
 			padding = false;
@@ -1189,26 +1376,24 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		}
 
 		if (padding) {
-			String paddingRight = currentStyle.getPaddingRight();
-			String paddingLeft = currentStyle.getPaddingLeft();
-			widthSize += HtmlValues.getPixelSize(paddingRight, null, doc.getDefaultView(), 0);
-			widthSize += HtmlValues.getPixelSize(paddingLeft, null, doc.getDefaultView(), 0);
+			widthSize += paddingRight;
+			widthSize += paddingRight;
 		}
-
 
 		if (border) {
 			widthSize += HtmlValues.getPixelSize(borderRightWidth, null, doc.getDefaultView(), 0);
 			widthSize += HtmlValues.getPixelSize(borderLeftWidth, null, doc.getDefaultView(), 0);
 		}
+
 		return widthSize;
 	}
 
-	protected int calculateHeight(boolean border, boolean padding) {
+	public int calculateHeight(boolean border, boolean padding) {
 		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		final HtmlRendererContext htmlRendererContext = doc.getHtmlRendererContext();
 		final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
 		final Dimension preferredSize = htmlPanel.getPreferredSize();
-		final CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getStyle();
+		final CSSStyleDeclaration currentStyle = ((HTMLElementImpl)this).getCurrentStyle();
 		String height = currentStyle.getHeight();
 		String borderTopWidth = currentStyle.getBorderTopWidth();
 		String borderBottomWidth = currentStyle.getBorderBottomWidth();
@@ -1231,26 +1416,13 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		final Node nodeObj = getParentNode();
 		if (nodeObj instanceof HTMLElementImpl) {
 			HTMLElementImpl elem = (HTMLElementImpl)nodeObj;
-			if(elem.getClientHeight() != -1) {
-				sizeHeight = elem.getClientHeight();
+			final int client = elem.getClientHeight();
+			if(client!= -1) {
+				sizeHeight = client;
 			}
 		}
 
-		switch (height) {
-			case "auto":
-				height = "100%";
-				break;
-			case "-1px":
-				if (Strings.isBlank(getTextContent())) {
-					height = "0px";
-				} else {
-					height = "18px";
-				}
-				break;
-			default:
-				break;
-		}
-
+		height = "auto".equals(height) ? "100%" : "-1px".equals(height) ? textHeight(this) + "px" : height;
 		int heightSize = HtmlValues.getPixelSize(height, null, doc.getDefaultView(), -1, sizeHeight);
 
 		if ("border-box".equals(boxSizing)) {
@@ -1271,5 +1443,33 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		}
 
 		return heightSize;
+	}
+
+	private int textHeight(ElementImpl elm) {
+		AtomicInteger h = new AtomicInteger(0);
+		if (elm instanceof HTMLTextAreaElement ||
+				elm instanceof HTMLBaseFontElement ||
+				elm instanceof HTMLScriptElement) return h.get();
+
+		elm.getNodeList().forEach(child -> {
+			final int type = child.getNodeType();
+			switch (type) {
+				case Node.CDATA_SECTION_NODE:
+				case Node.TEXT_NODE:
+					if (elm instanceof HTMLFieldSetElement) {
+						h.addAndGet(35);
+					} else if (elm instanceof HTMLDDElementImpl) {
+						h.addAndGet(17);
+					} else {
+						h.addAndGet(18);
+					}
+					break;
+				case Node.ELEMENT_NODE:
+					h.addAndGet(textHeight((ElementImpl) child));
+				default:
+					break;
+			}
+		});
+		return h.get();
 	}
 }

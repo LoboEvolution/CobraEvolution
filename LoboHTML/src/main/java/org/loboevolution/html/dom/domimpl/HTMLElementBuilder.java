@@ -22,8 +22,6 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
-import org.loboevolution.html.dom.HTMLDocument;
-import org.loboevolution.html.dom.HTMLElement;
 import org.loboevolution.html.dom.rss.*;
 import org.loboevolution.html.dom.svgimpl.*;
 
@@ -62,6 +60,12 @@ public abstract class HTMLElementBuilder {
 		}
 	}
 
+	public static class Dd extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLDDElementImpl(name);
+		}
+	}
 	public static class Body extends HTMLElementBuilder {
 		@Override
 		public HTMLElementImpl build(String name) {
@@ -118,6 +122,13 @@ public abstract class HTMLElementBuilder {
 		}
 	}
 
+	public static class Dir extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLDirectoryElementImpl(name);
+		}
+	}
+
 	public static class Dl extends HTMLElementBuilder {
 		@Override
 		public HTMLElementImpl build(String name) {
@@ -132,7 +143,12 @@ public abstract class HTMLElementBuilder {
 		}
 	}
 
-
+	public static class Dialog extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLDialogElementImpl(name);
+		}
+	}
 	public static class Em extends HTMLElementBuilder {
 		@Override
 		public HTMLElementImpl build(String name) {
@@ -235,6 +251,20 @@ public abstract class HTMLElementBuilder {
 		@Override
 		public HTMLElementImpl build(String name) {
 			return new HTMLNonStandardElement(name);
+		}
+	}
+
+	public static class NoScript extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLNoScriptElementImpl(name);
+		}
+	}
+
+	public static class OptGroup extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLOptGroupElementImpl(name);
 		}
 	}
 
@@ -607,6 +637,18 @@ public abstract class HTMLElementBuilder {
 		protected HTMLElementImpl build(String name) {
 			return new RSSItemElementImpl(name);
 		}		
+	}
+
+	public static class Marquee extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) { return new HTMLMarqueeElementImpl(name); }
+	}
+
+	public static class Video extends HTMLElementBuilder {
+		@Override
+		public HTMLElementImpl build(String name) {
+			return new HTMLVideoElementImpl(name);
+		}
 	}
 	
 	/**

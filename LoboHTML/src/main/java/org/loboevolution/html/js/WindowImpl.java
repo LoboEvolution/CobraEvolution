@@ -22,8 +22,8 @@
  */
 package org.loboevolution.html.js;
 
-import com.gargoylesoftware.css.dom.CSSRuleListImpl;
-import com.gargoylesoftware.css.dom.DOMException;
+import org.htmlunit.cssparser.dom.CSSRuleListImpl;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLCollection;
@@ -412,8 +412,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 			return this.length;
 		} else {
 			final HTMLDocumentImpl doc = this.document;
-			final List<Node> list = new LinkedList<>(Arrays.asList(doc.getNodeList(new BodyFilter()).toArray()));
-			HTMLCollection collection = new HTMLCollectionImpl(doc, list);
+			HTMLCollection collection = new HTMLCollectionImpl(doc, new BodyFilter());
 			return collection.getLength();
 		}
 	}

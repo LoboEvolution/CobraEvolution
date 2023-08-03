@@ -139,7 +139,6 @@ public class RUIControl extends BaseElementRenderable {
 		}
 		if (layoutValue == null) {
 			this.applyStyle(availWidth, availHeight);
-			final RenderState renderState = this.modelNode.getRenderState();
 
 			Insets paddingInsets = this.paddingInsets == null ? RBlockViewport.ZERO_INSETS : this.paddingInsets;
 			Insets borderInsets = this.borderInsets == null ? RBlockViewport.ZERO_INSETS : this.borderInsets;
@@ -155,8 +154,8 @@ public class RUIControl extends BaseElementRenderable {
 
 			final int actualAvailWidth = availWidth - paddingWidth - borderWidth - marginWidth;
 			final int actualAvailHeight = availHeight - paddingHeight - borderHeight - marginHeight;
-			final Integer dw = this.getDeclaredWidth(renderState, actualAvailWidth);
-			final Integer dh = this.getDeclaredHeight(renderState, actualAvailHeight);
+			final Integer dw = this.getDeclaredWidth(actualAvailWidth);
+			final Integer dh = this.getDeclaredHeight(actualAvailHeight);
 			final int declaredWidth = dw == null ? -1 : dw;
 			final int declaredHeight = dh == null ? -1 : dh;
 			this.declaredWidth = declaredWidth;

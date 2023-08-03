@@ -60,8 +60,6 @@ abstract class BaseBoundableRenderable extends RRectangle implements BoundableRe
 
 	protected RCollection parent;
 
-	private RRectangle rettangle;
-
 	/**
 	 * <p>Constructor for BaseBoundableRenderable.</p>
 	 *
@@ -391,6 +389,8 @@ abstract class BaseBoundableRenderable extends RRectangle implements BoundableRe
 			if (isContainedByNode()) {
 				HtmlController.getInstance().onMouseOver(this.modelNode, event, x, y, limit);
 				resetCursorOnMouseOut(this.modelNode, limit);
+			} else {
+				HtmlController.getInstance().onMouseMoved(this.modelNode, event, x, y, limit);
 			}
 		}
 	}
@@ -547,6 +547,6 @@ abstract class BaseBoundableRenderable extends RRectangle implements BoundableRe
 
 	@Override
 	public RRectangle getRectangle() {
-		return rettangle;
+		return this;
 	}
 }

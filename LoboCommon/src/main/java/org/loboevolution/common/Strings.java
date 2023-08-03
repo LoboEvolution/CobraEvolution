@@ -36,7 +36,7 @@ public final class Strings {
 
 	/** The Constant EMPTY_ARRAY. */
 	public static final String[] EMPTY_ARRAY = new String[0];
-	
+
 	/**
 	 * Instantiates a strings.
 	 */
@@ -103,6 +103,28 @@ public final class Strings {
 		return (text != null) && (text.length() > 0);
 	}
 
+
+	public static boolean containsIgnoreCase(String text, String text1) {
+		return text != null && text1 != null && (text.contains(text1.toLowerCase()) || text.contains(text1.toUpperCase()));
+	}
+
+	public static boolean startsWithIgnoreCase(String text, String text1) {
+		return text != null && text1 != null && (text.startsWith(text1.toLowerCase()) || text.startsWith(text1.toUpperCase()));
+	}
+
+	public static boolean endsWithIgnoreCase(String text, String text1) {
+		return text != null && text1 != null && (text.endsWith(text1.toLowerCase()) || text.endsWith(text1.toUpperCase()));
+	}
+
+	public static String[] splitIgnoreCase(String text, String text1) {
+		if (text != null && text1 != null) {
+			return text.split(text1.toLowerCase()).length > 1 ? text.split(text1.toLowerCase()) :
+					text.split(text1.toUpperCase()).length > 1 ? text.split(text1.toUpperCase()) : new String[]{};
+		}
+		return null;
+	}
+
+
 	/**
 	 * <p>isNumeric.</p>
 	 *
@@ -133,21 +155,21 @@ public final class Strings {
 		final char[] list = phrase.toCharArray();
 		for (final char ch : list) {
 			switch (ch) {
-			case ' ':
-			case '\t':
-			case '\r':
-			case '\n':
-				if (word != null) {
-					wordList.add(word.toString());
-					word = null;
-				}
-				break;
-			default:
-				if (word == null) {
-					word = new StringBuilder();
-				}
-				word.append(ch);
-				break;
+				case ' ':
+				case '\t':
+				case '\r':
+				case '\n':
+					if (word != null) {
+						wordList.add(word.toString());
+						word = null;
+					}
+					break;
+				default:
+					if (word == null) {
+						word = new StringBuilder();
+					}
+					word.append(ch);
+					break;
 			}
 		}
 		if (word != null) {
@@ -173,7 +195,7 @@ public final class Strings {
 
 		return arrLis.toArray(new String[0]);
 	}
-	
+
 	/**
 	 * Strict html encode.
 	 *
@@ -186,25 +208,25 @@ public final class Strings {
 		final char[] list = rawText.toCharArray();
 		for (final char ch : list) {
 			switch (ch) {
-			case '&':
-				output.append("&amp;");
-				break;
-			case '"':
-				if (quotes) {
-					output.append("&quot;");
-				} else {
+				case '&':
+					output.append("&amp;");
+					break;
+				case '"':
+					if (quotes) {
+						output.append("&quot;");
+					} else {
+						output.append(ch);
+					}
+					break;
+				case '<':
+					output.append("&lt;");
+					break;
+				case '>':
+					output.append("&gt;");
+					break;
+				default:
 					output.append(ch);
-				}
-				break;
-			case '<':
-				output.append("&lt;");
-				break;
-			case '>':
-				output.append("&gt;");
-				break;
-			default:
-				output.append(ch);
-				break;
+					break;
 			}
 		}
 		return output.toString();
@@ -278,7 +300,7 @@ public final class Strings {
 		}
 		return found;
 	}
-	
+
 	/**
 	 * <p>hash.</p>
 	 *
@@ -295,7 +317,7 @@ public final class Strings {
 		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         return Base64.getEncoder().encodeToString(f.generateSecret(spec).getEncoded());
     }
-    
+
 	/**
 	 * <p>randomAlphaNumeric.</p>
 	 *
@@ -312,12 +334,11 @@ public final class Strings {
 		return builder.toString();
 	}
 
-	public static boolean isValidTag(String name) {
-		int len = name.length();
-		if (len == 0) {
+	public static boolean isValidTag(String name, boolean isXml) {
+		if (Strings.isBlank(name)) {
 			return false;
 		}
-		final Pattern pattern = Pattern.compile("[A-Za-z0-9]*",Pattern.CASE_INSENSITIVE);
+		final Pattern pattern = Pattern.compile(isXml ? "[A-Za-z0-9]*" : "(\\\"[^\\\"]*\\\"|'[^']*'|[^'\\\">])*", Pattern.CASE_INSENSITIVE);
 		return pattern.matcher(name).matches();
 	}
 
@@ -326,6 +347,8 @@ public final class Strings {
 		if (isBlank(s)) {
 			return false;
 		}
+
+		s = s.trim();
 
 		if (!isXMLIdentifierStart(s.charAt(0))) {
 			return false;

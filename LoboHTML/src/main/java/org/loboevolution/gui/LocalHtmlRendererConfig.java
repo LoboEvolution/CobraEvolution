@@ -21,19 +21,34 @@ package org.loboevolution.gui;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.loboevolution.common.Urls;
+import org.loboevolution.component.IBrowserFrame;
+import org.loboevolution.component.IBrowserPanel;
+import org.loboevolution.component.IToolBar;
 import org.loboevolution.config.DesktopConfig;
 import org.loboevolution.config.HtmlRendererConfig;
+import org.loboevolution.html.dom.HTMLElement;
+import org.loboevolution.html.dom.HTMLLinkElement;
+import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
+import org.loboevolution.html.dom.input.FormInput;
+import org.loboevolution.http.UserAgentContext;
 import org.loboevolution.info.GeneralInfo;
 import org.loboevolution.info.TabInfo;
 import org.loboevolution.net.Cookie;
 import org.loboevolution.net.HttpNetwork;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.net.URLConnection;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Data
 @AllArgsConstructor

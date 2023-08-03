@@ -23,6 +23,7 @@ package org.loboevolution.html.dom.domimpl;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.HTMLFormElement;
 import org.loboevolution.html.dom.HTMLOptionElement;
+import org.loboevolution.html.dom.HTMLSelectElement;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.renderstate.BlockRenderState;
 import org.loboevolution.html.renderstate.RenderState;
@@ -32,17 +33,29 @@ import org.loboevolution.html.renderstate.RenderState;
  */
 public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOptionElement {
 
-	private Boolean selected = null;
+	private Object selected = null;
 	
 	private String text;
 
 	/**
 	 * <p>Constructor for HTMLOptionElementImpl.</p>
 	 *
-	 * @param name a {@link java.lang.String} object.
+	 * @param text a {@link java.lang.String} object.
 	 */
-	public HTMLOptionElementImpl(final String name) {
-		super(name);
+	public HTMLOptionElementImpl(final String text) {
+		super(text);
+	}
+
+	/**
+	 * <p>Constructor for HTMLOptionElementImpl.</p>
+	 *
+	 * @param text a {@link java.lang.String} object.
+	 * @param value a {@link java.lang.String} object.
+	 */
+	public HTMLOptionElementImpl(final String text, final String value) {
+		super(text);
+		this.text = text;
+		setValue(value);
 	}
 	
 	/** {@inheritDoc} */
@@ -70,15 +83,13 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 	/** {@inheritDoc} */
 	@Override
 	public int getIndex() {
-		/*final Object parent = getParentNode();
+		final Object parent = getParentNode();
 		if (parent instanceof HTMLSelectElement) {
 			final HTMLOptionsCollectionImpl options = (HTMLOptionsCollectionImpl) ((HTMLSelectElement) parent).getOptions();
 			return options.indexOf(this);
 		} else {
 			return -1;
-		}*/
-		
-		return -1; //TODO
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -89,13 +100,27 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean isSelected() {
-		if (this.selected == null) {
-			return isDefaultSelected();
-		} else {
-			return this.selected;
+	public Boolean isSelected() {
+		final Object parent = getParentNode();
+		if (parent instanceof HTMLSelectElement) {
+			final HTMLSelectElement selectElement = (HTMLSelectElement) parent;
+			if (selectElement.isMultiple()) {
+				return this.selected != null || getAttributeAsBoolean("selected");
+			} else {
+				if (selected == null) {
+					return getAttributeAsBoolean("selected");
+				} else {
+					if (selected instanceof Boolean) {
+						return (Boolean) this.selected;
+					} else {
+						return getAttributeAsBoolean("selected");
+					}
+				}
+			}
 		}
+		return null;
 	}
+
 
 	/** {@inheritDoc} */
 	@Override
@@ -129,8 +154,14 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public void setSelected(Object selected) {
+		if (selected instanceof Boolean) {
+			this.selected = selected;
+		} else{
+			if (selected == null)
+				this.selected = null;
+			else this.selected = true;
+		}
 	}
 
 	/**

@@ -22,12 +22,11 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
-import org.loboevolution.common.Objects;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.node.*;
 import org.loboevolution.js.AbstractScriptableDelegate;
-
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -179,6 +178,10 @@ public class NamedNodeMapImpl extends AbstractScriptableDelegate implements Name
 
 		if (node instanceof Attr) {
 			Attr attr = (Attr) node;
+			final TextImpl t = new TextImpl(attr.getValue());
+			t.setOwnerDocument(attr.getOwnerDocument());
+			t.setParentImpl(attr.getParentNode());
+			attr.appendChild(t);
 			Node check = getNamedItem(attr.getNodeName());
 			if (check != null) {
 				this.attributes.remove(check);
@@ -210,6 +213,10 @@ public class NamedNodeMapImpl extends AbstractScriptableDelegate implements Name
 
 		if (node instanceof Attr) {
 			Attr attr = (Attr) node;
+			final TextImpl t = new TextImpl(attr.getValue());
+			t.setOwnerDocument(attr.getOwnerDocument());
+			t.setParentImpl(attr.getParentNode());
+			attr.appendChild(t);
 			Node check = getNamedItemNS(attr.getNamespaceURI(), attr.getLocalName());
 			if (check != null) {
 				this.attributes.remove(check);

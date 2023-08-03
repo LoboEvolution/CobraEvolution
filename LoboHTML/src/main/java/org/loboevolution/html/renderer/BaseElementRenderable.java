@@ -49,9 +49,6 @@ import java.util.logging.Level;
 
 /**
  * <p>Abstract BaseElementRenderable class.</p>
- *
- *
- *
  */
 public abstract class BaseElementRenderable extends BaseRCollection implements RElement, RenderableContainer, ImageObserver {
 
@@ -206,7 +203,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		if (backgroundImageUri == null) {
 			this.backgroundImage = null;
 			this.lastBackgroundImageUri = null;
-		} else if (!backgroundImageUri.equals(this.lastBackgroundImageUri)) {
+		} else if (!Objects.equals(backgroundImageUri, this.lastBackgroundImageUri)) {
 			this.lastBackgroundImageUri = backgroundImageUri;
 			HTMLImageElementImpl img = new HTMLImageElementImpl();
 			TimingInfo info = new TimingInfo();
@@ -229,70 +226,25 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	}
 
 	private void insetsApplyStyle(RenderState rs, int availWidth, int availHeight, boolean isRootBlock) {
-
-		Insets borderInsets = borderInsets(rs,availWidth, availHeight);
-		Insets paddingInsets = paddingInsets(rs,availWidth, availHeight);
-		Insets tentativeMarginInsets = marginInsets(rs,availWidth, availHeight);
-
-		final int paddingWidth = paddingInsets.left - paddingInsets.right;
-		final int borderWidth = borderInsets.left - borderInsets.right;
-		final int marginWidth = tentativeMarginInsets.left - tentativeMarginInsets.right;
-
-		final int paddingHeight = paddingInsets.top - paddingInsets.bottom;
-		final int borderHeight = borderInsets.top - borderInsets.bottom;
-		final int marginHeight = tentativeMarginInsets.top - tentativeMarginInsets.bottom;
-
-		final int actualAvailWidth = availWidth - paddingWidth - borderWidth - marginWidth;
-		final int actualAvailHeight = availHeight - paddingHeight - borderHeight - marginHeight;
-		final Integer declaredWidth = getDeclaredWidth(rs, actualAvailWidth);
-		final Integer declaredHeight = getDeclaredHeight(rs, actualAvailHeight);
-
-		int autoMarginX = 0;
-		int autoMarginY = 0;
-
-		if (declaredWidth != null) {
-			final int borderx = borderInsets.left - borderInsets.right;
-			final int paddingx = paddingInsets.left - paddingInsets.right;
-			autoMarginX = (availWidth - declaredWidth - borderx  - paddingx);
-		}
-
-		if (declaredHeight != null) {
-			final int bordery = borderInsets.top - borderInsets.bottom;
-			final int paddingy = paddingInsets.top - paddingInsets.bottom;
-			autoMarginY = (availHeight - declaredHeight - bordery - paddingy);
-		}
-
-		HtmlInsets minsets = rs.getMarginInsets();
+		borderInsets(rs, availWidth, availHeight);
+		Insets paddingInsets = paddingInsets(rs, availWidth, availHeight);
+		Insets tentativeMarginInsets = marginInsets(rs, availWidth, availHeight);
 
 		if (isRootBlock) {
-			Insets regularMarginInsets = RBlockViewport.ZERO_INSETS;
-
-			if (autoMarginX == 0 && autoMarginY == 0) {
-				regularMarginInsets = tentativeMarginInsets;
-			} else if (minsets != null) {
-				regularMarginInsets = minsets.getAWTInsets(availWidth, availHeight, autoMarginX, autoMarginY);
-			}
-
-			final int top = paddingInsets.top + regularMarginInsets.top;
-			final int left = paddingInsets.left + regularMarginInsets.left;
-			final int bottom = paddingInsets.top + regularMarginInsets.bottom;
-			final int right = paddingInsets.top + regularMarginInsets.right;
+			final int top = paddingInsets.top + tentativeMarginInsets.top;
+			final int left = paddingInsets.left + tentativeMarginInsets.left;
+			final int bottom = paddingInsets.top + tentativeMarginInsets.bottom;
+			final int right = paddingInsets.top + tentativeMarginInsets.right;
 
 			this.paddingInsets = new Insets(top, left, bottom, right);
 			this.marginInsets = null;
 		} else {
 			this.paddingInsets = paddingInsets;
-			this.marginInsets = RBlockViewport.ZERO_INSETS;
-
-			if (autoMarginX == 0 && autoMarginY == 0) {
-				this.marginInsets = tentativeMarginInsets;
-			} else if (minsets != null) {
-				this.marginInsets = minsets.getAWTInsets(availWidth, availHeight, autoMarginX, autoMarginY);
-			}
+			this.marginInsets = tentativeMarginInsets;
 		}
 	}
 
-	private Insets borderInsets(RenderState rs, int availWidth, int availHeight) {
+	private void borderInsets(RenderState rs, int availWidth, int availHeight) {
 		Insets ins = null;
 		final BorderInfo borderInfo = rs.getBorderInfo();
 		this.borderInfo = borderInfo;
@@ -316,7 +268,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 			this.borderRightColor = null;
 		}
 		this.borderInsets = ins;
-		return ins;
 	}
 
 	private Insets marginInsets(RenderState rs, int availWidth, int availHeight) {
@@ -343,7 +294,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 	private void zIndexApplyStyle(CSSStyleDeclaration props) {
 		final String zIndex = props.getzIndex();
-		if (Strings.isNotBlank(zIndex)) {
+		if (Strings.isNotBlank(zIndex) && this.modelNode instanceof HTMLElementImpl) {
 			HTMLElementImpl element = (HTMLElementImpl) this.modelNode;
 			HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
 			try {
@@ -446,24 +397,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 */
 	protected abstract void doLayout(int availWidth, int availHeight, boolean sizeOnly);
 
-	/**
-	 * <p>getAlignmentX.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getAlignmentX() {
-		return 0.0f;
-	}
-
-	/**
-	 * <p>getAlignmentY.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getAlignmentY() {
-		return 0.0f;
-	}
-
 	private Color getBorderBottomColor() {
 		final Color c = this.borderBottomColor;
 		return c == null ? Color.black : c;
@@ -559,155 +492,43 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	/**
 	 * <p>Getter for the field declaredHeight.</p>
 	 *
-	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
-	 * @param actualAvailHeight a int.
+	 * @param actualAvailHeight a {@link java.lang.Integer} object.
 	 * @return a {@link java.lang.Integer} object.
 	 */
-	protected Integer getDeclaredHeight(RenderState renderState, int actualAvailHeight) {
+	public Integer getDeclaredHeight(int actualAvailHeight) {
 		Integer dh = this.declaredHeight;
 		if (INVALID_SIZE.equals(dh) || actualAvailHeight != this.lastAvailHeightForDeclared) {
 			this.lastAvailHeightForDeclared = actualAvailHeight;
-			final int dhInt = getDeclaredHeightImpl(renderState, actualAvailHeight);
-			dh = dhInt == -1 ? null : dhInt;
+			if (modelNode instanceof HTMLElementImpl) {
+				final int dhInt = getDeclaredHeightImpl((HTMLElementImpl) modelNode, actualAvailHeight);
+				dh = dhInt == -1 ? null : dhInt;
+			} else {
+				dh= -1;
+			}
 			this.declaredHeight = dh;
 		}
 		return dh;
 	}
 
 	/**
-	 * <p>getDeclaredHeightImpl.</p>
-	 *
-	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
-	 * @param availHeight a int.
-	 * @return a int.
-	 */
-	private int getDeclaredHeightImpl(RenderState renderState, int availHeight) {
-		Object rootNode = this.modelNode;
-		if (rootNode instanceof HTMLElementImpl) {
-			HTMLElementImpl element = (HTMLElementImpl) rootNode;
-			CSSStyleDeclaration props = element.getCurrentStyle();
-			if (props == null) {
-				return -1;
-			}
-			HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
-			String heightText = props.getHeight();
-
-			if ("inherit".equalsIgnoreCase(heightText)) {
-				heightText = element.getParentStyle().getHeight();
-			} else if ("initial".equalsIgnoreCase(heightText)) {
-				heightText = "100%";
-			}
-
-			int height = -1;
-
-			if (heightText != null) {
-				height = HtmlValues.getPixelSize(heightText, renderState, doc.getDefaultView(), -1, availHeight);
-			}
-
-			if (props.getMaxHeight() != null) {
-				int maxHeight = HtmlValues.getPixelSize(props.getMaxHeight(), renderState, doc.getDefaultView(),-1, availHeight);
-
-				if (height == 0 || height > maxHeight) {
-					height = maxHeight;
-				}
-			}
-
-			if (props.getMinHeight() != null) {
-				int minHeight = HtmlValues.getPixelSize(props.getMinHeight(), renderState, doc.getDefaultView(),-1, availHeight);
-
-				if (height == 0 || height < minHeight) {
-					height = minHeight;
-				}
-			}
-
-			return height;
-		} else {
-			return -1;
-		}
-	}
-
-	/**
 	 * <p>Getter for the field declaredWidth.</p>
 	 *
-	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
-	 * @param actualAvailWidth a int.
+	 * @param actualAvailWidth a {@link java.lang.Integer} object.
 	 * @return a {@link java.lang.Integer} object.
 	 */
-	protected Integer getDeclaredWidth(RenderState renderState, int actualAvailWidth) {
+	protected Integer getDeclaredWidth(int actualAvailWidth) {
 		Integer dw = this.declaredWidth;
 		if (INVALID_SIZE.equals(dw) || actualAvailWidth != this.lastAvailWidthForDeclared) {
 			this.lastAvailWidthForDeclared = actualAvailWidth;
-			final int dwInt = getDeclaredWidthImpl(renderState, actualAvailWidth);
-			dw = dwInt == -1 ? null : dwInt;
+			if (modelNode instanceof HTMLElementImpl) {
+				final int dwInt = getDeclaredWidthImpl((HTMLElementImpl) modelNode, actualAvailWidth);
+				dw = dwInt == -1 ? null : dwInt;
+			} else {
+				dw = -1;
+			}
 			this.declaredWidth = dw;
 		}
 		return dw;
-	}
-
-	private int getDeclaredWidthImpl(RenderState renderState, int availWidth) {
-		Object rootNode = this.modelNode;
-		if (rootNode instanceof HTMLElementImpl) {
-			HTMLElementImpl element = (HTMLElementImpl) rootNode;
-			HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
-			CSSStyleDeclaration props = element.getCurrentStyle();
-			if (props == null) {
-				return -1;
-			}
-			String widthText = props.getWidth();
-			final String textContent = element.getTextContent();
-
-			if ("inherit".equalsIgnoreCase(widthText)) {
-				widthText = element.getParentStyle().getWidth();
-			} else if ("initial".equalsIgnoreCase(widthText)) {
-				widthText = "100%";
-			}
-
-			int width = -1;
-
-			if (Strings.isNotBlank(widthText)) {
-				width = HtmlValues.getPixelSize(widthText, renderState, doc.getDefaultView(), -1, availWidth);
-			}
-
-			if (width == -1 && Strings.isNotBlank(textContent) && renderState.getDisplay() == RenderState.DISPLAY_INLINE_BLOCK) {
-				HtmlInsets paddingInsets = renderState.getPaddingInsets();
-				HtmlInsets marginInsets = renderState.getMarginInsets();
-				int right = 0;
-				int left = 0;
-
-				if (paddingInsets != null) {
-					right = right + paddingInsets.getRight();
-					left = left + paddingInsets.getLeft();
-				}
-
-				if (marginInsets != null) {
-					right = right + marginInsets.getRight();
-					left =  left + marginInsets.getLeft();
-				}
-
-				final int multi = (right == 0 && left == 0) ? 12 : 4;
-
-				width = (textContent.length() + right + left) * multi;
-			}
-
-			if (Strings.isNotBlank(props.getMaxWidth())) {
-				int maxWidth = HtmlValues.getPixelSize(props.getMaxWidth(), renderState, doc.getDefaultView(), -1, availWidth);
-
-				if (width == -1 || width > maxWidth) {
-					width = maxWidth;
-				}
-			}
-
-			if (Strings.isNotBlank(props.getMinWidth())) {
-				int minWidth = HtmlValues.getPixelSize(props.getMinWidth(), element.getRenderState(), doc.getDefaultView(), 0, availWidth);
-
-				if (width == 0 || width < minWidth) {
-					width = minWidth;
-				}
-			}
-			return width;
-		} else {
-			return -1;
-		}
 	}
 
 	/** {@inheritDoc} */
@@ -773,7 +594,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
     private Insets getInsets(final boolean hscroll, final boolean vscroll, final boolean includeMI,
             final boolean includeBI, final boolean includePI) {
-		this.modelNode.getRenderState();
 		final Insets mi = this.marginInsets;
 		final Insets bi = this.borderInsets;
         final Insets pi = this.paddingInsets;
@@ -1044,10 +864,19 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 		final Insets marginInsets = this.marginInsets;
 		if (marginInsets != null) {
-			totalWidth -= marginInsets.left + marginInsets.right;
-			totalHeight -= marginInsets.top + marginInsets.bottom;
-			startX += marginInsets.left;
-			startY += marginInsets.top;
+			final Object rootNode = this.modelNode;
+			RenderState rs = null;
+			if (rootNode instanceof HTMLElementImpl) {
+				HTMLElementImpl element = (HTMLElementImpl) rootNode;
+				rs = element.getRenderState();
+			}
+
+			if (rs == null || (RenderState.POSITION_ABSOLUTE != rs.getPosition() && RenderState.POSITION_FIXED != rs.getPosition())) {
+				totalWidth -= marginInsets.left + marginInsets.right;
+				totalHeight -= marginInsets.top + marginInsets.bottom;
+				startX += marginInsets.left;
+				startY += marginInsets.top;
+			}
 		}
 
 		prePaintBackground(g, this.modelNode, totalWidth, totalHeight, startX, startY);
@@ -1154,9 +983,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 			final int newStartX = startX + bleft;
 			final int newStartY = startY + btop;
 			final Rectangle clientRegion = new Rectangle(newStartX, newStartY, newTotalWidth, newTotalHeight);
-
-			// Paint borders if the clip bounds are not contained
-			// by the content area.
 			final Rectangle clipBounds = g.getClipBounds();
 			if (!clientRegion.contains(clipBounds)) {
 				final BorderInfo borderInfo = this.borderInfo;

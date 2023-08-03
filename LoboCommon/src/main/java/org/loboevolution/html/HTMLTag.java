@@ -30,6 +30,7 @@ import java.util.Map;
 public enum HTMLTag {
 
     A("A"),
+    ADDRESS("ADDRESS"),
     ANCHOR("ANCHOR"),
     ANIMATE("ANIMATE"),
     ANIMATE_TRASFORM("ANIMATETRANSFORM"),
@@ -55,7 +56,9 @@ public enum HTMLTag {
     DD("DD"),
     DEFS("DEFS"),
     DESCRIPTION("DESCRIPTION"),
+    DIALOG("DIALOG"),
     DIV("DIV"),
+    DIR("DIR"),
     DL("DL"),
     DT("DT"),
     DETAILS("DETAILS"),
@@ -90,6 +93,7 @@ public enum HTMLTag {
     LINEAR_GRADIENT("LINEARGRADIENT"),
     LINK("LINK"),
     MAIN("MAIN"),
+    MARQUEE("MARQUEE"),
     META("META"),
     MENU("MENU"),
     NAV("NAV"),
@@ -97,12 +101,14 @@ public enum HTMLTag {
     OBJECT("OBJECT"),
     OL("OL"),
     OPTION("OPTION"),
+    OPTGROUP("OPTGROUP"),
     P("P"),
     PATH("PATH"),
     POLYGON("POLYGON"),
     POLYLINE("POLYLINE"),
     PRE("PRE"),
     PROGRESS("PROGRESS"),
+    Q("Q"),
     RADIAL_GRADIENT("RADIALGRADIENT"),
     RECT("RECT"),
     RSS("RSS"),
@@ -137,7 +143,9 @@ public enum HTMLTag {
     UL("UL"),
     USE("USE"),
     KBD("KBD"),
-    VAR("VAR");
+    VAR("VAR"),
+
+    VIDEO("VIDEO");
 
     private final String value;
     private static final Map<String, HTMLTag> ENUM_MAP;

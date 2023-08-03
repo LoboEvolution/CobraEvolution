@@ -35,9 +35,6 @@ import java.util.LinkedList;
 
 /**
  * <p>SelectOption class.</p>
- *
- *
- *
  */
 public class SelectOption {
 
@@ -79,19 +76,13 @@ public class SelectOption {
 		comboBox.addItemListener(e -> {
 			OptionItem item = (OptionItem) e.getItem();
 			if (item != null) {
-				switch (e.getStateChange()) {
-				case ItemEvent.SELECTED:
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					if (!suspendSelections) {
 
 						int selectedIndex = comboBox.getSelectedIndex();
-						HTMLSelectElementImpl selectElement = modelNode;
-						selectElement.setSelectedIndex(selectedIndex);
-
+						modelNode.setSelectedIndex(selectedIndex);
 						HtmlController.getInstance().onChange(modelNode);
 					}
-					break;
-				default:
-					break;
 				}
 			}
 		});
@@ -131,6 +122,7 @@ public class SelectOption {
 		comboBox.applyComponentOrientation(direction(modelNode.getDir()));
 		comboBox.setEditable(Boolean.parseBoolean(modelNode.getContentEditable() == null ? "true" : modelNode.getContentEditable()));
 		comboBox.setEnabled(!modelNode.isDisabled());
+		comboBox.setPreferredSize(new Dimension(modelNode.getClientWidth(), modelNode.getClientHeight()));
 		this.list = list;
 		this.resetItemList(modelNode);
 		control.add(comboBox);

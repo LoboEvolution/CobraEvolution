@@ -59,7 +59,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	public HTMLImageElementImpl(final String name) {
 		super(name);
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void assignAttributeField(String normalName, String value) {
@@ -274,7 +274,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	@Override
 	public void setCrossOrigin(String crossOrigin) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/** {@inheritDoc} */
@@ -295,7 +295,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	@Override
 	public void setDecoding(Decoding decoding) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/** {@inheritDoc} */
@@ -337,7 +337,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	@Override
 	public void setReferrerPolicy(String referrerPolicy) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/** {@inheritDoc} */
@@ -351,7 +351,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	@Override
 	public void setSizes(String sizes) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/** {@inheritDoc} */
@@ -365,7 +365,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	@Override
 	public void setSrcset(String srcset) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/** {@inheritDoc} */
@@ -381,7 +381,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	/**
 	 * <p>draw.</p>
 	 *
@@ -425,7 +425,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {

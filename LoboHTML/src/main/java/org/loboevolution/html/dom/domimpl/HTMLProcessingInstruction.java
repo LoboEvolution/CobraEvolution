@@ -25,7 +25,7 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
@@ -144,6 +144,12 @@ public class HTMLProcessingInstruction extends HTMLElementImpl implements Proces
 	public String substringData(int offset, int count) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getClientHeight() {
+		int clientHeight = super.getClientHeight();
+		return clientHeight == 0 ? 16 : clientHeight;
 	}
 
 	@Override

@@ -61,9 +61,9 @@ public class DelayedPair {
 
 	private int initY;
 
-	private String width;
+	private Integer width;
 
-	private String height;
+	private Integer height;
 
 	private int availContentWidth;
 
@@ -123,7 +123,7 @@ public class DelayedPair {
 
 		if (bottom != null) {
 			if (y != null) {
-				child.setHeight(parent.getInnerHeight() - (y + bottom));
+				child.setHeight(height);
 			} else {
 				if (height != null) {
 					child.setHeight(height);
@@ -139,7 +139,6 @@ public class DelayedPair {
 
 		child.setX((x == null ? tp.x : x));
 		child.setY((y == null ? tp.y : y));
-
 		return child;
 	}
 
@@ -160,11 +159,11 @@ public class DelayedPair {
 	}
 
 	private Integer getWidth() {
-		return helperGetPixelSize(width, rs, 0, containingBlock.getInnerWidth());
+		return width;
 	}
 
 	private Integer getHeight() {
-		return helperGetPixelSize(height, rs, 0, containingBlock.getInnerHeight());
+		return height;
 	}
 
 	private Integer helperGetPixelSize(final String spec, final RenderState rs, final int errorValue,

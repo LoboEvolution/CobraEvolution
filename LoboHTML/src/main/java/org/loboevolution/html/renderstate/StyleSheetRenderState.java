@@ -28,7 +28,6 @@ import org.loboevolution.gui.LocalHtmlRendererConfig;
 import org.loboevolution.html.CSSValues;
 import org.loboevolution.html.dom.HTMLBodyElement;
 import org.loboevolution.html.dom.HTMLElement;
-import org.loboevolution.html.dom.HTMLHRElement;
 import org.loboevolution.html.dom.HTMLHtmlElement;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
@@ -478,16 +477,8 @@ public class StyleSheetRenderState implements RenderState {
 			displayInt = this.getPreviousRenderState().getDisplay();
 			break;
 		case INITIAL:
+			default:
 			displayInt = this.getDefaultDisplay();
-			break;
-		default:
-			if (element != null && element.getParentElement() != null &&
-					!(element.getParentElement() instanceof HTMLHtmlElement) &&
-					!(element.getParentElement() instanceof HTMLBodyElement)) {
-				displayInt = previous.getDisplay();
-			} else {
-				displayInt = this.getDefaultDisplay();
-			}
 			break;
 		}
 		this.iDisplay = displayInt;

@@ -20,6 +20,7 @@
 package org.loboevolution.html.renderer.table;
 
 import org.loboevolution.gui.HtmlRendererContext;
+import org.loboevolution.html.dom.HTMLTableElement;
 import org.loboevolution.html.dom.domimpl.*;
 import org.loboevolution.html.dom.filter.CaptionFilter;
 import org.loboevolution.html.dom.filter.ColumnsFilter;
@@ -97,7 +98,13 @@ class TableMatrix {
 		this.allCells.clear();
 		this.rowElements.clear();
 		HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.tableElement.getDocumentNode();
-		final String borderText = this.tableElement.getAttribute("border");
+		String borderText;
+		if(tableElement instanceof HTMLTableElement){
+			borderText = ((HTMLTableElement) tableElement).getBorder();
+		} else{
+			borderText = tableElement.getAttribute("border");
+		}
+
 		int border = HtmlValues.getPixelSize(borderText, null, doc.getDefaultView(), 0);
 		final String cellSpacingText = this.tableElement.getAttribute("cellspacing");
 		int cellSpacing = HtmlValues.getPixelSize(cellSpacingText, null, doc.getDefaultView(), 0);
@@ -106,7 +113,7 @@ class TableMatrix {
 
 		this.tableWidthLength = TableMatrixSizes.getWidthLength(this.tableElement, availWidth);
 		
-		HTMLCollectionImpl captionList = new HTMLCollectionImpl(tableElement, Arrays.asList(tableElement.getNodeList(new CaptionFilter()).toArray()));
+		HTMLCollectionImpl captionList = new HTMLCollectionImpl(tableElement, new CaptionFilter());
 		if (captionList.getLength() > 0) {
 			HTMLElementImpl capt = (HTMLElementImpl) captionList.item(0);
 			this.captionElement = capt;

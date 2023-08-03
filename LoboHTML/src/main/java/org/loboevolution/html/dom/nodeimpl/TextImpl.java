@@ -19,7 +19,7 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
-import com.gargoylesoftware.css.dom.DOMException;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.HTMLSlotElement;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
@@ -97,6 +97,9 @@ public class TextImpl extends CharacterDataImpl implements Text {
 			throw new DOMException(DOMException.INVALID_CHARACTER_ERR, "null content (use empty string instead)");
 		}
 
+		if ("".equals(content)) {
+			return null;
+		}
 
 		final NodeImpl parent = (NodeImpl) getParentNode();
 		if (parent == null) {
@@ -140,14 +143,14 @@ public class TextImpl extends CharacterDataImpl implements Text {
 
 	/** {@inheritDoc} */
 	@Override
-	public String toString() {
-		return "[object Text]";
+	public HTMLSlotElement getAssignedSlot() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public HTMLSlotElement getAssignedSlot() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString() {
+		return "[object Text]";
 	}
 }

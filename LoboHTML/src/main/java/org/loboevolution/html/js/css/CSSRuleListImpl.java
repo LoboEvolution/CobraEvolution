@@ -20,7 +20,8 @@
 
 package org.loboevolution.html.js.css;
 
-import com.gargoylesoftware.css.dom.AbstractCSSRuleImpl;
+import org.htmlunit.cssparser.dom.AbstractCSSRuleImpl;
+import org.htmlunit.cssparser.dom.CSSUnknownRuleImpl;
 import org.loboevolution.html.node.AbstractList;
 import org.loboevolution.html.node.css.CSSRuleList;
 import org.loboevolution.html.node.css.CSSStyleRule;
@@ -29,16 +30,20 @@ import java.util.List;
 
 public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSRuleList {
 
-    private final com.gargoylesoftware.css.dom.CSSRuleListImpl cssRuleList;
+    private final org.htmlunit.cssparser.dom.CSSRuleListImpl cssRuleList;
 
-    public CSSRuleListImpl(com.gargoylesoftware.css.dom.CSSRuleListImpl cssRuleList) {
+    public CSSRuleListImpl(org.htmlunit.cssparser.dom.CSSRuleListImpl cssRuleList) {
         this.cssRuleList = cssRuleList;
     }
 
     /** {@inheritDoc} */
     @Override
     public CSSStyleRule item(int index) {
-        return this.get(index);
+        try{
+            return this.get(index);
+        } catch (Exception e){
+            return null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -49,9 +54,9 @@ public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSR
 
     /**
      * <p> addStyleRule. </p>
-     * @param newList a {@link com.gargoylesoftware.css.dom.CSSRuleListImpl} object.
+     * @param newList a {@link org.htmlunit.cssparser.dom.CSSRuleListImpl} object.
      */
-    public void addStyleRule(com.gargoylesoftware.css.dom.CSSRuleListImpl newList){
+    public void addStyleRule(org.htmlunit.cssparser.dom.CSSRuleListImpl newList){
         List<AbstractCSSRuleImpl> ruls =  null;
         if (newList != null) {
             clear();
@@ -61,7 +66,7 @@ public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSR
         }
 
         ruls.forEach(abstractCSSRule -> {
-            if (!(abstractCSSRule instanceof com.gargoylesoftware.css.dom.CSSUnknownRuleImpl))
+            if (!(abstractCSSRule instanceof CSSUnknownRuleImpl))
                 add(new CSSStyleRuleImpl(abstractCSSRule));
         });
     }
