@@ -7,7 +7,7 @@ CobraEvolution is HTML render and parser used from LoboEvolution [credits](https
 mvn install
 ```
 
-### Download LoboEvolution
+### Download CobraEvolution
 
 Last release click Download Badge <br/>
 <a href="https://github.com/LoboEvolution/CobraEvolution/releases/download/3.1/cobraevolution-3.1.jar">
