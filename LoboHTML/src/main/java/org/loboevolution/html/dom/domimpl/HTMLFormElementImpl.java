@@ -1,35 +1,44 @@
 /*
- * GNU GENERAL LICENSE
- * Copyright (C) 2014 - 2023 Lobo Evolution
+ * MIT License
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * verion 3 of the License, or (at your option) any later version.
+ * Copyright (c) 2014 - 2023 LoboEvolution
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General License for more details.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  * Contact info: ivan.difrancesco@yahoo.it
  */
-/*
- * Created on Jan 14, 2006
- */
 package org.loboevolution.html.dom.domimpl;
 
+import org.loboevolution.common.Nodes;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLCollection;
+import org.loboevolution.html.dom.HTMLFormControlsCollection;
 import org.loboevolution.html.dom.HTMLFormElement;
+import org.loboevolution.html.dom.filter.FormFilter;
 import org.loboevolution.html.dom.filter.InputFilter;
 import org.loboevolution.html.dom.input.FormInput;
+import org.loboevolution.html.dom.nodeimpl.NodeImpl;
+import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.dom.nodeimpl.NodeVisitor;
 import org.loboevolution.html.js.Executor;
 import org.loboevolution.html.node.Element;
+import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.renderstate.BlockRenderState;
 import org.loboevolution.html.renderstate.RenderState;
@@ -40,11 +49,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>HTMLFormElementImpl class.</p>
  */
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement {
+
+	private HTMLFormControlsCollection elements;
 
 	/**
 	 * <p>isInput.</p>
@@ -56,8 +69,6 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 		final String name = node.getNodeName().toLowerCase();
 		return name.equals("input") || name.equals("textarea") || name.equals("select");
 	}
-
-	private HTMLCollection elements;
 
 	/**
 	 * <p>Constructor for HTMLFormElementImpl.</p>
@@ -89,13 +100,49 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 
 	/** {@inheritDoc} */
 	@Override
-	public HTMLCollection getElements() {
-		HTMLCollection elements = this.elements;
-		if (elements == null) {
-			elements = new HTMLCollectionImpl(this, new InputFilter());
+	public HTMLFormControlsCollection getElements() {
+		if (this.elements == null) {
+			HTMLFormControlsCollectionImpl elements = new HTMLFormControlsCollectionImpl((NodeImpl) this.getDocumentNode().getRootNode(), new FormFilter());
+			List<Node> list = new ArrayList<>();
+			elements.forEach(node -> {
+				if (node.hasAttributes()) {
+					NamedNodeMap attributes = node.getAttributes();
+					for (Node attribute : Nodes.iterable(attributes)) {
+						if (getName().equals(attribute.getNodeValue())) {
+							System.out.println(getName());
+							list.add(node);
+						}
+					}
+				}
+
+				if (node.hasChildNodes()) {
+					findChild(node, list);
+				}
+			});
+			elements.clear();
+			elements.addAll(list);
 			this.elements = elements;
 		}
-		return elements;
+		return this.elements;
+	}
+
+	private void findChild(Node node, List<Node> list) {
+		NodeListImpl childNodes = (NodeListImpl) node.getChildNodes();
+		childNodes.forEach(nde -> {
+			if (nde.hasAttributes()) {
+				NamedNodeMap attributes = nde.getAttributes();
+				for (Node attribute : Nodes.iterable(attributes)) {
+					if (getName().equals(attribute.getNodeValue())) {
+						System.out.println(getName());
+						list.add(node);
+					}
+				}
+			}
+
+			if (nde.hasChildNodes()) {
+				findChild(nde, list);
+			}
+		});
 	}
 
 	/** {@inheritDoc} */
@@ -107,7 +154,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 	/** {@inheritDoc} */
 	@Override
 	public int getLength() {
-		return getElements().getLength();
+		return ((HTMLFormControlsCollectionImpl)getElements()).size();
 	}
 
 	/** {@inheritDoc} */

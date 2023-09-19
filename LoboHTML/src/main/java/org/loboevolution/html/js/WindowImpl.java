@@ -1,19 +1,25 @@
 /*
- * GNU GENERAL LICENSE
- * Copyright (C) 2014 - 2023 Lobo Evolution
+ * MIT License
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * verion 3 of the License, or (at your option) any later version.
+ * Copyright (c) 2014 - 2023 LoboEvolution
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General License for more details.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  * Contact info: ivan.difrancesco@yahoo.it
  */
@@ -24,6 +30,7 @@ package org.loboevolution.html.js;
 
 import org.htmlunit.cssparser.dom.CSSRuleListImpl;
 import org.htmlunit.cssparser.dom.DOMException;
+import org.loboevolution.common.Nodes;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLCollection;
@@ -31,6 +38,7 @@ import org.loboevolution.html.dom.domimpl.*;
 import org.loboevolution.html.dom.filter.BodyFilter;
 import org.loboevolution.html.dom.nodeimpl.CommentImpl;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
+import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.dom.nodeimpl.TextImpl;
 import org.loboevolution.html.dom.nodeimpl.traversal.NodeFilterImpl;
 import org.loboevolution.html.dom.xpath.XPathResultImpl;
@@ -71,6 +79,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
@@ -210,17 +219,50 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	}
 
 	/**
-	 * <p>namedItem.</p>
-	 *
-	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link org.loboevolution.html.node.Node} object.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Node namedItem(final String name) {
 		final HTMLDocumentImpl doc = this.document;
 		if (doc == null) {
 			return null;
 		}
-		return doc.getElementById(name);
+
+		HTMLAllCollectionImpl all = (HTMLAllCollectionImpl) doc.getAll();
+		AtomicReference<Node> find = new AtomicReference<>();
+		all.forEach(node -> {
+			if (node.hasAttributes()) {
+				NamedNodeMap attributes = node.getAttributes();
+				for (Node attribute : Nodes.iterable(attributes)) {
+					if (name.equals(attribute.getNodeValue())) {
+						find.set(node);
+					}
+				}
+			}
+
+			if (node.hasChildNodes()) {
+				findChild(node, find);
+			}
+		});
+		return find.get();
+	}
+
+	private void findChild(Node node, AtomicReference<Node> find) {
+		NodeListImpl childNodes = (NodeListImpl) node.getChildNodes();
+		childNodes.forEach(nde -> {
+			if (nde.hasAttributes()) {
+				NamedNodeMap attributes = nde.getAttributes();
+				for (Node attribute : Nodes.iterable(attributes)) {
+					if (name.equals(attribute.getNodeValue())) {
+						find.set(nde);
+					}
+				}
+			}
+
+			if (nde.hasChildNodes()) {
+				findChild(nde, find);
+			}
+		});
 	}
 
 	/**
@@ -1214,6 +1256,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		js.defineElementClass(ws, doc, "HTMLDivElement", "div", HTMLDivElementImpl.class);
 		js.defineElementClass(ws, doc, "HTMLElement", "html", HTMLElementImpl.class);
 		js.defineElementClass(ws, doc, "HTMLDocument", "document", HTMLDocumentImpl.class);
+		js.defineElementClass(ws, doc, "Window", "window", WindowImpl.class);
 
 		js.defineElementClass(ws, doc, "NodeFilter", "NodeFilter", NodeFilterImpl.class);
 		js.defineElementClass(ws, doc, "Node", "Node", NodeImpl.class);

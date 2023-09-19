@@ -1,19 +1,25 @@
 /*
- * GNU GENERAL LICENSE
- * Copyright (C) 2014 - 2023 Lobo Evolution
+ * MIT License
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * verion 3 of the License, or (at your option) any later version.
+ * Copyright (c) 2014 - 2023 LoboEvolution
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General License for more details.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  * Contact info: ivan.difrancesco@yahoo.it
  */
@@ -22,6 +28,7 @@ package org.loboevolution.html.style;
 
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.CSSValues;
+import org.loboevolution.html.dom.HTMLHtmlElement;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.node.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderstate.RenderState;
@@ -113,18 +120,31 @@ public class BorderInsets {
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 */
 	private static void populateBorderInsets(BorderInfo binfo, CSSStyleDeclaration cssProperties, HTMLElementImpl element, RenderState renderState) {
-		final CSSStyleDeclaration props = element.getParentStyle();
-		if (props == null) {
-			final HtmlInsets insets = HtmlInsets.getInsets("0px", "0px", "0px", "0px", element, renderState);
-			binfo.setInsets(insets);
+		final CSSStyleDeclaration parentStyle = element.getParentStyle();
+		String borderTopWidth = "";
+		String borderLeftWidth = "";
+		String borderBottomWidth = "";
+		String borderRightWidth = "";
+
+		if (parentStyle == null) {
+			if (!(element instanceof HTMLHtmlElement)) {
+				binfo.setTopStyle(BORDER_STYLE_NONE);
+				binfo.setLeftStyle(BORDER_STYLE_NONE);
+				binfo.setBottomStyle(BORDER_STYLE_NONE);
+				binfo.setRightStyle(BORDER_STYLE_NONE);
+			}
 		} else {
-			final String topText = borderInsets(props.getBorderTopWidth(), binfo.getTopStyle(), cssProperties.getBorderTopWidth());
-			final String leftText =  borderInsets(props.getBorderLeftWidth(), binfo.getLeftStyle(), cssProperties.getBorderLeftWidth());
-			final String bottomText = borderInsets(props.getBorderBottomWidth(), binfo.getBottomStyle(), cssProperties.getBorderBottomWidth());
-			final String rightText = borderInsets(props.getBorderRightWidth(), binfo.getRightStyle(), cssProperties.getBorderRightWidth());
-			final HtmlInsets insets = HtmlInsets.getInsets(topText, leftText, bottomText, rightText, element, renderState);
-			binfo.setInsets(insets);
+			borderTopWidth = parentStyle.getBorderTopWidth();
+			borderLeftWidth = parentStyle.getBorderLeftWidth();
+			borderBottomWidth = parentStyle.getBorderBottomWidth();
+			borderRightWidth = parentStyle.getBorderRightWidth();
 		}
+
+		final String topText = borderInsets(borderTopWidth, binfo.getTopStyle(), cssProperties.getBorderTopWidth());
+		final String leftText = borderInsets(borderLeftWidth, binfo.getLeftStyle(), cssProperties.getBorderLeftWidth());
+		final String bottomText = borderInsets(borderBottomWidth, binfo.getBottomStyle(), cssProperties.getBorderBottomWidth());
+		final String rightText = borderInsets(borderRightWidth, binfo.getRightStyle(), cssProperties.getBorderRightWidth());
+		binfo.setInsets(HtmlInsets.getInsets(topText, leftText, bottomText, rightText, element, renderState));
 	}
 
 	private static String borderInsets(String parentStyle, int style, String value) {

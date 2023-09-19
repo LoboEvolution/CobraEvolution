@@ -1,19 +1,25 @@
 /*
- * GNU GENERAL LICENSE
- * Copyright (C) 2014 - 2023 Lobo Evolution
+ * MIT License
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * verion 3 of the License, or (at your option) any later version.
+ * Copyright (c) 2014 - 2023 LoboEvolution
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General License for more details.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  * Contact info: ivan.difrancesco@yahoo.it
  */
@@ -289,11 +295,17 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 	/** {@inheritDoc} */
 	@Override
 	public void setIdAttribute(String localName, boolean isId) throws DOMException {
-		final AttrImpl attr = (AttrImpl)getAttributeNode(localName);
-		if(attr != null) attr.setNameId(isId);
+		final AttrImpl attr = (AttrImpl) getAttributeNode(localName);
+		if (attr != null) {
+			attr.setNameId(isId);
+		} else {
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "Attribute not found");
+		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
 		final AttrImpl attr = (AttrImpl) getAttributeNodeNS(namespaceURI, localName);
@@ -1274,7 +1286,8 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
         for (final Node child : (NodeListImpl) this.getChildNodes()) {
 			if (child instanceof HTMLElementImpl) {
 				CSSStyleDeclaration pCurrentStyle = ((HTMLElementImpl)child).getCurrentStyle();
-				widthChild += ((HTMLElementImpl) child).getClientWidth();
+				Integer cliInteger =  ((HTMLElementImpl) child).getClientWidth();
+				if(cliInteger != null) widthChild += cliInteger;
 				widthChild += HtmlValues.getPixelSize(pCurrentStyle.getLeft(), null, document.getDefaultView(), 0);
 				widthChild += HtmlValues.getPixelSize(pCurrentStyle.getRight(), null, document.getDefaultView(), 0);
 			}
@@ -1314,6 +1327,10 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		int paddingRight = HtmlValues.getPixelSize(currentStyle.getPaddingRight(), null, doc.getDefaultView(), 0);
 		int paddingLeft = HtmlValues.getPixelSize(currentStyle.getPaddingLeft(), null, doc.getDefaultView(), 0);
 		int sizeWidth = preferredSize.width;
+
+		if (this instanceof HTMLHeadElement) {
+			return  -1;
+		}
 
 		if (getParentNode() == null ||
 				CSSValues.NONE.isEqual(display) ||
@@ -1377,7 +1394,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 
 		if (padding) {
 			widthSize += paddingRight;
-			widthSize += paddingRight;
+			widthSize += paddingLeft;
 		}
 
 		if (border) {
@@ -1399,10 +1416,15 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		String borderBottomWidth = currentStyle.getBorderBottomWidth();
 		String boxSizing = currentStyle.getBoxSizing();
 		String dispaly = currentStyle.getDisplay();
+		String position = currentStyle.getPosition();
 		int sizeHeight = preferredSize.height;
 
 		if (getParentNode() == null || CSSValues.NONE.isEqual(dispaly)) {
 			return 0;
+		}
+
+		if (this instanceof HTMLHeadElement) {
+			return  -1;
 		}
 
 		if(Strings.isBlank(height)){
@@ -1422,7 +1444,7 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 			}
 		}
 
-		height = "auto".equals(height) ? "100%" : "-1px".equals(height) ? textHeight(this) + "px" : height;
+		height = "auto".equals(height) ? "100%" : "-1px".equals(height) ? textHeight(this, position) + "px" : height;
 		int heightSize = HtmlValues.getPixelSize(height, null, doc.getDefaultView(), -1, sizeHeight);
 
 		if ("border-box".equals(boxSizing)) {
@@ -1445,11 +1467,12 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 		return heightSize;
 	}
 
-	private int textHeight(ElementImpl elm) {
-		AtomicInteger h = new AtomicInteger(0);
+	private int textHeight(ElementImpl elm, String position) {
+		AtomicInteger h = new AtomicInteger(CSSValues.ABSOLUTE.isEqual(position) ? -1 : 0);
 		if (elm instanceof HTMLTextAreaElement ||
 				elm instanceof HTMLBaseFontElement ||
-				elm instanceof HTMLScriptElement) return h.get();
+				elm instanceof HTMLScriptElement ||
+				elm instanceof HTMLSuperscriptElementImpl) return h.get();
 
 		elm.getNodeList().forEach(child -> {
 			final int type = child.getNodeType();
@@ -1465,7 +1488,8 @@ public class ElementImpl extends WindowEventHandlersImpl implements Element {
 					}
 					break;
 				case Node.ELEMENT_NODE:
-					h.addAndGet(textHeight((ElementImpl) child));
+					final CSSStyleDeclaration currentStyle = ((HTMLElementImpl)child).getCurrentStyle();
+					h.addAndGet(textHeight((ElementImpl) child, currentStyle.getPosition()));
 				default:
 					break;
 			}
