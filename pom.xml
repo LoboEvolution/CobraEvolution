@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.oswetto</groupId>
     <artifactId>cobraevolution</artifactId>
-    <version>3.1</version>
+    <version>4.0</version>
     <packaging>pom</packaging>
     <name>Cobra Evolution</name>
     <description>Cobra Evolution Html Parser</description>
@@ -105,7 +105,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>cobraevolution-3.1</finalName>
+                    <finalName>cobraevolution-4.0</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>

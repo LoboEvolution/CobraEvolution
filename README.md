@@ -10,7 +10,7 @@ mvn install
 ### Download CobraEvolution
 
 Last release click Download Badge <br/>
-<a href="https://github.com/LoboEvolution/CobraEvolution/releases/download/3.1/cobraevolution-3.1.jar">
+<a href="https://github.com/LoboEvolution/CobraEvolution/releases/download/4.0/cobraevolution-4.0.jar">
 <img src="https://img.shields.io/github/downloads/LoboEvolution/CobraEvolution/total.svg" alt="Download">
 </a> <br/>
 
