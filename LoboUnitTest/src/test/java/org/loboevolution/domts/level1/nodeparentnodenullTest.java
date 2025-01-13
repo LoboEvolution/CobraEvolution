@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,26 +43,23 @@ import static org.junit.Assert.assertNull;
  * "createElement(name)" method from the Document interface.
  * Since this new node has not yet been added to the tree,
  * the "getParentNode()" method will return null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1060184317">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1060184317</a>
  */
-public class nodeparentnodenullTest extends LoboUnitTest {
+public class NodeparentnodenullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element createdNode;
-        Node parentNode;
+        final Document doc;
+        final Element createdNode;
+        final Node parentNode;
         doc = sampleXmlFile("staff.xml");
         createdNode = doc.createElement("employee");
         parentNode = createdNode.getParentNode();
-        assertNull("parentNode", parentNode);
+        assertNull(parentNode, "NodeparentnodenullAssert2");
     }
 
 }

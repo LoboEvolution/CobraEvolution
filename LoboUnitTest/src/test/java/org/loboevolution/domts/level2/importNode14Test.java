@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,42 +46,39 @@ import static org.junit.Assert.assertNotNull;
  * in a different document. Invoke method importNode(importedNode,deep) on this document.
  * Method should return a processing instruction whose target and data match the given
  * parameters. The returned PI should belong to this document whose systemId is "staff.dtd".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode14Test extends LoboUnitTest {
+public class ImportNode14Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        ProcessingInstruction pi;
-        ProcessingInstruction aNode;
-        Document ownerDocument;
-        DocumentType docType;
-        String system;
-        String target;
-        String data;
+        final Document doc;
+        final Document aNewDoc;
+        final ProcessingInstruction pi;
+        final ProcessingInstruction aNode;
+        final Document ownerDocument;
+        final DocumentType docType;
+        final String system;
+        final String target;
+        final String data;
 
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         pi = aNewDoc.createProcessingInstruction("target1", "data1");
         aNode = (ProcessingInstruction) doc.importNode(pi, false);
         ownerDocument = aNode.getOwnerDocument();
-        assertNotNull("ownerDocumentNotNull", ownerDocument);
+        assertNotNull(ownerDocument);
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertEquals("systemId", "staffNS.dtd", system);
+        assertEquals("staffNS.dtd", system);
         target = aNode.getTarget();
-        assertEquals("piTarget", "target1", target);
+        assertEquals("target1", target);
         data = aNode.getData();
-        assertEquals("piData", "data1", data);
+        assertEquals("data1", data);
     }
 }
 

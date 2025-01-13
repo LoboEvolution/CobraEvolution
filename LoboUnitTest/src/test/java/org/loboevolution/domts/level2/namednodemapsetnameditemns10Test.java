@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,13 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,33 +44,30 @@ import static org.junit.Assert.assertTrue;
  * Attempt to add an entity to a NamedNodeMap of attribute nodes,
  * Since nodes of this type cannot be added to the attribute node map a HIERARCHY_REQUEST_ERR
  * should be raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class namednodemapsetnameditemns10Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns10Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entities;
-        NamedNodeMap attributes;
-        EntityReference entity;
-        Element element;
-        HTMLCollection elementList;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entities;
+        final NamedNodeMap attributes;
+        final EntityReference entity;
+        final Element element;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         entities = docType.getEntities();
-        assertNotNull("entitiesNotNull", entities);
+        assertNotNull(entities);
         entity = (EntityReference) entities.getNamedItem("ent1");
-        elementList = doc.getElementsByTagName( "address");
+        elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(0);
         attributes = element.getAttributes();
 
@@ -78,10 +75,10 @@ public class namednodemapsetnameditemns10Test extends LoboUnitTest {
             boolean success = false;
             try {
                 attributes.setNamedItemNS(entity);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
             }
-            assertTrue("throw_HIERARCHY_REQUEST_ERR", success);
+            assertTrue(success);
         }
     }
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.EntityReference;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -44,35 +44,31 @@ import static org.junit.Assert.*;
  * a new EntityReference node for the Entity with the
  * given name.  The name, value and type are retrieved and
  * output.
- *
- * @author NIST
- * @author Mary Brady
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-392B75AE">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-392B75AE</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  */
-public class documentcreateentityreferenceTest extends LoboUnitTest {
+public class DocumentcreateentityreferenceTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        EntityReference newEntRefNode;
-        String entRefValue;
-        String entRefName;
-        int entRefType;
+        final Document doc;
+        final EntityReference newEntRefNode;
+        final String entRefValue;
+        final String entRefName;
+        final int entRefType;
         doc = sampleXmlFile("staff.xml");
         newEntRefNode = doc.createEntityReference("ent1");
-        assertNotNull("createdEntRefNotNull", newEntRefNode);
+        assertNotNull(newEntRefNode, "DocumentcreateentityreferenceAssert1");
         entRefValue = newEntRefNode.getNodeValue();
-        assertNull("value", entRefValue);
+        assertNull(entRefValue, "DocumentcreateentityreferenceAssert2");
         entRefName = newEntRefNode.getNodeName();
-        assertEquals("name", "ent1", entRefName);
+        assertEquals("ent1", entRefName, "DocumentcreateentityreferenceAssert3");
         entRefType = newEntRefNode.getNodeType();
-        assertEquals("type", 5, entRefType);
+        assertEquals(5, entRefType, "DocumentcreateentityreferenceAssert4");
     }
 }
 

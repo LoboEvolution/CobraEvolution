@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareTreePosition check if comparedocumentposition invoked on the first name with
  * the first position node as a parameter returns FOLLOWING.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition30Test extends LoboUnitTest {
+public class Nodecomparedocumentposition30Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection nameList;
-        HTMLCollection positionList;
-        Element strong;
-        Element code;
-        int namePosition;
+        final Document doc;
+        final HTMLCollection nameList;
+        final HTMLCollection positionList;
+        final Element strong;
+        final Element code;
+        final int namePosition;
         doc = sampleXmlFile("hc_staff.xml");
         nameList = doc.getElementsByTagName("strong");
         strong = (Element) nameList.item(0);
         positionList = doc.getElementsByTagName("code");
         code = (Element) positionList.item(0);
         namePosition = code.compareDocumentPosition(strong);
-        assertEquals("nodecomparedocumentpositionFollowing30", 2, namePosition);
+        assertEquals(2, namePosition, "Nodecomparedocumentposition30Assert2");
     }
 }
 

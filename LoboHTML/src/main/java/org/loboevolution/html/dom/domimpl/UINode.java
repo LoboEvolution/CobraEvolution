@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,6 @@ import java.awt.*;
 /**
  * A UI node abstraction that is used to send notifications back to the UI and
  * to obtain information the DOM needs from the UI (such as image dimensions).
- *
- *
- *
  */
 public interface UINode {
 	
@@ -47,13 +44,6 @@ public interface UINode {
 	 * @return a {@link java.awt.Rectangle} object.
 	 */
 	Rectangle getBounds();
-
-	/**
-	 * <p>getBoundsRelativeToBlock.</p>
-	 *
-	 * @return a {@link java.awt.Rectangle} object.
-	 */
-	Rectangle getBoundsRelativeToBlock();
 
 	/**
 	 * Called

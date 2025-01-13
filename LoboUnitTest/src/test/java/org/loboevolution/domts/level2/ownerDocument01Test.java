@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,11 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The "getOwnerDocument()" method returns null if the target
@@ -39,24 +39,21 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Invoke the "getOwnerDocument()" method on the master
  * document.   The DocumentType returned should be null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc">http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc</a>
  */
-public class ownerDocument01Test extends LoboUnitTest {
+public class OwnerDocument01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document ownerDocument;
+        final Document doc;
+        final Document ownerDocument;
         doc = sampleXmlFile("staff.xml");
-        ownerDocument =  doc.getOwnerDocument();
-        assertNull("throw_Null", ownerDocument);
+        ownerDocument = doc.getOwnerDocument();
+        assertNull(ownerDocument);
     }
 }
 

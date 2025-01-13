@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,13 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,32 +44,29 @@ import static org.junit.Assert.assertEquals;
  * Using insertBefore on this Document node attempt to insert a new DocumentFragment node
  * before a Comment node and verify the contents of the Comment node that is a child
  * of the DocumentFragment.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore09Test extends LoboUnitTest {
+public class Nodeinsertbefore09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Comment newComment;
-        Comment insertComment;
-        Comment comment;
-        DocumentFragment inserted;
-        String data;
-        Node appendedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Comment newComment;
+        final Comment insertComment;
+        final Comment comment;
+        final String data;
         doc = sampleXmlFile("hc_staff.xml");
         newComment = doc.createComment("Comment");
-        appendedChild = doc.appendChild(newComment);
+        doc.appendChild(newComment);
         docFrag = doc.createDocumentFragment();
         insertComment = doc.createComment("insertComment");
-        appendedChild = docFrag.appendChild(insertComment);
-        inserted = (DocumentFragment) doc.insertBefore(docFrag, newComment);
+        docFrag.appendChild(insertComment);
+        doc.insertBefore(docFrag, newComment);
         comment = (Comment) newComment.getPreviousSibling();
         data = comment.getData();
-        assertEquals("nodeinsertbefore09", "insertComment", data);
+        assertEquals("insertComment", data, "Nodeinsertbefore09Assert2");
     }
+
 }
 

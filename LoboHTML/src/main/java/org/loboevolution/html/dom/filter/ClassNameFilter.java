@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 package org.loboevolution.html.dom.filter;
 
 import org.loboevolution.common.Strings;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
@@ -46,17 +46,17 @@ public class ClassNameFilter implements NodeFilter {
 	 *
 	 * @param className a {@link java.lang.String} object.
 	 */
-	public ClassNameFilter(String className) {
+	public ClassNameFilter(final String className) {
 		this.className = className;
 	}
 
 	/** {@inheritDoc} */
-	public short acceptNode(Node node) {
+	public short acceptNode(final Node node) {
 		if (node instanceof Element) {
-			String classAttribute = ((Element) node).getAttribute("class");
+			final String classAttribute = ((Element) node).getAttribute("class");
 			if (Strings.isNotBlank(classAttribute) && Strings.isNotBlank(className)) {
 				final String[] classNames = CLASS_NAMES_SPLIT_PATTERN.split(className, 0);
-				for (String aClassName : classNames) {
+				for (final String aClassName : classNames) {
 					if (!classAttribute.contains(aClassName)) {
 						return NodeFilter.FILTER_REJECT;
 					}

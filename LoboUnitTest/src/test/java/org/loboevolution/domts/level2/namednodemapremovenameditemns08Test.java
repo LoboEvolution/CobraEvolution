@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,14 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,22 +47,20 @@ import static org.junit.Assert.assertTrue;
  * object.  Since NamedNodeMaps are live it should also automatically get removed from
  * the node map.  And so if an attempt is made to remove it using removeAttributeNS, this should
  * raise a NOT_FOUND_ERR.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-D58B193">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-D58B193</a>
  */
-public class namednodemapremovenameditemns08Test extends LoboUnitTest {
+public class Namednodemapremovenameditemns08Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        Element element;
-        HTMLCollection elementList;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final Element element;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(1);
@@ -71,10 +69,10 @@ public class namednodemapremovenameditemns08Test extends LoboUnitTest {
         boolean success = false;
         try {
             attributes.removeNamedItem("domestic");
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
         }
-        assertTrue("throw_NOT_FOUND_ERR", success);
+        assertTrue(success);
 
     }
 }

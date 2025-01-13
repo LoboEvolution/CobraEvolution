@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,24 +47,22 @@ import static org.junit.Assert.assertTrue;
  * Set the noNamespaceSchemaLocation attribute on the first acronym element to "No".  Invoke setIdAttributeNS on the
  * noNamespaceSchemaLocation attribute of the first, second and third acronym element.  Verify by calling isId on
  * the attributes.  Calling getElementById with "No" as a value should return the acronym element.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS</a>
  */
-public class elementsetidattributens12Test extends LoboUnitTest {
+public class Elementsetidattributens12Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem1;
-        Element acronymElem2;
-        Element acronymElem3;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem1;
+        final Element acronymElem2;
+        final Element acronymElem3;
         NamedNodeMap attributesMap;
         Attr attr;
-        boolean id = false;
-        Element elem;
-        String elemName;
+        boolean id;
+        final Element elem;
+        final String elemName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagNameNS("*", "acronym");
         acronymElem1 = (Element) elemList.item(0);
@@ -77,18 +75,18 @@ public class elementsetidattributens12Test extends LoboUnitTest {
         attributesMap = acronymElem1.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xsi:noNamespaceSchemaLocation");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsId1True12", id);
+        assertTrue(id, "Elementsetidattributens12Assert3");
         attributesMap = acronymElem2.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xsi:noNamespaceSchemaLocation");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsId2True12", id);
+        assertTrue(id, "Elementsetidattributens12Assert4");
         attributesMap = acronymElem3.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xsi:noNamespaceSchemaLocation");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsId3True12", id);
+        assertTrue(id, "Elementsetidattributens12Assert5");
         elem = doc.getElementById("No");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributensGetElementById10", "ACRONYM", elemName);
+        assertEquals("ACRONYM", elemName, "Elementsetidattributens12Assert6");
     }
 }
 

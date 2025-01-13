@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,29 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Call the getInputEncoding method on a cloned UTF-8 encoded document
  * and check if the value returned is UTF-8 or null (implementation dependent).
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-inputEncoding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-inputEncoding</a>
  */
-public class documentgetinputencoding04Test extends LoboUnitTest {
+public class Documentgetinputencoding04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document cloned;
-        String encodingName;
+        final Document doc;
+        final Document cloned;
+        final String encodingName;
         doc = sampleXmlFile("barfoo_utf8.xml");
         cloned = (Document) doc.cloneNode(true);
         encodingName = cloned.getInputEncoding();
-        assertTrue("documentgetinputencoding04",
-                ("UTF-8".equalsIgnoreCase(encodingName) || (encodingName == null))
+        assertTrue("UTF-8".equalsIgnoreCase(encodingName) || (encodingName == null)
         );
     }
 }

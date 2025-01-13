@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,42 +28,38 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The "setPrefix(prefix)" method raises a
  * NAMESPACE_ERR DOMException if the specified
  * prefix is xml and the namespaceURI is different from
- * http://www.w3.org/XML/1998/namespace.
+ * <a href="http://www.w3.org/XML/1998/namespace">...</a>.
  * <p>
  * Attempt to insert "xml" as the new namespace prefix on the first employee node.
  * An exception should be raised since the namespaceURI of this node is not
- * http://www.w3.org/XML/1998/namespace.
- *
- * @author NIST
- * @author Mary Brady
+ * <a href="http://www.w3.org/XML/1998/namespace">...</a>.
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NAMESPACE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NAMESPACE_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-NodeNSPrefix')/setraises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-NodeNSPrefix')/setraises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])</a>
  */
-public class prefix10Test extends LoboUnitTest {
+public class Prefix10Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -72,10 +68,10 @@ public class prefix10Test extends LoboUnitTest {
             boolean success = false;
             try {
                 employeeNode.setPrefix("xml");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("throw_NAMESPACE_ERR", success);
+            assertTrue(success);
         }
     }
 }

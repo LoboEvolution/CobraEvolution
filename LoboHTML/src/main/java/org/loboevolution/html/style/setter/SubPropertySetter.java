@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.style.setter;
 
 import org.htmlunit.cssparser.util.CSSProperties;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 
 /**
  * <p>SubPropertySetter interface.</p>
@@ -37,10 +37,8 @@ public interface SubPropertySetter extends CSSProperties {
 	/**
 	 * <p>changeValue.</p>
 	 *
-	 * @param declaration a {@link org.loboevolution.html.node.css.CSSStyleDeclaration} object.
+	 * @param declaration a {@link CSSStyleDeclaration} object.
 	 * @param newValue a {@link java.lang.String} object.
 	 */
-	default void changeValue(CSSStyleDeclaration declaration, String newValue) {
-		this.changeValue(declaration, newValue);
-	}
+	void changeValue(final CSSStyleDeclaration declaration, final String newValue);
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,34 +48,31 @@ import static org.junit.Assert.*;
  * Retrieve the FOURTH element whose name should be "employee".
  * Derived from getElementsByTagNameNS02 and reflects its interpretation
  * that namespace="*" matches namespace unqualified tagnames.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1938918D">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1938918D</a>
  */
-public class getElementsByTagNameNS09Test extends LoboUnitTest {
+public class GetElementsByTagNameNS09Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection newList;
-        Element newElement;
-        String prefix;
-        String lname;
-        Element docElem;
+        final Document doc;
+        final HTMLCollection newList;
+        final Element newElement;
+        final String prefix;
+        final String lname;
+        final Element docElem;
         doc = sampleXmlFile("staffNS.xml");
         docElem = doc.getDocumentElement();
         newList = docElem.getElementsByTagNameNS("*", "employee");
-        assertEquals( "employeeCount", 5, newList.getLength());
+        assertEquals(5, newList.getLength());
         newElement = (Element) newList.item(3);
         prefix = newElement.getPrefix();
-        assertEquals("prefix", "EMP", prefix);
+        assertEquals("EMP", prefix);
         lname = newElement.getLocalName();
-        assertEquals("lname", "EMPLOYEE", lname);
+        assertEquals("EMPLOYEE", lname);
     }
 }
 

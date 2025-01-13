@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ public class SVGLineElementImpl extends SVGGraphic implements SVGLineElement {
 
 	@Override
 	public SVGRect getBBox() {
-		Shape shape = createShape(null);
+		final Shape shape = createShape(null);
 		return new SVGRectImpl(shape.getBounds2D());
 	}
 
@@ -91,7 +91,7 @@ public class SVGLineElementImpl extends SVGGraphic implements SVGLineElement {
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
+	public Shape createShape(final AffineTransform transform) {
 		AffineTransform inverseTransform;
 		try {
 			inverseTransform = transform.createInverse();

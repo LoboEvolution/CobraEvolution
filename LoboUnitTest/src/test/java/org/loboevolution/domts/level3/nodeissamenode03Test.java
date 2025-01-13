@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isSameNode check if 2 Element nodes that reference the same object are
  * the same.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode</a>
  */
-public class nodeissamenode03Test extends LoboUnitTest {
+public class Nodeissamenode03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element element1;
-        Element element2;
-        HTMLCollection childList;
-        boolean isSame;
+        final Document doc;
+        final Element element1;
+        final Element element2;
+        final HTMLCollection childList;
+        final boolean isSame;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("p");
         element1 = (Element) childList.item(0);
         element2 = (Element) childList.item(0);
         isSame = element2.isSameNode(element1);
-        assertTrue("nodeissamenode03", isSame);
+        assertTrue(isSame, "Nodeissamenode03Assert2");
     }
 }
 

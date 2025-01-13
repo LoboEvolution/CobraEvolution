@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,40 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Adopt the class attribute node of the fourth acronym element.  Check if this attribute has been adopted successfully by verifying the
  * nodeName, nodeType, nodeValue, specified and ownerElement attributes of the adopted node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode01Test extends LoboUnitTest {
+public class Documentadoptnode01Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Element attrOwnerElem;
-        Element element;
-        Attr attr;
-        HTMLCollection childList;
-        Node adoptedclass;
-        String nodeName;
-        int nodeType;
-        String nodeValue;
-        Text firstChild;
-        String firstChildValue;
-        EntityReference secondChild;
-        int secondChildType;
-        String secondChildName;
+        final Document doc;
+        final Element attrOwnerElem;
+        final Element element;
+        final Attr attr;
+        final HTMLCollection childList;
+        final Node adoptedclass;
+        final String nodeName;
+        final int nodeType;
+        final String nodeValue;
+        final Text firstChild;
+        final String firstChildValue;
+        final EntityReference secondChild;
+        final int secondChildType;
+        final String secondChildName;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("acronym");
         element = (Element) childList.item(3);
@@ -73,22 +72,22 @@ public class documentadoptnode01Test extends LoboUnitTest {
             nodeValue = adoptedclass.getNodeValue();
             nodeType = adoptedclass.getNodeType();
             attrOwnerElem = (Element) ((Attr) adoptedclass).getOwnerElement();
-            assertEquals("documentadoptode01_nodeName", "class", nodeName);
-            assertEquals("documentadoptNode01_nodeType", 2, nodeType);
-            assertNotNull("documentadoptnode01_ownerDoc", attrOwnerElem);
+            assertEquals("class", nodeName, "Documentadoptnode01Assert1");
+            assertEquals(2, nodeType, "Documentadoptnode01Assert2");
+            assertNotNull(attrOwnerElem, "Documentadoptnode01Assert3");
             firstChild = (Text) adoptedclass.getFirstChild();
-            assertNotNull("firstChildNotNull", firstChild);
+            assertNotNull(firstChild, "Documentadoptnode01Assert4");
             firstChildValue = firstChild.getNodeValue();
 
             if ("Y".equals(firstChildValue)) {
                 secondChild = (EntityReference) firstChild.getNextSibling();
-                assertNotNull("secondChildNotNull", secondChild);
+                assertNotNull(secondChild, "Documentadoptnode01Assert5");
                 secondChildType = secondChild.getNodeType();
-                assertEquals("secondChildIsEntityReference", 5, secondChildType);
+                assertEquals(5, secondChildType, "Documentadoptnode01Assert6");
                 secondChildName = secondChild.getNodeName();
-                assertEquals("secondChildIsEnt1Reference", "alpha", secondChildName);
+                assertEquals("alpha", secondChildName, "Documentadoptnode01Assert7");
             } else {
-                assertEquals("documentadoptnode01_nodeValue", "Yα", nodeValue);
+                assertEquals("Yα", nodeValue, "Documentadoptnode01Assert8");
             }
 
         }

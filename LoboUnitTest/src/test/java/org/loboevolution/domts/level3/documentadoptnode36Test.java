@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,46 +26,43 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Invoke the adoptNode method on this document using a new PI node created in a new doc
  * as the source.  Verify if the node has been adopted correctly by checking the nodeValue
  * of the adopted node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode36Test extends LoboUnitTest {
+public class Documentadoptnode36Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document newDoc;
-        ProcessingInstruction newPI1;
-        ProcessingInstruction newPI2;
-        ProcessingInstruction adoptedPI1;
-        ProcessingInstruction adoptedPI2;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final ProcessingInstruction newPI1;
+        final ProcessingInstruction newPI2;
+        final ProcessingInstruction adoptedPI1;
+        final ProcessingInstruction adoptedPI2;
         String piTarget;
         String piData;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         newPI1 = newDoc.createProcessingInstruction("PITarget", "PIData");
         newPI2 = doc.createProcessingInstruction("PITarget", "PIData");
         adoptedPI1 = (ProcessingInstruction) newDoc.adoptNode(newPI1);
@@ -76,12 +73,12 @@ public class documentadoptnode36Test extends LoboUnitTest {
             if ((adoptedPI2 != null)) {
                 piTarget = adoptedPI1.getTarget();
                 piData = adoptedPI1.getData();
-                assertEquals("documentadoptnode36_Target1", "PITarget", piTarget);
-                assertEquals("documentadoptnode36_Data1", "PIData", piData);
+                assertEquals("PITarget", piTarget, "Documentadoptnode36Assert2");
+                assertEquals("PIData", piData, "Documentadoptnode36Assert3");
                 piTarget = adoptedPI2.getTarget();
                 piData = adoptedPI2.getData();
-                assertEquals("documentadoptnode36_Target2", "PITarget", piTarget);
-                assertEquals("documentadoptnode36_Data2", "PIData", piData);
+                assertEquals("PITarget", piTarget, "Documentadoptnode36Assert4");
+                assertEquals("PIData", piData, "Documentadoptnode36Assert5");
             }
         }
     }

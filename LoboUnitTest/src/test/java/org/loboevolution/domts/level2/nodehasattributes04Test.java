@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,45 +41,38 @@ import static org.junit.Assert.assertTrue;
  * Create a new Document, Element and Attr node.  Add the Attr to the Element and append the
  * Element to the Document.  Retreive the newly created element node from the document and check
  * if it has attributes using hasAttributes.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs</a>
  */
-public class nodehasattributes04Test extends LoboUnitTest {
+public class Nodehasattributes04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DocumentType docType = null;
-
-        DOMImplementation domImpl;
-        Element element;
-        Element elementTest;
-        Element elementDoc;
-        Attr attribute;
-        Node setNode;
-        Node appendedChild;
-        HTMLCollection elementList;
-        boolean hasAttributes;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Element element;
+        final Element elementTest;
+        final Element elementDoc;
+        final Attr attribute;
+        final HTMLCollection elementList;
+        final boolean hasAttributes;
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "test", docType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "test", null);
         element = newDoc.createElementNS("http://www.w3.org/DOM/Test", "dom:elem");
         attribute = newDoc.createAttribute("attr");
-        setNode = element.setAttributeNode(attribute);
+        element.setAttributeNode(attribute);
         elementDoc = newDoc.getDocumentElement();
-        appendedChild = elementDoc.appendChild(element);
+        elementDoc.appendChild(element);
         elementList = newDoc.getElementsByTagNameNS("http://www.w3.org/DOM/Test", "elem");
         elementTest = (Element) elementList.item(0);
         hasAttributes = elementTest.hasAttributes();
-        assertTrue("nodehasattributes04", hasAttributes);
+        assertTrue(hasAttributes);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,53 +27,49 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
 import org.loboevolution.html.dom.DOMErrorHandler;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Calls DOMConfiguration.setParameter("error-handler", null).  Spec
  * does not explicitly address the case.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-error-handler">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-error-handler</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-setParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-setParameter</a>
  */
-public class domconfigerrorhandler2Test extends LoboUnitTest {
+public class Domconfigerrorhandler2Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        DOMImplementation domImpl;
-        Document doc;
-        DOMConfiguration domConfig;
-        DocumentType nullDocType = null;
+        final DOMImplementation domImpl;
+        final Document doc;
+        final DOMConfiguration domConfig;
 
-        boolean canSet;
-        DOMErrorHandler errorHandler = null;
+        final boolean canSet;
 
-        String parameter = "error-handler";
-        DOMErrorHandler state;
+        final String parameter = "error-handler";
+        final DOMErrorHandler state;
         domImpl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
-        doc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", nullDocType);
+        doc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", null);
         domConfig = doc.getDomConfig();
         /*DOMErrorHandler */
-        canSet = domConfig.canSetParameter(parameter, errorHandler);
-        assertTrue("canSetNull", canSet);
+        canSet = domConfig.canSetParameter(parameter, null);
+        assertTrue(canSet, "Domconfigerrorhandler2Assert3");
         /*DOMErrorHandler */
-        domConfig.setParameter(parameter, errorHandler);
+        domConfig.setParameter(parameter, null);
         state = (DOMErrorHandler) domConfig.getParameter(parameter);
-        assertNull("errorHandlerIsNull", state);
+        assertNull(state, "Domconfigerrorhandler2Assert4");
     }
 }
 

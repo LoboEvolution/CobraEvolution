@@ -19,7 +19,9 @@ import java.security.SecureClassLoader;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-/** @author Attila Szegedi */
+/**
+ * @author Attila Szegedi
+ */
 public abstract class SecureCaller {
     private static final byte[] secureCallerImplBytecode = loadBytecode();
 
@@ -99,7 +101,7 @@ public abstract class SecureCaller {
                                                                             + "Impl",
                                                                     secureCallerImplBytecode,
                                                                     codeSource);
-                                                    return c.newInstance();
+                                                    return c.getDeclaredConstructor().newInstance();
                                                 }
                                             });
                     classLoaderMap.put(classLoader, new SoftReference<>(caller));

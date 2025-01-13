@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,27 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using lookupPrefix on this Document node check if the value returned is Null .
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix</a>
  */
-public class nodelookupprefix01Test extends LoboUnitTest {
+public class Nodelookupprefix01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String prefix;
-        String nullNSURI = null;
+        final Document doc;
+        final String prefix;
 
         doc = sampleXmlFile("hc_staff.xml");
-        prefix = doc.lookupPrefix(nullNSURI);
-        assertNull("nodelookupprefix01", prefix);
+        prefix = doc.lookupPrefix(null);
+        assertNull(prefix, "Nodelookupprefix01Assert2");
     }
 }
 

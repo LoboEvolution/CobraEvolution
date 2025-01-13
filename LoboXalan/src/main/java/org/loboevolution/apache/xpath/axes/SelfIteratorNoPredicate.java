@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +40,9 @@ public class SelfIteratorNoPredicate extends LocPathIterator {
    * Create a SelfIteratorNoPredicate object.
    *
    * @param analysis Analysis bits.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  SelfIteratorNoPredicate(int analysis) throws org.loboevolution.javax.xml.transform.TransformerException {
+  SelfIteratorNoPredicate(final int analysis) throws javax.xml.transform.TransformerException {
     super(analysis);
   }
 
@@ -51,7 +51,7 @@ public class SelfIteratorNoPredicate extends LocPathIterator {
   public int nextNode() {
     if (m_foundLast) return DTM.NULL;
 
-    int next;
+    final int next;
 
     m_lastFetched = next = (DTM.NULL == m_lastFetched) ? m_context : DTM.NULL;
 
@@ -69,13 +69,13 @@ public class SelfIteratorNoPredicate extends LocPathIterator {
 
   /** {@inheritDoc} */
   @Override
-  public int asNode(XPathContext xctxt) {
+  public int asNode(final XPathContext xctxt) {
     return xctxt.getCurrentNode();
   }
 
   /** {@inheritDoc} */
   @Override
-  public int getLastPos(XPathContext xctxt) {
+  public int getLastPos(final XPathContext xctxt) {
     return 1;
   }
 }

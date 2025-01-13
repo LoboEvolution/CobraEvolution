@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,29 +43,26 @@ import static org.junit.Assert.*;
  * returned by the "replaceChild(newChild,oldChild)"
  * method.   The returned node should have a NodeName equal
  * to "employeeId".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-785887307">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-785887307</a>
  */
-public class nodereplacechildnodenameTest extends LoboUnitTest {
+public class NodereplacechildnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node oldChild;
-        Node newChild;
-        Node replacedNode;
-        int length;
-        String childName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node oldChild;
+        final Node newChild;
+        final Node replacedNode;
+        final int length;
+        final String childName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -77,9 +74,9 @@ public class nodereplacechildnodenameTest extends LoboUnitTest {
         childName = replacedNode.getNodeName();
 
         if (length == 6) {
-            assertEquals("nowhitespace", "NAME", childName);
+            assertEquals("NAME", childName, "NodereplacechildnodenameAssert1");
         } else {
-            assertEquals("whitespace", "EMPLOYEEID",childName);
+            assertEquals("EMPLOYEEID", childName, "NodereplacechildnodenameAssert2");
         }
 
     }

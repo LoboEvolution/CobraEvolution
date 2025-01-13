@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,22 @@
  */
 package org.loboevolution.css;
 
-import org.htmlunit.cssparser.dom.CSSFontFaceRuleImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.loboevolution.annotation.Alerts;
+import org.loboevolution.annotation.AlertsExtension;
 import org.loboevolution.driver.LoboUnitTest;
 
 /**
- * Tests for {@link CSSFontFaceRuleImpl}.
+ * Tests for {@link CSSFontFaceRule}.
  */
-
+@ExtendWith(AlertsExtension.class)
 public class CSSFontFaceRuleTest extends LoboUnitTest {
 
+
     @Test
+    @Alerts({"[object CSSFontFaceRule]", "5",
+            "@font-face { font-family: Delicious; src: url(\"Delicious-Bold.otf\"); }"})
     public void simple() {
         final String html
                 = "<html><body>\n"
@@ -47,18 +52,18 @@ public class CSSFontFaceRuleTest extends LoboUnitTest {
                 + "try {\n"
                 + "  var styleSheet = document.styleSheets[0];\n"
                 + "  var rule = styleSheet.cssRules[0];\n"
-                + "  alert(rule);\n"
-                + "  alert(rule.type);\n"
-                + "  alert(rule.cssText);\n"
+                + " alert(rule);\n"
+                + " alert(rule.type);\n"
+                + " alert(rule.cssText);\n"
                 + "}\n"
-                + "catch (e) { alert('exception'); }\n"
+                + "catch (e) {alert('exception'); }\n"
                 + "</script></body></html>";
-        final String[] messages = {"[object CSSFontFaceRule]", "5",
-                "@font-face { font-family: Delicious; src: url(\"Delicious-Bold.otf\"); }"};
-        checkHtmlAlert(html, messages);
+
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("@font-face { font-family: Delicious; src: url(\"//:\"); }")
     public void urlSlashSlashColon() {
         final String html
                 = "<html><body>\n"
@@ -70,15 +75,16 @@ public class CSSFontFaceRuleTest extends LoboUnitTest {
                 + "try {\n"
                 + "  var styleSheet = document.styleSheets[0];\n"
                 + "  var rule = styleSheet.cssRules[0];\n"
-                + "  alert(rule.cssText);\n"
+                + " alert(rule.cssText);\n"
                 + "}\n"
-                + "catch (e) { alert('exception'); }\n"
+                + "catch (e) {alert('exception'); }\n"
                 + "</script></body></html>";
-        final String[] messages = {"@font-face { font-family: Delicious; src: url(\"//:\"); }"};
-        checkHtmlAlert(html, messages);
+
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("@font-face { font-family: Delicious; src: url(\"/:\"); }")
     public void urlSlashColon() {
         final String html
                 = "<html><body>\n"
@@ -90,15 +96,16 @@ public class CSSFontFaceRuleTest extends LoboUnitTest {
                 + "try {\n"
                 + "  var styleSheet = document.styleSheets[0];\n"
                 + "  var rule = styleSheet.cssRules[0];\n"
-                + "  alert(rule.cssText);\n"
+                + " alert(rule.cssText);\n"
                 + "}\n"
-                + "catch (e) { alert('exception'); }\n"
+                + "catch (e) {alert('exception'); }\n"
                 + "</script></body></html>";
-        final String[] messages = {"@font-face { font-family: Delicious; src: url(\"/:\"); }"};
-        checkHtmlAlert(html, messages);
+
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("@font-face { font-family: Delicious; src: url(\"//\"); }")
     public void urlSlashSlash() {
         final String html
                 = "<html><body>\n"
@@ -110,11 +117,11 @@ public class CSSFontFaceRuleTest extends LoboUnitTest {
                 + "try {\n"
                 + "  var styleSheet = document.styleSheets[0];\n"
                 + "  var rule = styleSheet.cssRules[0];\n"
-                + "  alert(rule.cssText);\n"
+                + " alert(rule.cssText);\n"
                 + "}\n"
-                + "catch (e) { alert('exception'); }\n"
+                + "catch (e) {alert('exception'); }\n"
                 + "</script></body></html>";
-        final String[] messages = {"@font-face { font-family: Delicious; src: url(\"//\"); }"};
-        checkHtmlAlert(html, messages);
+
+        checkHtmlAlert(html);
     }
 }

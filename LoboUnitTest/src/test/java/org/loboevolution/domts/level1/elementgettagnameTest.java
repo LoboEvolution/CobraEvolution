@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,26 +41,24 @@ import static org.junit.Assert.*;
  * <p>
  * Invoke the "getTagName()" method one the
  * root node. The value returned should be "staff".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-104682815">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-104682815</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=251">http://www.w3.org/Bugs/Public/show_bug.cgi?id=251</a>
  */
-public class elementgettagnameTest extends LoboUnitTest {
+public class ElementgettagnameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element root;
-        String tagname;
+        final Document doc;
+        final Element root;
+        final String tagname;
         doc = sampleXmlFile("staff.xml");
         root = doc.getDocumentElement();
         tagname = root.getTagName();
-        assertEquals("elementGetTagNameAssert", "STAFF", tagname);
+        assertEquals("STAFF", tagname, "ElementgettagnameAssert1");
     }
 }
 

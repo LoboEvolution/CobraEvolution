@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,27 +44,25 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an attribute having [type definition] property.  Expose
  * {name} and {target namespace} properties of the [type definition] property.
  * Verify that the typeNamespace of the attrib1 and attrib3's schemaTypeInfo are correct.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace</a>
  */
-public class typeinfogettypenamespace01Test extends LoboUnitTest {
+public class Typeinfogettypenamespace01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acElem;
-        Attr titleAttr;
-        TypeInfo attrTypeInfo;
-        String typeNamespace;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acElem;
+        final Attr titleAttr;
+        final TypeInfo attrTypeInfo;
+        final String typeNamespace;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acElem = (Element) elemList.item(0);
         titleAttr = acElem.getAttributeNode("title");
         attrTypeInfo = titleAttr.getSchemaTypeInfo();
         typeNamespace = attrTypeInfo.getTypeNamespace();
-        assertEquals("typeinfogettypename01_1", "http://www.w3.org/2001/XMLSchema", typeNamespace);
+        assertEquals("http://www.w3.org/2001/XMLSchema", typeNamespace, "Typeinfogettypenamespace01Assert2");
     }
 }
 

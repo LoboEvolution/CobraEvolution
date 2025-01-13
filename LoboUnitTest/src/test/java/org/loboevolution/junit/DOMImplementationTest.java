@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,64 +27,64 @@
 package org.loboevolution.junit;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DOMImplementationTest extends LoboUnitTest {
 
     private static DOMImplementationImpl domImpl;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
-        UserAgentContext context = new UserAgentContext(new LocalHtmlRendererConfig(), true);
+        final UserAgentContext context = new UserAgentContext(new LocalHtmlRendererConfig(), true);
         context.setUserAgentEnabled(false);
         domImpl = new DOMImplementationImpl(context);
     }
 
     @Test
     public void testCreateDocument2() {
-        DocumentType doctype = domImpl.createDocumentType("html", null, null);
+        final DocumentType doctype = domImpl.createDocumentType("html", null, null);
         assertNull(doctype.getNextSibling());
         assertNull(doctype.getPreviousSibling());
         assertNull(doctype.getParentNode());
         assertNull(doctype.getOwnerDocument());
-        Document document = domImpl.createDocument(null, null, doctype);
+        final Document document = domImpl.createDocument(null, null, doctype);
         assertNull(doctype.getNextSibling());
         assertNull(doctype.getPreviousSibling());
-		assertSame(document, doctype.getOwnerDocument());
+        assertSame(document, doctype.getOwnerDocument());
         try {
             domImpl.createDocument(null, null, doctype);
             fail("Must throw an exception");
-        } catch (DOMException e) {
+        } catch (final DOMException e) {
             assertEquals(DOMException.WRONG_DOCUMENT_ERR, e.getCode());
         }
     }
 
     @Test
     public void testCreateDocument3() {
-        DocumentType doctype = domImpl.createDocumentType("html", null, null);
+        final DocumentType doctype = domImpl.createDocumentType("html", null, null);
         assertNull(doctype.getNextSibling());
         assertNull(doctype.getPreviousSibling());
-        Document document = domImpl.createDocument(null, "html", doctype);
+        final Document document = domImpl.createDocument(null, "html", doctype);
         assertEquals("CSS1Compat", document.getCompatMode());
-        Element docelm = document.getDocumentElement();
+        final Element docelm = document.getDocumentElement();
         assertNotNull(docelm);
-		assertSame(docelm, doctype.getNextSibling());
+        assertSame(docelm, doctype.getNextSibling());
         assertNull(doctype.getPreviousSibling());
-		assertSame(doctype, docelm.getPreviousSibling());
+        assertSame(doctype, docelm.getPreviousSibling());
         assertNull(docelm.getNextSibling());
-		assertSame(document, docelm.getParentNode());
-		assertSame(document, docelm.getOwnerDocument());
-		assertSame(document, doctype.getOwnerDocument());
+        assertSame(document, docelm.getParentNode());
+        assertSame(document, docelm.getOwnerDocument());
+        assertSame(document, doctype.getOwnerDocument());
     }
 
     @Test

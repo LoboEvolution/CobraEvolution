@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,38 +45,34 @@ import static org.junit.Assert.*;
  * a newly created Element node.   Check the first position
  * after the replacement operation is completed.   The new
  * Element should be "newChild".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-785887307">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-785887307</a>
  */
-public class nodereplacechildTest extends LoboUnitTest {
+public class NodereplacechildTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node oldChild;
-        Node newChild;
-        Node child;
-        String childName;
-        Node replacedNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node oldChild;
+        final Node newChild;
+        final Node child;
+        final String childName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
         childList = employeeNode.getChildNodes();
         oldChild = childList.item(0);
         newChild = doc.createElement("newChild");
-        replacedNode = employeeNode.replaceChild(newChild, oldChild);
+        employeeNode.replaceChild(newChild, oldChild);
         child = childList.item(0);
         childName = child.getNodeName();
-        assertEquals("nodeReplaceChildAssert1", "newChild", childName);
+        assertEquals("NEWCHILD", childName, "NodereplacechildAssert1");
     }
 
 }

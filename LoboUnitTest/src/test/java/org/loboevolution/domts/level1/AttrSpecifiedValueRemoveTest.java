@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -52,9 +52,7 @@ import static org.junit.Assert.assertNotNull;
  * This test uses the "removeAttribute(name)" method
  * from the Element interface and the "getNamedItem(name)"
  * method from the NamedNodeMap interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-6D6AC0F9">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-6D6AC0F9</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
  */
@@ -63,25 +61,24 @@ public class AttrSpecifiedValueRemoveTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Attr streetAttr;
-        boolean state;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Attr streetAttr;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
         testNode = (Element) addressList.item(2);
         testNode.removeAttribute("street");
         attributes = testNode.getAttributes();
         streetAttr = (Attr) attributes.getNamedItem("street");
-        assertNotNull("streetAttrNotNull", streetAttr);
+        assertNotNull(streetAttr, "AttrSpecifiedValueRemoveAssert3");
         state = streetAttr.isSpecified();
-        assertFalse("attrSpecifiedValueRemoveAssert", state);
+        assertFalse(state, "AttrSpecifiedValueRemoveAssert4");
     }
 }
 

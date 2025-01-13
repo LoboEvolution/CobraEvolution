@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,33 +26,30 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Using isDefaultNamespace on this DocumentType node with the value of the namespaceURI parameter
  * as null check if the value returned is false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace</a>
  */
-public class nodeisdefaultnamespace03Test extends LoboUnitTest {
+public class Nodeisdefaultnamespace03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        boolean isDefault;
-        String nullNSURI = null;
+        final Document doc;
+        final DocumentType docType;
+        final boolean isDefault;
 
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
-        isDefault = docType.isDefaultNamespace(nullNSURI);
-        assertFalse("nodeisdefaultnamespace03", isDefault);
+        isDefault = docType.isDefaultNamespace(null);
+        assertFalse(isDefault, "Nodeisdefaultnamespace03Assert2");
     }
 }
 

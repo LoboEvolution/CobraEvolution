@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.parser.XHtmlParser;
 import org.loboevolution.html.dom.UserDataHandler;
@@ -47,13 +48,13 @@ public class HTMLTitleElementImpl extends HTMLElementImpl {
 
 	/** {@inheritDoc} */
 	@Override
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		if (XHtmlParser.MODIFYING_KEY.equals(key) && data == Boolean.FALSE) {
 			final Document document = this.document;
-			if (document instanceof HTMLDocumentImpl) {
+			if (document instanceof HTMLDocument) {
 				final String textContent = getTextContent();
 				final String title = textContent == null ? null : textContent.trim();
-				((HTMLDocumentImpl) document).setTitle(title);
+				document.setTitle(title);
 			}
 		}
 		return super.setUserData(key, data, handler);

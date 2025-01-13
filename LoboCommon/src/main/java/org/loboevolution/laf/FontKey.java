@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -87,8 +87,8 @@ public class FontKey {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean equals(Object other) {
-		FontKey ors;
+	public boolean equals(final Object other) {
+		final FontKey ors;
 		if (other instanceof FontKey) {
 			ors = (FontKey) other;
 		} else {

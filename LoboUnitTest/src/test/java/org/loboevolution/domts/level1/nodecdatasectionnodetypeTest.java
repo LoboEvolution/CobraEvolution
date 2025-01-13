@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,24 +44,21 @@ import static org.junit.Assert.*;
  * Retrieve the CDATASection node contained inside the
  * second child of the second employee and invoke the
  * "getNodeType()" method.   The method should return 4.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212</a>
  */
-public class nodecdatasectionnodetypeTest extends LoboUnitTest {
+public class NodecdatasectionnodetypeTest extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testName;
         Node cdataNode;
         int nodeType;
         doc = sampleXmlFile("staff.xml");
@@ -74,7 +71,7 @@ public class nodecdatasectionnodetypeTest extends LoboUnitTest {
             cdataNode = doc.createCDATASection("");
             nodeType = cdataNode.getNodeType();
         }
-        assertEquals("nodeTypeCDATA", 4, nodeType);
+        assertEquals(4, nodeType, "NodecdatasectionnodetypeAssert1");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke wholetext on an existing Text Node that contains whitespace and and verify if
  * the value returned is correct.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-wholeText">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-wholeText</a>
  */
-public class textwholetext02Test extends LoboUnitTest {
+public class Textwholetext02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection itemList;
-        Element elementName;
-        Text textNode;
-        Text newTextNode;
-        String wholeText;
-        Node appendedChild;
+        final Document doc;
+        final HTMLCollection itemList;
+        final Element elementName;
+        final Text textNode;
+        final Text newTextNode;
+        final String wholeText;
         doc = sampleXmlFile("hc_staff.xml");
         itemList = doc.getElementsByTagName("strong");
         elementName = (Element) itemList.item(0);
         newTextNode = doc.createTextNode("New Text");
-        appendedChild = elementName.appendChild(newTextNode);
+        elementName.appendChild(newTextNode);
         textNode = (Text) elementName.getFirstChild();
         wholeText = textNode.getWholeText();
-        assertEquals("textwholetext02", "Margaret MartinNew Text", wholeText);
+        assertEquals("Margaret MartinNew Text", wholeText, "Textwholetext02Assert2");
     }
 }
 

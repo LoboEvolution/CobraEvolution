@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -172,7 +172,6 @@ public class CSSValueImpl extends AbstractLocatable implements Serializable {
 
     /**
      * Constructor.
-     *
      * @param value the lexical unit value
      * @param forcePrimitive true or false
      */
@@ -197,6 +196,18 @@ public class CSSValueImpl extends AbstractLocatable implements Serializable {
             else if (value.getLexicalUnitType() == LexicalUnitType.HSLCOLOR) {
                 // HSLColor
                 value_ = new HSLColorImpl(value.getFunctionName(), value.getParameters());
+            }
+            else if (value.getLexicalUnitType() == LexicalUnitType.HWBCOLOR) {
+                // HWBColor
+                value_ = new HWBColorImpl(value.getFunctionName(), value.getParameters());
+            }
+            else if (value.getLexicalUnitType() == LexicalUnitType.LABCOLOR) {
+                // LABColor
+                value_ = new LABColorImpl(value.getFunctionName(), value.getParameters());
+            }
+            else if (value.getLexicalUnitType() == LexicalUnitType.LCHCOLOR) {
+                // LCHColor
+                value_ = new LCHColorImpl(value.getFunctionName(), value.getParameters());
             }
             else if (value.getLexicalUnitType() == LexicalUnitType.COUNTER_FUNCTION) {
                 // Counter
@@ -232,7 +243,6 @@ public class CSSValueImpl extends AbstractLocatable implements Serializable {
 
     /**
      * Ctor.
-     *
      * @param value the value
      */
     public CSSValueImpl(final LexicalUnit value) {
@@ -384,6 +394,8 @@ public class CSSValueImpl extends AbstractLocatable implements Serializable {
                     return CSSPrimitiveValueType.CSS_KHZ;
                 case IDENT:
                     return CSSPrimitiveValueType.CSS_IDENT;
+                case NONE:
+                    return CSSPrimitiveValueType.CSS_IDENT;
                 case STRING_VALUE:
                     return CSSPrimitiveValueType.CSS_STRING;
                 case ATTR:
@@ -465,9 +477,16 @@ public class CSSValueImpl extends AbstractLocatable implements Serializable {
             if ((lu.getLexicalUnitType() == LexicalUnitType.IDENT)
                 || (lu.getLexicalUnitType() == LexicalUnitType.STRING_VALUE)
                 || (lu.getLexicalUnitType() == LexicalUnitType.URI)
-                || (lu.getLexicalUnitType() == LexicalUnitType.INHERIT)
                 || (lu.getLexicalUnitType() == LexicalUnitType.ATTR)) {
                 return lu.getStringValue();
+            }
+
+            if (lu.getLexicalUnitType() == LexicalUnitType.INHERIT) {
+                return "inherit";
+            }
+
+            if (lu.getLexicalUnitType() == LexicalUnitType.NONE) {
+                return "none";
             }
 
             // for rgba values we are using this type

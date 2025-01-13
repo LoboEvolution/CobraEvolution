@@ -69,7 +69,10 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
      * and so on
      */
     protected AstNode inlineComment;
-    private static Map<Integer, String> operatorNames = new HashMap<>();
+    private static final Map<Integer, String> operatorNames = new HashMap<>();
+
+    private static final int MAX_INDENT = 42;
+    private static final String[] INDENTATIONS = new String[MAX_INDENT + 1];
 
     static {
         operatorNames.put(Token.IN, "in");
@@ -79,6 +82,8 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
         operatorNames.put(Token.COMMA, ",");
         operatorNames.put(Token.COLON, ":");
         operatorNames.put(Token.OR, "||");
+        operatorNames.put(Token.NULLISH_COALESCING, "??");
+        operatorNames.put(Token.QUESTION_DOT, "?.");
         operatorNames.put(Token.AND, "&&");
         operatorNames.put(Token.INC, "++");
         operatorNames.put(Token.DEC, "--");
@@ -108,7 +113,9 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
         operatorNames.put(Token.SHNE, "!==");
         operatorNames.put(Token.ASSIGN, "=");
         operatorNames.put(Token.ASSIGN_BITOR, "|=");
+        operatorNames.put(Token.ASSIGN_LOGICAL_OR, "||=");
         operatorNames.put(Token.ASSIGN_BITAND, "&=");
+        operatorNames.put(Token.ASSIGN_LOGICAL_AND, "&&=");
         operatorNames.put(Token.ASSIGN_LSH, "<<=");
         operatorNames.put(Token.ASSIGN_RSH, ">>=");
         operatorNames.put(Token.ASSIGN_URSH, ">>>=");
@@ -119,11 +126,20 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
         operatorNames.put(Token.ASSIGN_MOD, "%=");
         operatorNames.put(Token.ASSIGN_BITXOR, "^=");
         operatorNames.put(Token.ASSIGN_EXP, "**=");
+        operatorNames.put(Token.ASSIGN_NULLISH, "??=");
         operatorNames.put(Token.VOID, "void");
+
+        StringBuilder sb = new StringBuilder();
+        INDENTATIONS[0] = sb.toString();
+        for (int i = 1; i <= MAX_INDENT; i++) {
+            sb.append("  ");
+            INDENTATIONS[i] = sb.toString();
+        }
     }
 
     public static class PositionComparator implements Comparator<AstNode>, Serializable {
         private static final long serialVersionUID = 1L;
+
         /**
          * Sorts nodes by (relative) start position. The start positions are relative to their
          * parent, so this comparator is only meaningful for comparing siblings.
@@ -299,11 +315,8 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
      * @param indent the number of indentation steps
      */
     public String makeIndent(int indent) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < indent; i++) {
-            sb.append("  ");
-        }
-        return sb.toString();
+        indent = Math.min(MAX_INDENT, Math.max(0, indent));
+        return INDENTATIONS[indent];
     }
 
     /** Returns a short, descriptive name for the node, such as "ArrayComprehension". */
@@ -351,7 +364,9 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
             case Token.ASSIGN:
             case Token.ASSIGN_ADD:
             case Token.ASSIGN_BITAND:
+            case Token.ASSIGN_LOGICAL_AND:
             case Token.ASSIGN_BITOR:
+            case Token.ASSIGN_LOGICAL_OR:
             case Token.ASSIGN_BITXOR:
             case Token.ASSIGN_DIV:
             case Token.ASSIGN_LSH:
@@ -360,6 +375,8 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
             case Token.ASSIGN_RSH:
             case Token.ASSIGN_SUB:
             case Token.ASSIGN_URSH:
+            case Token.ASSIGN_EXP:
+            case Token.ASSIGN_NULLISH:
             case Token.BLOCK:
             case Token.BREAK:
             case Token.CALL:
@@ -452,7 +469,9 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
         }
     }
 
-    /** @see Kit#codeBug */
+    /**
+     * @see Kit#codeBug
+     */
     public static RuntimeException codeBug() throws RuntimeException {
         throw Kit.codeBug();
     }
@@ -506,7 +525,7 @@ public abstract class AstNode extends Node implements Comparable<AstNode> {
      * @param other another node
      * @return -1 if this node's start position is less than {@code other}'s start position. If
      *     tied, -1 if this node's length is less than {@code other}'s length. If the lengths are
-     *     equal, sorts abitrarily on hashcode unless the nodes are the same per {@link #equals}.
+     *     equal, sorts arbitrarily on hashcode unless the nodes are the same per {@link #equals}.
      */
     @Override
     public int compareTo(AstNode other) {

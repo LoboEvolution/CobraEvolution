@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -72,16 +72,16 @@ public class SVGAElementImpl extends SVGGraphic implements SVGAElement {
 
 	@Override
 	public SVGRect getBBox() {
-		Shape shape = createShape(null);
+		final Shape shape = createShape(null);
 		return new SVGRectImpl(shape.getBounds2D());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
-		GeneralPath path = new GeneralPath();
+	public Shape createShape(final AffineTransform transform) {
+		final GeneralPath path = new GeneralPath();
 		if (hasChildNodes()) {
-			NodeListImpl children = (NodeListImpl)getChildNodes();
+			final NodeListImpl children = (NodeListImpl)getChildNodes();
 			children.forEach(child -> {
 				Shape childShape = null;
 				if (child instanceof SVGGElementImpl) {
@@ -94,9 +94,8 @@ public class SVGAElementImpl extends SVGGraphic implements SVGAElement {
 				} else if (child instanceof SVGUseElementImpl) {
 					SVGRect bbox = ((SVGUseElement) child).getBBox();
 					childShape = new Rectangle2D.Float(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-				} else if (child instanceof SVGSVGElementImpl) {
-					SVGSVGElement svg = (SVGSVGElement) child;
-					AffineTransform ctm = getCTM().getAffineTransform();
+				} else if (child instanceof SVGSVGElementImpl svg) {
+                    AffineTransform ctm = getCTM().getAffineTransform();
 					AffineTransform inverseTransform;
 					try {
 						inverseTransform = ctm.createInverse();

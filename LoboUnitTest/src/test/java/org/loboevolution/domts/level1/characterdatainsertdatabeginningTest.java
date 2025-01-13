@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,31 +47,28 @@ import static org.junit.Assert.*;
  * The method should insert the string "Mss." at position 0.
  * The new value of the character data should be
  * "Mss. Margaret Martin".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3EDB695F">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3EDB695F</a>
  */
-public class characterdatainsertdatabeginningTest extends LoboUnitTest {
+public class CharacterdatainsertdatabeginningTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node nameNode;
-        CharacterData child;
-        String childData;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node nameNode;
+        final CharacterData child;
+        final String childData;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("name");
         nameNode = elementList.item(0);
         child = (CharacterData) nameNode.getFirstChild();
         child.insertData(0, "Mss. ");
         childData = child.getData();
-        assertEquals("characterdataInsertDataBeginningAssert", "Mss. Margaret Martin", childData);
+        assertEquals("Mss. Margaret Martin", childData, "CharacterdatainsertdatabeginningAssert1");
     }
 }
 

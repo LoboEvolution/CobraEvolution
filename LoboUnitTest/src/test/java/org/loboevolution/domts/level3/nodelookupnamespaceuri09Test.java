@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Invoke lookupNamespaceURI on an Element node with no prefix, whose parent has no prefix and
  * 2 namespace attribute declarations with and without namespace prefixes and check if the value of
  * the namespaceURI returned by using each prefix as a parameter is valid.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI</a>
  */
-public class nodelookupnamespaceuri09Test extends LoboUnitTest {
+public class Nodelookupnamespaceuri09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        HTMLCollection elemList;
-        String namespaceURI;
-        String namespaceURIEmpty;
+        final Document doc;
+        final Element elem;
+        final HTMLCollection elemList;
+        final String namespaceURI;
+        final String namespaceURIEmpty;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("em");
         elem = (Element) elemList.item(0);
         namespaceURI = elem.lookupNamespaceURI("dmstc");
-        assertEquals("nodelookupnamespaceuri09", "http://www.usa.com", namespaceURI);
+        assertEquals("http://www.usa.com", namespaceURI, "Nodelookupnamespaceuri09Assert3");
         namespaceURIEmpty = elem.lookupNamespaceURI("");
-        assertNull("nodelookupnamespaceprefixEmpty09", namespaceURIEmpty);
+        assertNull(namespaceURIEmpty, "Nodelookupnamespaceuri09Assert4");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
  */
 package org.loboevolution.html.style;
 
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 
 /**
  * <p>CSSPropertiesContext interface.</p>
@@ -41,7 +41,7 @@ public interface CSSPropertiesContext {
 	/**
 	 * <p>getParentStyle.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.css.CSSStyleDeclaration} object.
+	 * @return a {@link CSSStyleDeclaration} object.
 	 */
 	CSSStyleDeclaration getParentStyle();
 

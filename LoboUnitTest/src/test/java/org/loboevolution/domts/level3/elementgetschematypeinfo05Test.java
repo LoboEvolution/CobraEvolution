@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,14 +26,14 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The getSchemaTypeInfo method retrieves the type information associated with this element.
@@ -41,27 +41,25 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an element having [type definition] property.  Expose {name} and {target namespace}
  * properties of the [type definition] property.  Verity that the typeName and typeNamespace of the acronym element's
  * schemaTypeInfo are correct.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo</a>
  */
-public class elementgetschematypeinfo05Test extends LoboUnitTest {
+public class Elementgetschematypeinfo05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element acElem;
-        TypeInfo elemTypeInfo;
-        String typeName;
-        String typeNamespace;
-        HTMLCollection elemList;
+        final Document doc;
+        final Element acElem;
+        final TypeInfo elemTypeInfo;
+        final String typeName;
+        final String typeNamespace;
+        final HTMLCollection elemList;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("span");
         acElem = (Element) elemList.item(0);
         elemTypeInfo = acElem.getSchemaTypeInfo();
         typeName = elemTypeInfo.getTypeName();
         typeNamespace = elemTypeInfo.getTypeNamespace();
-        assertEquals("typeNameString", "string", typeName);
-        assertEquals("typeNsXSD", "http://www.w3.org/2001/XMLSchema", typeNamespace);
+        assertEquals("string", typeName, "Elementgetschematypeinfo05Assert2");
+        assertEquals("http://www.w3.org/2001/XMLSchema", typeNamespace, "Elementgetschematypeinfo05Assert3");
     }
 }

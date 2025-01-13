@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Node.getBaseURI for an text node is null.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Text">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Text</a>
  */
-public class nodegetbaseuri17Test extends LoboUnitTest {
+public class Nodegetbaseuri17Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String baseURI;
-        Text textNode;
-        HTMLCollection pList;
-        Element pElem;
+        final Document doc;
+        final String baseURI;
+        final Text textNode;
+        final HTMLCollection pList;
+        final Element pElem;
         doc = sampleXmlFile("barfoo_base.xml");
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(0);
         textNode = (Text) pElem.getFirstChild();
         baseURI = textNode.getBaseURI();
-        assertNull("baseURI", baseURI);
+        assertNull(baseURI, "Nodegetbaseuri17Assert2");
     }
 }
 

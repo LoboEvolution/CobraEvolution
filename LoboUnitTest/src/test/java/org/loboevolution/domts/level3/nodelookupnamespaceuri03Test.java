@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,29 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Using lookupNamespaceURI on this DocumentType node check if the value returned is Null .
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI</a>
  */
-public class nodelookupnamespaceuri03Test extends LoboUnitTest {
+public class Nodelookupnamespaceuri03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        String namespaceURI;
-        String nullPrefix = null;
+        final Document doc;
+        final DocumentType docType;
+        final String namespaceURI;
 
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
-        namespaceURI = docType.lookupNamespaceURI(nullPrefix);
-        assertNull("nodelookupnamespaceuri03", namespaceURI);
+        namespaceURI = docType.lookupNamespaceURI(null);
+        assertNull(namespaceURI, "Nodelookupnamespaceuri03Assert2");
     }
 }
 

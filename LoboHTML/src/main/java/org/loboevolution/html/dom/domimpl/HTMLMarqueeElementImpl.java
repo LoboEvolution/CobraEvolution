@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,24 +27,24 @@
 package org.loboevolution.html.dom.domimpl;
 
 import org.loboevolution.html.dom.HTMLMarqueeElement;
-import org.loboevolution.html.node.events.Event;
-import org.loboevolution.html.node.events.EventListener;
+import org.loboevolution.events.Event;
+import org.loboevolution.events.EventListener;
 import org.loboevolution.html.renderstate.BlockRenderState;
 import org.loboevolution.html.renderstate.RenderState;
 
 public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqueeElement {
 
     /**
-     * <p>Constructor for HTMLElementImpl.</p>
+     * <p>Constructor for HTMLMarqueeElementImpl.</p>
      *
      * @param name a {@link String} object.
      */
-    public HTMLMarqueeElementImpl(String name) {
+    public HTMLMarqueeElementImpl(final String name) {
         super(name);
     }
 
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new BlockRenderState(prevRenderState, this);
     }
 
@@ -54,7 +54,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setBehavior(String behavior) {
+    public void setBehavior(final String behavior) {
 
     }
 
@@ -64,7 +64,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setBgColor(String bgColor) {
+    public void setBgColor(final String bgColor) {
 
     }
 
@@ -74,7 +74,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setDirection(String direction) {
+    public void setDirection(final String direction) {
 
     }
 
@@ -84,7 +84,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setHeight(String height) {
+    public void setHeight(final String height) {
 
     }
 
@@ -94,7 +94,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setHspace(double hspace) {
+    public void setHspace(final double hspace) {
 
     }
 
@@ -104,7 +104,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setLoop(double loop) {
+    public void setLoop(final double loop) {
 
     }
 
@@ -114,7 +114,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setOnbounce(EventListener<Event> onbounce) {
+    public void setOnbounce(final EventListener<Event> onbounce) {
 
     }
 
@@ -124,7 +124,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setOnfinish(EventListener<Event> onfinish) {
+    public void setOnfinish(final EventListener<Event> onfinish) {
 
     }
 
@@ -134,7 +134,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setOnstart(EventListener<Event> onstart) {
+    public void setOnstart(final EventListener<Event> onstart) {
 
     }
 
@@ -144,7 +144,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setScrollAmount(double scrollAmount) {
+    public void setScrollAmount(final double scrollAmount) {
 
     }
 
@@ -154,7 +154,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setScrollDelay(double scrollDelay) {
+    public void setScrollDelay(final double scrollDelay) {
 
     }
 
@@ -164,7 +164,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setTrueSpeed(boolean trueSpeed) {
+    public void setTrueSpeed(final boolean trueSpeed) {
 
     }
 
@@ -174,7 +174,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setVspace(double vspace) {
+    public void setVspace(final double vspace) {
 
     }
 
@@ -184,7 +184,7 @@ public class HTMLMarqueeElementImpl extends HTMLElementImpl implements HTMLMarqu
     }
 
     @Override
-    public void setWidth(String width) {
+    public void setWidth(final String width) {
 
     }
 

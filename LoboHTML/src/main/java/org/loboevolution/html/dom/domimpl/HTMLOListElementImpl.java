@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public class HTMLOListElementImpl extends HTMLElementImpl implements HTMLOListEl
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new ListRenderState(prevRenderState, this);
 	}
 
@@ -63,7 +63,7 @@ public class HTMLOListElementImpl extends HTMLElementImpl implements HTMLOListEl
 	@Override
 	public int getStart() {
 		final String startText = getAttribute("start");
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
 		return HtmlValues.getPixelSize(startText, null, doc.getDefaultView(), 1);
 	}
 
@@ -81,7 +81,7 @@ public class HTMLOListElementImpl extends HTMLElementImpl implements HTMLOListEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCompact(boolean compact) {
+	public void setCompact(final boolean compact) {
 		setAttribute("compact", compact ? "compact" : null);
 	}
 
@@ -92,19 +92,19 @@ public class HTMLOListElementImpl extends HTMLElementImpl implements HTMLOListEl
 	}
 
 	@Override
-	public void setReversed(boolean reversed) {
+	public void setReversed(final boolean reversed) {
 	// TODO Auto-generated method stub
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setStart(int start) {
+	public void setStart(final int start) {
 		setAttribute("start", String.valueOf(start));
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setType(String type) {
+	public void setType(final String type) {
 		setAttribute("type", type);
 	}
 

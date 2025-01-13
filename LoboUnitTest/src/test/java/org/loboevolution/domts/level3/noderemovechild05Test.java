@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,57 +28,54 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Using removeChild on this Document node attempt to remove a new DocumentType node and
  * verify if the DocumentType node is null.  Attempting to remove the DocumentType
  * a second type should result in a NOT_FOUND_ERR.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=417">http://www.w3.org/Bugs/Public/show_bug.cgi?id=417</a>
  */
-public class noderemovechild05Test extends LoboUnitTest {
+public class Noderemovechild05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        DocumentType removedDocType;
-        Node removedChild;
+        final Document doc;
+        final DocumentType docType;
+        final DocumentType removedDocType;
+        final Node removedChild;
         doc = sampleXmlFile("barfoo.xml");
         docType = doc.getDoctype();
 
         try {
             removedChild = doc.removeChild(docType);
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             if (ex.getCode() == 9) {
-                ex.printStackTrace();
                 return;
             }
             throw ex;
         }
-        assertNotNull("removedChildNotNull", removedChild);
+        assertNotNull(removedChild, "Noderemovechild05Assert1");
         removedDocType = doc.getDoctype();
-        assertNull("noderemovechild05", removedDocType);
+        assertNull(removedDocType, "Noderemovechild05Assert2");
 
         {
             boolean success = false;
             try {
                 docType.removeChild(doc);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("NOT_FOUND_ERR_noderemovechild05", success);
+            assertTrue(success, "Noderemovechild05Assert3");
         }
     }
 }

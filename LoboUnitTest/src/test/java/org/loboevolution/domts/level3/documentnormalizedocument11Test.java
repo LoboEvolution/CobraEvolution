@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,28 +46,26 @@ import static org.junit.Assert.assertNotNull;
  * <p>
  * Set the normalization feature "namespace-declarations" to false, invoke normalizeDocument and verify
  * the nodeName of element acquired by tagname.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-namespace-declarations">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-namespace-declarations</a>
  */
-public class documentnormalizedocument11Test extends LoboUnitTest {
+public class DocumentnormalizeDocument11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         HTMLCollection elemList;
         Element elemName;
-        String nodeName;
-        boolean canSet;
-        DOMConfiguration domConfig;
+        final String nodeName;
+        final boolean canSet;
+        final DOMConfiguration domConfig;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         domConfig.setParameter("namespace-declarations", Boolean.TRUE);
         doc.normalizeDocument();
         elemList = doc.getElementsByTagNameNS("*", "acronym");
         elemName = (Element) elemList.item(1);
-        assertNotNull("documentnormalizedocument11_NotNullElem", elemName);
+        assertNotNull(elemName, "DocumentnormalizeDocument11Assert3");
         canSet = domConfig.canSetParameter("namespace-declarations", Boolean.FALSE);
 
         if (canSet) {
@@ -76,7 +74,7 @@ public class documentnormalizedocument11Test extends LoboUnitTest {
             elemList = doc.getElementsByTagNameNS("*", "acronym");
             elemName = (Element) elemList.item(1);
             nodeName = elemName.getNodeName();
-            assertEquals("documentnormalizedocument11_namespaceDeclarations", "address", nodeName);
+            assertEquals("address", nodeName, "DocumentnormalizeDocument11Assert4");
         }
     }
 }

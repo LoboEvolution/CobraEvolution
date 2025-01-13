@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -49,26 +49,23 @@ import static org.junit.Assert.*;
  * localName.
  * The method should return a NodeList of Elements that have
  * "address" as the local name.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS</a>
  */
-public class getElementsByTagNameNS04Test extends LoboUnitTest {
+public class GetElementsByTagNameNS04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
+        final Document doc;
+        final HTMLCollection elementList;
         Node child;
         String childName;
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
 
-        List<String> expectedResult = new ArrayList<>();
+        final List<String> expectedResult = new ArrayList<>();
         expectedResult.add("ADDRESS");
         expectedResult.add("ADDRESS");
         expectedResult.add("ADDRESS");
@@ -82,7 +79,7 @@ public class getElementsByTagNameNS04Test extends LoboUnitTest {
             childName = child.getLocalName();
             result.add(childName);
         }
-        assertEquals("nodeNames", expectedResult, result);
+        assertEquals(expectedResult, result);
     }
 }
 

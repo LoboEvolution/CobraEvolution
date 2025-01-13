@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,41 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 newly created Document nodes having the same namespaceURI
  * and qualifiedName are equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode02Test extends LoboUnitTest {
+public class Nodeisequalnode02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document doc1;
-        Document doc2;
-        boolean isEqual;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document doc1;
+        final Document doc2;
+        final boolean isEqual;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        doc1 = domImpl.createDocument(rootNS, rootName, nullDocType);
-        doc2 = domImpl.createDocument(rootNS, rootName, nullDocType);
+        doc1 = domImpl.createDocument(rootNS, rootName, null);
+        doc2 = domImpl.createDocument(rootNS, rootName, null);
         isEqual = doc1.isEqualNode(doc2);
-        assertTrue("nodeisequalnode02", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode02Assert2");
     }
 }
 

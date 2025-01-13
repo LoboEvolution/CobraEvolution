@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,11 @@
 
 package org.loboevolution.common;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.NoSuchElementException;
 
 
 /**
@@ -46,7 +44,7 @@ public class ArrayUtilities {
 	 * @param collection a {@link java.util.Collection} object.
 	 * @return a boolean.
 	 */
-	public static boolean isBlank(Collection<?> collection) {
+	public static boolean isBlank(final Collection<?> collection) {
 		return collection == null || collection.isEmpty();
 	}
 
@@ -56,71 +54,24 @@ public class ArrayUtilities {
 	 * @param collection a {@link java.util.Collection} object.
 	 * @return a boolean.
 	 */
-	public static boolean isNotBlank(Collection<?> collection) {
+	public static boolean isNotBlank(final Collection<?> collection) {
 		return collection != null && !collection.isEmpty();
-	}
-
-	/**
-	 * <p>iterator.</p>
-	 *
-	 * @param array an array of {@link java.lang.Object} objects.
-	 * @param offset a int.
-	 * @param length a int.
-	 * @return a {@link java.util.Iterator} object.
-	 */
-	public static Iterator iterator(Object[] array, int offset, int length) {
-		return new ArrayIterator(array, offset, length);
 	}
 
 	/**
 	 * <p>moveItem.</p>
 	 *
-	 * @param sourceIndex a int.
-	 * @param targetIndex a int.
+	 * @param sourceIndex a {@link java.lang.Integer} object.
+	 * @param targetIndex a {@link java.lang.Integer} object.
 	 * @param list a {@link java.util.List} object.
 	 * @param <T> a T object.
 	 */
-	public static <T> void moveItem(int sourceIndex, int targetIndex, List<T> list) {
+	public static <T> void moveItem(final int sourceIndex, final int targetIndex, final List<T> list) {
 	    if (sourceIndex <= targetIndex) {
 	        Collections.rotate(list.subList(sourceIndex, targetIndex + 1), -1);
 	    } else {
 	        Collections.rotate(list.subList(targetIndex, sourceIndex + 1), 1);
 	    }
-	}
-	
-	/**
-	 * <p>singletonIterator.</p>
-	 *
-	 * @param item a {@link java.lang.Object} object.
-	 * @return a {@link java.util.Iterator} object.
-	 */
-	public static Iterator singletonIterator(final Object item) {
-		return new Iterator() {
-			private boolean gotItem = false;
-
-			@Override
-			public boolean hasNext() {
-				return !this.gotItem;
-			}
-
-			@Override
-			public Object next() {
-				if (this.gotItem) {
-					throw new NoSuchElementException();
-				}
-				this.gotItem = true;
-				return item;
-			}
-
-			@Override
-			public void remove() {
-				if (!this.gotItem) {
-					this.gotItem = true;
-				} else {
-					throw new NoSuchElementException();
-				}
-			}
-		};
 	}
 	
 
@@ -131,11 +82,11 @@ public class ArrayUtilities {
 	 * @param index a {@link java.lang.Integer} object
 	 * @return an array of {@link java.awt.Color} objects.
 	 */
-	public static Color[] removeColor(Color[] arr, int index) {
+	public static Color[] removeColor(final Color[] arr, final int index) {
 		if (arr == null || index < 0 || index >= arr.length) {
 			return arr;
 		}
-		Color[] anotherArray = new Color[arr.length - 1];
+		final Color[] anotherArray = new Color[arr.length - 1];
 		System.arraycopy(arr, 0, anotherArray, 0, index);
 		System.arraycopy(arr, index + 1, anotherArray, index, arr.length - index - 1);
 		return anotherArray;
@@ -148,11 +99,11 @@ public class ArrayUtilities {
 	 * @param index a {@link java.lang.Integer} object
 	 * @return an array of {@link java.lang.Float} objects.
 	 */
-	public static float[] removeFloat(float[] arr, int index) {
+	public static float[] removeFloat(final float[] arr, final int index) {
 		if (arr == null || index < 0 || index >= arr.length) {
 			return arr;
 		}
-		float[] anotherArray = new float[arr.length - 1];
+		final float[] anotherArray = new float[arr.length - 1];
 		System.arraycopy(arr, 0, anotherArray, 0, index);
 		System.arraycopy(arr, index + 1, anotherArray, index, arr.length - index - 1);
 		return anotherArray;
@@ -173,29 +124,5 @@ public class ArrayUtilities {
 			}
 		}
 		return false;
-	}
-	
-	private static class ArrayIterator<T> implements Iterator<T> {
-		private final T[] array;
-		private final int top;
-		private int offset;
-
-		public ArrayIterator(final T[] array, final int offset, final int length) {
-			this.array = array;
-			this.offset = offset;
-			this.top = offset + length;
-		}
-
-		public boolean hasNext() {
-			return this.offset < this.top;
-		}
-
-		public T next() {
-			return this.array[this.offset++];
-		}
-
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
 	}
 }

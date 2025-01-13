@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -37,7 +37,7 @@ import org.loboevolution.html.node.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,45 +46,29 @@ import static org.junit.Assert.*;
  * Create a list of all the children elements of the third
  * employee and traverse the list from index=0 thru
  * length -1.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-203510337">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-203510337</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136</a>
  */
-public class nodelisttraverselistTest extends LoboUnitTest {
+public class NodelisttraverselistTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList employeeList;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList employeeList;
         Node child;
         String childName;
-        java.util.List<String> result = new java.util.ArrayList<String>();
+        final java.util.List<String> result = new java.util.ArrayList<>();
 
-        int length;
-        java.util.List<String> expectedWhitespace = new java.util.ArrayList<>();
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("employeeId");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("name");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("position");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("salary");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("gender");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("ADDRESS");
-        expectedWhitespace.add("#text");
+        final int length;
+        final List<String> expectedWhitespace = getStrings();
 
-        List<String> expectedNoWhitespace = new ArrayList<>();
+        final List<String> expectedNoWhitespace = new ArrayList<>();
         expectedNoWhitespace.add("EMPLOYEEID");
         expectedNoWhitespace.add("NAME");
         expectedNoWhitespace.add("POSITION");
@@ -104,11 +88,29 @@ public class nodelisttraverselistTest extends LoboUnitTest {
         }
 
         if (length == 6) {
-            assertEquals("nowhitespace", expectedNoWhitespace, result);
+            assertEquals(expectedNoWhitespace, result, "NodelisttraverselistAssert1");
         } else {
-            assertEquals("whitespace", expectedWhitespace, result);
+            assertEquals(expectedWhitespace, result, "NodelisttraverselistAssert2");
         }
 
+    }
+
+    private static List<String> getStrings() {
+        final List<String> expectedWhitespace = new ArrayList<>();
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("employeeId");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("name");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("position");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("salary");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("gender");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("ADDRESS");
+        expectedWhitespace.add("#text");
+        return expectedWhitespace;
     }
 
 }

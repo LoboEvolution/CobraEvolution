@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,7 +66,7 @@ public class SVGLengthListImpl implements SVGLengthList {
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength initialize(SVGLength newItem) throws DOMException, SVGException {
+	public SVGLength initialize(final SVGLength newItem) throws DOMException, SVGException {
 		pointList = new ArrayList<>();
 		pointList.add(newItem);
 		return newItem;
@@ -74,18 +74,18 @@ public class SVGLengthListImpl implements SVGLengthList {
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength getItem(int index) {
+	public SVGLength getItem(final int index) {
 		return pointList.get(index);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength insertItemBefore(SVGLength newItem, int index) throws DOMException, SVGException {
+	public SVGLength insertItemBefore(final SVGLength newItem, final int index) throws DOMException, SVGException {
 
 		pointList.remove(newItem);
 
 		if (index < 0) {
-			pointList.add(0, newItem);
+			pointList.addFirst(newItem);
 		} else if (index > getNumberOfItems() - 1) { // insert at end
 			pointList.add(newItem);
 		} else {
@@ -96,7 +96,7 @@ public class SVGLengthListImpl implements SVGLengthList {
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength replaceItem(SVGLength newItem, int index) throws DOMException, SVGException {
+	public SVGLength replaceItem(final SVGLength newItem, final int index) throws DOMException, SVGException {
 
 		pointList.remove(newItem);
 
@@ -111,13 +111,13 @@ public class SVGLengthListImpl implements SVGLengthList {
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength removeItem(int index) {
+	public SVGLength removeItem(final int index) {
 		return pointList.remove(index);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGLength appendItem(SVGLength newItem) throws DOMException, SVGException {
+	public SVGLength appendItem(final SVGLength newItem) throws DOMException, SVGException {
 		pointList.add(newItem);
 		return newItem;
 	}

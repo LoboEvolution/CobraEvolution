@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,45 +27,41 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition to check if a Document node contains and precedes its new DocumentType and
  * node and if the new DocumentType Node is contained and follows its Document node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition02Test extends LoboUnitTest {
+public class Nodecomparedocumentposition02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        DocumentType newDocType;
-        DocumentType docType;
-        int documentPositionDoc;
-        int documentPositionDocType;
-        String nullPubId = null;
-        String nullSysId = null;
-        String rootName;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final DocumentType newDocType;
+        final DocumentType docType;
+        final int documentPositionDoc;
+        final int documentPositionDocType;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         rootName = docType.getName();
         domImpl = doc.getImplementation();
-        newDocType = domImpl.createDocumentType(rootName, nullPubId, nullSysId);
+        newDocType = domImpl.createDocumentType(rootName, null, null);
         doc.replaceChild(newDocType, docType);
         documentPositionDoc = doc.compareDocumentPosition(newDocType);
-        assertEquals("nodecomparedocumentpositionIsContainedFollowing02", 20, documentPositionDoc);
+        assertEquals(20, documentPositionDoc, "Nodecomparedocumentposition02Assert2");
         documentPositionDocType = newDocType.compareDocumentPosition(doc);
-        assertEquals("nodecomparedocumentpositionContainsPRECEDING02", 10, documentPositionDocType);
+        assertEquals(10, documentPositionDocType, "Nodecomparedocumentposition02Assert3");
     }
 }
 

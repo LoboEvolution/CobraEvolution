@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Invoke replaceWholeText on an existing Text Node to replace its value with an
  * empty string value.  Verify the repalceWholeText method by verifying if the value
  * returned is null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-replaceWholeText">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-replaceWholeText</a>
  */
-public class textreplacewholetext02Test extends LoboUnitTest {
+public class Textreplacewholetext02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection itemList;
-        Element elementName;
-        Text textNode;
-        Text replacedText;
+        final Document doc;
+        final HTMLCollection itemList;
+        final Element elementName;
+        final Text textNode;
+        final Text replacedText;
         doc = sampleXmlFile("hc_staff.xml");
         itemList = doc.getElementsByTagName("strong");
         elementName = (Element) itemList.item(0);
         textNode = (Text) elementName.getFirstChild();
         replacedText = textNode.replaceWholeText("");
-        assertNull("textreplacewholetext02", replacedText);
+        assertNull(replacedText, "Textreplacewholetext02Assert2");
     }
 }
 

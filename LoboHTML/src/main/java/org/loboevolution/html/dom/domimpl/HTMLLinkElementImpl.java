@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,10 +32,9 @@ import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLLinkElement;
 import org.loboevolution.gui.HtmlPanel;
 import org.loboevolution.html.js.css.CSSStyleSheetImpl;
-import org.loboevolution.html.node.DOMTokenList;
-import org.loboevolution.html.node.css.StyleSheet;
+import org.loboevolution.html.dom.DOMTokenList;
+import org.loboevolution.css.StyleSheet;
 import org.loboevolution.html.parser.XHtmlParser;
-import org.loboevolution.html.renderstate.LinkRenderState;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.html.style.CSSUtilities;
 import org.loboevolution.http.UserAgentContext;
@@ -44,14 +43,13 @@ import org.loboevolution.net.MimeType;
 import org.loboevolution.html.dom.UserDataHandler;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,7 +64,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	/**
 	 * <p>Constructor for HTMLLinkElementImpl.</p>
 	 *
-	 * @param name a {@link java.lang.String} object.
+	 * @param name a {@link String} object.
 	 */
 	public HTMLLinkElementImpl(final String name) {
 		super(name);
@@ -74,62 +72,14 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
-		RenderState tmpRenderState = prevRenderState;
-		if (hasAttribute("href")) {
-			return new LinkRenderState(prevRenderState, getHtmlRendererContext(), this);
-		}
-		return super.createRenderState(tmpRenderState);
-	}
-
-	/**
-	 * <p>getAbsoluteHref.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getAbsoluteHref() {
-		final HtmlRendererContext rcontext = getHtmlRendererContext();
-		if (rcontext != null) {
-			final String href = getHref();
-			if (href != null && href.length() > 0) {
-				getTarget();
-				try {
-					final URL url = getFullURL(href);
-					return url == null ? null : url.toExternalForm();
-				} catch (final MalformedURLException mfu) {
-					this.warn("Malformed URI: [" + href + "].", mfu);
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * <p>navigate.</p>
-	 */
-	public void navigate() {
-		final HtmlRendererContext rcontext = getHtmlRendererContext();
-		if (!this.disabled && rcontext != null) {
-			final String href = getHref();
-			if (Strings.isNotBlank(href)) {
-				try {
-					final URL url = getFullURL(href);
-					if (url == null) {
-						this.warn("Unable to resolve URI: [" + href + "].");
-					} else {
-						rcontext.linkClicked(url, false);
-					}
-				} catch (final MalformedURLException mfu) {
-					this.warn("Malformed URI: [" + href + "].", mfu);
-				}
-			}
-		}
+	protected RenderState createRenderState(final RenderState prevRenderState) {
+		return super.createRenderState(prevRenderState);
 	}
 
 	/**
 	 * If the LINK refers to a stylesheet document, this method loads and parses it.
 	 */
-	protected void processLink() {
+	private void processLink() {
 		this.styleSheet = null;
 		final String rel = getAttribute("rel");
 		if (rel != null) {
@@ -148,14 +98,13 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 				if ((isStyleSheet || isAltStyleSheet)) {
 					String title = getAttribute("title");
-					URL baseURL = new URL(baseURI);
-					URL scriptURL = Urls.createURL(baseURL, href);
+					final URI scriptURI = Urls.createURI(baseURI, href);
+					final URL scriptURL = scriptURI.toURL();
 					if (Strings.isBlank(title)) {
-						URI uri = scriptURL.toURI();
 						if (Urls.isLocalFile(scriptURL)) {
-							title = Paths.get(uri).getFileName().toString();
+							title = Paths.get(scriptURI).getFileName().toString();
 						} else {
-							title = new File(uri.getPath()).getName();
+							title = new File(scriptURI.getPath()).getName();
 						}
 					}
 
@@ -163,29 +112,32 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 					List<String> styles = new ArrayList<>();
 					if (!rcontext.isTestEnabled()) {
 						styles = config.getStyles(href, currentUrl);
-						if (styles.size() == 0) {
+						if (styles.isEmpty()) {
 							config.insertStyle(title, href, currentUrl, isStyleSheet ? 1 : 0);
 						} else {
-							styleEnabled = styles.get(0);
+							styleEnabled = styles.getFirst();
 						}
 					}
 
-					if (styleEnabled.equals(title) || styles.size() == 0) {
+					if (styleEnabled.equals(title) || styles.isEmpty()) {
 						final UserAgentContext uacontext = getUserAgentContext();
 						if (uacontext.isExternalCSSEnabled()) {
 							final String media = getMedia();
 							if (CSSUtilities.matchesMedia(media, doc.getDefaultView())) {
-								Instant start = Instant.now();
-								TimingInfo info = new TimingInfo();
-								final org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getHtmlRendererConfig(), href, scriptURL, baseURI, rcontext.isTestEnabled());
-								sheet.setHref(scriptURL == null ? href : scriptURL.toExternalForm());
+								final Instant start = Instant.now();
+								final TimingInfo info = new TimingInfo();
+								final org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getHtmlRendererConfig(), scriptURI, baseURI, getIntegrity(), rcontext.isTestEnabled());
+								String fileName = scriptURL.getFile().substring(scriptURL.getFile().lastIndexOf('/') + 1);
+								boolean exist = Urls.exists(scriptURL);
+								sheet.setHref(exist ? fileName : null);
 								sheet.setDisabled(this.disabled);
-								CSSStyleSheetImpl cssStyleSheet = new CSSStyleSheetImpl(sheet);
+
+								final CSSStyleSheetImpl cssStyleSheet = new CSSStyleSheetImpl(sheet);
 								cssStyleSheet.setOwnerNode(this);
 								doc.addStyleSheet(cssStyleSheet);
 								this.styleSheet = cssStyleSheet;
-								Instant finish = Instant.now();
-								long timeElapsed = Duration.between(start, finish).toMillis();
+								final Instant finish = Instant.now();
+								final long timeElapsed = Duration.between(start, finish).toMillis();
 								info.setName(title);
 								info.setTimeElapsed(timeElapsed);
 								info.setPath(scriptURL.toExternalForm());
@@ -199,8 +151,8 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 					}
 				}
 
-			} catch (final MalformedURLException | FileNotFoundException mfe) {
-				this.warn("Will not parse CSS. URI=[" + getHref() + "] with BaseURI=[" + baseURI + "] does not appear to be a valid URI.");
+			} catch (Exception ex) {
+				this.warn("Will not parse CSS. URI=[" + getHref() + "] with BaseURI=[" + baseURI + "] does not appear to be a valid URI.", ex);
 			} catch (final Throwable err) {
 				this.warn("Unable to parse CSS. URI=[" + getHref() + "].", err);
 			}
@@ -213,7 +165,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	}
 
 	@Override
-	public void setAs(String as) {
+	public void setAs(final String as) {
 
 	}
 
@@ -223,7 +175,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	}
 
 	@Override
-	public void setCrossOrigin(String crossOrigin) {
+	public void setCrossOrigin(final String crossOrigin) {
 
 	}
 
@@ -283,7 +235,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(final boolean disabled) {
 		this.disabled = disabled;
 		final CSSStyleSheetImpl sheet = this.styleSheet;
 		if (sheet != null) {
@@ -293,13 +245,13 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHref(String href) {
+	public void setHref(final String href) {
 		setAttribute("href", href);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHreflang(String hreflang) {
+	public void setHreflang(final String hreflang) {
 		setAttribute("hreflang", hreflang);
 	}
 
@@ -309,7 +261,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	}
 
 	@Override
-	public void setImageSizes(String imageSizes) {
+	public void setImageSizes(final String imageSizes) {
 
 	}
 
@@ -319,23 +271,23 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	}
 
 	@Override
-	public void setImageSrcset(String imageSrcset) {
+	public void setImageSrcset(final String imageSrcset) {
 
 	}
 
 	@Override
 	public String getIntegrity() {
-		return null;
+		return getAttribute("integrity");
 	}
 
 	@Override
-	public void setIntegrity(String integrity) {
+	public void setIntegrity(final String integrity) {
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setMedia(String media) {
+	public void setMedia(final String media) {
 		setAttribute("media", media);
 	}
 
@@ -345,24 +297,31 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	}
 
 	@Override
-	public void setReferrerPolicy(String referrerPolicy) {
+	public void setReferrerPolicy(final String referrerPolicy) {
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setRel(String rel) {
+	public void setRel(final String rel) {
 		setAttribute("rel", rel);
 	}
 
 	@Override
 	public DOMTokenList getRelList() {
-		return null;
+		final DOMTokenListImpl tokList = new DOMTokenListImpl(this);
+		final String rel = getRel();
+		if(Strings.isNotBlank(rel)){
+			final String[] listString = rel.split(" ");
+			final List<String> names = Arrays.asList(listString);
+			names.forEach(tokList::populate);
+		}
+		return tokList;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setRev(String rev) {
+	public void setRev(final String rev) {
 		setAttribute("rev", rev);
 	}
 
@@ -373,13 +332,13 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void setTarget(String target) {
+	public void setTarget(final String target)  {
 		setAttribute("target", target);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setType(String type) {
+	public void setType(final String type) {
 		setAttribute("type", type);
 	}
 
@@ -387,7 +346,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 	@Override
 	public StyleSheet getSheet() {
 		if ("stylesheet".equals(getRel())) {
-			org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = new org.htmlunit.cssparser.dom.CSSStyleSheetImpl();
+			final org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = new org.htmlunit.cssparser.dom.CSSStyleSheetImpl();
 			styleSheet = new CSSStyleSheetImpl(sheet);
 		}
 
@@ -396,7 +355,7 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
 
 	/** {@inheritDoc} */
 	@Override
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		if (XHtmlParser.MODIFYING_KEY.equals(key) && data != Boolean.TRUE) {
 			processLink();
 		}

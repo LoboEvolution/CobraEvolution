@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,39 +43,32 @@ import static org.junit.Assert.assertNull;
  * valid and correctly formed.
  * <p>
  * Invoke method createDocument(namespaceURI,qualifiedName,doctype) on
- * this domimplementation. namespaceURI is "http://www.ecommerce.org/schema"
+ * this domimplementation. namespaceURI is "<a href="http://www.ecommerce.org/schema">...</a>"
  * qualifiedName is "y:x" and doctype is null.
  * Method should return a new xml Document as specified by the listed parameters.
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument</a>
  */
-public class createDocument07Test extends LoboUnitTest {
+public class CreateDocument07Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.ecommerce.org/schema";
-        String qualifiedName = "y:x";
-        Document doc;
-        DocumentType docType = null;
-
-        DOMImplementation domImpl;
-        Document aNewDoc;
-        String nodeName;
-        String nodeValue;
+        final String namespaceURI = "http://www.ecommerce.org/schema";
+        final String qualifiedName = "y:x";
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document aNewDoc;
+        final String nodeName;
+        final String nodeValue;
         doc = sampleXmlFile("staffNS.xml");
-        
         domImpl = doc.getImplementation();
-        aNewDoc = domImpl.createDocument(namespaceURI, qualifiedName, docType);
+        aNewDoc = domImpl.createDocument(namespaceURI, qualifiedName, null);
         nodeName = aNewDoc.getNodeName();
         nodeValue = aNewDoc.getNodeValue();
-        assertEquals("nodeName", "[object HTMLDocument]", nodeName);
-        assertNull("nodeValue", nodeValue);
+        assertEquals("[object HTMLDocument]", nodeName);
+        assertNull(nodeValue);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,11 +35,6 @@ import org.loboevolution.html.xpath.XPathNSResolver;
  */
 public class XPathNSResolverImpl implements XPathNSResolver {
 
-    private String
-            S_XMLNAMESPACEURI = "http://www.w3.org/XML/1998/namespace",
-            S_XSLNAMESPACEURL = "http://www.w3.org/1999/XSL/Transform",
-            S_OLDXSLNAMESPACEURL = "http://www.w3.org/XSL/Transform/1.0";
-
     private Node parent;
 
     /**
@@ -47,19 +42,19 @@ public class XPathNSResolverImpl implements XPathNSResolver {
      *
      * @param xpathExpressionContext a {@link org.loboevolution.html.node.Node} object.
      */
-    public XPathNSResolverImpl(Node xpathExpressionContext) {
+    public XPathNSResolverImpl(final Node xpathExpressionContext) {
         this.parent = xpathExpressionContext;
 
     }
 
     /** {@inheritDoc} */
     @Override
-    public String lookupNamespaceURI(String prefix) {
+    public String lookupNamespaceURI(final String prefix) {
         if (Strings.isBlank(prefix)) return null;
         String namespace = null;
 
         if ("xml".equals(prefix)) {
-            namespace = S_XMLNAMESPACEURI;
+            namespace = "http://www.w3.org/XML/1998/namespace";
         } else {
             int type;
             while (parent != null
@@ -70,24 +65,25 @@ public class XPathNSResolverImpl implements XPathNSResolver {
 
                 switch (type) {
                     case Node.DOCUMENT_NODE:
-                        Document document = (Document) parent;
-                        Element docelm = document.getDocumentElement();
+                        final Document document = (Document) parent;
+                        final Element docelm = document.getDocumentElement();
                         if (docelm != null && docelm.getNodeName().indexOf(prefix.toUpperCase() + ":") == 0) {
                             return docelm.getNamespaceURI();
                         }
+                        break;
                     case Node.ELEMENT_NODE:
-                        if (parent.getNodeName().indexOf(prefix.toUpperCase() + ":") == 0) {
+                        if (parent.getNodeName().indexOf(prefix + ":") == 0) {
                             return parent.getNamespaceURI();
                         }
-                        NamedNodeMap nnm = parent.getAttributes();
+                        final NamedNodeMap nnm = parent.getAttributes();
                         if (nnm != null) {
                             for (int i = 0; i < nnm.getLength(); i++) {
-                                Node attr = nnm.item(i);
-                                String aname = attr.getNodeName();
-                                boolean isPrefix = aname.startsWith("xmlns:");
+                                final Node attr = nnm.item(i);
+                                final String aname = attr.getNodeName();
+                                final boolean isPrefix = aname.startsWith("xmlns:");
                                 if (isPrefix || aname.equals("xmlns")) {
-                                    int index = aname.indexOf(':');
-                                    String p = isPrefix ? aname.substring(index + 1) : "";
+                                    final int index = aname.indexOf(':');
+                                    final String p = isPrefix ? aname.substring(index + 1) : "";
                                     if (p.equals(prefix)) {
                                         namespace = attr.getNodeValue();
                                         break;
@@ -95,10 +91,12 @@ public class XPathNSResolverImpl implements XPathNSResolver {
                                 }
                             }
                         }
+                        break;
                     case Node.ATTRIBUTE_NODE:
                         if (prefix.equals(parent.getPrefix())) {
                             return parent.getNamespaceURI();
                         }
+                        break;
                     default:
                         break;
                 }

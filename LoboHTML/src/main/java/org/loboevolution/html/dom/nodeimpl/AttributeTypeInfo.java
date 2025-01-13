@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,12 +54,19 @@ public class AttributeTypeInfo implements TypeInfo {
      */
     @Override
     public String getTypeName() {
-        if (node instanceof Attr && ((Attr) node).isId()) {
-            return "ID";
-        }
+        if (node instanceof Attr) {
 
-        if (node instanceof Attr && node.getNodeValue() != null) {
-            return "string";
+            if( ((Attr) node).isId()){
+                return "ID";
+            }
+
+            if("class".equals(node.getNodeName())){
+                return "classType";
+            }
+
+            if(node.getNodeValue() != null){
+                return "string";
+            }
         }
 
         if (node instanceof CDATASection) {
@@ -81,7 +88,7 @@ public class AttributeTypeInfo implements TypeInfo {
      * {@inheritDoc}
      */
     @Override
-    public boolean isDerivedFrom(String typeNamespaceArg, String typeNameArg, int derivationMethod) {
+    public boolean isDerivedFrom(final String typeNamespaceArg, final String typeNameArg, final int derivationMethod) {
 
         if (typeNameArg == null)
             return false;

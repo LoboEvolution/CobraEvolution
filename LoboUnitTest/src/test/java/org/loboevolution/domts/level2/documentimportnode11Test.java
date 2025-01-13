@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -46,34 +46,31 @@ import static org.junit.Assert.assertFalse;
  * Using the method importNode with deep=false, import this Document's documentElement
  * node.  Verify if the node has been imported correctly by its nodeName atttribute and
  * if the original document is not altered by checking if hasChildNodes returns false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode11Test extends LoboUnitTest {
+public class Documentimportnode11Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element docElement;
-        Node imported;
-        boolean success;
-        String nodeNameOrig;
-        String nodeNameImported;
+        final Document doc;
+        final Element docElement;
+        final Node imported;
+        final boolean success;
+        final String nodeNameOrig;
+        final String nodeNameImported;
         doc = sampleXmlFile("staffNS.xml");
         docElement = doc.getDocumentElement();
         imported = doc.importNode(docElement, false);
         success = imported.hasChildNodes();
-        assertFalse("documentimportnode11", success);
+        assertFalse(success);
         nodeNameImported = imported.getNodeName();
         nodeNameOrig = docElement.getNodeName();
-        assertEquals("documentimportnode11_NodeName", nodeNameImported, nodeNameOrig);
+        assertEquals(nodeNameImported, nodeNameOrig);
     }
 }
 

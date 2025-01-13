@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +26,23 @@
 
 package org.loboevolution.html.js.css;
 
+import lombok.Getter;
 import org.htmlunit.cssparser.dom.DOMException;
-import org.loboevolution.html.node.css.CSSRule;
-import org.loboevolution.html.node.css.CSSRuleList;
-import org.loboevolution.html.node.css.CSSStyleSheet;
+import org.loboevolution.css.CSSRule;
+import org.loboevolution.css.CSSRuleList;
+import org.loboevolution.css.CSSStyleSheet;
 
+/**
+ * <p>CSSStyleSheetImpl class.</p>
+ */
 public class CSSStyleSheetImpl extends StyleSheetImpl implements CSSStyleSheet {
 
+    @Getter
     private final org.htmlunit.cssparser.dom.CSSStyleSheetImpl cssStyleSheet;
 
     private final CSSRuleListImpl cssRuleList;
 
-    public CSSStyleSheetImpl(org.htmlunit.cssparser.dom.CSSStyleSheetImpl cssStyleSheet) {
+    public CSSStyleSheetImpl(final org.htmlunit.cssparser.dom.CSSStyleSheetImpl cssStyleSheet) {
         super(cssStyleSheet);
         this.cssStyleSheet = cssStyleSheet;
         this.cssRuleList = new CSSRuleListImpl(cssStyleSheet.getCssRules());
@@ -58,14 +63,26 @@ public class CSSStyleSheetImpl extends StyleSheetImpl implements CSSStyleSheet {
 
     /** {@inheritDoc} */
     @Override
-    public long insertRule(String rule, int index) {
+    public long insertRule(final String rule, final int index) {
         try {
             this.cssStyleSheet.insertRule(rule, index);
             this.cssRuleList.addStyleRule(cssStyleSheet.getCssRules());
-        } catch (IndexOutOfBoundsException e){
+        } catch (final IndexOutOfBoundsException e) {
             throw new DOMException(
                     DOMException.INDEX_SIZE_ERR, e.getMessage());
-        } catch (Exception e) {
+        } catch (DOMException cssException) {
+            throw cssException;
+        } catch (final Exception e) {
+            final int pos = rule.indexOf('{');
+            if (pos > -1) {
+                final String newRule = rule.substring(0, pos) + "{}";
+                try {
+                    insertRule(newRule, index);
+                    return index;
+                } catch (final Exception ex) {
+                    return 0;
+                }
+            }
             return 0;
         }
         return index;
@@ -73,22 +90,18 @@ public class CSSStyleSheetImpl extends StyleSheetImpl implements CSSStyleSheet {
 
     /** {@inheritDoc} */
     @Override
-    public void deleteRule(int index) {
+    public void deleteRule(final int index) {
         try {
             cssStyleSheet.deleteRule(index);
             this.cssRuleList.addStyleRule(cssStyleSheet.getCssRules());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DOMException(
                     DOMException.INDEX_SIZE_ERR, e.getMessage());
         }
     }
 
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(final boolean disabled) {
         cssStyleSheet.setDisabled(disabled);
-    }
-
-    public org.htmlunit.cssparser.dom.CSSStyleSheetImpl getCssStyleSheet() {
-        return this.cssStyleSheet;
     }
 
     @Override

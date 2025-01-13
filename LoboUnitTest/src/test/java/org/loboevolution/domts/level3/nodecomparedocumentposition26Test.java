@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,47 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Using compareDocumentPosition check if the EntityReference node contains and precedes it's first
  * childElement, and that the childElement is contained and follows the EntityReference node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition26Test extends LoboUnitTest {
+public class Nodecomparedocumentposition26Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection varList;
-        Element varElem;
-        EntityReference entRef;
-        Element entRefChild1;
-        int entRefPosition;
-        int entRefChild1Position;
+        final Document doc;
+        final HTMLCollection varList;
+        final Element varElem;
+        final EntityReference entRef;
+        final Element entRefChild1;
+        final int entRefPosition;
+        final int entRefChild1Position;
         doc = sampleXmlFile("hc_staff.xml");
 
         varList = doc.getElementsByTagName("var");
         varElem = (Element) varList.item(2);
-        assertNotNull("varElemNotNull", varElem);
+        assertNotNull(varElem, "Nodecomparedocumentposition26Assert3");
         entRef = (EntityReference) varElem.getFirstChild();
-        assertNotNull("entRefNotNull", entRef);
+        assertNotNull(entRef, "Nodecomparedocumentposition26Assert4");
 
         entRefChild1 = (Element) entRef.getFirstChild();
-        assertNotNull("entRefChild1NotNull", entRefChild1);
+        assertNotNull(entRefChild1, "Nodecomparedocumentposition26Assert5");
         entRefPosition = entRef.compareDocumentPosition(entRefChild1);
-        assertEquals("nodecomparedocumentpositionIsContainedFollowing26", 20, entRefPosition);
+        assertEquals(20, entRefPosition, "Nodecomparedocumentposition26Assert6");
         entRefChild1Position = entRefChild1.compareDocumentPosition(entRef);
-        assertEquals("nodecomparedocumentpositionContainsPRECEDING26", 10, entRefChild1Position);
+        assertEquals(10, entRefChild1Position, "Nodecomparedocumentposition26Assert7");
     }
 }
 

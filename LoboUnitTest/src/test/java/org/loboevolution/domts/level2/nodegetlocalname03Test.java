@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,28 +42,25 @@ import static org.junit.Assert.*;
  * Ceate two new element nodes and atribute nodes, with and without namespace prefixes.
  * Retreive the local part of their qualified names using getLocalName and verrify
  * if it is correct.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSLocalN">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSLocalN</a>
  */
-public class nodegetlocalname03Test extends LoboUnitTest {
+public class Nodegetlocalname03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Element qelement;
-        Attr attr;
-        Attr qattr;
-        String localElemName;
-        String localQElemName;
-        String localAttrName;
-        String localQAttrName;
+        final Document doc;
+        final Element element;
+        final Element qelement;
+        final Attr attr;
+        final Attr qattr;
+        final String localElemName;
+        final String localQElemName;
+        final String localAttrName;
+        final String localQAttrName;
         doc = sampleXmlFile("staff.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test/elem", "elem");
         qelement = doc.createElementNS("http://www.w3.org/DOM/Test/elem", "qual:qelem");
@@ -73,10 +70,10 @@ public class nodegetlocalname03Test extends LoboUnitTest {
         localQElemName = qelement.getLocalName();
         localAttrName = attr.getLocalName();
         localQAttrName = qattr.getLocalName();
-        assertEquals("nodegetlocalname03_localElemName", "elem", localElemName);
-        assertEquals("nodegetlocalname03_localQElemName", "qelem", localQElemName);
-        assertEquals("nodegetlocalname03_localAttrName", "attr", localAttrName);
-        assertEquals("nodegetlocalname03_localQAttrName", "qattr", localQAttrName);
+        assertEquals("elem", localElemName);
+        assertEquals("qelem", localQElemName);
+        assertEquals("attr", localAttrName);
+        assertEquals("qattr", localQAttrName);
     }
 }
 

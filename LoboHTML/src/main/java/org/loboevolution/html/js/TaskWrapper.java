@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ class TaskWrapper {
 	 * @param timer a {@link javax.swing.Timer} object.
 	 * @param retained a {@link java.lang.Object} object.
 	 */
-	public TaskWrapper(Timer timer, Object retained) {
+	public TaskWrapper(final Timer timer, final Object retained) {
 		this.timer = timer;
 	}
 }

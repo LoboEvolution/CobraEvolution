@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -34,27 +34,24 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Using isDefaultNamespace on a Notation and Entity node with the value of the namespaceURI parameter
  * as null check if the value returned is false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace</a>
  */
-public class nodeisdefaultnamespace04Test extends LoboUnitTest {
+public class Nodeisdefaultnamespace04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        Node entity;
-        Notation notation;
-        NamedNodeMap entitiesMap;
-        NamedNodeMap notationsMap;
+        final Document doc;
+        final DocumentType docType;
+        final Node entity;
+        final Notation notation;
+        final NamedNodeMap entitiesMap;
+        final NamedNodeMap notationsMap;
         boolean isDefault;
-        String nullNSURI = null;
 
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
@@ -62,9 +59,9 @@ public class nodeisdefaultnamespace04Test extends LoboUnitTest {
         notationsMap = docType.getNotations();
         entity = entitiesMap.getNamedItem("alpha");
         notation = (Notation) notationsMap.getNamedItem("notation1");
-        isDefault = entity.isDefaultNamespace(nullNSURI);
-        assertFalse("nodeisdefaultnamespace04_1", isDefault);
-        isDefault = notation.isDefaultNamespace(nullNSURI);
-        assertFalse("nodeisdefaultnamespace04_2", isDefault);
+        isDefault = entity.isDefaultNamespace(null);
+        assertFalse(isDefault, "Nodeisdefaultnamespace04Assert2");
+        isDefault = notation.isDefaultNamespace(null);
+        assertFalse(isDefault, "Nodeisdefaultnamespace04Assert3");
     }
 }

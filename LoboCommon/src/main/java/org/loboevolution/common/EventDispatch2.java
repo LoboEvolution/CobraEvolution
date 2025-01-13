@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public abstract class EventDispatch2 {
 	 *
 	 * @param listener a {@link java.util.EventListener} object.
 	 */
-	public final void addListener(EventListener listener) {
+	public final void addListener(final EventListener listener) {
 		synchronized (this) {
 			if (this.listeners == null) {
 				this.listeners = createListenerCollection();
@@ -83,16 +83,16 @@ public abstract class EventDispatch2 {
 	 * @param event a {@link java.util.EventObject} object.
 	 * @return a boolean.
 	 */
-	public final boolean fireEvent(EventObject event) {
-		EventListener[] larray;
+	public final boolean fireEvent(final EventObject event) {
+		final EventListener[] larray;
 		synchronized (this) {
 			final Collection<EventListener> listeners = this.listeners;
-			if (listeners == null || listeners.size() == 0) {
+			if (ArrayUtilities.isBlank(listeners)) {
 				return false;
 			}
 			larray = this.listeners.toArray(EMPTY_ARRAY);
 		}
-		for (EventListener eventListener : larray) {
+		for (final EventListener eventListener : larray) {
 			dispatchEvent(eventListener, event);
 		}
 		return true;
@@ -103,7 +103,7 @@ public abstract class EventDispatch2 {
 	 *
 	 * @param listener a {@link java.util.EventListener} object.
 	 */
-	public final void removeListener(EventListener listener) {
+	public final void removeListener(final EventListener listener) {
 		synchronized (this) {
 			if (this.listeners != null) {
 				this.listeners.remove(listener);

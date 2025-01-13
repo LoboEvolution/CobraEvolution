@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,14 +34,14 @@ public class Plus extends Operation {
 
   /** {@inheritDoc} */
   @Override
-  public XObject operate(XObject left, XObject right)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject operate(final XObject left, final XObject right)
+      throws javax.xml.transform.TransformerException {
     return new XNumber(left.num() + right.num());
   }
 
   /** {@inheritDoc} */
   @Override
-  public double num(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public double num(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
     return m_right.num(xctxt) + m_left.num(xctxt);
   }

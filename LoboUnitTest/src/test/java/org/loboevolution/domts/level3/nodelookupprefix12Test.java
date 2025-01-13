@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Invoke lookupPrefix on an renamed new Element node with a namespace URI
  * and prefix in a new Document and using the parents namespace URI as an argument, verify if the prefix
  * returned is a valid prefix of the parent.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix</a>
  */
-public class nodelookupprefix12Test extends LoboUnitTest {
+public class Nodelookupprefix12Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Element elem;
-        Element renamedNode;
-        String prefix;
+        final Document doc;
+        final Element elem;
+        final Element renamedNode;
+        final String prefix;
         doc = sampleXmlFile("hc_staff.xml");
-        domImpl = doc.getImplementation();
+        doc.getImplementation();
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         renamedNode = (Element) doc.renameNode(elem, "http://www.w3.org/1999/xhtml", "ren:br");
         prefix = renamedNode.lookupPrefix("http://www.w3.org/1999/xhtml");
-        assertEquals("nodelookupprefix12", "ren", prefix);
+        assertEquals("ren", prefix, "Nodelookupprefix12Assert2");
     }
 }
 

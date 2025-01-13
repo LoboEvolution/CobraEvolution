@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@
 
 package org.loboevolution.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,10 +37,8 @@ import java.util.Locale;
 
 /**
  * <p>DateUtil class.</p>
- *
- *
- *
  */
+@Slf4j
 public final class DateUtil {
 
 	/**
@@ -52,16 +52,17 @@ public final class DateUtil {
 	 * @see SimpleDateFormat
 	 * @param loc a {@link java.util.Locale} object.
 	 */
-	public Date determineDateFormat(String dateString, Locale loc) {
+	public Date determineDateFormat(final String dateString, final Locale loc) {
 
 		final List<String> DATE_FORMAT = formatList();
 		for (final String regexp : DATE_FORMAT) {
 			try {
 				return parse(dateString, regexp, loc);
 			} catch (final ParseException e) {
+				log.info(e.getMessage());
 			}
 		}
-		return null; // Unknown format.
+		return null;
 	}
 
 	private List<String> formatList() {
@@ -126,7 +127,7 @@ public final class DateUtil {
 	 *                        based on the given date format pattern.
 	 * @see SimpleDateFormat
 	 */
-	private Date parse(String dateString, String dateFormat, Locale loc) throws ParseException {
+	private Date parse(final String dateString, final String dateFormat, final Locale loc) throws ParseException {
 		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat, loc);
 		simpleDateFormat.setLenient(false);
 		return simpleDateFormat.parse(dateString);

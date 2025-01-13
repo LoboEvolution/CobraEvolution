@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.htmlunit.cssparser.dom.DOMException;
 import org.htmlunit.cssparser.parser.javacc.CharStream;
 import org.htmlunit.cssparser.parser.javacc.ParseException;
 import org.htmlunit.cssparser.parser.javacc.Token;
-import org.htmlunit.cssparser.parser.javacc.TokenMgrError;
+import org.htmlunit.cssparser.parser.javacc.TokenMgrException;
 import org.htmlunit.cssparser.parser.media.MediaQueryList;
 import org.htmlunit.cssparser.parser.selector.SelectorList;
 
@@ -303,10 +303,10 @@ public abstract class AbstractCSSParser {
     /**
      * <p>toCSSParseException.</p>
      *
-     * @param e the TokenMgrError
+     * @param e the TokenMgrException
      * @return a new CSSParseException
      */
-    protected CSSParseException toCSSParseException(final TokenMgrError e) {
+    protected CSSParseException toCSSParseException(final TokenMgrException e) {
         final String messagePattern = getParserMessage("tokenMgrError");
         return new CSSParseException(messagePattern, getInputSource().getURI(), 1, 1);
     }
@@ -365,7 +365,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidStyleSheet", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -392,7 +392,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidStyleDeclaration", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -419,7 +419,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidRule", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -448,7 +448,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidSelectorList", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -478,7 +478,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidExpr", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -508,7 +508,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidPrio", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -533,7 +533,7 @@ public abstract class AbstractCSSParser {
         catch (final ParseException e) {
             getErrorHandler().error(toCSSParseException("invalidMediaList", e));
         }
-        catch (final TokenMgrError e) {
+        catch (final TokenMgrException e) {
             getErrorHandler().error(toCSSParseException(e));
         }
         catch (final CSSParseException e) {
@@ -797,6 +797,21 @@ public abstract class AbstractCSSParser {
     protected LexicalUnit hslColorInternal(final LexicalUnit prev, final String funct,
             final LexicalUnit param) {
         return LexicalUnitImpl.createHslColor(prev, funct, param);
+    }
+
+    protected LexicalUnit hwbColorInternal(final LexicalUnit prev, final String funct,
+            final LexicalUnit param) {
+        return LexicalUnitImpl.createHwbColor(prev, funct, param);
+    }
+
+    protected LexicalUnit labColorInternal(final LexicalUnit prev, final String funct,
+            final LexicalUnit param) {
+        return LexicalUnitImpl.createLabColor(prev, funct, param);
+    }
+
+    protected LexicalUnit lchColorInternal(final LexicalUnit prev, final String funct,
+            final LexicalUnit param) {
+        return LexicalUnitImpl.createLchColor(prev, funct, param);
     }
 
     /**

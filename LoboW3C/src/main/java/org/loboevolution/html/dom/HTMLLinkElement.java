@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,7 @@
 
 package org.loboevolution.html.dom;
 
-import org.loboevolution.html.node.DOMTokenList;
-import org.loboevolution.html.node.css.StyleSheet;
+import org.loboevolution.css.StyleSheet;
 
 /**
  * Reference information for external resources and the relationship of those
@@ -209,7 +208,7 @@ public interface HTMLLinkElement extends HTMLElement {
 	/**
 	 * <p>getRelList.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.DOMTokenList} object.
+	 * @return a {@link org.loboevolution.html.dom.DOMTokenList} object.
 	 */
 	DOMTokenList getRelList();
 
@@ -232,7 +231,7 @@ public interface HTMLLinkElement extends HTMLElement {
 	/**
 	 * <p>getSizes.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.DOMTokenList} object.
+	 * @return a {@link org.loboevolution.html.dom.DOMTokenList} object.
 	 */
 	DOMTokenList getSizes();
 
@@ -267,7 +266,7 @@ public interface HTMLLinkElement extends HTMLElement {
 
 	/**
 	 * getSheet().
-	 * @return a {@link org.loboevolution.html.node.css.StyleSheet} object.
+	 * @return a {@link StyleSheet} object.
 	 */
 	StyleSheet getSheet();
 

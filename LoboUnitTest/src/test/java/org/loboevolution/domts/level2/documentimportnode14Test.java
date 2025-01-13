@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -42,45 +42,37 @@ import static org.junit.Assert.assertNull;
  * Document.  Verify if the node has been imported correctly by checking
  * if the default attribute present on this node has not been imported
  * and an explicit attribute has been imported.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=402">http://www.w3.org/Bugs/Public/show_bug.cgi?id=402</a>
  */
-public class documentimportnode14Test extends LoboUnitTest {
+public class Documentimportnode14Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        DocumentType nullDocType = null;
-
-        HTMLCollection childList;
-        Node imported;
-        Node employeeElem;
-        Attr attrNode;
-        String attrValue;
-        String nullNS = null;
-
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final HTMLCollection childList;
+        final Node imported;
+        final Node employeeElem;
+        final Attr attrNode;
+        final String attrValue;
         doc = sampleXmlFile("staffNS.xml");
-        
         childList = doc.getElementsByTagNameNS("*", "employee");
         employeeElem = childList.item(3);
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(nullNS, "staff", nullDocType);
+        newDoc = domImpl.createDocument(null, "staff", null);
         imported = newDoc.importNode(employeeElem, true);
-        attrNode = ((Element) imported).getAttributeNodeNS(nullNS, "defaultAttr");
-        assertNull("defaultAttrNotImported", attrNode);
+        attrNode = ((Element) imported).getAttributeNodeNS(null, "defaultAttr");
+        assertNull(attrNode);
         attrValue = ((Element) imported).getAttributeNS("http://www.w3.org/2000/xmlns/", "emp");
-        assertEquals("explicitAttrImported", "http://www.nist.gov", attrValue);
+        assertEquals("http://www.nist.gov", attrValue);
     }
 }
 

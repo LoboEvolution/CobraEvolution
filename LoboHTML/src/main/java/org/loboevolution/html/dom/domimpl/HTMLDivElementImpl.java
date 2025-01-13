@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ public class HTMLDivElementImpl extends HTMLElementImpl implements HTMLDivElemen
 
 	/** {@inheritDoc} */
 	@Override
-	protected void appendInnerTextImpl(StringBuilder buffer) {
+	protected void appendInnerTextImpl(final StringBuilder buffer) {
 		final int length = buffer.length();
 		int lineBreaks;
 		if (length == 0) {
@@ -64,16 +64,14 @@ public class HTMLDivElementImpl extends HTMLElementImpl implements HTMLDivElemen
 				}
 			}
 		}
-		for (int i = 0; i < 1 - lineBreaks; i++) {
-			buffer.append("\r\n");
-		}
+        buffer.append("\r\n".repeat(Math.max(0, 1 - lineBreaks)));
 		super.appendInnerTextImpl(buffer);
 		buffer.append("\r\n");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new BlockRenderState(prevRenderState, this);
 	}
 
@@ -85,7 +83,7 @@ public class HTMLDivElementImpl extends HTMLElementImpl implements HTMLDivElemen
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAlign(String align) {
+	public void setAlign(final String align) {
 		setAttribute("align", align);
 	}
 	

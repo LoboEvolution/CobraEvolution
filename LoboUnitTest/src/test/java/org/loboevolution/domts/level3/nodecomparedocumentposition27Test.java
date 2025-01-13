@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,42 +35,40 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
- * Using compareDocumentPosition to check if the EntityReference node contains and precedes it's last
+ * Using compareDocumentPosition to check if the EntityReference node contains and precedes its last
  * childElement, and that this childElement is contained and follows the EntityReference node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition27Test extends LoboUnitTest {
+public class Nodecomparedocumentposition27Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection varList;
-        Element varElem;
-        EntityReference entRef;
-        ProcessingInstruction entRefChild1;
-        int entRefPosition;
-        int entRefChild1Position;
+        final Document doc;
+        final HTMLCollection varList;
+        final Element varElem;
+        final EntityReference entRef;
+        final ProcessingInstruction entRefChild1;
+        final int entRefPosition;
+        final int entRefChild1Position;
         doc = sampleXmlFile("hc_staff.xml");
 
         varList = doc.getElementsByTagName("var");
         varElem = (Element) varList.item(2);
-        assertNotNull("varElemNotNull", varElem);
+        assertNotNull(varElem, "Nodecomparedocumentposition27Assert3");
         entRef = (EntityReference) varElem.getFirstChild();
-        assertNotNull("entRefNotNull", entRef);
+        assertNotNull(entRef, "Nodecomparedocumentposition27Assert4");
 
         entRefChild1 = (ProcessingInstruction) entRef.getLastChild();
-        assertNotNull("entRefChild1NotNull", entRefChild1);
+        assertNotNull(entRefChild1, "Nodecomparedocumentposition27Assert5");
         entRefPosition = entRef.compareDocumentPosition(entRefChild1);
-        assertEquals("nodecomparedocumentpositionIsContainedFollowing27", 20, entRefPosition);
+        assertEquals(20, entRefPosition, "Nodecomparedocumentposition27Assert6");
         entRefChild1Position = entRefChild1.compareDocumentPosition(entRef);
-        assertEquals("nodecomparedocumentpositionContainsPRECEDING", 10, entRefChild1Position);
+        assertEquals(10, entRefChild1Position, "Nodecomparedocumentposition27Assert7");
     }
 }
 

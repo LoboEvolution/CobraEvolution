@@ -6,6 +6,8 @@
 
 package org.mozilla.javascript;
 
+import java.util.EnumSet;
+
 /**
  * The base class for Function objects. That is one of two purposes. It is also the prototype for
  * every "function" defined except those that are used as GeneratorFunctions via the ES6 "function
@@ -32,7 +34,9 @@ public class BaseFunction extends IdScriptableObject implements Function {
         obj.exportAsJSClass(MAX_PROTOTYPE_ID, scope, sealed);
     }
 
-    /** @deprecated Use {@link #init(Context, Scriptable, boolean)} instead */
+    /**
+     * @deprecated Use {@link #init(Context, Scriptable, boolean)} instead
+     */
     @Deprecated
     static void init(Scriptable scope, boolean sealed) {
         init(Context.getContext(), scope, sealed);
@@ -68,10 +72,15 @@ public class BaseFunction extends IdScriptableObject implements Function {
         return isGeneratorFunction;
     }
 
+    // Generated code will override this
+    protected boolean hasDefaultParameters() {
+        return false;
+    }
+
     /**
      * Gets the value returned by calling the typeof operator on this object.
      *
-     * @see org.mozilla.javascript.ScriptableObject#getTypeOf()
+     * @see ScriptableObject#getTypeOf()
      * @return "function" or "undefined" if {@link #avoidObjectDetection()} returns <code>true
      *     </code>
      */
@@ -100,7 +109,7 @@ public class BaseFunction extends IdScriptableObject implements Function {
         throw ScriptRuntime.typeErrorById("msg.instanceof.bad.prototype", getFunctionName());
     }
 
-    private static final int Id_length = 1,
+    protected static final int Id_length = 1,
             Id_arity = 2,
             Id_name = 3,
             Id_prototype = 4,
@@ -169,7 +178,9 @@ public class BaseFunction extends IdScriptableObject implements Function {
             case Id_arity:
                 return arityPropertyAttributes >= 0 ? getArity() : NOT_FOUND;
             case Id_name:
-                return namePropertyAttributes >= 0 ? getFunctionName() : NOT_FOUND;
+                return namePropertyAttributes >= 0
+                        ? (nameValue != null ? nameValue : getFunctionName())
+                        : NOT_FOUND;
             case Id_prototype:
                 return getPrototypeProperty();
             case Id_arguments:
@@ -200,6 +211,11 @@ public class BaseFunction extends IdScriptableObject implements Function {
             case Id_name:
                 if (value == NOT_FOUND) {
                     namePropertyAttributes = -1;
+                    nameValue = null;
+                } else if (value instanceof CharSequence) {
+                    nameValue = ScriptRuntime.toString(value);
+                } else {
+                    nameValue = "";
                 }
                 return;
             case Id_arity:
@@ -312,18 +328,18 @@ public class BaseFunction extends IdScriptableObject implements Function {
                 {
                     BaseFunction realf = realFunction(thisObj, f);
                     int indent = ScriptRuntime.toInt32(args, 0);
-                    return realf.decompile(indent, 0);
+                    return realf.decompile(indent, EnumSet.noneOf(DecompilerFlag.class));
                 }
 
             case Id_toSource:
                 {
                     BaseFunction realf = realFunction(thisObj, f);
                     int indent = 0;
-                    int flags = Decompiler.TO_SOURCE_FLAG;
+                    EnumSet<DecompilerFlag> flags = EnumSet.of(DecompilerFlag.TO_SOURCE);
                     if (args.length != 0) {
                         indent = ScriptRuntime.toInt32(args[0]);
                         if (indent >= 0) {
-                            flags = 0;
+                            flags = EnumSet.noneOf(DecompilerFlag.class);
                         } else {
                             indent = 0;
                         }
@@ -427,8 +443,8 @@ public class BaseFunction extends IdScriptableObject implements Function {
     }
 
     /**
-     * Creates new script object. The default implementation of {@link #construct} uses the method
-     * to to get the value for <code>thisObj</code> argument when invoking {@link #call}. The methos
+     * Creates new script object. The default implementation of {@link #construct} uses this method
+     * to to get the value for <code>thisObj</code> argument when invoking {@link #call}. The method
      * is allowed to return <code>null</code> to indicate that {@link #call} will create a new
      * object itself. In this case {@link #construct} will set scope and prototype on the result
      * {@link #call} unless they are already set.
@@ -446,9 +462,9 @@ public class BaseFunction extends IdScriptableObject implements Function {
      * @param indent How much to indent the decompiled result.
      * @param flags Flags specifying format of decompilation output.
      */
-    String decompile(int indent, int flags) {
+    String decompile(int indent, EnumSet<DecompilerFlag> flags) {
         StringBuilder sb = new StringBuilder();
-        boolean justbody = (0 != (flags & Decompiler.ONLY_BODY_FLAG));
+        boolean justbody = flags.contains(DecompilerFlag.ONLY_BODY);
         if (!justbody) {
             sb.append("function ");
             sb.append(getFunctionName());
@@ -493,7 +509,7 @@ public class BaseFunction extends IdScriptableObject implements Function {
         return prototypeProperty != null || this instanceof NativeFunction;
     }
 
-    protected Object getPrototypeProperty() {
+    public Object getPrototypeProperty() {
         Object result = prototypeProperty;
         if (result == null) {
             // only create default prototype on native JavaScript functions,
@@ -650,6 +666,7 @@ public class BaseFunction extends IdScriptableObject implements Function {
 
     private Object prototypeProperty;
     private Object argumentsObj = NOT_FOUND;
+    private String nameValue = null;
     private boolean isGeneratorFunction = false;
 
     // For function object instances, attributes are
@@ -658,6 +675,6 @@ public class BaseFunction extends IdScriptableObject implements Function {
     private int prototypePropertyAttributes = PERMANENT | DONTENUM;
     private int argumentsAttributes = PERMANENT | DONTENUM;
     private int arityPropertyAttributes = PERMANENT | READONLY | DONTENUM;
-    private int namePropertyAttributes = PERMANENT | READONLY | DONTENUM;
+    private int namePropertyAttributes = READONLY | DONTENUM;
     private int lengthPropertyAttributes = PERMANENT | READONLY | DONTENUM;
 }

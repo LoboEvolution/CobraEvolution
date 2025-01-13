@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,51 +28,44 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using insertBefore on an Element node attempt to insert a Text node created by a different
  * Document before an Element child and verify if a WRONG_DOCUMENT_ERR is raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore23Test extends LoboUnitTest {
+public class Nodeinsertbefore23Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document doc2;
-        Element element;
-        Element refNode;
-        Text newNode;
-        HTMLCollection childList;
-        Node appendedChild;
-        Node inserted;
+        final Document doc;
+        final Document doc2;
+        final Element element;
+        final Element refNode;
+        final Text newNode;
         doc = sampleXmlFile("hc_staff.xml");
         doc2 = sampleXmlFile("hc_staff.xml");
         element = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:body");
         refNode = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:p");
         newNode = doc2.createTextNode("TextNode");
-        appendedChild = element.appendChild(refNode);
+        element.appendChild(refNode);
 
         {
             boolean success = false;
             try {
-                inserted = element.insertBefore(newNode, refNode);
-            } catch (DOMException ex) {
+                element.insertBefore(newNode, refNode);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
             }
-            assertTrue("throw_WRONG_DOCUMENT_ERR", success);
+            assertTrue(success, "Nodeinsertbefore23Assert2");
         }
     }
 }

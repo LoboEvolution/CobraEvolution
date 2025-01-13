@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,13 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,22 +44,20 @@ import static org.junit.Assert.assertTrue;
  * Create new element and attribute nodes in different documents.
  * Attempt to add the attribute node to the element node.
  * Check if an WRONG_DOCUMENT_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS</a>
  */
-public class elementsetattributenodens05Test extends LoboUnitTest {
+public class Elementsetattributenodens05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docAlt;
-        Element element;
-        Attr attribute;
+        final Document doc;
+        final Document docAlt;
+        final Element element;
+        final Attr attribute;
         doc = sampleXmlFile("staffNS.xml");
         docAlt = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test", "elem1");
@@ -67,10 +65,10 @@ public class elementsetattributenodens05Test extends LoboUnitTest {
         boolean success = false;
         try {
             element.setAttributeNodeNS(attribute);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
         }
-        assertTrue("throw_WRONG_DOCUMENT_ERR", success);
+        assertTrue(success);
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,30 +41,27 @@ import static org.junit.Assert.assertTrue;
  * qualifiedName has a prefix and the namespaceURI is null.
  * Invoke the setAttributeNS method on a new Element object with null namespaceURI and a
  * qualifiedName that has a namespace prefix.  Check if the NAMESPACE_ERR was thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class elementsetattributens05Test extends LoboUnitTest {
+public class Elementsetattributens05Test extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc = sampleXmlFile("staffNS.xml");
-        Element element = doc.createElementNS("http://www.w3.org/DOM/Test/L2", "dom:elem");
+        final Document doc = sampleXmlFile("staffNS.xml");
+        final Element element = doc.createElementNS("http://www.w3.org/DOM/Test/L2", "dom:elem");
         boolean success = false;
         try {
             element.setAttributeNS(null, "dom:root", "test");
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("elementsetattributens05", success);
+        assertTrue(success);
     }
 }
 

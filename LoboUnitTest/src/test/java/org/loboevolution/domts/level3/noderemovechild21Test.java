@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,13 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,40 +42,36 @@ import static org.junit.Assert.assertTrue;
  * and verify the name of the returned node that was removed.  Now append the parent
  * to the documentElement and attempt to remove the child using removeChild on the
  * documentElement and verify if a NOT_FOUND_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild21Test extends LoboUnitTest {
+public class Noderemovechild21Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Element parent;
-        Element child;
-        Element removed;
-        String removedName;
-        Node removedNode;
-        Node appendedChild;
+        final Document doc;
+        final Element docElem;
+        final Element parent;
+        final Element child;
+        final Element removed;
+        final String removedName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         parent = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         child = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:br");
-        appendedChild = parent.appendChild(child);
-        appendedChild = docElem.appendChild(parent);
+        parent.appendChild(child);
+        docElem.appendChild(parent);
         removed = (Element) parent.removeChild(child);
         removedName = removed.getNodeName();
-        assertEquals("noderemovechild21", "dom3:br", removedName);
+        assertEquals("dom3:br", removedName, "Noderemovechild21Assert3");
 
         {
             boolean success = false;
             try {
-                removedNode = docElem.removeChild(child);
-            } catch (DOMException ex) {
+                docElem.removeChild(child);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR", success);
+            assertTrue(success, "Noderemovechild21Assert4");
         }
     }
 }

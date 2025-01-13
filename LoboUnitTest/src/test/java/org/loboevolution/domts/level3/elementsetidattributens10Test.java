@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -34,8 +34,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Declares the attribute specified by local name and namespace URI to be of type ID. If the value of the
@@ -44,21 +44,19 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Invoke setIdAttributeNS on two existing namespace attributes with different values.  Verify by calling
  * isId on the attributes and getElementById with different values on document node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS</a>
  */
-public class elementsetidattributens10Test extends LoboUnitTest {
+public class Elementsetidattributens10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element pElem1;
-        Element pElem2;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element pElem1;
+        final Element pElem2;
         NamedNodeMap attributesMap;
         Attr attr;
-        boolean id = false;
+        boolean id;
         Element elem;
         String elemName;
         doc = sampleXmlFile("hc_staff.xml");
@@ -70,17 +68,17 @@ public class elementsetidattributens10Test extends LoboUnitTest {
         attributesMap = pElem1.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xmlns:dmstc");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsId1True10", id);
+        assertTrue(id, "Elementsetidattributens10Assert3");
         attributesMap = pElem2.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xmlns:nm");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsId2True10", id);
+        assertTrue(id, "Elementsetidattributens10Assert4");
         elem = doc.getElementById("http://www.netzero.com");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributens1GetElementById10", "P", elemName);
+        assertEquals("P", elemName, "Elementsetidattributens10Assert5");
         elem = doc.getElementById("http://www.altavista.com");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributens2GetElementById10", "P", elemName);
+        assertEquals("P", elemName, "Elementsetidattributens10Assert6");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,29 +42,26 @@ import static org.junit.Assert.*;
  * After the removal, the second employee should have five or twelve
  * children and the first child should now be the child
  * that used to be at the second position in the list.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066</a>
  */
-public class noderemovechildnodeTest extends LoboUnitTest {
+public class NoderemovechildnodeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node oldChild;
-        Node child;
-        String childName;
-        int length;
-        Node removedChild;
-        String removedName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node oldChild;
+        final Node child;
+        final String childName;
+        final int length;
+        final Node removedChild;
+        final String removedName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -77,12 +74,12 @@ public class noderemovechildnodeTest extends LoboUnitTest {
         length = childList.getLength();
 
         if (length == 5) {
-            assertEquals("removedNameNoWhitespace", "EMPLOYEEID",removedName);
-            assertEquals("childNameNoWhitespace", "NAME", childName);
+            assertEquals("EMPLOYEEID", removedName, "NoderemovechildnodeAssert1");
+            assertEquals("NAME", childName, "NoderemovechildnodeAssert2");
         } else {
-            assertEquals("removedName", "#text", removedName);
-            assertEquals("childName", "EMPLOYEEID",childName);
-            assertEquals("length", 12, length);
+            assertEquals("#text", removedName, "NoderemovechildnodeAssert3");
+            assertEquals("EMPLOYEEID", childName, "NoderemovechildnodeAssert4");
+            assertEquals(12, length, "NoderemovechildnodeAssert5");
         }
 
     }

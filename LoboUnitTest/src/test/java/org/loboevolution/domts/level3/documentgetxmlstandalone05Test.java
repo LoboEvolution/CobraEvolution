@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Cretae a new DocumentType node whose systemId is StaffNS.DTD.  Create a new Document
  * node.  Check if the value of the standalone attribute on the new Document is false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone</a>
  */
-public class documentgetxmlstandalone05Test extends LoboUnitTest {
+public class Documentgetxmlstandalone05Test extends LoboUnitTest {
+
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DocumentType newDocType;
-        DOMImplementation domImpl;
-        boolean standalone;
-        String nullPubId = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
-        DocumentType docType;
-        String sysId;
+        final Document doc;
+        final Document newDoc;
+        final DocumentType newDocType;
+        final DOMImplementation domImpl;
+        final boolean standalone;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
+        final DocumentType docType;
+        final String sysId;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
@@ -67,10 +64,10 @@ public class documentgetxmlstandalone05Test extends LoboUnitTest {
         docType = doc.getDoctype();
         sysId = docType.getSystemId();
         domImpl = doc.getImplementation();
-        newDocType = domImpl.createDocumentType(rootName, nullPubId, sysId);
+        newDocType = domImpl.createDocumentType(rootName, null, sysId);
         newDoc = domImpl.createDocument(rootNS, rootName, newDocType);
         standalone = newDoc.getXmlStandalone();
-        assertFalse("documentgetxmlstandalone05", standalone);
+        assertFalse(standalone, "Documentgetxmlstandalone05Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,21 +34,21 @@ public class FuncTranslate extends Function3Args {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    String theFirstString = m_arg0.execute(xctxt).str();
-    String theSecondString = m_arg1.execute(xctxt).str();
-    String theThirdString = m_arg2.execute(xctxt).str();
-    int theFirstStringLength = theFirstString.length();
-    int theThirdStringLength = theThirdString.length();
+    final String theFirstString = m_arg0.execute(xctxt).str();
+    final String theSecondString = m_arg1.execute(xctxt).str();
+    final String theThirdString = m_arg2.execute(xctxt).str();
+    final int theFirstStringLength = theFirstString.length();
+    final int theThirdStringLength = theThirdString.length();
 
     // A vector to contain the new characters. We'll use it to construct
     // the result string.
-    StringBuilder sbuffer = new StringBuilder();
+    final StringBuilder sbuffer = new StringBuilder();
 
     for (int i = 0; i < theFirstStringLength; i++) {
-      char theCurrentChar = theFirstString.charAt(i);
-      int theIndex = theSecondString.indexOf(theCurrentChar);
+      final char theCurrentChar = theFirstString.charAt(i);
+      final int theIndex = theSecondString.indexOf(theCurrentChar);
 
       if (theIndex < 0) {
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@
 
 package org.loboevolution.common;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -33,19 +35,20 @@ import java.beans.PropertyDescriptor;
 /**
  * <p>Objects class.</p>
  */
+@Slf4j
 public class Objects {
 
-	public static <M> void merge(M target, M destination) {
+	public static <M> void merge(final M target, final M destination) {
 		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(target.getClass());
+			final BeanInfo beanInfo = Introspector.getBeanInfo(target.getClass());
 
 			// Iterate over all the attributes
-			for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
+			for (final PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
 
 				// Only copy writable attributes
 				if (descriptor.getWriteMethod() != null) {
-					Object originalValue = descriptor.getReadMethod().invoke(target);
-					Object defaultValue = descriptor.getReadMethod().invoke(destination);
+					final Object originalValue = descriptor.getReadMethod().invoke(target);
+					final Object defaultValue = descriptor.getReadMethod().invoke(destination);
 					if (originalValue == null || "".equals(originalValue)) {
 						descriptor.getWriteMethod().invoke(target, defaultValue);
 					} else {
@@ -56,8 +59,8 @@ public class Objects {
 
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (final Exception e) {
+			log.error(e.getMessage(), e);
 		}
 	}
 

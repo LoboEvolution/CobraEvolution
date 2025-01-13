@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,29 +28,24 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Set the strictErrorChecking attribute value on a new Document to true.
  * Call the createAttributeNS method on this document with a a null namespaceURI and a qualified name
  * with a prefix and check if the NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking</a>
  */
-public class documentsetstricterrorchecking02Test extends LoboUnitTest {
+public class Documentsetstricterrorchecking02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Attr newAttr;
-        String nullValue = null;
+        final Document doc;
 
         doc = sampleXmlFile("hc_staff.xml");
         doc.setStrictErrorChecking(true);
@@ -58,11 +53,11 @@ public class documentsetstricterrorchecking02Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                newAttr = doc.createAttributeNS(nullValue, "dom:test");
-            } catch (DOMException ex) {
+                doc.createAttributeNS(null, "dom:test");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("NAMESPACE_ERR_documentsetstricterrorchecking02", success);
+            assertTrue(success, "Documentsetstricterrorchecking02Assert2");
         }
     }
 }

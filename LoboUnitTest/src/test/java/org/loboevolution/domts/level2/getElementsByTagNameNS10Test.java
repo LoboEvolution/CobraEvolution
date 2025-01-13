@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -37,7 +37,7 @@ import org.loboevolution.html.node.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,32 +46,28 @@ import static org.junit.Assert.*;
  * order in which they are encountered in a preorder traversal of this Element tree.
  * <p>
  * Create a NodeList of all the descendant elements of the document element
- * using the "http://www.nist.gov" as the namespaceURI and the special value "*" as the
+ * using the "<a href="http://www.nist.gov">...</a>" as the namespaceURI and the special value "*" as the
  * localName.
- * The method should return a NodeList of elements that have "http://www.nist.gov
+ * The method should return a NodeList of elements that have "<a href="http://www.nist.gov">...</a>
  * as a namespace URI.
  * Derived from getElementsByTagNameNS03
- *
- * @author Curt Arnold
- * @author Curt Arnold
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1938918D">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1938918D</a>
  */
-public class getElementsByTagNameNS10Test extends LoboUnitTest {
+public class GetElementsByTagNameNS10Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        HTMLCollection elementList;
+        final Document doc;
+        final Element docElem;
+        final HTMLCollection elementList;
         Node child;
         String childName;
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
 
-        List<String> expectedResult = new ArrayList<>();
+        final List<String> expectedResult = new ArrayList<>();
         expectedResult.add("EMPLOYEE");
         expectedResult.add("EMPLOYEEID");
         expectedResult.add("NAME");
@@ -110,13 +106,13 @@ public class getElementsByTagNameNS10Test extends LoboUnitTest {
 
         doc = sampleXmlFile("staffNS.xml");
         docElem = doc.getDocumentElement();
-        elementList = docElem.getElementsByTagName( "*");
+        elementList = docElem.getElementsByTagName("*");
         for (int indexN1007E = 0; indexN1007E < elementList.getLength(); indexN1007E++) {
             child = elementList.item(indexN1007E);
             childName = child.getLocalName();
             result.add(childName);
         }
-        assertEquals("nodeNames", expectedResult, result);
+        assertEquals(expectedResult, result);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,14 +54,14 @@ public abstract class UnaryOperation extends Expression {
    *
    * @param r The expression operand to which the unary operation will be applied.
    */
-  public void setRight(Expression r) {
+  public void setRight(final Expression r) {
     m_right = r;
     r.exprSetParent(this);
   }
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
     return operate(m_right.execute(xctxt));
   }
@@ -71,13 +71,13 @@ public abstract class UnaryOperation extends Expression {
    *
    * @param right non-null reference to the evaluated right operand.
    * @return non-null reference to the XObject that represents the result of the operation.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  public abstract XObject operate(XObject right) throws org.loboevolution.javax.xml.transform.TransformerException;
+  public abstract XObject operate(XObject right) throws javax.xml.transform.TransformerException;
 
   /** {@inheritDoc} */
   @Override
-  public void callVisitors(XPathVisitor visitor) {
+  public void callVisitors(final XPathVisitor visitor) {
     if (visitor.visitUnaryOperation()) {
       m_right.callVisitors(visitor);
     }
@@ -85,7 +85,7 @@ public abstract class UnaryOperation extends Expression {
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!isSameClass(expr)) return false;
 
     if (!m_right.deepEquals(((UnaryOperation) expr).m_right)) return false;

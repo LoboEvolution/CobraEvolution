@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,10 @@
  */
 package org.loboevolution.apache.xpath;
 
-import java.util.Stack;
-import org.loboevolution.javax.xml.transform.ErrorListener;
-import org.loboevolution.javax.xml.transform.URIResolver;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.URIResolver;
 
 import org.loboevolution.apache.xml.utils.DefaultErrorHandler;
 import org.loboevolution.apache.xpath.axes.SubContextList;
@@ -65,38 +66,38 @@ public class XPathContext extends DTMManager {
   /** {@inheritDoc} */
   @Override
   public DTM getDTM(
-      org.loboevolution.javax.xml.transform.Source source, boolean unique, boolean incremental, boolean doIndexing) {
+          final javax.xml.transform.Source source, final boolean unique, final boolean incremental, final boolean doIndexing) {
     return m_dtmManager.getDTM(source, unique, incremental, doIndexing);
   }
 
   /** {@inheritDoc} */
   @Override
-  public DTM getDTM(int nodeHandle) {
+  public DTM getDTM(final int nodeHandle) {
     return m_dtmManager.getDTM(nodeHandle);
   }
 
   /** {@inheritDoc} */
   @Override
-  public int getDTMHandleFromNode(Node node) {
+  public int getDTMHandleFromNode(final Node node) {
     return m_dtmManager.getDTMHandleFromNode(node);
   }
 
   /** {@inheritDoc} */
   @Override
-  public DTMIterator createDTMIterator(Object xpathCompiler, int pos) {
+  public DTMIterator createDTMIterator(final Object xpathCompiler, final int pos) {
     return m_dtmManager.createDTMIterator(xpathCompiler, pos);
   }
 
   /** {@inheritDoc} */
   @Override
-  public DTMIterator createDTMIterator(String xpathString, PrefixResolver presolver) {
+  public DTMIterator createDTMIterator(final String xpathString, final PrefixResolver presolver) {
     return m_dtmManager.createDTMIterator(xpathString, presolver);
   }
 
   /** {@inheritDoc} */
   @Override
   public DTMIterator createDTMIterator(
-      int whatToShow, DTMFilter filter, boolean entityReferenceExpansion) {
+          final int whatToShow, final DTMFilter filter, final boolean entityReferenceExpansion) {
     return m_dtmManager.createDTMIterator(whatToShow, filter, entityReferenceExpansion);
   }
 
@@ -114,7 +115,7 @@ public class XPathContext extends DTMManager {
    * @param recursiveVarContext A <code>boolean</code> value indicating whether the XPath context
    *     needs to support pushing of scopes for variable resolution
    */
-  public XPathContext(boolean recursiveVarContext) {
+  public XPathContext(final boolean recursiveVarContext) {
     m_prefixResolvers.push(null);
     m_currentNodes.push(DTM.NULL);
     m_currentExpressionNodes.push(DTM.NULL);
@@ -124,13 +125,13 @@ public class XPathContext extends DTMManager {
   public void reset() {
     m_dtmManager = DTMManager.newInstance();
 
-    m_axesIteratorStack.removeAllElements();
-    m_currentExpressionNodes.removeAllElements();
-    m_currentNodes.removeAllElements();
+    m_axesIteratorStack.clear();
+    m_currentExpressionNodes.clear();
+    m_currentNodes.clear();
     m_iteratorRoots.RemoveAllNoClear();
-    m_predicatePos.removeAllElements();
+    m_predicatePos.clear();
     m_predicateRoots.RemoveAllNoClear();
-    m_prefixResolvers.removeAllElements();
+    m_prefixResolvers.clear();
 
     m_prefixResolvers.push(null);
     m_currentNodes.push(DTM.NULL);
@@ -167,7 +168,7 @@ public class XPathContext extends DTMManager {
    *
    * @param listener A non-null ErrorListener reference.
    */
-  public void setErrorListener(ErrorListener listener) throws IllegalArgumentException {
+  public void setErrorListener(final ErrorListener listener) throws IllegalArgumentException {
     if (listener == null)
       throw new IllegalArgumentException(
           XPATHMessages.createXPATHMessage(XPATHErrorResources.ER_NULL_ERROR_HANDLER, null));
@@ -196,7 +197,7 @@ public class XPathContext extends DTMManager {
    * @param resolver the URIResolver to be associated with this execution context, may be null to
    *     clear an already set resolver.
    */
-  public void setURIResolver(URIResolver resolver) {
+  public void setURIResolver(final URIResolver resolver) {
     m_uriResolver = resolver;
   }
 
@@ -212,7 +213,7 @@ public class XPathContext extends DTMManager {
    * to be confused with the current node list. %REVIEW% Note that there are no bounds check and
    * resize for this stack, so if it is blown, it's all over.
    */
-  private final Stack<Integer> m_currentNodes = new Stack<>();
+  private final Deque<Integer> m_currentNodes = new ArrayDeque<>();
 
   /**
    * Get the current context node.
@@ -228,7 +229,7 @@ public class XPathContext extends DTMManager {
    *
    * @param cn the <a href="http://www.w3.org/TR/xslt#dt-current-node">current node</a>.
    */
-  public final void pushCurrentNodeAndExpression(int cn) {
+  public final void pushCurrentNodeAndExpression(final int cn) {
     m_currentNodes.push(cn);
     m_currentExpressionNodes.push(cn);
   }
@@ -244,7 +245,7 @@ public class XPathContext extends DTMManager {
    *
    * @param n the <a href="http://www.w3.org/TR/xslt#dt-current-node">current node</a>.
    */
-  public final void pushCurrentNode(int n) {
+  public final void pushCurrentNode(final int n) {
     m_currentNodes.push(n);
   }
 
@@ -265,15 +266,15 @@ public class XPathContext extends DTMManager {
   private final NodeVector m_predicateRoots = new NodeVector();
 
   /** A stack of the current sub-expression nodes. */
-  private final Stack<Integer> m_currentExpressionNodes = new Stack<>();
+  private final Deque<Integer> m_currentExpressionNodes = new ArrayDeque<>();
 
-  private final Stack<Integer> m_predicatePos = new Stack<>();
+  private final Deque<Integer> m_predicatePos = new ArrayDeque<>();
 
   public final int getPredicatePos() {
     return m_predicatePos.peek();
   }
 
-  public final void pushPredicatePos(int n) {
+  public final void pushPredicatePos(final int n) {
     m_predicatePos.push(n);
   }
 
@@ -281,7 +282,7 @@ public class XPathContext extends DTMManager {
     m_predicatePos.pop();
   }
 
-  private final Stack<PrefixResolver> m_prefixResolvers = new Stack<>();
+  private final Deque<PrefixResolver> m_prefixResolvers = new ArrayDeque<>();
 
   /**
    * Get the current namespace context for the xpath.
@@ -297,7 +298,7 @@ public class XPathContext extends DTMManager {
    *
    * @param pr the prefix resolver to be used for resolving prefixes to namespace URLs.
    */
-  public final void setNamespaceContext(PrefixResolver pr) {
+  public final void setNamespaceContext(final PrefixResolver pr) {
     m_prefixResolvers.pop();
     m_prefixResolvers.push(pr);
   }
@@ -307,7 +308,7 @@ public class XPathContext extends DTMManager {
    *
    * @param pr the prefix resolver to be used for resolving prefixes to namespace URLs.
    */
-  public final void pushNamespaceContext(PrefixResolver pr) {
+  public final void pushNamespaceContext(final PrefixResolver pr) {
     m_prefixResolvers.push(pr);
   }
 
@@ -321,14 +322,14 @@ public class XPathContext extends DTMManager {
   // ==========================================================
 
   /** Stack of AxesIterators. */
-  private final Stack<SubContextList> m_axesIteratorStack = new Stack<>();
+  private final Deque<SubContextList> m_axesIteratorStack = new ArrayDeque<>();
 
   /**
    * Push a TreeWalker on the stack.
    *
    * @param iter A sub-context AxesWalker.
    */
-  public final void pushSubContextList(SubContextList iter) {
+  public final void pushSubContextList(final SubContextList iter) {
     m_axesIteratorStack.push(iter);
   }
 

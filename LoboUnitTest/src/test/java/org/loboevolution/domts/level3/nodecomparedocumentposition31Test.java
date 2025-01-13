@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition to check if invoking the method on the first name node with
  * a new node appended to the second position node as a parameter is FOLLOWING, and is PRECEDING vice versa
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition31Test extends LoboUnitTest {
+public class Nodecomparedocumentposition31Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection nameList;
-        HTMLCollection positionList;
-        Element strong;
-        Element code;
-        Element newElem;
-        int namePosition;
-        int elemPosition;
-        Node appendedChild;
+        final Document doc;
+        final HTMLCollection nameList;
+        final HTMLCollection positionList;
+        final Element strong;
+        final Element code;
+        final Element newElem;
+        final int namePosition;
+        final int elemPosition;
         doc = sampleXmlFile("hc_staff.xml");
         nameList = doc.getElementsByTagName("strong");
         strong = (Element) nameList.item(0);
         positionList = doc.getElementsByTagName("code");
         code = (Element) positionList.item(1);
         newElem = doc.createElementNS("http://www.w3.org/1999/xhtml", "br");
-        appendedChild = code.appendChild(newElem);
+        code.appendChild(newElem);
         namePosition = strong.compareDocumentPosition(newElem);
-        assertEquals("nodecomparedocumentpositionFollowing31", 4, namePosition);
+        assertEquals(4, namePosition, "Nodecomparedocumentposition31Assert2");
         elemPosition = newElem.compareDocumentPosition(strong);
-        assertEquals("nodecomparedocumentpositionPRECEDING31", 2, elemPosition);
+        assertEquals(2, elemPosition, "Nodecomparedocumentposition31Assert3");
     }
 }
 

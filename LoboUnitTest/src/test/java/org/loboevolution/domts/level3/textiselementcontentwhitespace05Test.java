@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Replace the whitespace before the "p" element in barfoo with non-whitespace and normalize with validation.
  * isElementContentWhitespace should be false since the node is not whitespace.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-isElementContentWhitespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-isElementContentWhitespace</a>
  */
-public class textiselementcontentwhitespace05Test extends LoboUnitTest {
+public class Textiselementcontentwhitespace05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         HTMLCollection bodyList;
         Element bodyElem;
-        Text textNode;
-        Text nonBlankNode;
-        Node returnedNode;
-        boolean isElemContentWhitespace;
-        DOMConfiguration domConfig;
-        boolean canSetValidation;
-        Node refChild;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Text textNode;
+        final Text nonBlankNode;
+        final boolean isElemContentWhitespace;
+        final DOMConfiguration domConfig;
+        final boolean canSetValidation;
+        final Node refChild;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
@@ -71,14 +69,14 @@ public class textiselementcontentwhitespace05Test extends LoboUnitTest {
             bodyElem = (Element) bodyList.item(0);
             refChild = bodyElem.getFirstChild();
             nonBlankNode = doc.createTextNode("not blank");
-            returnedNode = bodyElem.insertBefore(nonBlankNode, refChild);
+            bodyElem.insertBefore(nonBlankNode, refChild);
             doc.normalizeDocument();
-            assertTrue("noErrors", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Textiselementcontentwhitespace05Assert3");
             bodyList = doc.getElementsByTagName("body");
             bodyElem = (Element) bodyList.item(0);
             textNode = (Text) bodyElem.getFirstChild();
             isElemContentWhitespace = textNode.isElementContentWhitespace();
-            assertFalse("notElemContent", isElemContentWhitespace);
+            assertFalse(isElemContentWhitespace, "Textiselementcontentwhitespace05Assert4");
         }
     }
 }

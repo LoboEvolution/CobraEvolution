@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,59 +27,55 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using the method adoptNode in a new Document, adopt a newly created DocumentFragment node populated with
  * with the first acronym element of this Document as its newChild.  Since the decendants of a documentFragment
  * are recursively adopted, check if the adopted node has children.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode14Test extends LoboUnitTest {
+public class Documentadoptnode14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
+        final Document doc;
+        final Document newDoc;
         Element docElem;
-        DOMImplementation domImpl;
-        DocumentFragment docFragment;
-        HTMLCollection childList;
-        boolean success;
-        Node acronymNode;
-        Node adoptedDocFrag;
-        Node appendedChild;
-        DocumentType nullDocType = null;
-
-        Node imported;
-        String rootNS;
-        String rootName;
+        final DOMImplementation domImpl;
+        final DocumentFragment docFragment;
+        final HTMLCollection childList;
+        final boolean success;
+        final Node acronymNode;
+        final Node adoptedDocFrag;
+        final Node imported;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         docFragment = newDoc.createDocumentFragment();
         imported = newDoc.importNode(docElem, true);
         docElem = newDoc.getDocumentElement();
-        appendedChild = docElem.appendChild(imported);
+        docElem.appendChild(imported);
         childList = newDoc.getElementsByTagName("acronym");
         acronymNode = childList.item(0);
-        appendedChild = docFragment.appendChild(acronymNode);
+        docFragment.appendChild(acronymNode);
         adoptedDocFrag = newDoc.adoptNode(docFragment);
 
         if ((adoptedDocFrag != null)) {
             success = adoptedDocFrag.hasChildNodes();
-            assertTrue("documentadoptnode14", success);
+            assertTrue(success, "Documentadoptnode14Assert2");
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,34 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke lookupPrefix on a new Child of a new Element node with a namespace URI
  * and prefix and using the parents namespace URI as an argument, verify if the prefix
  * returned is a valid prefix of the parent.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix</a>
  */
-public class nodelookupprefix10Test extends LoboUnitTest {
+public class Nodelookupprefix10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element parent;
-        Element child;
-        String prefix;
-        Node appendedChild;
+        final Document doc;
+        final Element parent;
+        final Element child;
+        final String prefix;
         doc = sampleXmlFile("hc_staff.xml");
         parent = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         child = doc.createElement("br");
-        appendedChild = parent.appendChild(child);
+        parent.appendChild(child);
         prefix = child.lookupPrefix("http://www.w3.org/1999/xhtml");
-        assertEquals("nodelookupprefix10", "dom3", prefix);
+        assertEquals("dom3", prefix, "Nodelookupprefix10Assert2");
     }
 }
 

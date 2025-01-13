@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,9 +34,6 @@ import java.io.Reader;
 
 /**
  * <p>WritableLineReader class.</p>
- *
- *
- *
  */
 public class WritableLineReader extends LineNumberReader {
 	private StringBuilder writeBuffer = null;
@@ -46,7 +43,7 @@ public class WritableLineReader extends LineNumberReader {
 	 *
 	 * @param reader a {@link java.io.Reader} object.
 	 */
-	public WritableLineReader(Reader reader) {
+	public WritableLineReader(final Reader reader) {
 		super(reader);
 	}
 
@@ -54,9 +51,9 @@ public class WritableLineReader extends LineNumberReader {
 	 * <p>Constructor for WritableLineReader.</p>
 	 *
 	 * @param reader a {@link java.io.Reader} object.
-	 * @param bufferSize a int.
+	 * @param bufferSize a {@link java.lang.Integer} object.
 	 */
-	public WritableLineReader(Reader reader, int bufferSize) {
+	public WritableLineReader(final Reader reader, final int bufferSize) {
 		super(reader, bufferSize);
 	}
 
@@ -74,10 +71,10 @@ public class WritableLineReader extends LineNumberReader {
 	@Override
 	public int read() throws IOException {
 		final StringBuilder sb = this.writeBuffer;
-		if (sb != null && sb.length() > 0) {
+		if (sb != null && !sb.isEmpty()) {
 			final char ch = sb.charAt(0);
 			sb.deleteCharAt(0);
-			if (sb.length() == 0) {
+			if (sb.isEmpty()) {
 				this.writeBuffer = null;
 			}
 			return ch;
@@ -87,13 +84,13 @@ public class WritableLineReader extends LineNumberReader {
 
 	/** {@inheritDoc} */
 	@Override
-	public int read(char[] b, int off, int len) throws IOException {
+	public int read(final char[] b, final int off, final int len) throws IOException {
 		final StringBuilder sb = this.writeBuffer;
-		if (sb != null && sb.length() > 0) {
+		if (sb != null && !sb.isEmpty()) {
 			final int srcEnd = Math.min(sb.length(), len);
 			sb.getChars(0, srcEnd, b, off);
 			sb.delete(0, srcEnd);
-			if (sb.length() == 0) {
+			if (sb.isEmpty()) {
 				this.writeBuffer = null;
 			}
 			return srcEnd;
@@ -105,7 +102,7 @@ public class WritableLineReader extends LineNumberReader {
 	@Override
 	public boolean ready() throws IOException {
 		final StringBuilder sb = this.writeBuffer;
-		if (sb != null && sb.length() > 0) {
+		if (sb != null && !sb.isEmpty()) {
 			return true;
 		}
 		return super.ready();
@@ -117,7 +114,7 @@ public class WritableLineReader extends LineNumberReader {
 	 * @param text a {@link java.lang.String} object.
 	 * @throws java.io.IOException if any.
 	 */
-	public void write(String text) throws IOException {
+	public void write(final String text) throws IOException {
 		// Document overrides this to know that new data is coming.
 		StringBuilder sb = this.writeBuffer;
 		if (sb == null) {

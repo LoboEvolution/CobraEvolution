@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,88 +25,67 @@
  */
 package org.loboevolution.apache.xml.dtm.ref;
 
-/** The class ExtendedType represents an extended type object used by ExpandedNameTable. */
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+/**
+ * The class ExtendedType represents an extended type object used by ExpandedNameTable.
+ */
+@Data
+@AllArgsConstructor
 public final class ExtendedType {
-  private int nodetype;
-  private String namespace;
-  private String localName;
-  private int hash;
+    private int nodeType;
+    private String namespace;
+    private String localName;
+    private int hash;
 
-  /**
-   * Create an ExtendedType object from node type, namespace and local name. The hash code is
-   * calculated from the node type, namespace and local name.
-   *
-   * @param nodetype Type of the node
-   * @param namespace Namespace of the node
-   * @param localName Local name of the node
-   */
-  public ExtendedType(int nodetype, String namespace, String localName) {
-    this.nodetype = nodetype;
-    this.namespace = namespace;
-    this.localName = localName;
-    this.hash = nodetype + namespace.hashCode() + localName.hashCode();
-  }
-
-  /**
-   * Create an ExtendedType object from node type, namespace, local name and a given hash code.
-   *
-   * @param nodetype Type of the node
-   * @param namespace Namespace of the node
-   * @param localName Local name of the node
-   * @param hash The given hash code
-   */
-  public ExtendedType(int nodetype, String namespace, String localName, int hash) {
-    this.nodetype = nodetype;
-    this.namespace = namespace;
-    this.localName = localName;
-    this.hash = hash;
-  }
-
-  /**
-   * Redefine this ExtendedType object to represent a different extended type. This is intended to
-   * be used ONLY on the hashET object. Using it elsewhere will mess up existing hashtable entries!
-   */
-  void redefine(int nodetype, String namespace, String localName, int hash) {
-    this.nodetype = nodetype;
-    this.namespace = namespace;
-    this.localName = localName;
-    this.hash = hash;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public int hashCode() {
-    return hash;
-  }
-
-  /**
-   * Test if this ExtendedType object is equal to the given ExtendedType.
-   *
-   * @param other The other ExtendedType object to test for equality
-   * @return true if the two ExtendedType objects are equal.
-   */
-  public boolean equals(ExtendedType other) {
-    try {
-      return other.nodetype == this.nodetype
-          && other.localName.equals(this.localName)
-          && other.namespace.equals(this.namespace);
-    } catch (NullPointerException e) {
-      return false;
+    /**
+     * Create an ExtendedType object from node type, namespace and local name. The hash code is
+     * calculated from the node type, namespace and local name.
+     *
+     * @param nodetype  Type of the node
+     * @param namespace Namespace of the node
+     * @param localName Local name of the node
+     */
+    public ExtendedType(final int nodetype, final String namespace, final String localName) {
+        this.nodeType = nodetype;
+        this.namespace = namespace;
+        this.localName = localName;
+        this.hash = nodetype + namespace.hashCode() + localName.hashCode();
     }
-  }
 
-  /** @return the node type */
-  public int getNodeType() {
-    return nodetype;
-  }
+    /**
+     * Redefine this ExtendedType object to represent a different extended type. This is intended to
+     * be used ONLY on the hashET object. Using it elsewhere will mess up existing hashtable entries!
+     */
+    void redefine(final int nodetype, final String namespace, final String localName, final int hash) {
+        this.nodeType = nodetype;
+        this.namespace = namespace;
+        this.localName = localName;
+        this.hash = hash;
+    }
 
-  /** @return the local name */
-  public String getLocalName() {
-    return localName;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return hash;
+    }
 
-  /** @return the namespace */
-  public String getNamespace() {
-    return namespace;
-  }
+    /**
+     * Test if this ExtendedType object is equal to the given ExtendedType.
+     *
+     * @param other The other ExtendedType object to test for equality
+     * @return true if the two ExtendedType objects are equal.
+     */
+    public boolean equals(final ExtendedType other) {
+        try {
+            return other.nodeType == this.nodeType
+                    && other.localName.equals(this.localName)
+                    && other.namespace.equals(this.namespace);
+        } catch (final NullPointerException e) {
+            return false;
+        }
+    }
 }

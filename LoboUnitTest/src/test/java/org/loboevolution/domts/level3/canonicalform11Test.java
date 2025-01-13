@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.Attr;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Check that default attributes are made explicitly specified.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form</a>
  */
-public class canonicalform11Test extends LoboUnitTest {
+public class Canonicalform11Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        DOMConfiguration domConfig;
-        boolean canSet;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final DOMConfiguration domConfig;
+        final boolean canSet;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
-        Attr attr;
-        String attrValue;
-        boolean attrSpecified;
+        final Attr attr;
+        final String attrValue;
+        final boolean attrSpecified;
         doc = sampleXmlFile("canonicalform03.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("canonical-form", Boolean.TRUE);
@@ -69,15 +68,15 @@ public class canonicalform11Test extends LoboUnitTest {
             domConfig.setParameter("error-handler", errorMonitor);
             domConfig.setParameter("canonical-form", Boolean.TRUE);
             doc.normalizeDocument();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Canonicalform11Assert1");
             elemList = doc.getElementsByTagName("acronym");
             elem = (Element) elemList.item(0);
             attr = elem.getAttributeNode("title");
-            assertNotNull("titlePresent", attr);
+            assertNotNull(attr, "Canonicalform11Assert2");
             attrSpecified = attr.isSpecified();
-            assertTrue("titleSpecified", attrSpecified);
+            assertTrue(attrSpecified, "Canonicalform11Assert3");
             attrValue = attr.getNodeValue();
-            assertEquals("titleValue", "default", attrValue);
+            assertEquals("default", attrValue, "Canonicalform11Assert4");
         }
     }
 }

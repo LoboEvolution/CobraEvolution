@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ package org.loboevolution.html.node;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.HTMLElement;
 import org.loboevolution.html.dom.UserDataHandler;
-import org.loboevolution.html.node.events.EventTarget;
+import org.loboevolution.events.EventTarget;
 
 /**
  * Node is an interface from which a number of DOM API object types inherit. It
@@ -384,5 +384,6 @@ public interface Node extends EventTarget {
 	boolean hasAttributes();
 
 	boolean isSupported(String feature, String version);
+
 	Node getFeature(String feature, String version);
 }

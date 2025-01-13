@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,25 @@ package org.htmlunit.cssparser.parser;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Stack;
-
+import java.util.ArrayDeque;
+import java.util.Deque;
 import org.htmlunit.cssparser.dom.*;
+import java.util.Iterator;
+
+import org.htmlunit.cssparser.dom.AbstractCSSRuleImpl;
+import org.htmlunit.cssparser.dom.CSSCharsetRuleImpl;
+import org.htmlunit.cssparser.dom.CSSFontFaceRuleImpl;
+import org.htmlunit.cssparser.dom.CSSImportRuleImpl;
+import org.htmlunit.cssparser.dom.CSSMediaRuleImpl;
+import org.htmlunit.cssparser.dom.CSSPageRuleImpl;
+import org.htmlunit.cssparser.dom.CSSRuleListImpl;
+import org.htmlunit.cssparser.dom.CSSStyleDeclarationImpl;
+import org.htmlunit.cssparser.dom.CSSStyleRuleImpl;
+import org.htmlunit.cssparser.dom.CSSStyleSheetImpl;
+import org.htmlunit.cssparser.dom.CSSUnknownRuleImpl;
+import org.htmlunit.cssparser.dom.CSSValueImpl;
+import org.htmlunit.cssparser.dom.MediaListImpl;
+import org.htmlunit.cssparser.dom.Property;
 import org.htmlunit.cssparser.parser.javacc.CSS3Parser;
 import org.htmlunit.cssparser.parser.media.MediaQueryList;
 import org.htmlunit.cssparser.parser.selector.SelectorList;
@@ -97,7 +113,7 @@ public class CSSOMParser {
      */
     public void parseStyleDeclaration(final CSSStyleDeclarationImpl sd, final String styleDecl) throws IOException {
         try (InputSource source = new InputSource(new StringReader(styleDecl))) {
-            final Stack<Object> nodeStack = new Stack<>();
+            final Deque<Object> nodeStack = new ArrayDeque<>();
             nodeStack.push(sd);
             final CSSOMHandler handler = new CSSOMHandler(nodeStack);
             parser_.setDocumentHandler(handler);
@@ -189,7 +205,7 @@ public class CSSOMParser {
     }
 
     class CSSOMHandler implements DocumentHandler {
-        private final Stack<Object> nodeStack_;
+        private final Deque<Object> nodeStack_;
         private Object root_;
         private String href_;
 
@@ -201,12 +217,12 @@ public class CSSOMParser {
             href_ = href;
         }
 
-        CSSOMHandler(final Stack<Object> nodeStack) {
+        CSSOMHandler(final Deque<Object> nodeStack) {
             nodeStack_ = nodeStack;
         }
 
         CSSOMHandler() {
-            nodeStack_ = new Stack<>();
+            nodeStack_ = new ArrayDeque<>();
         }
 
         Object getRoot() {
@@ -215,7 +231,7 @@ public class CSSOMParser {
 
         @Override
         public void startDocument(final InputSource source) throws CSSException {
-            if (nodeStack_.empty()) {
+            if (nodeStack_.isEmpty()) {
                 final CSSStyleSheetImpl ss = new CSSStyleSheetImpl();
                 CSSOMParser.this.setParentStyleSheet(ss);
                 ss.setHref(getHref());
@@ -244,7 +260,7 @@ public class CSSOMParser {
                 getParentRule(),
                 atRule);
             ir.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(ir);
             }
             else {
@@ -260,7 +276,7 @@ public class CSSOMParser {
                     getParentRule(),
                     characterEncoding);
             cr.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(cr);
             }
             else {
@@ -278,7 +294,7 @@ public class CSSOMParser {
                 uri,
                 new MediaListImpl(media));
             ir.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(ir);
             }
             else {
@@ -295,7 +311,7 @@ public class CSSOMParser {
                 getParentRule(),
                 ml);
             mr.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(mr);
             }
 
@@ -321,7 +337,7 @@ public class CSSOMParser {
                 CSSOMParser.this.getParentStyleSheet(),
                 getParentRule(), pseudoPage);
             pr.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(pr);
             }
 
@@ -346,7 +362,7 @@ public class CSSOMParser {
                 CSSOMParser.this.getParentStyleSheet(),
                 getParentRule());
             ffr.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 ((CSSRuleListImpl) nodeStack_.peek()).add(ffr);
             }
 
@@ -371,7 +387,7 @@ public class CSSOMParser {
                 CSSOMParser.this.getParentStyleSheet(),
                 getParentRule(), selectors);
             sr.setLocator(locator);
-            if (!nodeStack_.empty()) {
+            if (!nodeStack_.isEmpty()) {
                 final Object o = nodeStack_.peek();
                 ((CSSRuleListImpl) o).add(sr);
             }
@@ -405,8 +421,10 @@ public class CSSOMParser {
         }
 
         private AbstractCSSRuleImpl getParentRule() {
-            if (!nodeStack_.empty() && nodeStack_.size() > 1) {
-                final Object node = nodeStack_.get(nodeStack_.size() - 2);
+            if (!nodeStack_.isEmpty() && nodeStack_.size() > 1) {
+                final Iterator<Object> iter = nodeStack_.iterator();
+                iter.next(); // skip first
+                final Object node = iter.next();
                 if (node instanceof AbstractCSSRuleImpl) {
                     return (AbstractCSSRuleImpl) node;
                 }

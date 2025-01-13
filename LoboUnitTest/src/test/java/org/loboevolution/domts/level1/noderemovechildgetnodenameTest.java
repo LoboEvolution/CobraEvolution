@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,28 +42,25 @@ import static org.junit.Assert.*;
  * and check the NodeName returned by the
  * "removeChild(oldChild)" method.   The returned node
  * should have a NodeName equal to "#text" or employeeId depending on whitespace.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066</a>
  */
-public class noderemovechildgetnodenameTest extends LoboUnitTest {
+public class NoderemovechildgetnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node oldChild;
-        Node removedChild;
-        String childName;
-        int length;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node oldChild;
+        final Node removedChild;
+        final String childName;
+        final int length;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -74,9 +71,9 @@ public class noderemovechildgetnodenameTest extends LoboUnitTest {
         childName = removedChild.getNodeName();
 
         if (length == 6) {
-            assertEquals("nowhitespace", "EMPLOYEEID",childName);
+            assertEquals("EMPLOYEEID", childName, "NoderemovechildgetnodenameAssert1");
         } else {
-            assertEquals("whitespace", "#text", childName);
+            assertEquals("#text", childName, "NoderemovechildgetnodenameAssert2");
         }
 
     }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,35 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * The method hasAttributes returns whether this node (if it is an element) has any attributes.
  * Retrieve the docType node.  Since this is not an element node check if hasAttributes returns
  * null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs</a>
  */
-public class nodehasattributes02Test extends LoboUnitTest {
+public class Nodehasattributes02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        boolean hasAttributes;
+        final Document doc;
+        final DocumentType docType;
+        final boolean hasAttributes;
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         hasAttributes = docType.hasAttributes();
-        assertFalse("nodehasattributes02", hasAttributes);
+        assertFalse(hasAttributes);
     }
 }
 

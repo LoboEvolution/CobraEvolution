@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,20 +26,26 @@
 
 package org.loboevolution.html.js.css;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.htmlunit.cssparser.dom.CSSStyleSheetImpl;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.css.CSSStyleSheet;
-import org.loboevolution.html.node.css.MediaList;
-import org.loboevolution.html.node.css.StyleSheet;
+import org.loboevolution.css.CSSStyleSheet;
+import org.loboevolution.css.MediaList;
+import org.loboevolution.css.StyleSheet;
 
+/**
+ * <p>StyleSheetImpl class.</p>
+ */
 public class StyleSheetImpl implements StyleSheet {
 
     private final CSSStyleSheetImpl cssStyleSheet;
 
-    private Node ownerNode;
+    @Getter
+    @Setter
+    private Element ownerNode;
 
-    public StyleSheetImpl(CSSStyleSheetImpl cssStyleSheet) {
+    public StyleSheetImpl(final CSSStyleSheetImpl cssStyleSheet) {
         this.cssStyleSheet = cssStyleSheet;
     }
 
@@ -53,12 +59,6 @@ public class StyleSheetImpl implements StyleSheet {
     @Override
     public String getHref() {
         return cssStyleSheet.getHref();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Element getOwnerNode() {
-        return (Element) ownerNode;
     }
 
     /** {@inheritDoc} */
@@ -77,10 +77,6 @@ public class StyleSheetImpl implements StyleSheet {
     @Override
     public boolean getDisabled() {
         return cssStyleSheet.getDisabled();
-    }
-
-    public void setOwnerNode(Node ownerNode) {
-        this.ownerNode = ownerNode;
     }
 
     @Override

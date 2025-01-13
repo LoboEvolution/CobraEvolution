@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,30 +45,27 @@ import static org.junit.Assert.assertNull;
  * Try retreiving the street attribute from the namednodemap using the
  * default namespace uri and the street attribute name.  Since the default
  * namespace doesnot apply to attributes this should return null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS</a>
  */
-public class namednodemapgetnameditemns05Test extends LoboUnitTest {
+public class Namednodemapgetnameditemns05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        Element element;
-        Attr attribute;
-        HTMLCollection elementList;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final Element element;
+        final Attr attribute;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
         element = (Element) elementList.item(1);
         attributes = element.getAttributes();
         attribute = (Attr) attributes.getNamedItemNS("*", "street");
-        assertNull("namednodemapgetnameditemns05", attribute);
+        assertNull(attribute);
     }
 }
 

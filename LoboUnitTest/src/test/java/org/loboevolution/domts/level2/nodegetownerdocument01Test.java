@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -42,32 +41,28 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Create a new DocumentType node.  Since this node is not used with any Document yet
  * verify if the ownerDocument is null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc">http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class nodegetownerdocument01Test extends LoboUnitTest {
+public class Nodegetownerdocument01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document ownerDoc;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        String nullID = null;
+        final Document doc;
+        final Document ownerDoc;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
 
         doc = sampleXmlFile("staff.xml");
-        
+
         domImpl = doc.getImplementation();
-        docType = domImpl.createDocumentType("mydoc", nullID, nullID);
+        docType = domImpl.createDocumentType("mydoc", null, null);
         ownerDoc = docType.getOwnerDocument();
-        assertNull("nodegetownerdocument01", ownerDoc);
+        assertNull(ownerDoc);
     }
 }
 

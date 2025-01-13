@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,28 +41,25 @@ import static org.junit.Assert.assertTrue;
  * return true if the node has attributes.
  * Retrieve the first address node and the "hasAttributes()" method
  * should return true since the node has "domestic" as an attribute.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs</a>
  */
-public class hasAttributes02Test extends LoboUnitTest {
+public class HasAttributes02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addrList;
-        Element addrNode;
-        boolean state;
+        final Document doc;
+        final HTMLCollection addrList;
+        final Element addrNode;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         addrList = doc.getElementsByTagName("address");
         addrNode = (Element) addrList.item(0);
         state = addrNode.hasAttributes();
-        assertTrue("throw_True", state);
+        assertTrue(state);
     }
 }
 

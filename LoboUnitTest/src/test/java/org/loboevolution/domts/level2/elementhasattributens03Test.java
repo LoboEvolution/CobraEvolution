@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -46,33 +46,28 @@ import static org.junit.Assert.assertTrue;
  * Add the attribute node to the element node.  Check if the newly created element
  * node has an attribute by invoking the hasAttributeNS method with appropriate
  * values for the namespaceURI and localName parameters.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttrNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class elementhasattributens03Test extends LoboUnitTest {
+public class Elementhasattributens03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        boolean state;
-        Attr attribute;
-        String nullNS = null;
-
+        final Document doc;
+        final Element element;
+        final boolean state;
+        final Attr attribute;
         doc = sampleXmlFile("staff.xml");
         element = doc.createElementNS("http://www.w3.org/DOM", "address");
-        assertNotNull("createElementNotNull", element);
-        attribute = doc.createAttributeNS(nullNS, "domestic");
+        assertNotNull(element);
+        attribute = doc.createAttributeNS(null, "domestic");
         element.setAttributeNode(attribute);
-        state = element.hasAttributeNS(nullNS, "domestic");
-        assertTrue("elementhasattributens03", state);
+        state = element.hasAttributeNS(null, "domestic");
+        assertTrue(state);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@
 package org.loboevolution.apache.xpath.axes;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.loboevolution.apache.xml.dtm.DTMIterator;
 import org.loboevolution.apache.xml.utils.WrappedRuntimeException;
 
@@ -36,14 +38,14 @@ public final class IteratorPool {
   private final DTMIterator m_orig;
 
   /** Stack of given objects this points to. */
-  private final ArrayList<DTMIterator> m_freeStack;
+  private final List<DTMIterator> m_freeStack;
 
   /**
    * Constructor IteratorPool
    *
    * @param original The original iterator from which all others will be cloned.
    */
-  public IteratorPool(DTMIterator original) {
+  public IteratorPool(final DTMIterator original) {
     m_orig = original;
     m_freeStack = new ArrayList<>();
   }
@@ -76,7 +78,7 @@ public final class IteratorPool {
       // Create a new object if so.
       try {
         return (DTMIterator) m_orig.clone();
-      } catch (Exception ex) {
+      } catch (final Exception ex) {
         throw new WrappedRuntimeException(ex);
       }
     }
@@ -89,7 +91,7 @@ public final class IteratorPool {
    *
    * @param obj Object to add.
    */
-  public synchronized void freeInstance(DTMIterator obj) {
+  public synchronized void freeInstance(final DTMIterator obj) {
     m_freeStack.add(obj);
   }
 }

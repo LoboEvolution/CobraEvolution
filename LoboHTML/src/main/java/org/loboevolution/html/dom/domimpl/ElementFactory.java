@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ public class ElementFactory {
 	 *
 	 * @param isRss a boolean.
 	 */
-	public  ElementFactory(boolean isRss) {
+	public  ElementFactory(final boolean isRss) {
 		// This sets up builders for each known element tag.
 		final Map<HTMLTag, HTMLElementBuilder> builders = this.builders;
 		builders.put(HTMLTag.HTML, new HTMLElementBuilder.Html());		
@@ -65,6 +65,7 @@ public class ElementFactory {
 		builders.put(HTMLTag.FOOTER, div);
 
 		builders.put(HTMLTag.MARQUEE, new HTMLElementBuilder.Marquee());
+		builders.put(HTMLTag.METER, new HTMLElementBuilder.Meter());
 		builders.put(HTMLTag.DIR, new HTMLElementBuilder.Dir());
 		builders.put(HTMLTag.DETAILS, new HTMLElementBuilder.Details());
 		builders.put(HTMLTag.DIALOG, new HTMLElementBuilder.Dialog());
@@ -189,10 +190,10 @@ public class ElementFactory {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.html.dom.HTMLElement} object.
 	 */
-	public final HTMLElement createElement(HTMLDocumentImpl document, String name) {
+	public final HTMLElement createElement(final HTMLDocumentImpl document, final String name) {
 	    final String normalName = name.toUpperCase(Locale.ENGLISH);
 		final HTMLElementBuilder builder = this.builders.get(HTMLTag.get(normalName));
-		HTMLElement element = builder == null ? new HTMLElementImpl(name) : builder.build(name);
+		final HTMLElement element = builder == null ? new HTMLElementImpl(name) : builder.build(name);
 		element.setOwnerDocument(document);
 		return element;
 	}

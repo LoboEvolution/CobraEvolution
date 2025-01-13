@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,32 +28,30 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Attempt to add a second document element by a replacing a trailing comment.  The attempt should result
  * in a HIERARCHY_REQUEST_ERR or NOT_SUPPORTED_ERR.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild39Test extends LoboUnitTest {
+public class Nodereplacechild39Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        String rootName;
-        String rootNS;
-        Comment newComment;
-        Element newElement;
+        final Document doc;
+        final Element docElem;
+        final String rootName;
+        final String rootNS;
+        final Comment newComment;
+        final Element newElement;
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
@@ -65,10 +63,10 @@ public class nodereplacechild39Test extends LoboUnitTest {
         boolean success = false;
         try {
             doc.replaceChild(newElement, newComment);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
         }
-        assertTrue("throw_HIERARCHY_REQUEST_ERR", success);
+        assertTrue(success, "Nodereplacechild39Assert2");
     }
 }
 

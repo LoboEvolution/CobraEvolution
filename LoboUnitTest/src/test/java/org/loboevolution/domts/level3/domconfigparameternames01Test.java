@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,20 +27,21 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DOMStringList;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMStringList;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Checks getParameterNames and canSetParameter for Document.domConfig.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-domConfig">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-domConfig</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-parameterNames">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-parameterNames</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form</a>
@@ -60,43 +61,55 @@ import static org.junit.Assert.*;
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-well-formed">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-well-formed</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace</a>
  */
-public class domconfigparameternames01Test extends LoboUnitTest {
+public class Domconfigparameternames01Test extends LoboUnitTest {
+
     @Test
     public void runTest() {
-        DOMImplementation domImpl;
-        Document doc;
-        DOMConfiguration config;
-        boolean state;
-        DOMStringList parameterNames;
+        final Document doc;
+        final DOMConfiguration config;
+        final DOMStringList parameterNames;
         String parameterName;
         int matchCount = 0;
         Object paramValue;
         boolean canSet;
         doc = sampleXmlFile("barfoo.xml");
         config = doc.getDomConfig();
-        assertNotNull("configNotNull", config);
+        assertNotNull(config, "Domconfigparameternames01Assert1");
         parameterNames = config.getParameterNames();
-        assertNotNull("parameterNamesNotNull", parameterNames);
+        assertNotNull(parameterNames, "Domconfigparameternames01Assert2");
         for (int indexN1008C = 0; indexN1008C < parameterNames.getLength(); indexN1008C++) {
             parameterName = parameterNames.item(indexN1008C);
             paramValue = config.getParameter(parameterName);
             canSet = config.canSetParameter(parameterName, paramValue);
-            assertTrue("canSetToDefaultValue", canSet);
+            assertTrue(canSet, "Domconfigparameternames01Assert3");
             config.setParameter(parameterName, paramValue);
 
-            if (
-                    ("canonical-form".equalsIgnoreCase(parameterName) ||
-                            "cdata-sections".equalsIgnoreCase(parameterName) ||
-                            "check-character-normalization".equalsIgnoreCase(parameterName) ||
-                            "comments".equalsIgnoreCase(parameterName) ||
-                            "datatype-normalization".equalsIgnoreCase(parameterName) ||
-                            "entities".equalsIgnoreCase(parameterName) ||
-                            "error-handler".equalsIgnoreCase(parameterName) || "infoset".equalsIgnoreCase(parameterName) || "namespaces".equalsIgnoreCase(parameterName) || "namespace-declarations".equalsIgnoreCase(parameterName) || "normalize-characters".equalsIgnoreCase(parameterName) || "split-cdata-sections".equalsIgnoreCase(parameterName) || "validate".equalsIgnoreCase(parameterName) || "validate-if-schema".equalsIgnoreCase(parameterName) || "well-formed".equalsIgnoreCase(parameterName) || "element-content-whitespace".equalsIgnoreCase(parameterName))
-            ) {
+            if (isCount(parameterName)) {
                 matchCount += 1;
             }
         }
-        assertEquals("definedParameterCount", 16, matchCount);
+        assertEquals(16, matchCount, "Domconfigparameternames01Assert4");
+    }
+
+    private boolean isCount(String parameterName) {
+        List<String> list = new ArrayList<>();
+        list.add("canonical-form");
+        list.add("cdata-sections");
+        list.add("check-character-normalization");
+        list.add("comments");
+        list.add("datatype-normalization");
+        list.add("entities");
+        list.add("error-handler");
+        list.add("infoset");
+        list.add("namespaces");
+        list.add("namespace-declarations");
+        list.add("normalize-characters");
+        list.add("split-cdata-sections");
+        list.add("validate");
+        list.add("validate-if-schema");
+        list.add("well-formed");
+        list.add("element-content-whitespace");
+        return list.stream().anyMatch(l -> l.equals(parameterName.toLowerCase()));
     }
 }
 

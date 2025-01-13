@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,36 +27,34 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 NotationNode having the same name of two DocumnotationType nodes
  * returned by parsing the same xml documnotation are equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode26Test extends LoboUnitTest {
+public class Nodeisequalnode26Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc1;
-        Document doc2;
-        DocumentType docType1;
-        DocumentType docType2;
-        NamedNodeMap notationsMap1;
-        NamedNodeMap notationsMap2;
-        Notation notation1;
-        Notation notation2;
-        boolean isEqual;
+        final Document doc1;
+        final Document doc2;
+        final DocumentType docType1;
+        final DocumentType docType2;
+        final NamedNodeMap notationsMap1;
+        final NamedNodeMap notationsMap2;
+        final Notation notation1;
+        final Notation notation2;
+        final boolean isEqual;
         doc1 = sampleXmlFile("hc_staff.xml");
         doc2 = sampleXmlFile("hc_staff.xml");
         docType1 = doc1.getDoctype();
@@ -66,7 +64,7 @@ public class nodeisequalnode26Test extends LoboUnitTest {
         notation1 = (Notation) notationsMap1.getNamedItem("notation1");
         notation2 = (Notation) notationsMap2.getNamedItem("notation1");
         isEqual = notation1.isEqualNode(notation2);
-        assertTrue("nodeisequalnode26", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode26Assert2");
     }
 }
 

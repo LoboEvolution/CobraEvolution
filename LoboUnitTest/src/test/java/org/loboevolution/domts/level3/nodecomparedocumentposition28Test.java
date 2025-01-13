@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,46 +35,44 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Using compareDocumentPosition check the document position of the EntityReference node ent4's
  * first child and last child.  Invoke compareDocumentPositon on first child with last child as a parameter
  * should return FOLLOWING, and should return PRECEDING vice versa.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition28Test extends LoboUnitTest {
+public class Nodecomparedocumentposition28Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection varList;
-        Element varElem;
-        EntityReference entRef;
-        Element entRefChild1;
-        ProcessingInstruction entRefChild2;
-        int entRefChild1Position;
-        int entRefChild2Position;
+        final Document doc;
+        final HTMLCollection varList;
+        final Element varElem;
+        final EntityReference entRef;
+        final Element entRefChild1;
+        final ProcessingInstruction entRefChild2;
+        final int entRefChild1Position;
+        final int entRefChild2Position;
         doc = sampleXmlFile("hc_staff.xml");
 
         varList = doc.getElementsByTagName("var");
         varElem = (Element) varList.item(2);
-        assertNotNull("varElemNotNull", varElem);
+        assertNotNull(varElem, "Nodecomparedocumentposition28Assert3");
         entRef = (EntityReference) varElem.getFirstChild();
-        assertNotNull("entRefNotNull", entRef);
+        assertNotNull(entRef, "Nodecomparedocumentposition28Assert4");
 
         entRefChild1 = (Element) entRef.getFirstChild();
-        assertNotNull("entRefChild1NotNull", entRefChild1);
+        assertNotNull(entRefChild1, "Nodecomparedocumentposition28Assert5");
         entRefChild2 = (ProcessingInstruction) entRef.getLastChild();
-        assertNotNull("entRefChild2NotNull", entRefChild2);
+        assertNotNull(entRefChild2, "Nodecomparedocumentposition28Assert6");
         entRefChild1Position = entRefChild1.compareDocumentPosition(entRefChild2);
-        assertEquals("nodecomparedocumentpositionFollowing28", 4, entRefChild1Position);
+        assertEquals(4, entRefChild1Position, "Nodecomparedocumentposition28Assert7");
         entRefChild2Position = entRefChild2.compareDocumentPosition(entRefChild1);
-        assertEquals("nodecomparedocumentpositionPRECEDING28", 2, entRefChild2Position);
+        assertEquals(2, entRefChild2Position, "Nodecomparedocumentposition28Assert8");
     }
 }
 

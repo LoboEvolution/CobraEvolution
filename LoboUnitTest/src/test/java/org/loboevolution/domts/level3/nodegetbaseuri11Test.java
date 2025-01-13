@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Import a new Processing Instruction of a new Document after the document element.  Using getBaseURI
  * check if the baseURI attribute of the new Processing Instruction node is the same as Document.documentURI.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2ProcessingInstruction">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2ProcessingInstruction</a>
  */
-public class nodegetbaseuri11Test extends LoboUnitTest {
+public class Nodegetbaseuri11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        ProcessingInstruction newPI;
-        ProcessingInstruction imported;
-        String baseURI;
-        String docURI;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final ProcessingInstruction newPI;
+        final ProcessingInstruction imported;
+        final String baseURI;
+        final String docURI;
 
         doc = sampleXmlFile("barfoo_base.xml");
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", nullDocType);
+        newDoc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", null);
         newPI = newDoc.createProcessingInstruction("TARGET", "DATA");
         imported = (ProcessingInstruction) doc.importNode(newPI, true);
         doc.appendChild(imported);
         baseURI = imported.getBaseURI();
-        assertURIEquals("equalsBarfooBase", null, null, null, null, "barfoo_base", null, null, Boolean.TRUE, baseURI);
+        assertURIEquals(new URIEquals(null, null, null, null, "barfoo_base", null, null, true, baseURI));
         docURI = doc.getDocumentURI();
-        assertEquals("equalsDocURI", docURI, baseURI);
+        assertEquals(docURI, baseURI, "Nodegetbaseuri11Assert2");
     }
 }

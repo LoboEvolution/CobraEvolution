@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,15 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
+import lombok.*;
 import org.htmlunit.cssparser.dom.DOMException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.loboevolution.common.Nodes;
 import org.loboevolution.common.Strings;
-import org.loboevolution.html.dom.nodeimpl.event.EventTargetImpl;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.TypeInfo;
+
 import java.util.Objects;
 
 /**
@@ -46,9 +43,9 @@ import java.util.Objects;
 @Data
 @Builder
 @AllArgsConstructor
-public class AttrImpl extends EventTargetImpl implements Attr {
+public class AttrImpl extends NodeImpl implements Attr {
 
-    private final String name;
+    private String name;
 
     private String value;
 
@@ -56,8 +53,7 @@ public class AttrImpl extends EventTargetImpl implements Attr {
 
     private Node ownerElement;
 
-    @Builder.Default
-    private boolean specified = true;
+    private boolean specified;
 
     /**
      * {@inheritDoc}
@@ -127,12 +123,12 @@ public class AttrImpl extends EventTargetImpl implements Attr {
      * {@inheritDoc}
      */
     @Override
-    public void setNodeValue(String nodeValue) {
+    public void setNodeValue(final String nodeValue) {
         this.value = nodeValue;
     }
 
     @Override
-    public Node insertBefore(Node newChild, Node refChild) {
+    public Node insertBefore(final Node newChild, final Node refChild) {
         if (newChild instanceof Attr) {
             throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Unknwon node implementation");
         } else {
@@ -141,7 +137,7 @@ public class AttrImpl extends EventTargetImpl implements Attr {
     }
 
     @Override
-    public Node removeChild(Node oldChild) {
+    public Node removeChild(final Node oldChild) {
         if (oldChild instanceof Attr) {
             throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Unknwon node implementation");
         } else {
@@ -150,7 +146,7 @@ public class AttrImpl extends EventTargetImpl implements Attr {
     }
 
     @Override
-    public Node replaceChild(Node newChild, Node oldChild) {
+    public Node replaceChild(final Node newChild, final Node oldChild) {
         if (newChild instanceof Attr) {
             throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Unknwon node implementation");
         } else {
@@ -161,10 +157,10 @@ public class AttrImpl extends EventTargetImpl implements Attr {
     @Override
     public Node getNextSibling() {
         if (ownerElement != null) {
-            NamedNodeMap attributes = ownerElement.getAttributes();
+            final NamedNodeMap attributes = ownerElement.getAttributes();
             boolean next = false;
-            for (Node nodeAttr : Nodes.iterable(attributes)) {
-                Attr attr = (Attr) nodeAttr;
+            for (final Node nodeAttr : Nodes.iterable(attributes)) {
+                final Attr attr = (Attr) nodeAttr;
                 if (next) {
                     return attr;
                 }
@@ -180,10 +176,10 @@ public class AttrImpl extends EventTargetImpl implements Attr {
     @Override
     public Node getPreviousSibling() {
         if (ownerElement != null) {
-            NamedNodeMap attributes = ownerElement.getAttributes();
+            final NamedNodeMap attributes = ownerElement.getAttributes();
             Attr previus = null;
-            for (Node nodeAttr : Nodes.iterable(attributes)) {
-                Attr attr = (Attr) nodeAttr;
+            for (final Node nodeAttr : Nodes.iterable(attributes)) {
+                final Attr attr = (Attr) nodeAttr;
 
                 if (Objects.equals(attr, this) && !Objects.equals(previus, this)) {
                     return previus;
@@ -196,18 +192,24 @@ public class AttrImpl extends EventTargetImpl implements Attr {
     }
 
     @Override
-    public short compareDocumentPosition(Node other) {
-        short comparison = super.compareDocumentPosition(other);
+    public short compareDocumentPosition(final Node other) {
+        short comparison = 0;
         if (other instanceof Attr) {
-            AttrImpl otherImpl = (AttrImpl) other;
+            final AttrImpl otherImpl = (AttrImpl) other;
             if (otherImpl.getOwnerElement().isSameNode(this.ownerElement)) {
-                comparison += Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
+                comparison = Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC;
             }
+            return comparison;
         }
-        return comparison;
+        return super.compareDocumentPosition(other);
     }
 
-    public void setOwnerElement(Node ownerElement) {
+    @Override
+    public boolean hasAttributes() {
+        return false;
+    }
+
+    public void setOwnerElement(final Node ownerElement) {
         this.ownerElement = ownerElement;
         setParentImpl(ownerElement);
     }

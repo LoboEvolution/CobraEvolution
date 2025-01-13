@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,14 +36,14 @@ class TableMatrixEvents {
 	
 	private BoundableRenderable armedRenderable;
 	
-	private List<RTableCell> allCells;
+	private final List<RTableCell> allCells;
 	
 	/**
 	 * <p>Constructor for TableMatrixEvents.</p>
 	 *
 	 * @param allCells a {@link java.util.List} object.
 	 */
-	public TableMatrixEvents(List<RTableCell> allCells) {
+	public TableMatrixEvents(final List<RTableCell> allCells) {
 		this.allCells = allCells;
 	}
 	
@@ -51,12 +51,12 @@ class TableMatrixEvents {
 	 * <p>onDoubleClick.</p>
 	 *
 	 * @param event a {@link java.awt.event.MouseEvent} object.
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @return a boolean.
 	 */
-	public boolean onDoubleClick(final MouseEvent event, int x, int y) {
-		for (RTableCell cell : allCells) {
+	public boolean onDoubleClick(final MouseEvent event, final int x, final int y) {
+		for (final RTableCell cell : allCells) {
 			final Rectangle bounds = cell.getVisualBounds();
 			if (bounds.contains(x, y)) {
 				if (!cell.onDoubleClick(event, x - bounds.x, y - bounds.y)) {
@@ -72,12 +72,12 @@ class TableMatrixEvents {
 	 * <p>onMouseClick.</p>
 	 *
 	 * @param event a {@link java.awt.event.MouseEvent} object.
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @return a boolean.
 	 */
-	public boolean onMouseClick(final MouseEvent event, int x, int y) {
-		for (RTableCell cell : allCells) {
+	public boolean onMouseClick(final MouseEvent event, final int x, final int y) {
+		for (final RTableCell cell : allCells) {
 			final Rectangle bounds = cell.getVisualBounds();
 			if (bounds.contains(x, y)) {
 				if (!cell.onMouseClick(event, x - bounds.x, y - bounds.y)) {
@@ -109,12 +109,12 @@ class TableMatrixEvents {
 	 * <p>onMousePressed.</p>
 	 *
 	 * @param event a {@link java.awt.event.MouseEvent} object.
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @return a boolean.
 	 */
-	public boolean onMousePressed(final MouseEvent event, int x, int y) {
-		for (RTableCell cell : allCells) {
+	public boolean onMousePressed(final MouseEvent event, final int x, final int y) {
+		for (final RTableCell cell : allCells) {
 			final Rectangle bounds = cell.getVisualBounds();
 			if (bounds.contains(x, y)) {
 				if (!cell.onMousePressed(event, x - bounds.x, y - bounds.y)) {
@@ -131,13 +131,13 @@ class TableMatrixEvents {
 	 * <p>onMouseReleased.</p>
 	 *
 	 * @param event a {@link java.awt.event.MouseEvent} object.
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @return a boolean.
 	 */
-	public boolean onMouseReleased(final MouseEvent event, int x, int y) {
+	public boolean onMouseReleased(final MouseEvent event, final int x, final int y) {
 		boolean found = false;
-		for (RTableCell cell : allCells) {
+		for (final RTableCell cell : allCells) {
 			final Rectangle bounds = cell.getVisualBounds();
 			if (bounds.contains(x, y)) {
 				found = true;

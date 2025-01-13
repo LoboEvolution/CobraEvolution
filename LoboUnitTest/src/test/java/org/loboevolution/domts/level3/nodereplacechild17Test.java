@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,45 +27,45 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.*;
+import org.loboevolution.html.node.Comment;
+import org.loboevolution.html.node.Document;
+import org.loboevolution.html.node.DocumentFragment;
+import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a DocumentFragment node attempt to replace a Comment node with
  * a ProcessingInstruction and vice versa verify the data of the replaced nodes.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild17Test extends LoboUnitTest {
+public class Nodereplacechild17Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        ProcessingInstruction pi;
-        Comment cmt;
-        Comment replacedCmt;
-        ProcessingInstruction replacedPi;
-        String data;
-        String target;
-        Node appendedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final ProcessingInstruction pi;
+        final Comment cmt;
+        final Comment replacedCmt;
+        final ProcessingInstruction replacedPi;
+        final String data;
+        final String target;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         cmt = doc.createComment("Comment");
         pi = doc.createProcessingInstruction("target", "Comment");
-        appendedChild = docFrag.appendChild(pi);
-        appendedChild = docFrag.appendChild(cmt);
+        docFrag.appendChild(pi);
+        docFrag.appendChild(cmt);
         replacedCmt = (Comment) docFrag.replaceChild(pi, cmt);
         data = replacedCmt.getData();
-        assertEquals("nodereplacechild17_1", "Comment", data);
+        assertEquals("Comment", data, "Nodereplacechild17Assert2");
         replacedPi = (ProcessingInstruction) docFrag.replaceChild(cmt, pi);
         target = replacedPi.getTarget();
-        assertEquals("nodereplacechild17_2", "target", target);
+        assertEquals("target", target, "Nodereplacechild17Assert3");
     }
 }
 

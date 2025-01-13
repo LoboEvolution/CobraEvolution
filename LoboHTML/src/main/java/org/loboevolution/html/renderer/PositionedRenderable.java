@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,7 @@ public class PositionedRenderable implements Renderable {
 			final Point or = originalParent.getOriginRelativeTo(rparent);
 			final Point orNoScroll = originalParent.getOriginRelativeToNoScroll(rparent);
 			final Rectangle bounds = getRelativeBounds();
-			Graphics g2;
+			final Graphics g2;
 			if (bounds != null) {
 				final int tx = bounds.x + orNoScroll.x;
 				final int ty = bounds.y + orNoScroll.y;
@@ -100,13 +100,11 @@ public class PositionedRenderable implements Renderable {
 		final RCollection rparent = renderable.getParent();
 		if (!isFixed && rparent.getModelNode() instanceof HTMLDocument) {
 			Renderable htmlRenderable = renderable.findHtmlRenderable(rparent);
-			if (htmlRenderable instanceof PositionedRenderable) {
-				final PositionedRenderable htmlPR = (PositionedRenderable) htmlRenderable;
-				htmlRenderable = htmlPR.renderable;
+			if (htmlRenderable instanceof PositionedRenderable htmlPR) {
+                htmlRenderable = htmlPR.renderable;
 			}
-			if (htmlRenderable instanceof RBlock) {
-				final RBlock htmlBlock = ((RBlock) htmlRenderable);
-				final Point htmlOffset = htmlBlock.bodyLayout.getOrigin();
+			if (htmlRenderable instanceof RBlock htmlBlock) {
+                final Point htmlOffset = htmlBlock.bodyLayout.getOrigin();
 				final Insets htmlInsets = htmlBlock.getInsetsMarginBorder(htmlBlock.hasHScrollBar, htmlBlock.hasVScrollBar);
 				return new Point((int) htmlOffset.getX() - htmlInsets.left, (int) htmlOffset.getY() - htmlInsets.top);
 			}

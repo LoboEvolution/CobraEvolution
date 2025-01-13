@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using setTextContent on an existing Text node, attempt to set its value to Text.
  * Retreive the textContent and verify if it is was set to Text.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent07Test extends LoboUnitTest {
+public class Nodesettextcontent07Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        Text txt;
-        String textContent;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final Text txt;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("em");
         elem = (Element) elemList.item(0);
         txt = (Text) elem.getFirstChild();
         txt.setTextContent("Text");
         textContent = txt.getTextContent();
-        assertEquals("nodegettextcontent10", "Text", textContent);
+        assertEquals("Text", textContent, "Nodesettextcontent07Assert2");
     }
 }
 

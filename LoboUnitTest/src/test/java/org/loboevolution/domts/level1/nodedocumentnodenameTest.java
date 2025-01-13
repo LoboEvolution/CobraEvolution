@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,11 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -40,24 +40,22 @@ import static org.junit.Assert.*;
  * Retrieve the DOM document and check the string returned
  * by the "getNodeName()" method.   It should be equal to
  * "#document".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#i-Document">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#i-Document</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  */
-public class nodedocumentnodenameTest extends LoboUnitTest {
+public class NodedocumentnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        String documentName;
+        final Document doc;
+        final String documentName;
         doc = sampleXmlFile("staff.xml");
         documentName = doc.getNodeName();
-        assertEquals("documentNodeName", "[object HTMLDocument]", documentName);
+        assertEquals("[object HTMLDocument]", documentName, "NodedocumentnodenameAssert1");
     }
 }
 

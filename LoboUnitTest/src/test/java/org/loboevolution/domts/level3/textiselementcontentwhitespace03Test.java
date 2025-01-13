@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,36 +26,34 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Get the newline between the "body" and "p" element.  Since node is both in element content
  * and whitespace, isElementContentWhitespace should return true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-isElementContentWhitespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-isElementContentWhitespace</a>
  */
-public class textiselementcontentwhitespace03Test extends LoboUnitTest {
+public class Textiselementcontentwhitespace03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection pList;
-        Element pElem;
-        Text textNode;
-        boolean isElemContentWhitespace;
+        final Document doc;
+        final HTMLCollection pList;
+        final Element pElem;
+        final Text textNode;
+        final boolean isElemContentWhitespace;
         doc = sampleXmlFile("barfoo.xml");
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(0);
         textNode = (Text) pElem.getPreviousSibling();
         isElemContentWhitespace = textNode.isElementContentWhitespace();
-        assertTrue("isElementContentWhitespace", isElemContentWhitespace);
+        assertTrue(isElemContentWhitespace, "Textiselementcontentwhitespace03Assert2");
     }
 }

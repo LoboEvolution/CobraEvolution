@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public class TableRowRenderState extends DisplayRenderState {
      * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
      * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
      */
-    public TableRowRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public TableRowRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element, DISPLAY_TABLE_ROW);
     }
 }

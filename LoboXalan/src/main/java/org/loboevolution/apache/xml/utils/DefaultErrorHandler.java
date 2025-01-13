@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@
 package org.loboevolution.apache.xml.utils;
 
 import java.io.PrintWriter;
-import org.loboevolution.javax.xml.transform.ErrorListener;
-import org.loboevolution.javax.xml.transform.TransformerException;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerException;
 
 /** Implement SAX error handler for default reporting. */
 public class DefaultErrorHandler implements ErrorListener {
@@ -49,7 +49,7 @@ public class DefaultErrorHandler implements ErrorListener {
    *
    * @param throwExceptionOnError boolean for throwExceptionOnError
    */
-  public DefaultErrorHandler(boolean throwExceptionOnError) {
+  public DefaultErrorHandler(final boolean throwExceptionOnError) {
     // Defer creation of a PrintWriter until it's actually needed
     m_throwExceptionOnError = throwExceptionOnError;
   }
@@ -71,31 +71,31 @@ public class DefaultErrorHandler implements ErrorListener {
 
   /** {@inheritDoc} */
   @Override
-  public void warning(TransformerException exception) throws TransformerException {
-    PrintWriter pw = getErrorWriter();
+  public void warning(final TransformerException exception) throws TransformerException {
+    final PrintWriter pw = getErrorWriter();
     pw.println(exception.getMessage());
   }
 
   /** {@inheritDoc} */
   @Override
-  public void error(TransformerException exception) throws TransformerException {
+  public void error(final TransformerException exception) throws TransformerException {
     // If the m_throwExceptionOnError flag is true, rethrow the exception.
     // Otherwise report the error to System.err.
     if (m_throwExceptionOnError) throw exception;
     else {
-      PrintWriter pw = getErrorWriter();
+      final PrintWriter pw = getErrorWriter();
       pw.println(exception.getMessage());
     }
   }
 
   /** {@inheritDoc} */
   @Override
-  public void fatalError(TransformerException exception) throws TransformerException {
+  public void fatalError(final TransformerException exception) throws TransformerException {
     // If the m_throwExceptionOnError flag is true, rethrow the exception.
     // Otherwise report the error to System.err.
     if (m_throwExceptionOnError) throw exception;
     else {
-      PrintWriter pw = getErrorWriter();
+      final PrintWriter pw = getErrorWriter();
       pw.println(exception.getMessage());
     }
   }

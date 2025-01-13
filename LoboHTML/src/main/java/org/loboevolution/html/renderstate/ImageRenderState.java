@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 package org.loboevolution.html.renderstate;
 
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.style.BorderInsets;
 import org.loboevolution.html.style.HtmlInsets;
 import org.loboevolution.html.style.MarginInsets;
@@ -36,9 +36,6 @@ import java.awt.*;
 
 /**
  * <p>ImageRenderState class.</p>
- *
- *
- *
  */
 public class ImageRenderState extends StyleSheetRenderState {
 	/**
@@ -47,7 +44,7 @@ public class ImageRenderState extends StyleSheetRenderState {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	public ImageRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+	public ImageRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
 		super(prevRenderState, element);
 	}
 
@@ -69,7 +66,7 @@ public class ImageRenderState extends StyleSheetRenderState {
 				if (border != null) {
 					border = border.trim();
 					int value;
-					int valueType;
+					final int valueType;
 					if (border.endsWith("%")) {
 						valueType = HtmlInsets.TYPE_PERCENT;
 						try {
@@ -130,7 +127,7 @@ public class ImageRenderState extends StyleSheetRenderState {
 			int vspace = 0;
 			boolean createNew = false;
 			final String hspaceText = this.element.getAttribute("hspace");
-			if (hspaceText != null && hspaceText.length() != 0) {
+			if (hspaceText != null && !hspaceText.isEmpty()) {
 				createNew = true;
 				try {
 					hspace = Integer.parseInt(hspaceText);
@@ -139,7 +136,7 @@ public class ImageRenderState extends StyleSheetRenderState {
 				}
 			}
 			final String vspaceText = this.element.getAttribute("vspace");
-			if (vspaceText != null && vspaceText.length() != 0) {
+			if (vspaceText != null && !vspaceText.isEmpty()) {
 				createNew = true;
 				try {
 					vspace = Integer.parseInt(vspaceText);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,32 +26,33 @@
 
 package org.loboevolution.html.js;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.gui.HtmlRendererContext;
+import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
-import org.loboevolution.html.node.DOMStringList;
+import org.loboevolution.html.dom.DOMStringList;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.js.Location;
+import org.loboevolution.js.Location;
 import org.loboevolution.js.AbstractScriptableDelegate;
 
+import java.net.URI;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * <p>
  * Location class.
- * </p>
- *
- *
- *
  */
+@Slf4j
 public class LocationImpl extends AbstractScriptableDelegate implements Location {
-	private static final Logger logger = Logger.getLogger(LocationImpl.class.getName());
+
+	@Getter
+	@Setter
 	private String target;
 
 	private final WindowImpl window;
 
-	LocationImpl(final WindowImpl window) {
+	public LocationImpl(final WindowImpl window) {
 		this.window = window;
 	}
 
@@ -166,23 +167,12 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 		return query == null ? "" : "?" + query;
 	}
 
-	/**
-	 * <p>
-	 * Getter for the field target.
-	 * </p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getTarget() {
-		return this.target;
-	}
-
 	private URL getURL() {
 		URL url;
 		try {
 			final Document document = this.window.getDocumentNode();
-			url = document == null ? null : new URL(document.getDocumentURI());
-		} catch (final java.net.MalformedURLException mfu) {
+			url = document == null ? null : new URI(document.getDocumentURI()).toURL();
+		} catch (final Exception mfu) {
 			url = null;
 		}
 		return url;
@@ -196,7 +186,7 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 	public void reload() {
 		// TODO: This is not really reload.
 		final Document document = this.window.getDocumentNode();
-		if (document instanceof HTMLDocumentImpl) {
+		if (document instanceof HTMLDocument) {
 			final HTMLDocumentImpl docImpl = (HTMLDocumentImpl) document;
 			final HtmlRendererContext rcontext = docImpl.getHtmlRendererContext();
 			if (rcontext != null) {
@@ -214,7 +204,7 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 	 * replace.
 	 * </p>
 	 */
-	public void replace(String href) {
+	public void replace(final String href) {
 		setHref(href);
 	}
 
@@ -225,41 +215,28 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 	 * setHref.
 	 * </p>
 	 */
-	public void setHref(String uri) {
+	public void setHref(final String uri) {
 		final HtmlRendererContext rcontext = this.window.getHtmlRendererContext();
 		if (rcontext != null) {
 			try {
-				URL url;
+				final URL url;
 				final Document document = this.window.getDocumentNode();
-				if (document instanceof HTMLDocumentImpl) {
+				if (document instanceof HTMLDocument) {
 					final HTMLDocumentImpl docImpl = (HTMLDocumentImpl) document;
 					url = docImpl.getFullURL(uri);
 				} else {
-					url = new URL(uri);
+					url = new URI(uri).toURL();
 				}
 				rcontext.navigate(url, this.target);
-			} catch (final java.net.MalformedURLException mfu) {
-				logger.log(Level.WARNING, "setHref(): Malformed location: [" + uri + "].", mfu);
+			} catch (Exception mfu) {
+				log.error("setHref(): Malformed location: {}", uri, mfu);
 			}
 		}
-	}
-
-	/**
-	 * <p>
-	 * Setter for the field target.
-	 * </p>
-	 *
-	 * @param value a {@link java.lang.String} object.
-	 */
-	public void setTarget(String value) {
-		this.target = value;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		// This needs to be href. Callers
-		// rely on that.
 		return getHref();
 	}
 
@@ -272,21 +249,21 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHash(String hash) {
+	public void setHash(final String hash) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHost(String host) {
+	public void setHost(final String host) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHostname(String hostname) {
+	public void setHostname(final String hostname) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -300,42 +277,42 @@ public class LocationImpl extends AbstractScriptableDelegate implements Location
 
 	/** {@inheritDoc} */
 	@Override
-	public void setPathname(String pathname) {
+	public void setPathname(final String pathname) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setPort(String port) {
+	public void setPort(final String port) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setProtocol(String protocol) {
+	public void setProtocol(final String protocol) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSearch(String search) {
+	public void setSearch(final String search) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void assign(String url) {
+	public void assign(final String url) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void reload(boolean forcedReload) {
+	public void reload(final boolean forcedReload) {
 		// TODO Auto-generated method stub
 		
 	}

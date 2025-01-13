@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,31 +44,29 @@ import static org.junit.Assert.assertTrue;
  * The parameter entities is turned on by default.  Check to see if this feature can be set
  * to false by invoking canSetParameter method.  Also check that this method does not change the
  * value of parameter by checking if entity references still exist in the document.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration</a>
  */
-public class domconfigurationcansetparameter04Test extends LoboUnitTest {
+public class Domconfigurationcansetparameter04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
-        HTMLCollection acronymList;
-        Node acronymElem;
-        int nodeType;
-        Node first;
-        boolean canSet;
+        final Document doc;
+        final DOMConfiguration domConfig;
+        final HTMLCollection acronymList;
+        final Node acronymElem;
+        final int nodeType;
+        final Node first;
+        final boolean canSet;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("entities", Boolean.FALSE);
-        assertTrue("domconfigurationcansetparameter04_1", canSet);
+        assertTrue(canSet, "Domconfigurationcansetparameter04Assert3");
         doc.normalizeDocument();
         acronymList = doc.getElementsByTagNameNS("*", "acronym");
         acronymElem = acronymList.item(1);
         first = acronymElem.getFirstChild();
         nodeType = first.getNodeType();
-        assertEquals("domconfigurationcansetparameter04_2", 5, nodeType);
+        assertEquals(5, nodeType, "Domconfigurationcansetparameter04Assert4");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,182 +26,150 @@
 
 package org.loboevolution.html.js.xml;
 
-import org.htmlunit.cssparser.dom.DOMException;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.gui.LocalHtmlRendererConfig;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.domimpl.HTMLProcessingInstruction;
+import org.loboevolution.html.dom.nodeimpl.CommentImpl;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.nodeimpl.TextImpl;
 import org.loboevolution.html.node.*;
 import org.loboevolution.http.UserAgentContext;
 import org.xml.sax.*;
 import org.xml.sax.ext.LexicalHandler;
 
+import java.util.Objects;
+
 /**
  * <p>XMLContentHandler class.</p>
  */
+@Slf4j
 public class XMLContentHandler implements ContentHandler, LexicalHandler, ErrorHandler {
 
+    @Getter
     private Document document = null;
 
     private Node currentNode = null;
 
-    private Locator lastLocator = null;
+    @Setter
+    private Locator documentLocator ;
 
-    /** {@inheritDoc} */
-    @Override
-    public void setDocumentLocator(Locator locator) {
-        this.lastLocator = locator;
-    }
 
-    /** {@inheritDoc} */
     @Override
     public void startDocument() {
-        document = null;
+        final UserAgentContext context = new UserAgentContext(new LocalHtmlRendererConfig());
+        context.setUserAgentEnabled(false);
+        final DOMImplementationImpl domImpl = new DOMImplementationImpl(context);
+        document = domImpl.createDocument(null, null, null);
+        currentNode = document;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void endDocument() {
-        currentNode = null;
-    }
+    public void endDocument() {}
 
-    /** {@inheritDoc} */
     @Override
     public void startPrefixMapping(String prefix, String uri) {}
 
-    /** {@inheritDoc} */
     @Override
     public void endPrefixMapping(String prefix) {}
 
-    /** {@inheritDoc} */
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        if (document == null) {
-            documentElement(uri, localName, qName, atts);
-        } else {
-            newElement(uri, localName, qName, atts);
+    public void startElement(String uri, String name, String qName, Attributes atts) throws SAXException {
+
+        if (qName == null) {
+            throw new SAXException("No Element name given");
         }
+
+        final String localName;
+        int idx = qName.indexOf(':');
+        if (idx >= 0) {
+            localName = qName.substring(idx + 1);
+        } else {
+            localName = qName;
+        }
+
+        Element element = document.createElementNS(null, localName);
+        setAttributes(element, atts);
+        currentNode.appendChild(element);
+
+        if(currentNode instanceof Document)
+            currentNode = element;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void endElement(String uri, String localName, String qName) {
-        currentNode = currentNode.getParentNode();
+    public void endElement(String uri, String localName, String qName) throws SAXException {}
+
+    @Override
+    public void characters(char[] chars, int start, int length) throws SAXException {
+        currentNode.appendChild(new TextImpl(new String(chars, start, length)));
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void characters(char[] ch, int start, int length) {}
+    public void ignorableWhitespace(char[] chars, int start, int length) {}
 
-    /** {@inheritDoc} */
     @Override
-    public void ignorableWhitespace(char[] ch, int start, int length) {}
+    public void processingInstruction(String target, String data) {
+        HTMLProcessingInstruction pi = new HTMLProcessingInstruction("");
+        pi.setData(data);
+        pi.setTarget(target);
+        currentNode.appendChild(pi);
+    }
 
-    /** {@inheritDoc} */
-    @Override
-    public void processingInstruction(String target, String data) {}
-
-    /** {@inheritDoc} */
     @Override
     public void skippedEntity(String name) {}
 
-    /** {@inheritDoc} */
     @Override
-    public void warning(SAXParseException exception) {}
+    public void warning(SAXParseException exception) {
+        log.warn("Ignored XML validation warning", exception);
+    }
 
-    /** {@inheritDoc} */
     @Override
-    public void error(SAXParseException exception) {}
+    public void error(SAXParseException exception) throws SAXParseException {
+        throw exception;
+    }
 
-    /** {@inheritDoc} */
     @Override
-    public void fatalError(SAXParseException exception) {}
+    public void fatalError(SAXParseException exception) throws SAXParseException {
+        throw exception;
+    }
 
-    /** {@inheritDoc} */
     @Override
-    public void startDTD(String name, String publicId, String systemId) {}
+    public void startDTD(String name, String publicId, String systemId)  {}
 
-    /** {@inheritDoc} */
     @Override
     public void endDTD() {}
 
-    /** {@inheritDoc} */
     @Override
-    public void startEntity(String name) {}
+    public void startEntity(String name) { }
 
-    /** {@inheritDoc} */
     @Override
-    public void endEntity(String name) {}
+    public void endEntity(String name) { }
 
-    /** {@inheritDoc} */
     @Override
     public void startCDATA() {}
 
-    /** {@inheritDoc} */
     @Override
     public void endCDATA() {}
 
-    /** {@inheritDoc} */
     @Override
-    public void comment(char[] ch, int start, int length) {}
-
-    public Document getDocument() {
-        return this.document;
+    public void comment(char[] chars, int start, int length) throws SAXException {
+        currentNode.appendChild(new CommentImpl(new String(chars, start, length)));
     }
 
-    private void documentElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        document = createDocument(uri, qName);
-        Element element = document.getDocumentElement();
-        currentNode = element;
-        setAttributes(element, atts);
-
-        if(qName != null) {
-            newElement(uri, localName, qName, atts);
-        }
-    }
-
-    private void newElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        Element element = document.createElementNS(uri, qName);
-        setAttributes(element, atts);
-        appendChild(element);
-        currentNode = element;
-    }
-
-    private void setAttributes(Element element, Attributes atts) {
-        int len = atts.getLength();
+    private void setAttributes(final Element element, final Attributes atts) {
+        final int len = atts.getLength();
         for (int i = 0; i < len; i++) {
-            String namespaceURI = atts.getURI(i);
-            String value = atts.getValue(i);
-            String attrQName = atts.getQName(i);
-            Attr attr = document.createAttributeNS(namespaceURI, attrQName);
+            final String namespaceURI = atts.getURI(i);
+            final String value = atts.getValue(i);
+            final String attrQName = atts.getQName(i);
+            final Attr attr = document.createAttributeNS(namespaceURI, attrQName);
             attr.setValue(value);
             element.getAttributes().setNamedItem(attr);
             if ("ID".equals(atts.getType(i))
-                    || ("id".equals(attrQName) && element.getNamespaceURI() != document.getNamespaceURI())) {
+                    || ("id".equals(attrQName) && !Objects.equals(element.getNamespaceURI(), document.getNamespaceURI()))) {
                 element.setIdAttributeNode(attr, true);
             }
-        }
-    }
-
-    private Document createDocument(String uri, String qName) {
-        UserAgentContext context = new UserAgentContext(new LocalHtmlRendererConfig());
-        context.setUserAgentEnabled(false);
-        DOMImplementationImpl domImpl = new DOMImplementationImpl(context);
-        DocumentType doctype = domImpl.createDocumentType("HTML", null, null);
-        return domImpl.createDocument(uri, "HTML", doctype);
-    }
-
-    private void appendChild(Node node) throws SAXException {
-        try {
-            document.appendChild(node);
-        } catch (DOMException e) {
-            error("Error appending child " + node.getNodeName() + " to " + currentNode.getNodeName(), e);
-        }
-    }
-
-    private void error(String message, Exception ex) throws SAXException {
-        if (lastLocator == null) {
-            throw new SAXException(message, ex);
-        } else {
-            throw new SAXParseException(message, lastLocator, ex);
         }
     }
 }

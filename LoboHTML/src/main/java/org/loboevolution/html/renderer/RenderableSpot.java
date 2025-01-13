@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,10 +43,10 @@ public class RenderableSpot {
 	 * <p>Constructor for RenderableSpot.</p>
 	 *
 	 * @param renderable a {@link org.loboevolution.html.renderer.BoundableRenderable} object.
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 */
-	public RenderableSpot(BoundableRenderable renderable, int x, int y) {
+	public RenderableSpot(final BoundableRenderable renderable, final int x, final int y) {
 		super();
 		this.renderable = renderable;
 		this.x = x;
@@ -55,12 +55,11 @@ public class RenderableSpot {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof RenderableSpot)) {
+	public boolean equals(final Object other) {
+		if (!(other instanceof RenderableSpot otherRp)) {
 			return false;
 		}
-		final RenderableSpot otherRp = (RenderableSpot) other;
-		return otherRp.renderable == this.renderable && otherRp.x == this.x && otherRp.y == this.y;
+        return otherRp.renderable == this.renderable && otherRp.x == this.x && otherRp.y == this.y;
 	}
 
 	/**

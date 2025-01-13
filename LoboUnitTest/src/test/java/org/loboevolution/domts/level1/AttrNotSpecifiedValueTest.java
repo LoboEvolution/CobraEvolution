@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -47,9 +47,7 @@ import static org.junit.Assert.assertFalse;
  * returned by the "isSpecified()" method.  This test uses
  * the "getNamedItem(name)" method from the NamedNodeMap
  * interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-862529273">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-862529273</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
  */
@@ -58,16 +56,15 @@ public class AttrNotSpecifiedValueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc = sampleXmlFile("staff.xml");
-        HTMLCollection addressList = doc.getElementsByTagName("address");
-        Element testNode = (Element) addressList.item(1);
-        NamedNodeMap attributes = testNode.getAttributes();
-        Attr streetAttr = (Attr) attributes.getNamedItem("street");
-        assertFalse("streetNotSpecified", streetAttr.isSpecified());
+        final Document doc = sampleXmlFile("staff.xml");
+        final HTMLCollection addressList = doc.getElementsByTagName("address");
+        final Element testNode = (Element) addressList.item(1);
+        final NamedNodeMap attributes = testNode.getAttributes();
+        final Attr streetAttr = (Attr) attributes.getNamedItem("street");
+        assertFalse(streetAttr.isSpecified(), "AttrNotSpecifiedValueAssert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -277,7 +277,6 @@ public interface HTMLImageElement extends HTMLElement {
      * @return a {@link java.lang.String} object.
      */
     String getSrc();
-
     
     /**
      * <p>setSrc.</p>
@@ -285,7 +284,6 @@ public interface HTMLImageElement extends HTMLElement {
      * @param src a {@link java.lang.String} object.
      */
     void setSrc(String src);
-
     
     /**
      * <p>getSrcset.</p>

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.style.setter;
 
 import org.loboevolution.html.js.css.CSSStyleDeclarationImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 
 /**
  * <p>BorderSetter1 class.</p>
@@ -36,8 +36,8 @@ public class BorderSetter1 implements SubPropertySetter {
 
 	/** {@inheritDoc} */
 	@Override
-	public void changeValue(CSSStyleDeclaration declaration, String newValue) {
-		CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
+	public void changeValue(final CSSStyleDeclaration declaration, final String newValue) {
+		final CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
 		properties.setProperty(BORDER, newValue);
 		properties.setPropertyValueProcessed(BORDER_TOP, newValue, false);
 		properties.setPropertyValueProcessed(BORDER_LEFT, newValue, false);

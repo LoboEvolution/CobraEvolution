@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,14 +43,14 @@ public class ParentFloatingBoundsSource implements FloatingBoundsSource {
 	/**
 	 * <p>Constructor for ParentFloatingBoundsSource.</p>
 	 *
-	 * @param blockShiftRight a int.
-	 * @param expectedWidth a int.
-	 * @param newX a int.
-	 * @param newY a int.
+	 * @param blockShiftRight a {@link java.lang.Integer} object.
+	 * @param expectedWidth a {@link java.lang.Integer} object.
+	 * @param newX a {@link java.lang.Integer} object.
+	 * @param newY a {@link java.lang.Integer} object.
 	 * @param floatBounds a {@link org.loboevolution.html.renderer.FloatingBounds} object.
 	 */
-	public ParentFloatingBoundsSource(int blockShiftRight, int expectedWidth, int newX, int newY,
-			FloatingBounds floatBounds) {
+	public ParentFloatingBoundsSource(final int blockShiftRight, final int expectedWidth, final int newX, final int newY,
+                                      final FloatingBounds floatBounds) {
 		super();
 		this.blockShiftRight = blockShiftRight;
 		this.expectedBlockWidth = expectedWidth;
@@ -63,11 +63,10 @@ public class ParentFloatingBoundsSource implements FloatingBoundsSource {
 	@Override
 	public boolean equals(final Object obj) {
 		// Important for layout caching.
-		if (!(obj instanceof ParentFloatingBoundsSource)) {
+		if (!(obj instanceof ParentFloatingBoundsSource other)) {
 			return false;
 		}
-		final ParentFloatingBoundsSource other = (ParentFloatingBoundsSource) obj;
-		return this.blockShiftRight == other.blockShiftRight && this.expectedBlockWidth == other.expectedBlockWidth
+        return this.blockShiftRight == other.blockShiftRight && this.expectedBlockWidth == other.expectedBlockWidth
 				&& this.newX == other.newX && this.newY == other.newY
 				&& Objects.equals(this.floatBounds, other.floatBounds);
 
@@ -75,7 +74,7 @@ public class ParentFloatingBoundsSource implements FloatingBoundsSource {
 
 	/** {@inheritDoc} */
 	@Override
-	public FloatingBounds getChildBlockFloatingBounds(int apparentBlockWidth) {
+	public FloatingBounds getChildBlockFloatingBounds(final int apparentBlockWidth) {
 		final int actualRightShift = this.blockShiftRight + this.expectedBlockWidth - apparentBlockWidth;
 		return new ShiftedFloatingBounds(this.floatBounds, -this.newX, -actualRightShift, -this.newY);
 	}

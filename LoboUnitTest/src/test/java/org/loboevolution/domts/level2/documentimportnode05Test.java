@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -46,28 +47,25 @@ import static org.junit.Assert.*;
  * into the another document.
  * Check the nodeName, nodeType and nodeValue namespaceURI of the imported node to
  * verify if it has been imported correctly.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode05Test extends LoboUnitTest {
+public class Documentimportnode05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docImported;
-        Attr attr;
-        Node importedAttr;
-        String nodeName;
-        int nodeType;
-        String nodeValue;
-        String namespaceURI;
+        final Document doc;
+        final Document docImported;
+        final Attr attr;
+        final Node importedAttr;
+        final String nodeName;
+        final int nodeType;
+        final String nodeValue;
+        final String namespaceURI;
         doc = sampleXmlFile("staffNS.xml");
         docImported = sampleXmlFile("staff.xml");
         attr = doc.createAttributeNS("http://www.w3.org/DOM/Test", "a:b0");
@@ -76,10 +74,10 @@ public class documentimportnode05Test extends LoboUnitTest {
         nodeValue = importedAttr.getNodeValue();
         nodeType = importedAttr.getNodeType();
         namespaceURI = importedAttr.getNamespaceURI();
-        assertEquals("documentimportnode05_nodeName", "a:b0", nodeName);
-        assertEquals("documentimportnode05_nodeType", 2, nodeType);
-        assertEquals("documentimportnode05_nodeValue", null, nodeValue);
-        assertEquals("documentimportnode05_namespaceURI", "http://www.w3.org/DOM/Test", namespaceURI);
+        assertEquals("a:b0", nodeName);
+        assertEquals(2, nodeType);
+        assertNull(nodeValue);
+        assertEquals("http://www.w3.org/DOM/Test", namespaceURI);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,12 @@
  */
 package org.loboevolution.html.renderer.table;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.loboevolution.html.dom.HTMLTableCellElement;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderer.RBlock;
 import org.loboevolution.html.renderer.info.RBlockInfo;
 import org.loboevolution.html.renderer.info.RLayoutInfo;
@@ -43,14 +45,13 @@ import java.awt.*;
 /**
  * <p>RTableCell class.</p>
  */
+@Getter
+@Setter
 public class RTableCell extends RBlock {
 
 	private final HTMLElementImpl cellElement;
-	
 	private int colSpan = -1;
-
 	private int rowSpan = -1;
-
 	private VirtualCell topLeftVirtualCell;
 
 	/**
@@ -58,7 +59,7 @@ public class RTableCell extends RBlock {
 	 *
 	 * @param info a {@link org.loboevolution.html.renderer.info.RBlockInfo} object.
 	 */
-	public RTableCell(RBlockInfo info) {
+	public RTableCell(final RBlockInfo info) {
 		super(info);
 		this.cellElement = (HTMLElementImpl)info.getModelNode();
 	}
@@ -73,8 +74,8 @@ public class RTableCell extends RBlock {
 	 * @param sizeOnly a boolean.
 	 * @return a {@link java.awt.Dimension} object.
 	 */
-	public Dimension doCellLayout(int width, int height, boolean expandWidth, boolean expandHeight,
-			boolean sizeOnly) {
+	public Dimension doCellLayout(final int width, final int height, final boolean expandWidth, final boolean expandHeight,
+								  final boolean sizeOnly) {
 
 		this.layout(RLayoutInfo.builder()
 				.availWidth(width)
@@ -89,16 +90,10 @@ public class RTableCell extends RBlock {
 		return new Dimension(this.getWidth(), this.getHeight());
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
 	/**
 	 * <p>Getter for the field colSpan.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	public int getColSpan() {
 		int cs = this.colSpan;
@@ -115,12 +110,11 @@ public class RTableCell extends RBlock {
 	 * @return a {@link java.lang.String} object.
 	 */
 	public String getHeightText() {
-        CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
-        String heightText = props == null ? null : props.getHeight();
+        final CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
+        final String heightText = props == null ? null : props.getHeight();
         if (heightText == null) {
-			if (this.cellElement instanceof HTMLTableCellElement) {
-				HTMLTableCellElement htmlTableCellElement = (HTMLTableCellElement) this.cellElement;
-				if (htmlTableCellElement.getHeight() != null) {
+			if (this.cellElement instanceof HTMLTableCellElement htmlTableCellElement) {
+                if (htmlTableCellElement.getHeight() != null) {
 					return htmlTableCellElement.getHeight();
 				}
 			}
@@ -135,7 +129,7 @@ public class RTableCell extends RBlock {
 	/**
 	 * <p>Getter for the field rowSpan.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	public int getRowSpan() {
 		int rs = this.rowSpan;
@@ -144,15 +138,6 @@ public class RTableCell extends RBlock {
 			this.rowSpan = rs;
 		}
 		return rs;
-	}
-
-	/**
-	 * <p>Getter for the field topLeftVirtualCell.</p>
-	 *
-	 * @return a {@link org.loboevolution.html.renderer.table.VirtualCell} object.
-	 */
-	public VirtualCell getTopLeftVirtualCell() {
-		return this.topLeftVirtualCell;
 	}
 
 	/**
@@ -181,12 +166,11 @@ public class RTableCell extends RBlock {
 	 * @return a {@link java.lang.String} object.
 	 */
 	public String getWidthText() {
-		CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
-		String widthText = props == null ? null : props.getWidth();
+		final CSSStyleDeclaration props = this.cellElement.getCurrentStyle();
+		final String widthText = props == null ? null : props.getWidth();
 		if (widthText == null) {
-			if (this.cellElement instanceof HTMLTableCellElement) {
-				HTMLTableCellElement htmlTableCellElement = (HTMLTableCellElement) this.cellElement;
-				if (htmlTableCellElement.getWidth() != null) {
+			if (this.cellElement instanceof HTMLTableCellElement htmlTableCellElement) {
+                if (htmlTableCellElement.getWidth() != null) {
 					return htmlTableCellElement.getWidth();
 				}
 			}
@@ -196,15 +180,6 @@ public class RTableCell extends RBlock {
 		} else {
 			return widthText;
 		}
-	}
-
-	/**
-	 * <p>getCellElement.</p>
-	 *
-	 * @return a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
-	 */
-	public HTMLElementImpl getCellElement() {
-		return cellElement;
 	}
 
 	/** {@inheritDoc} */
@@ -218,12 +193,12 @@ public class RTableCell extends RBlock {
 	 *
 	 * @param colSizes an array of {@link org.loboevolution.info.SizeInfo} objects.
 	 * @param rowSizes an array of {@link org.loboevolution.info.SizeInfo} objects.
-	 * @param hasBorder a int.
-	 * @param cellSpacingX a int.
-	 * @param cellSpacingY a int.
+	 * @param hasBorder a {@link java.lang.Integer} object.
+	 * @param cellSpacingX a {@link java.lang.Integer} object.
+	 * @param cellSpacingY a {@link java.lang.Integer} object.
 	 */
-	public void setCellBounds(SizeInfo[] colSizes, SizeInfo[] rowSizes, int hasBorder,
-			int cellSpacingX, int cellSpacingY) {
+	public void setCellBounds(final SizeInfo[] colSizes, final SizeInfo[] rowSizes, final int hasBorder,
+							  final int cellSpacingX, final int cellSpacingY) {
 		final int vcol = getVirtualColumn();
 		final int vrow = getVirtualRow();
 		final SizeInfo colSize = colSizes[vcol];
@@ -262,33 +237,14 @@ public class RTableCell extends RBlock {
 	}
 	
     private static int getColSpan(final HTMLElementImpl elem) {
-        String colSpanText = elem.getAttribute("colspan");
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getDocumentNode();
+        final String colSpanText = elem.getAttribute("colspan");
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getDocumentNode();
         return HtmlValues.getPixelSize(colSpanText, null, doc.getDefaultView(), 1);
     }
     
     private static int getRowSpan(final HTMLElementImpl elem) {
-        String rowSpanText = elem.getAttribute("rowspan");
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getDocumentNode();
+        final String rowSpanText = elem.getAttribute("rowspan");
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getDocumentNode();
         return HtmlValues.getPixelSize(rowSpanText, null, doc.getDefaultView(), 1);
     }
-
-
-	/**
-	 * <p>Setter for the field rowSpan.</p>
-	 *
-	 * @param rowSpan a int.
-	 */
-	public void setRowSpan(int rowSpan) {
-		this.rowSpan = rowSpan;
-	}
-
-	/**
-	 * <p>Setter for the field topLeftVirtualCell.</p>
-	 *
-	 * @param vc a {@link org.loboevolution.html.renderer.table.VirtualCell} object.
-	 */
-	public void setTopLeftVirtualCell(VirtualCell vc) {
-		this.topLeftVirtualCell = vc;
-	}
 }

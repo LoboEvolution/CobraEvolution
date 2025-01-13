@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,9 @@ package org.loboevolution.html.dom;
 
 
 /**
- * HTML &lt;script&gt; elements expose the HTMLScriptElement interface, which provides special properties and methods for manipulating the behavior and execution of &lt;script&gt; elements (beyond the inherited HTMLElement interface).
- *
- *
- *
+ * HTML &lt;script&gt; elements expose the HTMLScriptElement interface,
+ * which provides special properties and methods for manipulating the behavior and execution of &lt;script&gt;
+ * elements (beyond the inherited HTMLElement interface).
  */
 public interface HTMLScriptElement extends HTMLElement {
 
@@ -40,14 +39,14 @@ public interface HTMLScriptElement extends HTMLElement {
      *
      * @return a boolean.
      */
-    boolean isAsync();
+    Boolean isAsync();
 
     /**
      * <p>setAsync.</p>
      *
      * @param async a boolean.
      */
-    void setAsync(boolean async);
+    void setAsync(Object async);
 
     /**
      * Sets or retrieves the character set used to encode the object.

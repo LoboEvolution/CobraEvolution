@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,45 +28,45 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Strings;
+import org.loboevolution.common.Urls;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLScriptElement;
 import org.loboevolution.gui.HtmlPanel;
 import org.loboevolution.html.js.Executor;
+import org.loboevolution.html.js.WindowImpl;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.parser.XHtmlParser;
 import org.loboevolution.html.renderstate.DisplayRenderState;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.http.UserAgentContext;
 import org.loboevolution.info.TimingInfo;
+import org.loboevolution.net.AlgorithmDigest;
 import org.loboevolution.net.HttpNetwork;
+import org.loboevolution.net.IOUtil;
 import org.loboevolution.net.UserAgent;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.loboevolution.html.dom.UserDataHandler;
-import sun.net.www.protocol.file.FileURLConnection;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
+import java.io.*;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.MissingResourceException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <p>HTMLScriptElementImpl class.</p>
  */
+@Slf4j
 public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScriptElement {
-	private static final Logger logger = Logger.getLogger(HTMLScriptElementImpl.class.getName());
-
 	private boolean defer;
 
 	private String text;
@@ -89,19 +89,19 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 
 	/** {@inheritDoc} */
 	@Override
-	protected void appendInnerTextImpl(StringBuilder buffer) {
+	protected void appendInnerTextImpl(final StringBuilder buffer) {
 		// nop
 	}
 
 	@Override
-	public boolean isAsync() {
+	public Boolean isAsync() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void setAsync(boolean async) {
-// TODO Auto-generated method stub
+	public void setAsync(Object async) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 	}
 
 	@Override
-	public void setCrossOrigin(String crossOrigin) {
+	public void setCrossOrigin(final String crossOrigin) {
 		// TODO Auto-generated method stub
 	}
 
@@ -159,7 +159,7 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 	/**
 	 * <p>processScript.</p>
 	 */
-	protected final void processScript() {
+	private void processScript() {
 		final UserAgentContext bcontext = getUserAgentContext();
 		if (bcontext == null) {
 			throw new IllegalStateException("No user agent context.");
@@ -175,117 +175,107 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 		}
 
 		if (bcontext.isScriptingEnabled()) {
-			final Context ctx = Executor.createContext(getDocumentURL(), bcontext);
-			ctx.setLanguageVersion(Context.VERSION_1_8);
-			ctx.setOptimizationLevel(-1);
-			final String src = getSrc();
-			Instant start = Instant.now();
-			try {
+			final WindowImpl window = (WindowImpl) doc.getDefaultView();
+			try (Context ctx = Executor.createContext(window.getContextFactory())) {
+				final String src = getSrc();
+				final Instant start = Instant.now();
 
 				if (Strings.isNotBlank(src)) {
-					TimingInfo info = new TimingInfo();
+					final TimingInfo info = new TimingInfo();
 					final URL scriptURL = ((HTMLDocumentImpl) doc).getFullURL(src);
 					final String scriptURI = scriptURL == null ? src : scriptURL.toExternalForm();
-					final URL u = new URL(scriptURI);
-					info.setName(u.getFile());
+					info.setName(scriptURL != null ? scriptURL.getFile() : new URI(scriptURI).toURL().getFile());
 
-					URLConnection connection = u.openConnection();
-					connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
-					connection.getHeaderField("Set-Cookie");
-					try (InputStream in = HttpNetwork.openConnectionCheckRedirects(connection);
-							Reader reader = new InputStreamReader(in, "utf-8")) {
-						BufferedReader br = new BufferedReader(reader);
-						ctx.evaluateReader(scope, br, scriptURI, 1, null);
-					} catch (SocketTimeoutException e) {
-						if (connection instanceof HttpURLConnection) {
-							final HttpURLConnection urlConnection = (HttpURLConnection) u.openConnection();
-							info.setHttpResponse(urlConnection.getResponseCode());
-						} else {
-							info.setHttpResponse(400);
+					try (InputStream in = getStream(scriptURL, scriptURI, info)) {
+						if (AlgorithmDigest.validate(IOUtil.readFully(in), getIntegrity())) {
+							try (final Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+								final BufferedReader br = new BufferedReader(reader);
+								ctx.evaluateReader(scope, br, scriptURI, 1, null);
+							} catch (Exception e) {
+								throw new Exception(e);
+							}
 						}
-
-						logger.log(Level.SEVERE, "More than " + connection.getConnectTimeout() + " elapsed.");
-				    } catch (Exception e) {
-						if (e instanceof MissingResourceException) {
-							logger.log(Level.INFO, e.getMessage());
-						} else{
-							logger.log(Level.SEVERE, e.getMessage(), e);
-						}
+					} catch (final SocketTimeoutException e) {
+						info.setHttpResponse(400);
+					} catch (final Exception e) {
+						log.error(e.getMessage(), e);
 					} finally {
-						Instant finish = Instant.now();
-						long timeElapsed = Duration.between(start, finish).toMillis();
+						final Instant finish = Instant.now();
+						final long timeElapsed = Duration.between(start, finish).toMillis();
 						info.setTimeElapsed(timeElapsed);
 						info.setPath(scriptURI);
-						info.setType(connection.getContentType());
-
-						if (connection instanceof HttpURLConnection) {
-							final HttpURLConnection urlConnection = (HttpURLConnection) u.openConnection();
-							info.setHttpResponse(urlConnection.getResponseCode());
-						} else {
-							info.setHttpResponse(200);
-						}
+						info.setHttpResponse(200);
 
 						final HtmlRendererContext htmlRendererContext = this.getHtmlRendererContext();
 						final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
 						htmlPanel.getBrowserPanel().getTimingList.add(info);
 					}
 				} else {
-					String scriptURI = doc.getBaseURI();
+					final String scriptURI = doc.getBaseURI();
 					text = getText();
 					ctx.evaluateString(scope, text, scriptURI, 1, null);
 				}
 			} catch (final RhinoException ecmaError) {
 				final String error = ecmaError.sourceName() + ":" + ecmaError.lineNumber() + ": " + ecmaError.getMessage();
-				logger.log(Level.WARNING, "Javascript error at " + error, ecmaError.getMessage());
-			} catch (MissingResourceException mre) {
-				logger.log(Level.WARNING, mre.getMessage());
+				log.error("Javascript error at {}", error);
 			} catch (final Throwable err) {
-				logger.log(Level.WARNING, "Unable to evaluate Javascript code", err);
-			} finally {
-				Context.exit();
+				log.error("Unable to evaluate Javascript code", err);
 			}
 		}
 	}
 
+	private InputStream getStream(URL scriptURL, String scriptURI, TimingInfo info) throws Exception {
+		if (Urls.isLocalFile(scriptURL)) {
+			return Files.newInputStream(Paths.get(scriptURI.replace("file://", "")));
+		} else {
+			final URLConnection connection = scriptURL.openConnection();
+			connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
+			connection.getHeaderField("Set-Cookie");
+			info.setType(connection.getContentType());
+			return HttpNetwork.openConnectionCheckRedirects(connection);
+		}
+	}
+
+
 	/** {@inheritDoc} */
 	@Override
-	public void setDefer(boolean defer) {
+	public void setDefer(final boolean defer) {
 		this.defer = defer;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setEvent(String event) {
+	public void setEvent(final String event) {
 		setAttribute("event", event);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHtmlFor(String htmlFor) {
+	public void setHtmlFor(final String htmlFor) {
 		setAttribute("htmlFor", htmlFor);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSrc(String src) {
+	public void setSrc(final String src) {
 		setAttribute("src", src);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setType(String type) {
+	public void setType(final String type) {
 		setAttribute("type", type);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		if (XHtmlParser.MODIFYING_KEY.equals(key) && data != Boolean.TRUE) {
 			processScript();
 		}
@@ -293,12 +283,11 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 	}
 	@Override
 	public String getIntegrity() {
-		// TODO Auto-generated method stub
-		return null;
+		return getAttribute("integrity");
 	}
 
 	@Override
-	public void setIntegrity(String integrity) {
+	public void setIntegrity(final String integrity) {
 		// TODO Auto-generated method stub
 	}
 
@@ -309,7 +298,7 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 	}
 
 	@Override
-	public void setNoModule(boolean noModule) {
+	public void setNoModule(final boolean noModule) {
 		// TODO Auto-generated method stub
 	}
 
@@ -320,13 +309,13 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScript
 	}
 
 	@Override
-	public void setReferrerPolicy(String referrerPolicy) {
+	public void setReferrerPolicy(final String referrerPolicy) {
 		// TODO Auto-generated method stub
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_NONE);
 	}
 

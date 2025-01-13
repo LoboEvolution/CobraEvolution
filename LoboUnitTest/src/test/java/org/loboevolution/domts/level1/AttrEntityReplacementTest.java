@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -49,32 +49,29 @@ import static org.junit.Assert.*;
  * replaced with its value.  This test uses the
  * "getNamedItem(name)" method from the NamedNodeMap
  * interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-221662474">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-221662474</a>
  */
 public class AttrEntityReplacementTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Attr streetAttr;
-        String value;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Attr streetAttr;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
         testNode = (Element) addressList.item(3);
         attributes = testNode.getAttributes();
         streetAttr = (Attr) attributes.getNamedItem("street");
         value = streetAttr.getValue();
-        assertEquals("streetYes", "Yes", value);
+        assertEquals("Yes", value, "AttrEntityReplacementAssert1");
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,9 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.filter.IdFilter;
 import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
@@ -34,7 +37,7 @@ import org.loboevolution.html.js.events.EventFactory;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
-import org.loboevolution.html.node.events.Event;
+import org.loboevolution.events.Event;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -48,22 +51,29 @@ import java.util.List;
 /**
  * <p>SVGSVGElementImpl class.</p>
  */
+@Slf4j
 public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement, Drawable {
 	
 	private final SVGRect viewport;
 
+	@Getter
 	private SVGViewSpec currentView;
 	
 	private SVGAnimatedRect viewBox;
-	
+
+	@Getter
+	@Setter
 	private SVGPoint currentTranslate;
 	
+	@Getter
 	private AffineTransform viewboxToViewportTransform;
 
 	private float currentScale;
 
 	private boolean useCurrentView = false;
-	
+
+	@Getter
+	@Setter
 	private boolean painted;
 
 	/**
@@ -74,17 +84,17 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 	public SVGSVGElementImpl(final String name) {
 		super(name);
 		currentTranslate = new SVGPointImpl();
-		float x = getX().getBaseVal().getValue();
-		float y = getY().getBaseVal().getValue();
-		float width = getWidth().getBaseVal().getValue();
-		float height = getHeight().getBaseVal().getValue();
+		final float x = getX().getBaseVal().getValue();
+		final float y = getY().getBaseVal().getValue();
+		final float width = getWidth().getBaseVal().getValue();
+		final float height = getHeight().getBaseVal().getValue();
 		viewport = new SVGRectImpl(x, y, width, height);
 		recalculateViewboxToViewportTransform();
 	}
 
 	@Override
 	public SVGRect getBBox() {
-		Shape shape = createShape(null);
+		final Shape shape = createShape(null);
 		return new SVGRectImpl(shape.getBounds2D());
 	}
 
@@ -114,14 +124,14 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public void setZoomAndPan(short zoomAndPan) {
+	public void setZoomAndPan(final short zoomAndPan) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Event createEvent(String eventType) {
+	public Event createEvent(final String eventType) throws DOMException {
 		return EventFactory.createEvent(eventType);
 	}
 
@@ -152,10 +162,10 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 	/** {@inheritDoc} */
 	@Override
 	public SVGRect getViewport() {
-		float x = getX().getBaseVal().getValue();
-		float y = getY().getBaseVal().getValue();
-		float width = getWidth().getBaseVal().getValue();
-		float height = getHeight().getBaseVal().getValue();
+		final float x = getX().getBaseVal().getValue();
+		final float y = getY().getBaseVal().getValue();
+		final float width = getWidth().getBaseVal().getValue();
+		final float height = getHeight().getBaseVal().getValue();
 		return new SVGRectImpl(x, y, width, height);
 	}
 
@@ -191,14 +201,8 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public void setUseCurrentView(boolean useCurrentView) {
+	public void setUseCurrentView(final boolean useCurrentView) {
 		this.useCurrentView = useCurrentView;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public SVGViewSpec getCurrentView() {
-		return currentView;
 	}
 
 	/** {@inheritDoc} */
@@ -209,36 +213,20 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCurrentScale(float currentScale) {
+	public void setCurrentScale(final float currentScale) {
 		this.currentScale = currentScale;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGPoint getCurrentTranslate() {
-		return currentTranslate;
-	}
-
-	/**
-	 * <p>Setter for the field currentTranslate.</p>
-	 *
-	 * @param currentTranslate a {@link org.loboevolution.html.dom.svg.SVGPoint} object.
-	 * @throws DOMException if any.
-	 */
-	public void setCurrentTranslate(SVGPoint currentTranslate) {
-		this.currentTranslate = currentTranslate;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int suspendRedraw(int max_wait_milliseconds) {
+	public int suspendRedraw(final int max_wait_milliseconds) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void unsuspendRedraw(int suspend_handle_id) {
+	public void unsuspendRedraw(final int suspend_handle_id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -287,35 +275,35 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCurrentTime(float seconds) {
+	public void setCurrentTime(final float seconds) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public NodeList getIntersectionList(SVGRect rect, SVGElement referenceElement) {
+	public NodeList getIntersectionList(final SVGRect rect, final SVGElement referenceElement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public NodeList getEnclosureList(SVGRect rect, SVGElement referenceElement) {
+	public NodeList getEnclosureList(final SVGRect rect, final SVGElement referenceElement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean checkIntersection(SVGElement element, SVGRect rect) {
+	public boolean checkIntersection(final SVGElement element, final SVGRect rect) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean checkEnclosure(SVGElement element, SVGRect rect) {
+	public boolean checkEnclosure(final SVGElement element, final SVGRect rect) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -360,10 +348,10 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 	/** {@inheritDoc} */
 	@Override
 	public SVGRect createSVGRect() {
-		float x = getX().getBaseVal().getValue();
-		float y = getY().getBaseVal().getValue();
-		float width = getWidth().getBaseVal().getValue();
-		float height = getHeight().getBaseVal().getValue();
+		final float x = getX().getBaseVal().getValue();
+		final float y = getY().getBaseVal().getValue();
+		final float width = getWidth().getBaseVal().getValue();
+		final float height = getHeight().getBaseVal().getValue();
 		return new SVGRectImpl(x, y, width, height);
 	}
 
@@ -375,70 +363,47 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public SVGTransform createSVGTransformFromMatrix(SVGMatrix matrix) {
-		SVGTransform transform = new SVGTransformImpl();
+	public SVGTransform createSVGTransformFromMatrix(final SVGMatrix matrix) {
+		final SVGTransform transform = new SVGTransformImpl();
 		transform.setMatrix(matrix);
 		return transform;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Element getElementById(String elementId) {
-		NodeList nodeList = getNodeList(new IdFilter(elementId));
+	public Element getElementById(final String elementId) {
+		final NodeList nodeList = getNodeList(new IdFilter(elementId));
 		return nodeList != null && nodeList.getLength() > 0 ? (Element)nodeList.item(0) : null;
-	}
-
-	/**
-	 * <p>isPainted.</p>
-	 *
-	 * @return the painted
-	 */
-	public boolean isPainted() {
-		return painted;
-	}
-
-	/**
-	 * <p>Setter for the field painted.</p>
-	 *
-	 * @param painted the painted to set
-	 */
-	public void setPainted(boolean painted) {
-		this.painted = painted;
-	}
-
-
-	public AffineTransform getViewboxToViewportTransform() {
-		return viewboxToViewportTransform;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void draw(final Graphics2D graphics) {
 		recalculateViewboxToViewportTransform();
-		boolean display = getDisplay();
-		float opacity = getOpacity();
+		final boolean display = getDisplay();
+		final float opacity = getOpacity();
 
 		if (display && opacity > 0) {
-			AffineTransform oldGraphicsTransform = graphics.getTransform();
-			Shape oldClip = graphics.getClip();
+			final AffineTransform oldGraphicsTransform = graphics.getTransform();
+			final Shape oldClip = graphics.getClip();
 			graphics.translate(viewport.getX(), viewport.getY());
 			if (opacity < 1) {
-				SVGSVGElement root = this;
-				float currentScale = root.getCurrentScale();
+				final SVGSVGElement root = this;
+				final float currentScale = root.getCurrentScale();
 				// create buffer to draw on
-				Shape shape = createShape(null);
-				AffineTransform screenCTM = getScreenCTM().getAffineTransform();
-				Shape transformedShape = screenCTM.createTransformedShape(shape);
-				Rectangle2D bounds = transformedShape.getBounds2D();
-				double xInc = bounds.getWidth() / 5;
-				double yInc = bounds.getHeight() / 5;
+				final Shape shape = createShape(null);
+				final AffineTransform screenCTM = getScreenCTM().getAffineTransform();
+				final Shape transformedShape = screenCTM.createTransformedShape(shape);
+				final Rectangle2D bounds = transformedShape.getBounds2D();
+				final double xInc = bounds.getWidth() / 5;
+				final double yInc = bounds.getHeight() / 5;
 				bounds.setRect(bounds.getX() - xInc, bounds.getY() - yInc, bounds.getWidth() + 2 * xInc, bounds.getHeight() + 2 * yInc);
-				int imageWidth = (int) (bounds.getWidth() * currentScale);
-				int imageHeight = (int) (bounds.getHeight() * currentScale);
+				final int imageWidth = (int) (bounds.getWidth() * currentScale);
+				final int imageHeight = (int) (bounds.getHeight() * currentScale);
 				if (imageWidth > 0 && imageHeight > 0) {
-					BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_4BYTE_ABGR);
-					Graphics2D offGraphics = (Graphics2D) image.getGraphics();
-					RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					final BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_4BYTE_ABGR);
+					final Graphics2D offGraphics = (Graphics2D) image.getGraphics();
+					final RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					offGraphics.setRenderingHints(hints);
 					if (currentScale != 1) {
 						offGraphics.scale(currentScale, currentScale);
@@ -448,14 +413,15 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 					offGraphics.transform(screenCTM);
 					drawChildren(offGraphics);
 					
-					Composite oldComposite = graphics.getComposite();
-					AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+					final Composite oldComposite = graphics.getComposite();
+					final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 					graphics.setComposite(ac);
-					AffineTransform imageTransform = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());
+					final AffineTransform imageTransform = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());
 					imageTransform.scale(1 / currentScale, 1 / currentScale);
 					try {
 						imageTransform.preConcatenate(screenCTM.createInverse());
-					} catch (NoninvertibleTransformException e) {
+					} catch (final NoninvertibleTransformException e) {
+						log.info(e.getMessage());
 					}
 					graphics.drawImage(image, imageTransform, null);
 					graphics.setComposite(oldComposite);
@@ -474,122 +440,98 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 		viewboxToViewportTransform = new AffineTransform();
 
-		short align = getPreserveAspectRatio().getAnimVal().getAlign();
-		short meetOrSlice = getPreserveAspectRatio().getAnimVal().getMeetOrSlice();
+		final short align = getPreserveAspectRatio().getAnimVal().getAlign();
+		final short meetOrSlice = getPreserveAspectRatio().getAnimVal().getMeetOrSlice();
 
-		float sx = getViewport().getWidth() / getViewBox().getAnimVal().getWidth();
-		float sy = getViewport().getHeight() / getViewBox().getAnimVal().getHeight();
+		final float sx = getViewport().getWidth() / getViewBox().getAnimVal().getWidth();
+		final float sy = getViewport().getHeight() / getViewBox().getAnimVal().getHeight();
 
 		if (align == SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_NONE) {
 			viewboxToViewportTransform.scale(sx, sy);
 
-			float tx = -getViewBox().getAnimVal().getX();
-			float ty = -getViewBox().getAnimVal().getY();
+			final float tx = -getViewBox().getAnimVal().getX();
+			final float ty = -getViewBox().getAnimVal().getY();
 			viewboxToViewportTransform.translate(tx, ty);
 
 		} else {
 
-			float scale;
+			final float scale;
 			if (meetOrSlice == SVGPreserveAspectRatio.SVG_MEETORSLICE_MEET) {
 				scale = Math.min(sx, sy);
 			} else {
 				scale = Math.max(sx, sy);
 			}
 
-			float vpX = 0;
-			float vpY = 0;
-			float vpWidth = getViewport().getWidth();
-			float vpHeight = getViewport().getHeight();
+			final float vpX = 0;
+			final float vpY = 0;
+			final float vpWidth = getViewport().getWidth();
+			final float vpHeight = getViewport().getHeight();
 
-			float vbX = getViewBox().getAnimVal().getX();
-			float vbY = getViewBox().getAnimVal().getY();
-			float vbWidth = getViewBox().getAnimVal().getWidth();
-			float vbHeight = getViewBox().getAnimVal().getHeight();
+			final float vbX = getViewBox().getAnimVal().getX();
+			final float vbY = getViewBox().getAnimVal().getY();
+			final float vbWidth = getViewBox().getAnimVal().getWidth();
+			final float vbHeight = getViewBox().getAnimVal().getHeight();
 
-			float tx;
-			float ty;
+			final float tx;
+			final float ty;
 
 			if (meetOrSlice == SVGPreserveAspectRatio.SVG_MEETORSLICE_MEET) {
 				if (sy < sx) {
 					ty = vpY / scale - vbY;
-					switch (align) {
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMAX:
-							tx = vpX / scale - vbX;
-							break;
-
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMAX:
-							tx = (vpX + vpWidth / 2) / scale - (vbX + vbWidth / 2);
-							break;
-						default:
-							tx = vpX + vpWidth / scale - (vbX + vbWidth);
-							break;
-					}
+                    tx = switch (align) {
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMAX -> vpX / scale - vbX;
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMAX ->
+                                (vpX + vpWidth / 2) / scale - (vbX + vbWidth / 2);
+                        default -> vpX + vpWidth / scale - (vbX + vbWidth);
+                    };
 				} else {
 					tx = vpX / scale - vbX;
 
-					switch (align) {
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMIN:
-							ty = vpY / scale - vbY;
-							break;
-
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMID:
-							ty = (vpY + vpHeight / 2) / scale - (vbY + vbHeight / 2);
-							break;
-						default:
-							ty = (vpY + vpHeight) / scale - (vbY + vbHeight);
-							break;
-					}
+                    ty = switch (align) {
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMIN -> vpY / scale - vbY;
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMID ->
+                                (vpY + vpHeight / 2) / scale - (vbY + vbHeight / 2);
+                        default -> (vpY + vpHeight) / scale - (vbY + vbHeight);
+                    };
 				}
 			} else { // SLICE
 
 				if (sy > sx) {
 					ty = vpY / scale - vbY;
 
-					switch (align) {
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMAX:
-							tx = vpX / scale - vbX;
-							break;
-
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMAX:
-							tx = (vpX + vpWidth / 2) / scale - (vbX + vbWidth / 2);
-							break;
-						default:
-							tx = (vpX + vpWidth) / scale - (vbX + vbWidth);
-							break;
-					}
+                    tx = switch (align) {
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMAX -> vpX / scale - vbX;
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMAX ->
+                                (vpX + vpWidth / 2) / scale - (vbX + vbWidth / 2);
+                        default -> (vpX + vpWidth) / scale - (vbX + vbWidth);
+                    };
 
 
 				} else {
 					tx = vpX - vbX * scale;
 
-					switch (align) {
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMIN:
-							ty = vpY / scale - vbY;
-							break;
-
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID:
-						case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMID:
-							ty = (vpY + vpHeight / 2) / scale - (vbY + vbHeight / 2);
-							break;
-						default:
-							ty = (vpY + vpHeight) / scale - (vbY + vbHeight);
-							break;
-					}
+                    ty = switch (align) {
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMIN,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMIN -> vpY / scale - vbY;
+                        case SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMINYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMIDYMID,
+                             SVGPreserveAspectRatio.SVG_PRESERVEASPECTRATIO_XMAXYMID ->
+                                (vpY + vpHeight / 2) / scale - (vbY + vbHeight / 2);
+                        default -> (vpY + vpHeight) / scale - (vbY + vbHeight);
+                    };
 				}
 			}
 
@@ -600,10 +542,10 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
-		GeneralPath path = new GeneralPath();
+	public Shape createShape(final AffineTransform transform) {
+		final GeneralPath path = new GeneralPath();
 		if (hasChildNodes()) {
-			NodeListImpl children = (NodeListImpl)getChildNodes();
+			final NodeListImpl children = (NodeListImpl)getChildNodes();
 			children.forEach(child -> {
 				Shape childShape = null;
 				if (child instanceof SVGGElementImpl) {
@@ -616,9 +558,8 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 				} else if (child instanceof SVGUseElementImpl) {
 					SVGRect bbox = ((SVGUseElement) child).getBBox();
 					childShape = new Rectangle2D.Float(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-				} else if (child instanceof SVGSVGElementImpl) {
-					SVGSVGElement svg = (SVGSVGElement) child;
-					AffineTransform ctm = AffineTransform.getTranslateInstance(viewport.getX(), viewport.getY());
+				} else if (child instanceof SVGSVGElementImpl svg) {
+                    AffineTransform ctm = AffineTransform.getTranslateInstance(viewport.getX(), viewport.getY());
 					if (viewboxToViewportTransform != null) {
 						ctm.concatenate(viewboxToViewportTransform);
 					}
@@ -653,13 +594,13 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 150 : clientHeight;
 	}
 
 	@Override
 	public Integer getClientWidth() {
-		int clientWidth = super.getClientWidth();
+		final int clientWidth = super.getClientWidth();
 		return clientWidth == 0 ? 300 : clientWidth;
 	}
 
@@ -668,21 +609,21 @@ public class SVGSVGElementImpl extends SVGLocatableImpl implements SVGSVGElement
 		return getClientWidth();
 	}
 	
-	private void drawChildren(Graphics2D graphics) {
-		List<Node> drawableChildren = new ArrayList<>();
+	private void drawChildren(final Graphics2D graphics) {
+		final List<Node> drawableChildren = new ArrayList<>();
 		if (hasChildNodes()) {
-			NodeListImpl children = (NodeListImpl)getChildNodes();
+			final NodeListImpl children = (NodeListImpl)getChildNodes();
 			children.forEach(child -> {
 				if (child instanceof Drawable) {
 					drawableChildren.add(child);
 				}
 			});
 		}
-		for (Node node : drawableChildren) {
-			SVGElement selem = (SVGElement)node;
+		for (final Node node : drawableChildren) {
+			final SVGElement selem = ( SVGElement)node;
 			selem.setOwnerSVGElement(this);
 			drawStyle(node);
-			Drawable child = (Drawable) node;
+			final Drawable child = (Drawable) node;
 			child.draw(graphics);
 		}
 	}

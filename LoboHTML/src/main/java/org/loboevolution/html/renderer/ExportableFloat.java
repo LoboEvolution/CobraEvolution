@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,10 +44,10 @@ public class ExportableFloat {
 	 *
 	 * @param element a {@link org.loboevolution.html.renderer.BoundableRenderable} object.
 	 * @param leftFloat a boolean.
-	 * @param origX a int.
-	 * @param origY a int.
+	 * @param origX a {@link java.lang.Integer} object.
+	 * @param origY a {@link java.lang.Integer} object.
 	 */
-	public ExportableFloat(BoundableRenderable element, boolean leftFloat, int origX, int origY) {
+	public ExportableFloat(final BoundableRenderable element, final boolean leftFloat, final int origX, final int origY) {
 		super();
 		this.element = element;
 		this.leftFloat = leftFloat;

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setIdAttribute on the third acronym element's new attribute and set
  * isID=true.  Verify by calling isID on the new attribute and check if the
  * value returned is true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId</a>
  */
-public class attrisid02Test extends LoboUnitTest {
+public class Attrisid02Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        Attr attr;
-        String xmlNS = "http://www.w3.org/XML/1998/namespace";
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final Attr attr;
+        final String xmlNS = "http://www.w3.org/XML/1998/namespace";
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acronymElem = (Element) elemList.item(2);
         acronymElem.setAttributeNS(xmlNS, "xml:lang", "FR-fr");
         acronymElem.setIdAttributeNS(xmlNS, "lang", true);
         attr = acronymElem.getAttributeNodeNS(xmlNS, "lang");
-        assertTrue("AttrIsIDTrue02", attr.isId());
+        assertTrue(attr.isId(), "Attrisid02Assert2");
     }
 }
 

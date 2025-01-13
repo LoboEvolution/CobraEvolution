@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,47 +26,22 @@
 
 package org.loboevolution.javax.xml.transform.dom;
 
-import org.loboevolution.javax.xml.transform.Source;
+import javax.xml.transform.Source;
+
+import lombok.Data;
 import org.loboevolution.html.node.Node;
 
+@Data
 public class DOMSource
-    implements Source
-{
-
-    public DOMSource()
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public DOMSource(Node n)
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public DOMSource(Node node, String systemID)
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public void setNode(Node node)
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public Node getNode()
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public void setSystemId(String systemID)
-    {
-        throw new RuntimeException("Stub!");
-    }
-
-    public String getSystemId()
-    {
-        throw new RuntimeException("Stub!");
-    }
+        implements Source {
 
     public static final String FEATURE = "http://org.loboevolution.javax.xml.transform.dom.DOMSource/feature";
+
+    private Node node;
+
+    private String systemId;
+
+    public DOMSource(Node node) {
+        this.node = node;
+    }
 }

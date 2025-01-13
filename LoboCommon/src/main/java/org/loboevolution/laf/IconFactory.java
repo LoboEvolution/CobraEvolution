@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,21 +29,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.IORoutines;
 
 /**
  * A factory for creating Icon objects.
  */
+@Slf4j
 public class IconFactory {
 
-    private static final  Logger logger = Logger.getLogger(IconFactory.class.getName());
-
 	/** The Constant instance. */
+	@Getter
 	private static final IconFactory instance = new IconFactory();
 	
 	/** The icon map. */
@@ -56,43 +56,32 @@ public class IconFactory {
 	}
 
 	/**
-	 * Gets the Constant instance.
-	 *
-	 * @return the Constant instance
-	 */
-	public static IconFactory getInstance() {
-		return instance;
-	}
-
-	/**
 	 * Gets the icon.
 	 *
 	 * @param resourcePath
 	 *            the resource path
 	 * @return the icon
 	 */
-	public ImageIcon getIcon(String resourcePath) {
+	public ImageIcon getIcon(final String resourcePath) {
 		try {
 			synchronized (this) {
 				ImageIcon icon = this.iconMap.get(resourcePath);
 				if (icon == null) {
-					InputStream in = this.getClass().getResourceAsStream(resourcePath);
-					if (in == null) {
-						logger.info("getIcon(): Resource path " + resourcePath + " not found.");
-						return null;
-					}
-					try {
-						byte[] imageBytes = IORoutines.load(in, 4096);
-						icon = new ImageIcon(imageBytes);
-						this.iconMap.put(resourcePath, icon);
-					} finally {
-						in.close();
-					}
+					final InputStream in = this.getClass().getResourceAsStream(resourcePath);
+                    try (in) {
+                        if (in == null) {
+                            log.info("getIcon(): Resource path  not found {}", resourcePath);
+                            return null;
+                        }
+                        final byte[] imageBytes = IORoutines.load(in, 4096);
+                        icon = new ImageIcon(imageBytes);
+                        this.iconMap.put(resourcePath, icon);
+                    }
 				}
 				return icon;
 			}
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (final IOException e) {
+			log.error(e.getMessage(), e);
 			return null;
 		}
 	}

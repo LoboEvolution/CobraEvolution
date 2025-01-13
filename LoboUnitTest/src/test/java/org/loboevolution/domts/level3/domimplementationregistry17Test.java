@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,47 +28,44 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementationList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * If the implementation supports "XML", DOMImplementationRegistry.getDOMImplementationList("xMl 3.0 cOrE") should
  * return a list of DOMImplementation where hasFeature("XML", "3.0"), and hasFeature("Core", null) returns true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls</a>
  */
-public class domimplementationregistry17Test extends LoboUnitTest {
+public class Domimplementationregistry17Test extends LoboUnitTest {
     @Test
     @SneakyThrows
-    public void runTest() throws Exception {
-       
+    public void runTest() {
+
         DOMImplementation domImpl;
         boolean hasFeature;
-        String nullVersion = null;
-
-        DOMImplementationList domImplList;
-        int length;
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        final DOMImplementationList domImplList;
+        final int length;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry17Assert3");
         domImplList = domImplRegistry.getDOMImplementationList("xMl 3.0 cOrE");
         length = domImplList.getLength();
-        assertTrue("atLeastOne", (length > 0));
+        assertTrue((length > 0), "Domimplementationregistry17Assert4");
         for (int indexN1005A = 0; indexN1005A < domImplList.getLength(); indexN1005A++) {
-            domImpl = (DOMImplementation) domImplList.item(indexN1005A);
+            domImpl = domImplList.item(indexN1005A);
             hasFeature = domImpl.hasFeature("XML", "3.0");
-            assertTrue("hasXML3", hasFeature);
-            hasFeature = domImpl.hasFeature("Core", nullVersion);
-            assertTrue("hasCore", hasFeature);
+            assertTrue(hasFeature, "Domimplementationregistry17Assert5");
+            hasFeature = domImpl.hasFeature("Core", null);
+            assertTrue(hasFeature, "Domimplementationregistry17Assert6");
         }
     }
 }

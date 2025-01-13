@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,22 +49,22 @@ public class HasPositionalPredChecker extends XPathVisitor {
    * @return true if the path is confirmed to be absolute, false if it may contain context
    *     dependencies.
    */
-  public static boolean check(LocPathIterator path) {
-    HasPositionalPredChecker hppc = new HasPositionalPredChecker();
+  public static boolean check(final LocPathIterator path) {
+    final HasPositionalPredChecker hppc = new HasPositionalPredChecker();
     path.callVisitors(hppc);
     return hppc.m_hasPositionalPred;
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean visitFunction(Function func) {
+  public boolean visitFunction(final Function func) {
     if ((func instanceof FuncPosition) || (func instanceof FuncLast)) m_hasPositionalPred = true;
     return true;
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean visitPredicate(Expression pred) {
+  public boolean visitPredicate(final Expression pred) {
     m_predDepth++;
 
     if (m_predDepth == 1) {

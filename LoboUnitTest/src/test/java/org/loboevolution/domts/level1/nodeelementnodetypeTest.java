@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,26 +41,23 @@ import static org.junit.Assert.*;
  * <p>
  * Retrieve the root node and invoke the "getNodeType()"
  * method.   The method should return 1.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558</a>
  */
-public class nodeelementnodetypeTest extends LoboUnitTest {
+public class NodeelementnodetypeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element rootNode;
-        int nodeType;
+        final Document doc;
+        final Element rootNode;
+        final int nodeType;
         doc = sampleXmlFile("staff.xml");
         rootNode = doc.getDocumentElement();
         nodeType = rootNode.getNodeType();
-        assertEquals("nodeElementNodeTypeAssert1", 1, nodeType);
+        assertEquals(1, nodeType, "NodeelementnodetypeAssert1");
     }
 }
 

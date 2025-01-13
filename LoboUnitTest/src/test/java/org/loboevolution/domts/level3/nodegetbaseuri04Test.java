@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Node.baseURI for a document element without an xml:base attribute should be same as Document.documentURI.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Document">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Document</a>
  */
-public class nodegetbaseuri04Test extends LoboUnitTest {
+public class Nodegetbaseuri04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        String baseURI;
-        String documentURI;
+        final Document doc;
+        final Element docElem;
+        final String baseURI;
+        final String documentURI;
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         baseURI = docElem.getBaseURI();
-        assertURIEquals("baseURI", null, null, null, null, "barfoo", null, null, Boolean.TRUE, baseURI);
+        assertURIEquals(new URIEquals(null, null, null, null, "barfoo", null, null, Boolean.TRUE, baseURI));
         documentURI = doc.getDocumentURI();
-        assertEquals("baseURIEqualsDocURI", documentURI, baseURI);
+        assertEquals(documentURI, baseURI, "Nodegetbaseuri04Assert2");
     }
 }

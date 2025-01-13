@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -42,9 +43,6 @@ import org.loboevolution.common.Strings;
 
 /**
  * <p>Autocomplete class.</p>
- *
- *
- *
  */
 public class Autocomplete {
 
@@ -56,15 +54,18 @@ public class Autocomplete {
 	 */
 	public static void setupAutoComplete(final JTextField txtInput, final List<String> items) {
 		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-		final JComboBox<String> cbInput = new JComboBox<String>(model) {
-            private static final long serialVersionUID = 1L;
+		final JComboBox<String> cbInput = new JComboBox<>(model) {
 
-            public Dimension getPreferredSize() {
+			@Serial
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Dimension getPreferredSize() {
                 return new Dimension(super.getPreferredSize().width, 0);
             }
         };
 		setAdjusting(cbInput, false);
-		for (String item : items) {
+		for (final String item : items) {
 			model.addElement(item);
 		}
 		cbInput.removeAll();
@@ -81,7 +82,7 @@ public class Autocomplete {
 		txtInput.addKeyListener(new KeyAdapter() {
 
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 				setAdjusting(cbInput, true);
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					if (cbInput.isPopupVisible()) {
@@ -105,24 +106,24 @@ public class Autocomplete {
 			}
 		});
 		txtInput.getDocument().addDocumentListener(new DocumentListener() {
-			public void insertUpdate(DocumentEvent e) {
+			public void insertUpdate(final DocumentEvent e) {
 				updateList();
 			}
 
-			public void removeUpdate(DocumentEvent e) {
+			public void removeUpdate(final DocumentEvent e) {
 				updateList();
 			}
 
-			public void changedUpdate(DocumentEvent e) {
+			public void changedUpdate(final DocumentEvent e) {
 				updateList();
 			}
 
 			private void updateList() {
 				setAdjusting(cbInput, true);
 				model.removeAllElements();
-				String input = txtInput.getText();
+				final String input = txtInput.getText();
 				if (Strings.isNotBlank(input)) {
-					for (String item : items) {
+					for (final String item : items) {
 						if (item.toLowerCase().contains(input.toLowerCase())) {
 							model.addElement(item);
 						}
@@ -131,7 +132,7 @@ public class Autocomplete {
 
 				try {
 					cbInput.setPopupVisible(model.getSize() > 0);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 				}
 				setAdjusting(cbInput, false);
 			}
@@ -140,14 +141,14 @@ public class Autocomplete {
 		txtInput.add(cbInput, BorderLayout.SOUTH);
 	}
 
-	private static boolean isAdjusting(JComboBox<String> cbInput) {
+	private static boolean isAdjusting(final JComboBox<String> cbInput) {
 		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
 			return (Boolean) cbInput.getClientProperty("is_adjusting");
 		}
 		return false;
 	}
 
-	private static void setAdjusting(JComboBox<String> cbInput, boolean adjusting) {
+	private static void setAdjusting(final JComboBox<String> cbInput, final boolean adjusting) {
 		cbInput.putClientProperty("is_adjusting", adjusting);
 	}
 }

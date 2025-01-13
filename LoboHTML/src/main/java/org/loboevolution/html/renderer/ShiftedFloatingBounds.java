@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,8 @@ class ShiftedFloatingBounds implements FloatingBounds {
 	 *
 	 * @param prevBounds The baseline floating bounds.
 	 * @param shiftY     How much the original bounds have shifted in the Y axis.
-	 * @param shiftLeft a int.
-	 * @param shiftRight a int.
+	 * @param shiftLeft a {@link java.lang.Integer} object.
+	 * @param shiftRight a {@link java.lang.Integer} object.
 	 */
 	public ShiftedFloatingBounds(final FloatingBounds prevBounds, final int shiftLeft, final int shiftRight,
 			final int shiftY) {
@@ -55,35 +55,34 @@ class ShiftedFloatingBounds implements FloatingBounds {
 	@Override
 	public boolean equals(final Object obj) {
 		// Important for layout caching.
-		if (!(obj instanceof ShiftedFloatingBounds)) {
+		if (!(obj instanceof ShiftedFloatingBounds other)) {
 			return false;
 		}
-		final ShiftedFloatingBounds other = (ShiftedFloatingBounds) obj;
-		return this.shiftY == other.shiftY && this.shiftLeft == other.shiftLeft && this.shiftRight == other.shiftRight
+        return this.shiftY == other.shiftY && this.shiftLeft == other.shiftLeft && this.shiftRight == other.shiftRight
 				&& Objects.equals(this.prevBounds, other.prevBounds);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getClearY(int y) {
+	public int getClearY(final int y) {
 		return this.prevBounds.getClearY(y - this.shiftY) + this.shiftY;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getFirstClearY(int y) {
+	public int getFirstClearY(final int y) {
 		return this.prevBounds.getFirstClearY(y - this.shiftY) + this.shiftY;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getLeft(int y) {
+	public int getLeft(final int y) {
 		return this.prevBounds.getLeft(y - this.shiftY) + this.shiftLeft;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getLeftClearY(int y) {
+	public int getLeftClearY(final int y) {
 		return this.prevBounds.getLeftClearY(y - this.shiftY) + this.shiftY;
 	}
 
@@ -95,13 +94,13 @@ class ShiftedFloatingBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getRight(int y) {
+	public int getRight(final int y) {
 		return this.prevBounds.getRight(y - this.shiftY) + this.shiftRight;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getRightClearY(int y) {
+	public int getRightClearY(final int y) {
 		return this.prevBounds.getRightClearY(y - this.shiftY) + this.shiftY;
 	}
 

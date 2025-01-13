@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ import org.loboevolution.html.xpath.XPathException;
 import org.loboevolution.html.xpath.XPathExpression;
 import org.loboevolution.html.xpath.XPathNSResolver;
 
-import org.loboevolution.javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerException;
 
 /**
  * <p>XPathEvaluatorImpl class.</p>
@@ -59,35 +59,35 @@ public final class XPathEvaluatorImpl implements XPathEvaluator {
 	 *            The document to be searched, to parallel the case where'' the
 	 *            XPathEvaluator is obtained by casting the document.
 	 */
-	public XPathEvaluatorImpl(Document doc) {
+	public XPathEvaluatorImpl(final Document doc) {
 		m_doc = doc;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public XPathExpression createExpression(String expression, XPathNSResolver resolver)
+	public XPathExpression createExpression(final String expression, final XPathNSResolver resolver)
 			throws XPathException, DOMException {
 		try {
-			XPath xpath = new XPath(expression,
+			final XPath xpath = new XPath(expression,
 					null == resolver ? new PrefixResolverImpl() : (PrefixResolver) resolver, XPath.SELECT);
 			return new XPathExpressionImpl(xpath, m_doc);
-		} catch (TransformerException e) {
+		} catch (final TransformerException e) {
 			throw new XPathException(XPathException.INVALID_EXPRESSION_ERR, e.getMessageAndLocation());
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public XPathNSResolver createNSResolver(Node nodeResolver) {
+	public XPathNSResolver createNSResolver(final Node nodeResolver) {
 		return new XPathNSResolverImpl(nodeResolver.getNodeType() == Node.DOCUMENT_NODE
 				? ((Document) nodeResolver).getDocumentElement() : nodeResolver);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Object evaluate(String expression, Node contextNode, XPathNSResolver resolver, short type, Object result)
+	public Object evaluate(final String expression, final Node contextNode, final XPathNSResolver resolver, final short type, final Object result)
 			throws XPathException, DOMException {
-		XPathExpression xpathExpression = createExpression(expression, resolver);
+		final XPathExpression xpathExpression = createExpression(expression, resolver);
 		return xpathExpression.evaluate(contextNode, type, result);
 	}
 }

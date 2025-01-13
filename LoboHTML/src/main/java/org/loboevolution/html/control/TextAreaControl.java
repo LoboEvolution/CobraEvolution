@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,16 +29,15 @@ import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.html.dom.domimpl.HTMLTextAreaElementImpl;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * <p>TextAreaControl class.</p>
- *
- *
- *
  */
 public class TextAreaControl extends BaseControl {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	
 	private final HTMLTextAreaElementImpl  modelNode;
 	
@@ -47,7 +46,7 @@ public class TextAreaControl extends BaseControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLTextAreaElementImpl} object.
 	 */
-	public TextAreaControl(HTMLTextAreaElementImpl modelNode) {
+	public TextAreaControl(final HTMLTextAreaElementImpl modelNode) {
 		super(modelNode);
 		setLayout(WrapperLayout.getInstance());
 		this.modelNode = modelNode;
@@ -66,7 +65,7 @@ public class TextAreaControl extends BaseControl {
 	 * @param dir a {@link java.lang.String} object.
 	 * @return a {@link java.awt.ComponentOrientation} object.
 	 */
-	public ComponentOrientation direction(String dir) {
+	public ComponentOrientation direction(final String dir) {
 		if ("ltr".equalsIgnoreCase(dir)) {
 			return ComponentOrientation.LEFT_TO_RIGHT;
 		} else if ("rtl".equalsIgnoreCase(dir)) {

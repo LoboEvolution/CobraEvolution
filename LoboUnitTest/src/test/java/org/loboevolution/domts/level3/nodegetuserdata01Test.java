@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,29 +27,27 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using getUserData with a junk value for the key attempt to retreive the UserData object
  * of this Document node without setting it and verify if null is returned.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData</a>
  */
-public class nodegetuserdata01Test extends LoboUnitTest {
+public class Nodegetuserdata01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Object userData;
+        final Document doc;
+        final Object userData;
         doc = sampleXmlFile("hc_staff.xml");
         userData = doc.getUserData("key1");
-        assertNull("nodegetuserdata01", userData);
+        assertNull(userData, "Nodegetuserdata01Assert2");
     }
 }
 

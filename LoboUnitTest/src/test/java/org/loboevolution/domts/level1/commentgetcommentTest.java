@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,24 +41,21 @@ import static org.junit.Assert.*;
  * '<!--' and ending '-->'
  * Retrieve the nodes of the DOM document.  Search for a
  * comment node and the content is its value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1334481328">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1334481328</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558</a>
  */
-public class commentgetcommentTest extends LoboUnitTest {
+public class CommentgetcommentTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NodeList elementList;
+        final Document doc;
+        final NodeList elementList;
         Node child;
         String childName;
         String childValue;
@@ -72,13 +69,13 @@ public class commentgetcommentTest extends LoboUnitTest {
 
             if (childType == 8) {
                 childName = child.getNodeName();
-                assertEquals("nodeName", "#comment", childName);
+                assertEquals("#comment", childName, "CommentgetcommentAssert1");
                 childValue = child.getNodeValue();
-                assertEquals("nodeValue", " This is comment number 1.", childValue);
+                assertEquals(" This is comment number 1.", childValue, "CommentgetcommentAssert2");
                 commentCount = commentCount + 1;
             }
         }
-        assertEquals("commentCount", 1, commentCount);
+        assertEquals(1, commentCount, "CommentgetcommentAssert3");
     }
 }
 

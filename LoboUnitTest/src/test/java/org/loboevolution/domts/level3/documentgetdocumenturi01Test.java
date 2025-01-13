@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,28 +27,26 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Retreive the documentURI of this document, and verify if it is not null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-documentURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-documentURI</a>
  */
-public class documentgetdocumenturi01Test extends LoboUnitTest {
+public class Documentgetdocumenturi01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String docURI;
+        final Document doc;
+        final String docURI;
         doc = sampleXmlFile("hc_staff.xml");
         docURI = doc.getDocumentURI();
-        assertNotNull("documentgetdocumenturi01", docURI);
+        assertNotNull(docURI, "Documentgetdocumenturi01Assert2");
     }
 }
 

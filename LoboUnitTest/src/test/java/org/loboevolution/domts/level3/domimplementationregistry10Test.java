@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * DOMImplementationRegistry.getDOMImplementation("LS") should return null or a DOMImplementation
  * where hasFeature("LS", null) returns true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpl">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpl</a>
  */
-public class domimplementationregistry10Test extends LoboUnitTest {
+public class Domimplementationregistry10Test extends LoboUnitTest {
     @Test
-    public void runTest() throws Exception {
+    public void runTest() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        DOMImplementation domImpl;
-        boolean hasFeature;
-        DOMImplementation baseImpl = null;
-        String nullVersion = null;
-
-        DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        final DOMImplementation domImpl;
+        final boolean hasFeature;
+        DOMImplementation baseImpl;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry10Assert1");
         domImpl = domImplRegistry.getDOMImplementation("LS");
 
         if ((domImpl == null)) {
             baseImpl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
-            hasFeature = baseImpl.hasFeature("LS", nullVersion);
-            assertFalse("baseImplSupportsLS", hasFeature);
+            hasFeature = baseImpl.hasFeature("LS", null);
+            assertFalse(hasFeature, "Domimplementationregistry10Assert2");
         } else {
-            hasFeature = domImpl.hasFeature("LS", nullVersion);
-            assertTrue("hasCore", hasFeature);
+            hasFeature = domImpl.hasFeature("LS", null);
+            assertTrue(hasFeature, "Domimplementationregistry10Assert3");
         }
     }
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,28 +46,25 @@ import static org.junit.Assert.*;
  * Add the two new attribute nodes to the element node using the
  * setAttributeNodeNS method.  Check that only one attribute is added, check
  * the value of this attribute.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS</a>
  */
-public class elementsetattributenodens01Test extends LoboUnitTest {
+public class Elementsetattributenodens01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Attr attribute1;
-        Attr attribute2;
-        Attr attrNode;
-        String attrName;
-        String attrNS;
-        NamedNodeMap attributes;
-        int length;
+        final Document doc;
+        final Element element;
+        final Attr attribute1;
+        final Attr attribute2;
+        final Attr attrNode;
+        final String attrName;
+        final String attrNS;
+        final NamedNodeMap attributes;
+        final int length;
         doc = sampleXmlFile("staff.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test/Level2", "new:element");
         attribute1 = doc.createAttributeNS("http://www.w3.org/DOM/Test/att1", "p1:att");
@@ -78,11 +75,11 @@ public class elementsetattributenodens01Test extends LoboUnitTest {
         attrNode = element.getAttributeNodeNS("http://www.w3.org/DOM/Test/att1", "att");
         attrName = attrNode.getNodeName();
         attrNS = attrNode.getNamespaceURI();
-        assertEquals("elementsetattributenodens01_attrName", "p2:att", attrName);
-        assertEquals("elementsetattributenodens01_attrNS", "http://www.w3.org/DOM/Test/att1", attrNS);
+        assertEquals("p2:att", attrName);
+        assertEquals("http://www.w3.org/DOM/Test/att1", attrNS);
         attributes = element.getAttributes();
         length = attributes.getLength();
-        assertEquals("length", 1, length);
+        assertEquals(1, length);
     }
 }
 

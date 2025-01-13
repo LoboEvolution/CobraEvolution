@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,9 +42,9 @@ public class ChildIterator extends LocPathIterator {
    * Create a ChildIterator object.
    *
    * @param analysis Analysis bits of the entire pattern.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  ChildIterator(int analysis) throws org.loboevolution.javax.xml.transform.TransformerException {
+  ChildIterator(final int analysis) throws javax.xml.transform.TransformerException {
     super(analysis);
 
     // This iterator matches all kinds of nodes
@@ -53,10 +53,10 @@ public class ChildIterator extends LocPathIterator {
 
   /** {@inheritDoc} */
   @Override
-  public int asNode(XPathContext xctxt) {
-    int current = xctxt.getCurrentNode();
+  public int asNode(final XPathContext xctxt) {
+    final int current = xctxt.getCurrentNode();
 
-    DTM dtm = xctxt.getDTM(current);
+    final DTM dtm = xctxt.getDTM(current);
 
     return dtm.getFirstChild(current);
   }
@@ -66,7 +66,7 @@ public class ChildIterator extends LocPathIterator {
   public int nextNode() {
     if (m_foundLast) return DTM.NULL;
 
-    int next;
+    final int next;
 
     m_lastFetched =
         next =

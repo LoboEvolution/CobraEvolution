@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ public class SVGAnimatedStringImpl implements SVGAnimatedString {
 	 *
 	 * @param baseVal a {@link java.lang.String} object.
 	 */
-	public SVGAnimatedStringImpl(String baseVal) {
+	public SVGAnimatedStringImpl(final String baseVal) {
 		this.baseVal = baseVal;
 	}
 
@@ -56,7 +56,7 @@ public class SVGAnimatedStringImpl implements SVGAnimatedString {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBaseVal(String baseVal) {
+	public void setBaseVal(final String baseVal) {
 		this.baseVal = baseVal;
 	}
 

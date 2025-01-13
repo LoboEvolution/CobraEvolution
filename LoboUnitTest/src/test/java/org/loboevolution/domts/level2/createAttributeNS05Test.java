@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -41,30 +41,26 @@ import static org.junit.Assert.*;
  * valid and correctly formed.
  * <p>
  * Invoke method createAttributeNS(namespaceURI,qualifiedName) on this document with
- * parameters equal "http://www.ecommerce.org/" and "ecom:local"
+ * parameters equal "<a href="http://www.ecommerce.org/">...</a>" and "ecom:local"
  * respectively. Method should return a new Attr object whose name is "ecom:local".
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1112119403">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1112119403</a>
  */
-public class createAttributeNS05Test extends LoboUnitTest {
+public class CreateAttributeNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.ecommerce.org/";
-        String qualifiedName = "econm:local";
-        Document doc;
-        Attr newAttr;
-        String attrName;
+        final String namespaceURI = "http://www.ecommerce.org/";
+        final String qualifiedName = "econm:local";
+        final Document doc;
+        final Attr newAttr;
+        final String attrName;
         doc = sampleXmlFile("staffNS.xml");
         newAttr = doc.createAttributeNS(namespaceURI, qualifiedName);
         attrName = newAttr.getName();
-        assertEquals("throw_Equals", qualifiedName, attrName);
+        assertEquals(qualifiedName, attrName);
     }
 }
 

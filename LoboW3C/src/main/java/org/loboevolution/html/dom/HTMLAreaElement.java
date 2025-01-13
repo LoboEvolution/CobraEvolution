@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,9 @@
 package org.loboevolution.html.dom;
 
 
-import org.loboevolution.html.node.DOMTokenList;
-
 /**
- * Provides special properties and methods (beyond those of the regular object HTMLElement interface it also has available to it by inheritance) for manipulating the layout and presentation of &lt;area&gt; elements.
- *
- *
- *
+ * Provides special properties and methods (beyond those of the regular object HTMLElement interface
+ * it also has available to it by inheritance) for manipulating the layout and presentation of &lt;area&gt; elements.
  */
 public interface HTMLAreaElement extends HTMLElement, HTMLHyperlinkElementUtils {
 
@@ -152,7 +148,7 @@ public interface HTMLAreaElement extends HTMLElement, HTMLHyperlinkElementUtils 
     /**
      * <p>getRelList.</p>
      *
-     * @return a {@link org.loboevolution.html.node.DOMTokenList} object.
+     * @return a {@link org.loboevolution.html.dom.DOMTokenList} object.
      */
     DOMTokenList getRelList();
 

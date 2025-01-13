@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,11 @@ package org.loboevolution.js;
 
 import org.mozilla.javascript.*;
 
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,7 +39,8 @@ import java.util.List;
  */
 public class JavaFunctionObject extends ScriptableObject implements Function {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	private final String className;
 	private final String methodName;
 	private final List<Method> methods = new ArrayList<>();
@@ -58,13 +61,13 @@ public class JavaFunctionObject extends ScriptableObject implements Function {
 	 *
 	 * @param m a {@link java.lang.reflect.Method} object.
 	 */
-	public void addMethod(Method m) {
+	public void addMethod(final Method m) {
 		this.methods.add(m);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+	public Object call(final Context cx, final Scriptable scope, final Scriptable thisObj, final Object[] args) {
 		final JavaObjectWrapper jcw = (JavaObjectWrapper) thisObj;
 		final Method method = getBestMethod(args);
 		if (method == null) {
@@ -104,22 +107,24 @@ public class JavaFunctionObject extends ScriptableObject implements Function {
 
 	/** {@inheritDoc} */
 	@Override
-	public Scriptable construct(Context cx, Scriptable scope, Object[] args) {
+	public Scriptable construct(final Context cx, final Scriptable scope, final Object[] args) {
 		throw new UnsupportedOperationException();
 	}
 
-	private Method getBestMethod(Object[] args) {
+	private Method getBestMethod(final Object[] args) {
 		final List<Method> methods = this.methods;
 		final int size = methods.size();
 		int matchingNumParams = 0;
 		Method matchingMethod = null;
 		for (final Method m : methods) {
 			final Class[] parameterTypes = m.getParameterTypes();
-			if (args == null) {
-				if (parameterTypes == null || parameterTypes.length == 0) {
+			boolean isParameterTypes = Arrays.stream(parameterTypes).findAny().isPresent();
+			if (args == null || args.length == 0) {
+
+				if (!isParameterTypes) {
 					return m;
 				}
-			} else if (parameterTypes != null && args.length >= parameterTypes.length) {
+			} else if (isParameterTypes && args.length >= parameterTypes.length) {
 				if (areAssignableTo(args, parameterTypes)) {
 					return m;
 				}
@@ -143,7 +148,7 @@ public class JavaFunctionObject extends ScriptableObject implements Function {
 
 	/** {@inheritDoc} */
 	@Override
-	public Object getDefaultValue(Class hint) {
+	public Object getDefaultValue(final Class hint) {
 		if (hint == null || String.class.equals(hint)) {
 			return "function " + this.methodName;
 		} else {
@@ -151,7 +156,7 @@ public class JavaFunctionObject extends ScriptableObject implements Function {
 		}
 	}
 	
-	private boolean areAssignableTo(Object[] objects, Class[] types) {
+	private boolean areAssignableTo(final Object[] objects, final Class[] types) {
         final int length = objects.length;
         if (length != types.length) {
             return false;
@@ -164,20 +169,22 @@ public class JavaFunctionObject extends ScriptableObject implements Function {
         return true;
     }
 	
-	private boolean isAssignableOrBox(Object value, Class clazz) {
+	private boolean isAssignableOrBox(final Object value, final Class clazz) {
         if (clazz.isInstance(value)) {
             return true;
         }
-        if (clazz.isPrimitive()) {
-            if (clazz == double.class && value instanceof Double || clazz == int.class && value instanceof Integer
-                    || clazz == long.class && value instanceof Long
-                    || clazz == boolean.class && value instanceof Boolean
-                    || clazz == byte.class && value instanceof Byte || clazz == char.class && value instanceof Character
-                    || clazz == short.class && value instanceof Short
-                    || clazz == float.class && value instanceof Float) {
-                return true;
-            }
-        }
+		if (clazz.isPrimitive()) {
+			if (clazz == double.class && value instanceof Double
+					|| clazz == int.class && value instanceof Integer
+					|| clazz == long.class && value instanceof Long
+					|| clazz == boolean.class && value instanceof Boolean
+					|| clazz == byte.class && value instanceof Byte
+					|| clazz == char.class && value instanceof Character
+					|| clazz == short.class && value instanceof Short
+					|| clazz == float.class && value instanceof Float) {
+				return true;
+			}
+		}
 
         if (clazz.isAssignableFrom(String.class)) {
             return value == null || !value.getClass().isPrimitive();

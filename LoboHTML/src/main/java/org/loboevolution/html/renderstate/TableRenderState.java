@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,13 +36,11 @@ import org.loboevolution.info.BorderInfo;
 import org.loboevolution.laf.ColorFactory;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Base64;
 
 /**
  * <p>TableRenderState class.</p>
- *
- *
- *
  */
 public class TableRenderState extends StyleSheetRenderState {
 	private BackgroundInfo backgroundInfo = INVALID_BACKGROUND_INFO;
@@ -53,7 +51,7 @@ public class TableRenderState extends StyleSheetRenderState {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	public TableRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+	public TableRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
 		super(prevRenderState, element);
 	}
 
@@ -87,7 +85,7 @@ public class TableRenderState extends StyleSheetRenderState {
 				if (background.contains(";base64,")) {
                     final String base64 = background.split(";base64,")[1];
                     final byte[] decodedBytes = Base64.getDecoder().decode(Strings.linearize(base64));
-                    background = String.valueOf(decodedBytes);
+                    background = Arrays.toString(decodedBytes);
                 }
 				binfo.setBackgroundImage(this.document.getFullURL(background));
 			}
@@ -112,9 +110,8 @@ public class TableRenderState extends StyleSheetRenderState {
 			if (element != null) {
 
 				String border;
-				if (element instanceof HTMLTableElement) {
-					HTMLTableElement table = (HTMLTableElement) element;
-					border = table.getBorder();
+				if (element instanceof HTMLTableElement table) {
+                    border = table.getBorder();
 				} else {
 					border = element.getAttribute("border");
 				}
@@ -122,7 +119,7 @@ public class TableRenderState extends StyleSheetRenderState {
 				if (border != null) {
 					border = border.trim();
 					int value;
-					int valueType;
+					final int valueType;
 					if (border.endsWith("%")) {
 						valueType = HtmlInsets.TYPE_PERCENT;
 						try {
@@ -168,12 +165,6 @@ public class TableRenderState extends StyleSheetRenderState {
 	@Override
 	public int getDefaultDisplay() {
 		return DISPLAY_TABLE;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Color getTextBackgroundColor() {
-		return super.getTextBackgroundColor();
 	}
 
 	/** {@inheritDoc} */

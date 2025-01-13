@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,12 @@ class FloatingViewportBounds implements FloatingBounds {
 	 *
 	 * @param prevBounds a {@link org.loboevolution.html.renderer.FloatingBounds} object.
 	 * @param leftFloat a boolean.
-	 * @param y a int.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @param offsetFromBorder Width of floating box, including padding insets.
-	 * @param height a int.
+	 * @param height a {@link java.lang.Integer} object.
 	 */
-	public FloatingViewportBounds(FloatingBounds prevBounds, boolean leftFloat, int y, int offsetFromBorder,
-			int height) {
+	public FloatingViewportBounds(final FloatingBounds prevBounds, final boolean leftFloat, final int y, final int offsetFromBorder,
+                                  final int height) {
 		this.prevBounds = prevBounds;
 		this.leftFloat = leftFloat;
 		this.y = y;
@@ -52,23 +52,22 @@ class FloatingViewportBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		// Important for layout caching.
 		if (other == this) {
 			return true;
 		}
-		if (!(other instanceof FloatingViewportBounds)) {
+		if (!(other instanceof FloatingViewportBounds olm)) {
 			return false;
 		}
-		final FloatingViewportBounds olm = (FloatingViewportBounds) other;
-		return olm.leftFloat == this.leftFloat && olm.y == this.y && olm.height == this.height
+        return olm.leftFloat == this.leftFloat && olm.y == this.y && olm.height == this.height
 				&& olm.offsetFromBorder == this.offsetFromBorder
 				&& java.util.Objects.equals(olm.prevBounds, this.prevBounds);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getClearY(int y) {
+	public int getClearY(final int y) {
 		int cleary = Math.max(y, this.y + this.height);
 		final FloatingBounds prev = this.prevBounds;
 		if (prev != null) {
@@ -82,7 +81,7 @@ class FloatingViewportBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getFirstClearY(int y) {
+	public int getFirstClearY(final int y) {
 		int clearY = y;
 		final FloatingBounds prev = this.prevBounds;
 		if (prev != null) {
@@ -99,7 +98,7 @@ class FloatingViewportBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getLeft(int y) {
+	public int getLeft(final int y) {
 		int left = 0;
 		if (this.leftFloat && y >= this.y && y < this.y + this.height) {
 			left = this.offsetFromBorder;
@@ -116,7 +115,7 @@ class FloatingViewportBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getLeftClearY(int y) {
+	public int getLeftClearY(final int y) {
 		int cleary;
 		if (this.leftFloat) {
 			cleary = Math.max(y, this.y + this.height);
@@ -153,7 +152,7 @@ class FloatingViewportBounds implements FloatingBounds {
 	 * The offset from the right edge, not counting padding.
 	 */
 	@Override
-	public int getRight(int y) {
+	public int getRight(final int y) {
 		int right = 0;
 		if (!this.leftFloat && y >= this.y && y < this.y + this.height) {
 			right = this.offsetFromBorder;
@@ -170,7 +169,7 @@ class FloatingViewportBounds implements FloatingBounds {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getRightClearY(int y) {
+	public int getRightClearY(final int y) {
 		int cleary;
 		if (!this.leftFloat) {
 			cleary = Math.max(y, this.y + this.height);

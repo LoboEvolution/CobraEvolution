@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,26 +45,23 @@ import static org.junit.Assert.*;
  * the same localName as this attribute but different namespaceURI.  Change the prefix of the
  * newly created attribute using setPrefix.  Check if the new attribute nodeName has changed
  * and the existing attribute is the same.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodesetprefix02Test extends LoboUnitTest {
+public class Nodesetprefix02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Attr attribute;
-        Attr newAttribute;
-        HTMLCollection elementList;
-        String attrName;
-        String newAttrName;
+        final Document doc;
+        final Element element;
+        final Attr attribute;
+        final Attr newAttribute;
+        final HTMLCollection elementList;
+        final String attrName;
+        final String newAttrName;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(1);
@@ -74,8 +71,8 @@ public class nodesetprefix02Test extends LoboUnitTest {
         attribute = element.getAttributeNodeNS("http://www.usa.com", "domestic");
         attrName = attribute.getNodeName();
         newAttrName = newAttribute.getNodeName();
-        assertEquals("nodesetprefix02_attrName", "dmstc:domestic", attrName);
-        assertEquals("nodesetprefix02_newAttrName", "dom:address", newAttrName);
+        assertEquals("dmstc:domestic", attrName);
+        assertEquals("dom:address", newAttrName);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ public class FuncPosition extends Function {
 
   /** {@inheritDoc} */
   @Override
-  public void postCompileStep(Compiler compiler) {
+  public void postCompileStep(final Compiler compiler) {
     m_isTopLevel = compiler.getLocationPathDepth() == -1;
   }
 
@@ -49,24 +49,19 @@ public class FuncPosition extends Function {
    * @return The current position of the iteration in the context node list, or -1 if there is no
    *     active context node list.
    */
-  public int getPositionInContextNodeList(XPathContext xctxt) {
-
-    // System.out.println("FuncPosition- entry");
-    // If we're in a predicate, then this will return non-null.
-    SubContextList iter = m_isTopLevel ? null : xctxt.getSubContextList();
+  public int getPositionInContextNodeList(final XPathContext xctxt) {
+    final SubContextList iter = m_isTopLevel ? null : xctxt.getSubContextList();
 
     if (null != iter) {
       return iter.getProximityPosition(xctxt);
     }
-
-    // System.out.println("FuncPosition - out of guesses: -1");
     return -1;
   }
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
-    double pos = getPositionInContextNodeList(xctxt);
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
+    final double pos = getPositionInContextNodeList(xctxt);
 
     return new XNumber(pos);
   }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,57 +28,49 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The method createElementNS raises a NAMESPACE_ERR if the qualifiedName
  * has a prefix that is "xml" and the namespaceURI is different
- * from http://www.w3.org/XML/1998/namespace
+ * from <a href="http://www.w3.org/XML/1998/namespace">...</a>
  * <p>
  * Invoke the createElementNS method on this DOMImplementation object with
- * the qualifiedName as xml:root and namespaceURI as http://www.w3.org/xml/1998/namespace
+ * the qualifiedName as xml:root and namespaceURI as <a href="http://www.w3.org/xml/1998/namespace">...</a>
  * Check if the NAMESPACE_ERR exception is thrown.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS</a>
  */
-public class documentcreateelementNS06Test extends LoboUnitTest {
+public class DocumentcreateelementNS06Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DocumentType docType = null;
-
-        DOMImplementation domImpl;
-        String namespaceURI = "http://www.w3.org/xml/1998/namespace ";
-        String qualifiedName = "xml:root";
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final String namespaceURI = "http://www.w3.org/xml/1998/namespace ";
+        final String qualifiedName = "xml:root";
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:doc", docType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:doc", null);
 
         boolean success = false;
         try {
             newDoc.createElementNS(namespaceURI, qualifiedName);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("documentcreateelementNS06", success);
-
+        assertTrue(success);
     }
 }
 

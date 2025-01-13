@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,12 +40,12 @@ public class HTMLOptGroupElementImpl extends HTMLElementImpl implements HTMLOptG
      *
      * @param name a {@link String} object.
      */
-    public HTMLOptGroupElementImpl(String name) {
+    public HTMLOptGroupElementImpl(final String name) {
         super(name);
     }
 
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new BlockRenderState(prevRenderState, this);
     }
 
@@ -55,7 +55,7 @@ public class HTMLOptGroupElementImpl extends HTMLElementImpl implements HTMLOptG
     }
 
     @Override
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(final boolean disabled) {
 
     }
 
@@ -70,7 +70,20 @@ public class HTMLOptGroupElementImpl extends HTMLElementImpl implements HTMLOptG
     }
 
     @Override
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
 
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getClientHeight() {
+        final int clientHeight = super.getClientHeight();
+        return clientHeight == 0 ? 20 : clientHeight;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return "[object HTMLOptGroupElement]";
     }
 }

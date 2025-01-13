@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,30 +41,26 @@ import static org.junit.Assert.*;
  * are valid and correctly formed.
  * <p>
  * Invoke method createElementNS(namespaceURI,qualifiedName on this document
- * with namespaceURI as "http://www.nist.gov" and qualifiedName as "gov:faculty".
+ * with namespaceURI as "<a href="http://www.nist.gov">...</a>" and qualifiedName as "gov:faculty".
  * Method should return a new Element object whose name is "gov:faculty".
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-104682815">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-104682815</a>
  */
-public class createElementNS05Test extends LoboUnitTest {
+public class CreateElementNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.nist.gov";
-        String qualifiedName = "GOV:FACULTY";
-        Document doc;
-        Element newElement;
-        String elementName;
+        final String namespaceURI = "http://www.nist.gov";
+        final String qualifiedName = "GOV:FACULTY";
+        final Document doc;
+        final Element newElement;
+        final String elementName;
         doc = sampleXmlFile("staffNS.xml");
         newElement = doc.createElementNS(namespaceURI, qualifiedName);
         elementName = newElement.getTagName();
-        assertEquals("throw_Equals", qualifiedName, elementName);
+        assertEquals(qualifiedName, elementName);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.dom.domimpl.HTMLTableCellElementImpl;
 import org.loboevolution.html.dom.domimpl.HTMLTableRowElementImpl;
 import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.style.FontValues;
 import org.loboevolution.html.style.HtmlInsets;
 import org.loboevolution.html.style.HtmlValues;
@@ -46,6 +46,7 @@ import org.loboevolution.laf.FontFactory;
 import org.loboevolution.laf.FontKey;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Base64;
 
 /**
@@ -64,7 +65,7 @@ public class TableCellRenderState extends DisplayRenderState {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	public TableCellRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+	public TableCellRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
 		super(prevRenderState, element, RenderState.DISPLAY_TABLE_CELL);
 	}
 
@@ -78,7 +79,7 @@ public class TableCellRenderState extends DisplayRenderState {
 		final CSSStyleDeclaration props = getCssProperties();
 		if (props != null) {
 			final String textAlign = props.getTextAlign();
-			if (textAlign != null && textAlign.length() != 0) {
+			if (textAlign != null && !textAlign.isEmpty()) {
 				return super.getAlignXPercent();
 			}
 		}
@@ -130,7 +131,7 @@ public class TableCellRenderState extends DisplayRenderState {
 		final CSSStyleDeclaration props = getCssProperties();
 		if (props != null) {
 			final String textAlign = props.getVerticalAlign();
-			if (textAlign != null && textAlign.length() != 0) {
+			if (textAlign != null && !textAlign.isEmpty()) {
 				return super.getAlignYPercent();
 			}
 		}
@@ -184,9 +185,12 @@ public class TableCellRenderState extends DisplayRenderState {
 		}
 		if (binfo == null || binfo.getBackgroundColor() == null) {
 			String bgColor = element.getBgColor();
-			if (Strings.isNotBlank(bgColor)) {
+			if (Strings.isBlank(bgColor)) {
 				if (rowElement != null) {
 					bgColor = rowElement.getBgColor();
+					if (Strings.isBlank(bgColor)) {
+						binfo = rowElement.getRenderState().getBackgroundInfo();
+					}
 				}
 			}
 			if (Strings.isNotBlank(bgColor)) {
@@ -207,7 +211,7 @@ public class TableCellRenderState extends DisplayRenderState {
 				if (background.contains(";base64,")) {
                     final String base64 = background.split(";base64,")[1];
                     final byte[] decodedBytes = Base64.getDecoder().decode(Strings.linearize(base64));
-                    background = String.valueOf(decodedBytes);
+                    background = Arrays.toString(decodedBytes);
                 }
 				binfo.setBackgroundImage(this.document.getFullURL(background));
 			}
@@ -232,8 +236,8 @@ public class TableCellRenderState extends DisplayRenderState {
 			String cellPaddingText = tableElement.getAttribute("cellpadding");
 			if (Strings.isNotBlank(cellPaddingText)) {
 				cellPaddingText = cellPaddingText.trim();
-				HTMLDocumentImpl doc =  (HTMLDocumentImpl)tableElement.getOwnerDocument();
-				int cellPadding = HtmlValues.getPixelSize(cellPaddingText, this, doc.getDefaultView(), 0);
+				final HTMLDocumentImpl doc =  (HTMLDocumentImpl)tableElement.getOwnerDocument();
+				final int cellPadding = HtmlValues.getPixelSize(cellPaddingText, this, doc.getDefaultView(), 0);
 				int cellPaddingType = HtmlInsets.TYPE_PIXELS;
 
 				if (cellPaddingText.endsWith("%")) {
@@ -299,7 +303,7 @@ public class TableCellRenderState extends DisplayRenderState {
 			String width = props == null ? null : props.getWidth();
 			if (width == null) {
 				width = element.getAttribute("width");
-				if (width != null && width.length() > 0 && !width.endsWith("%")) {
+				if (width != null && !width.isEmpty() && !width.endsWith("%")) {
 					wsValue = WS_NORMAL;
 				}
 			} else {
@@ -320,7 +324,7 @@ public class TableCellRenderState extends DisplayRenderState {
 			final HtmlRendererConfig config = element.getHtmlRendererConfig();
 			final String fontSize = props == null ? null : props.getFontSize();
 			final String fSize = Strings.isNotBlank(fontSize) ? fontSize : "1.2rem";
-			FontKey key = FontValues.getDefaultFontKey(config);
+			final FontKey key = FontValues.getDefaultFontKey(config);
 			key.setFontWeight(CSSValues.BOLD.getValue());
 			key.setFontSize(FontValues.getFontSize(fSize, element.getDocumentNode().getDefaultView(), prevRenderState));
 			return FontFactory.getInstance().getFont(FontValues.getFontKey(key, element, props, prevRenderState));

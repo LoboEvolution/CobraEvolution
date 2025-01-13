@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,44 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 new DocumentType having null public and system ids
  * are equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode22Test extends LoboUnitTest {
+public class Nodeisequalnode22Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc1;
-        Document doc2;
-        DOMImplementation domImpl1;
-        DOMImplementation domImpl2;
-        DocumentType docType1;
-        DocumentType docType2;
-        boolean isEqual;
-        String nullPubId = null;
+        final Document doc1;
+        final Document doc2;
+        final DOMImplementation domImpl1;
+        final DOMImplementation domImpl2;
+        final DocumentType docType1;
+        final DocumentType docType2;
+        final boolean isEqual;
 
-        String nullSysId = null;
-
-        DocumentType oldDocType;
-        String rootName;
+        final DocumentType oldDocType;
+        final String rootName;
         doc1 = sampleXmlFile("barfoo.xml");
         oldDocType = doc1.getDoctype();
         rootName = oldDocType.getName();
         doc2 = sampleXmlFile("barfoo.xml");
         domImpl1 = doc1.getImplementation();
         domImpl2 = doc2.getImplementation();
-        docType1 = domImpl1.createDocumentType(rootName, nullPubId, nullSysId);
-        docType2 = domImpl2.createDocumentType(rootName, nullPubId, nullSysId);
+        docType1 = domImpl1.createDocumentType(rootName, null, null);
+        docType2 = domImpl2.createDocumentType(rootName, null, null);
         isEqual = docType1.isEqualNode(docType2);
-        assertTrue("nodeisequalnode22", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode22Assert2");
     }
 }
 

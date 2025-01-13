@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,26 +43,23 @@ import static org.junit.Assert.assertNull;
  * Retrieve the documenttype.
  * Apply the "getInternalSubset()" method.  Null is returned since there
  * is not an internal subset.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-internalSubset">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-internalSubset</a>
  */
-public class internalSubset01Test extends LoboUnitTest {
+public class InternalSubset01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        String internal;
+        final Document doc;
+        final DocumentType docType;
+        final String internal;
         doc = sampleXmlFile("staff.xml");
         docType = doc.getDoctype();
         internal = docType.getInternalSubset();
-        assertNull("internalSubsetNull", internal);
+        assertNull(internal);
     }
 }
 

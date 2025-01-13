@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ package org.loboevolution.html.dom.input;
 import org.loboevolution.html.control.InputControl;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 import org.loboevolution.html.js.Executor;
+import org.loboevolution.html.js.WindowImpl;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -50,7 +51,7 @@ public class InputColorPicker {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputColorPicker(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputColorPicker(final HTMLInputElementImpl modelNode, final InputControl ic) {
 		this.modelNode = modelNode;
 		if (modelNode.getTitle() != null) {
 			widget.setToolTipText(modelNode.getTitle());
@@ -60,19 +61,20 @@ public class InputColorPicker {
 		widget.setEnabled(!modelNode.isDisabled());
 
 		widget.addActionListener(event -> {
-			Color c = JColorChooser.showDialog(null, "Choose a Color", null);
-			String value = "#" + Integer.toHexString(c.getRGB()).substring(2);
+			final Color c = JColorChooser.showDialog(null, "Choose a Color", null);
+			final String value = "#" + Integer.toHexString(c.getRGB()).substring(2);
 			modelNode.setValue(value);
 			widget.setToolTipText(value);
 			widget.setBackground(c);
 		});
 
-		MouseInputAdapter mouseHandler = new MouseInputAdapter() {
+		final MouseInputAdapter mouseHandler = new MouseInputAdapter() {
 
 			@Override
 			public void mouseEntered(final MouseEvent e) {
 				if (modelNode.getOnmouseover() != null) {
-					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), null, new Object[] {});
+					final WindowImpl win = (WindowImpl) modelNode.getDocumentNode().getDefaultView();
+					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), new Object[] {}, win.getContextFactory());
 				}
 			}
 		};
@@ -85,8 +87,8 @@ public class InputColorPicker {
 	 * <p>reset.</p>
 	 */
 	public void reset() {
-		Color c = Color.BLACK;
-		String value = "#" + Integer.toHexString(c.getRGB()).substring(2);
+		final Color c = Color.BLACK;
+		final String value = "#" + Integer.toHexString(c.getRGB()).substring(2);
 		modelNode.setValue(value);
 		widget.setToolTipText(value);
 		widget.setBackground(c);

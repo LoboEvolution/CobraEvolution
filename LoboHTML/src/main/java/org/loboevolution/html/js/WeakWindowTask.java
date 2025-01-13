@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ abstract class WeakWindowTask implements ActionListener {
 	 *
 	 * @param window a {@link org.loboevolution.html.js.WindowImpl} object.
 	 */
-	public WeakWindowTask(WindowImpl window) {
+	public WeakWindowTask(final WindowImpl window) {
 		this.windowRef = new WeakReference<>(window);
 	}
 

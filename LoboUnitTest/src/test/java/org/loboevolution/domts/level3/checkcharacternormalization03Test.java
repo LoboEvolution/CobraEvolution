@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,40 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Normalize document using Node.normalize checking that "check-character-normalization"
  * is ignored.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-normalize">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-normalize</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-check-character-normalization">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-check-character-normalization</a>
  * @see <a href="http://www.w3.org/TR/2003/WD-charmod-20030822/">http://www.w3.org/TR/2003/WD-charmod-20030822/</a>
  */
-public class checkcharacternormalization03Test extends LoboUnitTest {
+public class Checkcharacternormalization03Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         HTMLCollection pList;
         Element pElem;
         Text text;
-        String textValue;
-        boolean canSet;
+        final String textValue;
+        final boolean canSet;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("check-character-normalization", Boolean.TRUE);
@@ -75,12 +74,12 @@ public class checkcharacternormalization03Test extends LoboUnitTest {
             text = doc.createTextNode("suçon");
             pElem.appendChild(text);
             doc.normalize();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Checkcharacternormalization03Assert3");
             pList = doc.getElementsByTagName("p");
             pElem = (Element) pList.item(0);
             text = (Text) pElem.getFirstChild();
             textValue = text.getNodeValue();
-            assertEquals("noCharNormalization", "barsuçon", textValue);
+            assertEquals("barsuçon", textValue, "Checkcharacternormalization03Assert4");
         }
     }
 }

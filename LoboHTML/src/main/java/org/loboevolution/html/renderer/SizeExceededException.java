@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,14 @@
 
 package org.loboevolution.html.renderer;
 
+import java.io.Serial;
+
 class SizeExceededException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * <p>Constructor for SizeExceededException.</p>
@@ -44,7 +47,7 @@ class SizeExceededException extends RuntimeException {
 	 *
 	 * @param message a {@link java.lang.String} object.
 	 */
-	public SizeExceededException(String message) {
+	public SizeExceededException(final String message) {
 		super(message);
 	}
 
@@ -54,7 +57,7 @@ class SizeExceededException extends RuntimeException {
 	 * @param message a {@link java.lang.String} object.
 	 * @param cause a {@link java.lang.Throwable} object.
 	 */
-	public SizeExceededException(String message, Throwable cause) {
+	public SizeExceededException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -63,7 +66,7 @@ class SizeExceededException extends RuntimeException {
 	 *
 	 * @param cause a {@link java.lang.Throwable} object.
 	 */
-	public SizeExceededException(Throwable cause) {
+	public SizeExceededException(final Throwable cause) {
 		super(cause);
 	}
 }

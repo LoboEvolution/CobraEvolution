@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 package org.loboevolution.html.style;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
@@ -37,6 +38,7 @@ import java.awt.*;
  * <p>HtmlInsets class.</p>
  */
 @Data
+@Slf4j
 public class HtmlInsets {
 	
 	/** Constant TYPE_UNDEFINED=0 */
@@ -76,7 +78,7 @@ public class HtmlInsets {
 	/**
 	 * <p>Constructor for HtmlInsets.</p>
 	 */
-	public HtmlInsets(int value, int valueType) {
+	public HtmlInsets(final int value, final int valueType) {
 		top = left = right = bottom = value;
 		topType = leftType = rightType = bottomType = valueType;
 	}
@@ -84,13 +86,13 @@ public class HtmlInsets {
 	/**
 	 * <p>getAWTInsets.</p>
 	 *
-	 * @param availWidth a int.
-	 * @param availHeight a int.
-	 * @param autoX a int.
-	 * @param autoY a int.
+	 * @param availWidth a {@link java.lang.Integer} object.
+	 * @param availHeight a {@link java.lang.Integer} object.
+	 * @param autoX a {@link java.lang.Integer} object.
+	 * @param autoY a {@link java.lang.Integer} object.
 	 * @return a {@link java.awt.Insets} object.
 	 */
-	public Insets getAWTInsets(int availWidth, int availHeight, int autoX, int autoY) {
+	public Insets getAWTInsets(final int availWidth, final int availHeight, final int autoX, final int autoY) {
 		final int top = getInsetPixels(this.top, this.topType, availHeight, autoY);
 		final int bottom = getInsetPixels(this.bottom, this.bottomType, availHeight, autoX);
 		final int left = getInsetPixels(this.left, this.leftType, availWidth, autoY);
@@ -106,9 +108,9 @@ public class HtmlInsets {
 		return top == 0 && bottom == 0 && left == 0 && right == 0;
 	}
 
-	protected static HtmlInsets getInsets(String topText, String leftText, String bottomText, String rightText, HTMLElementImpl element, RenderState renderState) {
+	protected static HtmlInsets getInsets(final String topText, final String leftText, final String bottomText, final String rightText,final HTMLElementImpl element, final RenderState renderState) {
 		BasicInset basicInset;
-		HtmlInsets insets = new HtmlInsets();
+		final HtmlInsets insets = new HtmlInsets();
 
 		basicInset = updateInset(element, topText, renderState);
 		insets.top = basicInset.getValue();
@@ -129,7 +131,7 @@ public class HtmlInsets {
 		return insets;
 	}
 
-	private static BasicInset updateInset(HTMLElementImpl element, String sizeText, RenderState renderState) {
+	private static BasicInset updateInset(final HTMLElementImpl element, final String sizeText, final RenderState renderState) {
 		int type = 0;
 		int value = 0;
 		if (Strings.isNotBlank(sizeText)) {
@@ -139,9 +141,11 @@ public class HtmlInsets {
 				type = HtmlInsets.TYPE_PERCENT;
 				try {
 					value = Integer.parseInt(sizeText.substring(0, sizeText.length() - 1));
-				} catch (final Exception nfe) {}
+				} catch (final Exception e) {
+					log.info(e.getMessage());
+				}
 			} else {
-				HTMLDocumentImpl doc = (HTMLDocumentImpl)element.getDocumentNode();
+				final HTMLDocumentImpl doc = (HTMLDocumentImpl)element.getDocumentNode();
 				type = HtmlInsets.TYPE_PIXELS;
 				value = HtmlValues.getPixelSize(sizeText, renderState, doc.getDefaultView(), 0);
 			}
@@ -149,19 +153,14 @@ public class HtmlInsets {
 		return new BasicInset(type, value);
 	}
 
-	private int getInsetPixels(int value, int type, int availSize, int autoValue) {
-		switch (type) {
-			case TYPE_PIXELS:
-				return value;
-			case TYPE_UNDEFINED:
-				return 0;
-			case TYPE_AUTO:
-				return autoValue;
-			case TYPE_PERCENT:
-				return availSize * value / 100;
-			default:
-				throw new IllegalStateException();
-		}
+	private int getInsetPixels(final int value, final int type, final int availSize, final int autoValue) {
+        return switch (type) {
+            case TYPE_PIXELS -> value;
+            case TYPE_UNDEFINED -> 0;
+            case TYPE_AUTO -> autoValue;
+            case TYPE_PERCENT -> availSize * value / 100;
+            default -> throw new IllegalStateException();
+        };
 	}
 
 	/** {@inheritDoc} */

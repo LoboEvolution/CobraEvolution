@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of the first ProcessingInstruction node compared to
  * this second newly apended ProcessingInstruction node is PRECEDING, and FOLLOWING vice versa.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition17Test extends LoboUnitTest {
+public class Nodecomparedocumentposition17Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction pi1;
-        ProcessingInstruction pi2;
-        int pi1Position;
-        int pi2Position;
-        Node appendedChild;
+        final Document doc;
+        final ProcessingInstruction pi1;
+        final ProcessingInstruction pi2;
+        final int pi1Position;
+        final int pi2Position;
         doc = sampleXmlFile("hc_staff.xml");
         pi1 = doc.createProcessingInstruction("PI1", "");
         pi2 = doc.createProcessingInstruction("PI2", "");
-        appendedChild = doc.appendChild(pi1);
-        appendedChild = doc.appendChild(pi2);
+        doc.appendChild(pi1);
+        doc.appendChild(pi2);
         pi1Position = pi1.compareDocumentPosition(pi2);
-        assertEquals("nodecomparedocumentpositionFollowing17", 4, pi1Position);
+        assertEquals(4, pi1Position, "Nodecomparedocumentposition17Assert2");
         pi2Position = pi2.compareDocumentPosition(pi1);
-        assertEquals("nodecomparedocumentpositionPRECEDING17", 2, pi2Position);
+        assertEquals(2, pi2Position, "Nodecomparedocumentposition17Assert3");
     }
 }
 

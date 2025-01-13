@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,28 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a DocumentFragment node attempt to replace an Element node with
  * its EntityReference child verify the nodeName of the replaced node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild19Test extends LoboUnitTest {
+public class Nodereplacechild19Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        EntityReference entRef;
-        Element elem;
-        Node replaced;
-        String nodeName;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final EntityReference entRef;
+        final Element elem;
+        final Node replaced;
+        final String nodeName;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
@@ -59,7 +57,7 @@ public class nodereplacechild19Test extends LoboUnitTest {
         docFrag.appendChild(elem);
         replaced = docFrag.replaceChild(entRef, elem);
         nodeName = replaced.getNodeName();
-        assertEquals("nodereplacechild19", "dom3:p", nodeName);
+        assertEquals("dom3:p", nodeName, "Nodereplacechild19Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,55 +27,51 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the adoptNode method on this document using a new Element and a new attribute created in
  * a new Document as the source.  Verify if the node has been adopted correctly by checking the
  * nodeName of the adopted Element and by checking if the attribute was adopted.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode26Test extends LoboUnitTest {
+public class Documentadoptnode26Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         Element docElem;
-        Element newElem;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Node adoptedNode;
-        String adoptedName;
-        String adoptedNS;
-        DocumentType nullDocType = null;
-
-        Node appendedChild;
-        String rootNS;
-        String rootTagname;
+        final Element newElem;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Node adoptedNode;
+        final String adoptedName;
+        final String adoptedNS;
+        final String rootNS;
+        final String rootTagname;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootTagname = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootTagname, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootTagname, null);
         newElem = newDoc.createElementNS("http://www.w3.org/1999/xhtml", "head");
         newElem.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "en-US");
         docElem = newDoc.getDocumentElement();
-        appendedChild = docElem.appendChild(newElem);
+        docElem.appendChild(newElem);
         adoptedNode = doc.adoptNode(newElem);
 
         if ((adoptedNode != null)) {
             adoptedName = adoptedNode.getNodeName();
             adoptedNS = adoptedNode.getNamespaceURI();
-            assertEquals("documentadoptnode26_1", "head", adoptedName);
-            assertEquals("documentadoptnode26_2", "http://www.w3.org/1999/xhtml", adoptedNS);
+            assertEquals("head", adoptedName, "Documentadoptnode26Assert2");
+            assertEquals("http://www.w3.org/1999/xhtml", adoptedNS, "Documentadoptnode26Assert3");
         }
     }
 }

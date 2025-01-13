@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +26,25 @@
 
 package org.loboevolution.html.js.css;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.htmlunit.cssparser.dom.MediaListImpl;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.js.WindowImpl;
-import org.loboevolution.html.node.css.MediaQueryList;
+import org.loboevolution.css.MediaQueryList;
 import org.loboevolution.html.style.CSSUtilities;
 import org.loboevolution.html.style.StyleSheetAggregator;
 
 /**
  * <p>MediaQueryListImpl class.</p>
  */
+@AllArgsConstructor
+@Getter
 public class MediaQueryListImpl implements MediaQueryList {
-
-    private final String media;
 
     private final WindowImpl window;
 
-    /**
-     * <p>Constructor for MediaQueryListImpl.</p>
-     *
-     * @param window a {@link org.loboevolution.html.js.WindowImpl} object.
-     * @param mediaQueryString a {@link java.lang.String} object.
-     */
-    public MediaQueryListImpl(WindowImpl window, String mediaQueryString) {
-        this.window = window;
-        this.media = mediaQueryString;
-    }
-
-    /**
-     * <p>Getter for the field <code>media</code>.</p>
-     *
-     * @return a {@link java.lang.String} object.
-     */
-    public String getMedia() {
-        return media;
-    }
+    private final String media;
 
     /**
      * <p>isMatches.</p>
@@ -71,7 +55,7 @@ public class MediaQueryListImpl implements MediaQueryList {
     public boolean isMatches() throws Exception {
         final String processedText = CSSUtilities.preProcessCss(media);
         if (Strings.isBlank(processedText)) return true;
-        MediaListImpl media = CSSUtilities.parseMedia(processedText);
+        final MediaListImpl media = CSSUtilities.parseMedia(processedText);
 
         if (Strings.isBlank(media.getMediaText()) ||
                 "screen".equalsIgnoreCase(media.getMediaText()) ||

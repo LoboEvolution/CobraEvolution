@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,39 +44,33 @@ import static org.junit.Assert.assertNull;
  * Create a new Document node.  Since this node is not used with any Document yet
  * verify if the ownerDocument is null.  Create a new element Node on the new Document
  * object.  Check the ownerDocument of the new element node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc">http://www.w3.org/TR/DOM-Level-2-Core/core#node-ownerDoc</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class nodegetownerdocument02Test extends LoboUnitTest {
+public class Nodegetownerdocument02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        Element newElem;
-        Document ownerDocDoc;
-        Document ownerDocElem;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        String nullNS = null;
-
+        final Document doc;
+        final Document newDoc;
+        final Element newElem;
+        final Document ownerDocDoc;
+        final Document ownerDocElem;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
         doc = sampleXmlFile("staff.xml");
-        
         domImpl = doc.getImplementation();
-        docType = domImpl.createDocumentType("mydoc", nullNS, nullNS);
+        docType = domImpl.createDocumentType("mydoc", null, null);
         newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "mydoc", docType);
         ownerDocDoc = newDoc.getOwnerDocument();
-        assertNull("nodegetownerdocument02_1", ownerDocDoc);
+        assertNull(ownerDocDoc);
         newElem = newDoc.createElementNS("http://www.w3.org/DOM/Test", "myelem");
         ownerDocElem = newElem.getOwnerDocument();
-        assertNotNull("nodegetownerdocument02_2", ownerDocElem);
+        assertNotNull(ownerDocElem);
     }
 }
 

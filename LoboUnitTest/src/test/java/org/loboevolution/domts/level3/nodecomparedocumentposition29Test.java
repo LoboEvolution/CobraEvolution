@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,46 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Create two entity reference nodes. Using compareDocumentPosition to check if the child of the first Entity
  * Ref node precedes the child of the second Entity Ref node, and that the child of the second Entity Ref node
  * follows the child of the first Entity Ref node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition29Test extends LoboUnitTest {
+public class Nodecomparedocumentposition29Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        EntityReference entRef1;
-        EntityReference entRef2;
-        Element entRefChild1;
-        ProcessingInstruction entRefChild2;
-        int entRefChild1Position;
-        int entRefChild2Position;
-        Node appendedChild;
+        final Document doc;
+        final Element docElem;
+        final EntityReference entRef1;
+        final EntityReference entRef2;
+        final Element entRefChild1;
+        final ProcessingInstruction entRefChild2;
+        final int entRefChild1Position;
+        final int entRefChild2Position;
         doc = sampleXmlFile("hc_staff.xml");
         entRef1 = doc.createEntityReference("ent4");
         entRef2 = doc.createEntityReference("ent4");
         docElem = doc.getDocumentElement();
-        appendedChild = docElem.appendChild(entRef1);
-        appendedChild = docElem.appendChild(entRef2);
+        docElem.appendChild(entRef1);
+        docElem.appendChild(entRef2);
         entRefChild1 = (Element) entRef1.getFirstChild();
-        assertNotNull("entRefChild1NotNull", entRefChild1);
+        assertNotNull(entRefChild1, "Nodecomparedocumentposition29Assert3");
         entRefChild2 = (ProcessingInstruction) entRef2.getLastChild();
-        assertNotNull("entRefChild2NotNull", entRefChild2);
+        assertNotNull(entRefChild2, "Nodecomparedocumentposition29Assert4");
         entRefChild1Position = entRefChild1.compareDocumentPosition(entRefChild2);
-        assertEquals("nodecomparedocumentpositionFollowing29", 4, entRefChild1Position);
+        assertEquals(4, entRefChild1Position, "Nodecomparedocumentposition29Assert5");
         entRefChild2Position = entRefChild2.compareDocumentPosition(entRefChild1);
-        assertEquals("nodecomparedocumentpositionPRECEDING29", 2, entRefChild2Position);
+        assertEquals(2, entRefChild2Position, "Nodecomparedocumentposition29Assert6");
     }
 }
 

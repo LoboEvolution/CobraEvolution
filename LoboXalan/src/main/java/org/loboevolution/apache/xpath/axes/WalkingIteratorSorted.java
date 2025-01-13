@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,10 +39,10 @@ public class WalkingIteratorSorted extends WalkingIterator {
    *
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the opcode list from the compiler.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  WalkingIteratorSorted(Compiler compiler, int opPos, int analysis)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  WalkingIteratorSorted(final Compiler compiler, final int opPos, final int analysis)
+      throws javax.xml.transform.TransformerException {
     super(compiler, opPos, analysis, true);
   }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Checks that element content whitespace is not added to textContent.  Determination
  * of element content whitespace is only assured if validating.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=538">http://www.w3.org/Bugs/Public/show_bug.cgi?id=538</a>
  */
-public class nodegettextcontent19Test extends LoboUnitTest {
+public class Nodegettextcontent19Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        String textContent;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final String textContent;
         doc = sampleXmlFile("barfoo.xml");
         elemList = doc.getElementsByTagName("body");
         elem = (Element) elemList.item(0);
         textContent = elem.getTextContent();
-        assertEquals("textContent", "bar", textContent);
+        assertEquals("bar", textContent, "Nodegettextcontent19Assert2");
     }
 }
 

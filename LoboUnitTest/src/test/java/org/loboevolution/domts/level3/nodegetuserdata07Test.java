@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on a new PI node to set this its UserData to itself
  * and using getUserData with an valid Key and isEqualsNode check if the
  * returned UserData object is the same as that was set.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData</a>
  */
-public class nodegetuserdata07Test extends LoboUnitTest {
+public class Nodegetuserdata07Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction pi;
-        Object userData;
-        Object retUserData;
-        boolean success;
+        final Document doc;
+        final ProcessingInstruction pi;
+        final Object retUserData;
+        final boolean success;
 
-        Object prevUserData;
         doc = sampleXmlFile("hc_staff.xml");
         pi = doc.createProcessingInstruction("PITARGET", "PIDATA");
         /*Node */
-        prevUserData = pi.setUserData("key", pi, null);
+        pi.setUserData("key", pi, null);
         retUserData = pi.getUserData("key");
         success = ((Node) /*DOMUserData */retUserData).isEqualNode(pi);
-        assertTrue("nodegetuserdata07", success);
+        assertTrue(success, "Nodegetuserdata07Assert2");
     }
 }
 

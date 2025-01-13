@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,9 +41,7 @@ public class Function2Args extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public void setArg(Expression arg, int argNum) throws WrongNumberArgsException {
-
-    // System.out.println("argNum: "+argNum);
+  public void setArg(final Expression arg, final int argNum) throws WrongNumberArgsException {
     if (argNum == 0) super.setArg(arg, argNum);
     else if (1 == argNum) {
       m_arg1 = arg;
@@ -53,7 +51,7 @@ public class Function2Args extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public void checkNumberArgs(int argNum) throws WrongNumberArgsException {
+  public void checkNumberArgs(final int argNum) throws WrongNumberArgsException {
     if (argNum != 2) reportWrongNumberArgs();
   }
 
@@ -71,14 +69,14 @@ public class Function2Args extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public void callArgVisitors(XPathVisitor visitor) {
+  public void callArgVisitors(final XPathVisitor visitor) {
     super.callArgVisitors(visitor);
     if (null != m_arg1) m_arg1.callVisitors(visitor);
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!super.deepEquals(expr)) return false;
 
     if (null != m_arg1) {

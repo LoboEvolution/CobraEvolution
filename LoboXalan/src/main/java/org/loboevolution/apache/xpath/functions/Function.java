@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,14 @@
  */
 package org.loboevolution.apache.xpath.functions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.apache.xpath.Expression;
 import org.loboevolution.apache.xpath.XPathContext;
 import org.loboevolution.apache.xpath.XPathVisitor;
 import org.loboevolution.apache.xpath.compiler.Compiler;
 import org.loboevolution.apache.xpath.objects.XObject;
 import org.loboevolution.apache.xpath.res.XPATHMessages;
+import javax.xml.transform.TransformerException;
 
 /**
  * This is a superclass of all XPath functions. This allows two ways for the class to be called. One
@@ -38,6 +40,7 @@ import org.loboevolution.apache.xpath.res.XPATHMessages;
  * class, the other method is that the derived class may process it's own arguments, which is faster
  * since the arguments don't have to be added to an array, but causes a larger code footprint.
  */
+@Slf4j
 public abstract class Function extends Expression {
 
   /**
@@ -48,7 +51,7 @@ public abstract class Function extends Expression {
    * @throws WrongNumberArgsException If the argNum parameter is beyond what is specified for this
    *     function.
    */
-  public void setArg(Expression arg, int argNum) throws WrongNumberArgsException {
+  public void setArg(final Expression arg, final int argNum) throws WrongNumberArgsException {
     reportWrongNumberArgs();
   }
 
@@ -60,7 +63,7 @@ public abstract class Function extends Expression {
    * @param argNum The number of arguments that is being passed to the function.
    * @throws WrongNumberArgsException if any
    */
-  public void checkNumberArgs(int argNum) throws WrongNumberArgsException {
+  public void checkNumberArgs(final int argNum) throws WrongNumberArgsException {
     if (argNum != 0) reportWrongNumberArgs();
   }
 
@@ -77,20 +80,17 @@ public abstract class Function extends Expression {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
-
-    // Programmer's assert. (And, no, I don't want the method to be abstract).
-    System.out.println("Error! Function.execute should not be called!");
-
+  public XObject execute(final XPathContext xctxt) throws TransformerException {
+    log.info("Error! Function.execute should not be called!");
     return null;
   }
 
   /** Call the visitors for the function arguments. */
-  public void callArgVisitors(XPathVisitor visitor) {}
+  public void callArgVisitors(final XPathVisitor visitor) {}
 
   /** {@inheritDoc} */
   @Override
-  public void callVisitors(XPathVisitor visitor) {
+  public void callVisitors(final XPathVisitor visitor) {
     if (visitor.visitFunction(this)) {
       callArgVisitors(visitor);
     }
@@ -98,7 +98,7 @@ public abstract class Function extends Expression {
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!isSameClass(expr)) return false;
 
     return true;
@@ -108,7 +108,7 @@ public abstract class Function extends Expression {
    * This function is currently only being used by Position() and Last(). See respective functions
    * for more detail.
    */
-  public void postCompileStep(Compiler compiler) {
+  public void postCompileStep(final Compiler compiler) {
     // no default action
   }
 }

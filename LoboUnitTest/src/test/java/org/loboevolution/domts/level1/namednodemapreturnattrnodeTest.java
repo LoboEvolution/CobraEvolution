@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -48,40 +48,37 @@ import static org.junit.Assert.assertNotNull;
  * list is created an invocation of the "getNamedItem(name)"
  * method is done with name="street".  This should result
  * in the method returning an Attr node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-637646024">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-637646024</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1112119403">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1112119403</a>
  */
-public class namednodemapreturnattrnodeTest extends LoboUnitTest {
+public class NamednodemapreturnattrnodeTest extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        NamedNodeMap attributes;
-        Attr streetAttr;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final NamedNodeMap attributes;
+        final Attr streetAttr;
         String attrName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(1);
         attributes = testEmployee.getAttributes();
         streetAttr = (Attr) attributes.getNamedItem("street");
-        assertNotNull("typeAssert", streetAttr);
+        assertNotNull(streetAttr, "NamednodemapreturnattrnodeAssert1");
         attrName = streetAttr.getNodeName();
-        assertEquals("nodeName", "street", attrName);
-        
+        assertEquals("street", attrName, "NamednodemapreturnattrnodeAssert2");
+
         attrName = streetAttr.getName();
-        assertEquals("attrName", "street", attrName);
+        assertEquals("street", attrName, "NamednodemapreturnattrnodeAssert3");
     }
 }
 

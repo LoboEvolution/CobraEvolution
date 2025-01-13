@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,26 +34,16 @@ import java.util.WeakHashMap;
  */
 public final class JavaClassWrapperFactory {
 
-	private static JavaClassWrapperFactory instance;
+    private final Map<Class<?>, WeakReference<JavaClassWrapper>> classWrappers = new WeakHashMap<>();
 
-	private final Map<Class, WeakReference<JavaClassWrapper>> classWrappers = new WeakHashMap();
 
-	private JavaClassWrapperFactory() { }
-
-	/**
+    /**
 	 * <p>Getter for the field instance.</p>
 	 *
 	 * @return a {@link org.loboevolution.js.JavaClassWrapperFactory} object.
 	 */
 	public static JavaClassWrapperFactory getInstance() {
-		if (instance == null) {
-			synchronized (JavaClassWrapperFactory.class) {
-				if (instance == null) {
-					instance = new JavaClassWrapperFactory();
-				}
-			}
-		}
-		return instance;
+        return InstanceHolder.instance;
 	}
 
 	/**
@@ -62,11 +52,8 @@ public final class JavaClassWrapperFactory {
 	 * @param clazz a {@link java.lang.Class} object.
 	 * @return a {@link org.loboevolution.js.JavaClassWrapper} object.
 	 */
-	public JavaClassWrapper getClassWrapper(Class clazz) {
+	public JavaClassWrapper getClassWrapper(final Class<?> clazz) {
 		synchronized (this) {
-			// WeakHashMaps where the value refers to
-			// the key will retain keys. Must make it
-			// refer to the value weakly too.
 			final WeakReference<JavaClassWrapper> jcwr = this.classWrappers.get(clazz);
 			JavaClassWrapper jcw = null;
 			if (jcwr != null) {

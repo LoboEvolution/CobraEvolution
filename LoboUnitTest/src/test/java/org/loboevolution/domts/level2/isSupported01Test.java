@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -47,26 +47,23 @@ import static org.junit.Assert.assertFalse;
  * node object on which the "isSupported(feature,version)"
  * method is invoked with "feature" equal to "XXX" and version to "1.0".
  * The method should return a boolean "false" since XXX is not a valid feature.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports</a>
  */
-public class isSupported01Test extends LoboUnitTest {
+public class IsSupported01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Node rootNode;
-        boolean state;
+        final Document doc;
+        final Node rootNode;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         rootNode = doc.getDocumentElement();
         state = rootNode.isSupported("XXX", "1.0");
-        assertFalse("throw_False", state);
+        assertFalse(state);
     }
 }
 

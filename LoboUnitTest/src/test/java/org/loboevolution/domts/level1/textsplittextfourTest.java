@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,32 +47,29 @@ import static org.junit.Assert.*;
  * method is called to check that the new node now contains
  * the characters at and after position 30.
  * (Starting count at 0)
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-38853C1D">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-38853C1D</a>
  */
-public class textsplittextfourTest extends LoboUnitTest {
+public class TextsplittextfourTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node addressNode;
-        Text textNode;
-        Text splitNode;
-        String value;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node addressNode;
+        final Text textNode;
+        final Text splitNode;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         addressNode = elementList.item(0);
         textNode = (Text) addressNode.getFirstChild();
         splitNode = textNode.splitText(30);
         value = splitNode.getNodeValue();
-        assertEquals("textSplitTextFourAssert", "98551", value);
+        assertEquals("98551", value, "TextsplittextfourAssert1");
     }
 
 }

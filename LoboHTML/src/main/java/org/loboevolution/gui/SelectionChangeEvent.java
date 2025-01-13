@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.gui;
 
+import java.io.Serial;
 import java.util.EventObject;
 
 /**
@@ -38,7 +39,8 @@ public class SelectionChangeEvent extends EventObject {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	private final boolean hasSelection;
 
 	/**
@@ -47,7 +49,7 @@ public class SelectionChangeEvent extends EventObject {
 	 * @param source a {@link java.lang.Object} object.
 	 * @param hasSelection a boolean.
 	 */
-	public SelectionChangeEvent(Object source, boolean hasSelection) {
+	public SelectionChangeEvent(final Object source, final boolean hasSelection) {
 		super(source);
 		this.hasSelection = hasSelection;
 	}

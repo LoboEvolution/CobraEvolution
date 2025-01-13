@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using getTextContent on this DocumentType node check if the value returned is Null .
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent05Test extends LoboUnitTest {
+public class Nodegettextcontent05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notationsMap;
-        Notation notation1;
-        String textContent;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notationsMap;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         notationsMap = docType.getNotations();
-        notation1 = (Notation) notationsMap.getNamedItem("notation1");
+        notationsMap.getNamedItem("notation1");
         textContent = docType.getTextContent();
-        assertNull("nodegettextcontent05", textContent);
+        assertNull(textContent, "Nodegettextcontent05Assert2");
     }
 }
 

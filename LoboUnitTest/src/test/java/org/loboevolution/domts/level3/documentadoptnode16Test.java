@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Create a document fragment with an entity reference, adopt the node and check
  * that the entity reference value comes from the adopting documents DTD.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode16Test extends LoboUnitTest {
+public class Documentadoptnode16Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFragment;
-        HTMLCollection childList;
-        Element parent;
-        Element child;
-        Attr childsAttr;
-        EntityReference entRef;
-        Text textNode;
-        Node adopted;
-        Element parentImp;
-        Element childImp;
-        NamedNodeMap attributes;
-        Attr childAttrImp;
-        String nodeValue;
-        Node appendedChild;
-        Attr attrNode;
-        Node firstChild;
-        int firstChildType;
-        String firstChildName;
-        String firstChildValue;
+        final Document doc;
+        final DocumentFragment docFragment;
+        final Element parent;
+        final Element child;
+        final Attr childsAttr;
+        final EntityReference entRef;
+        final Text textNode;
+        final Node adopted;
+        final Element parentImp;
+        final Element childImp;
+        final NamedNodeMap attributes;
+        final Attr childAttrImp;
+        final Node firstChild;
+        final int firstChildType;
+        final String firstChildName;
+        final String firstChildValue;
         doc = sampleXmlFile("hc_staff.xml");
         docFragment = doc.createDocumentFragment();
         parent = doc.createElement("parent");
@@ -74,11 +67,11 @@ public class documentadoptnode16Test extends LoboUnitTest {
         childsAttr = doc.createAttribute("state");
         entRef = doc.createEntityReference("gamma");
         textNode = doc.createTextNode("Test");
-        appendedChild = childsAttr.appendChild(entRef);
-        attrNode = child.setAttributeNode(childsAttr);
-        appendedChild = child.appendChild(textNode);
-        appendedChild = parent.appendChild(child);
-        appendedChild = docFragment.appendChild(parent);
+        childsAttr.appendChild(entRef);
+        child.setAttributeNode(childsAttr);
+        child.appendChild(textNode);
+        parent.appendChild(child);
+        docFragment.appendChild(parent);
         adopted = doc.adoptNode(docFragment);
 
         if ((adopted != null)) {
@@ -87,15 +80,15 @@ public class documentadoptnode16Test extends LoboUnitTest {
             attributes = childImp.getAttributes();
             childAttrImp = (Attr) attributes.getNamedItem("state");
             firstChild = childAttrImp.getFirstChild();
-            assertNotNull("firstChildNotNull", firstChild);
+            assertNotNull(firstChild, "Documentadoptnode16Assert3");
             firstChildName = firstChild.getNodeName();
             firstChildValue = firstChild.getNodeValue();
             firstChildType = firstChild.getNodeType();
 
             if (firstChildType == 5) {
-                assertEquals("firstChildEnt3Ref", "gamma", firstChildName);
+                assertEquals("gamma", firstChildName, "Documentadoptnode16Assert4");
             } else {
-                assertEquals("documentadoptnode16", "Texas", firstChildValue);
+                assertEquals("Texas", firstChildValue, "Documentadoptnode16Assert5");
             }
 
         }

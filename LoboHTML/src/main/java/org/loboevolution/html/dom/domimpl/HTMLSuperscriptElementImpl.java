@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,22 +40,22 @@ public class HTMLSuperscriptElementImpl extends HTMLElementImpl {
 	 * <p>Constructor for HTMLSuperscriptElementImpl.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @param superscript a int.
+	 * @param superscript a {@link java.lang.Integer} object.
 	 */
-	public HTMLSuperscriptElementImpl(String name, int superscript) {
+	public HTMLSuperscriptElementImpl(final String name, final int superscript) {
 		super(name);
 		this.superscript = superscript;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new FontStyleRenderState(prevRenderState, this, this.superscript);
 	}
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 15 : clientHeight;
 	}
 	

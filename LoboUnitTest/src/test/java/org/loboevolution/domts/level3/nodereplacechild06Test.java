@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,43 +28,39 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on this Document node attempt to replace this DocumentElement node
  * with one of its child elements and verify if the name of the replaced documentElement Node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild06Test extends LoboUnitTest {
+public class Nodereplacechild06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Element replaced;
-        Element elem;
-        HTMLCollection childList;
-        String nodeName;
-        Node replacedNode;
+        final Document doc;
+        final Element docElem;
+        final Element replaced;
+        final Element elem;
+        final HTMLCollection childList;
+        final String nodeName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         childList = doc.getElementsByTagName("p");
         elem = (Element) childList.item(0);
 
         try {
-            replacedNode = doc.replaceChild(elem, docElem);
+            doc.replaceChild(elem, docElem);
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             if (ex.getCode() == 9) {
                 return;
             }
@@ -72,7 +68,7 @@ public class nodereplacechild06Test extends LoboUnitTest {
         }
         replaced = doc.getDocumentElement();
         nodeName = replaced.getNodeName();
-        assertEquals("nodereplacechild06", "P", nodeName);
+        assertEquals("P", nodeName, "Nodereplacechild06Assert2");
     }
 }
 

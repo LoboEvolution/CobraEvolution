@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -49,35 +49,32 @@ import static org.junit.Assert.assertNotNull;
  * whose tagName is "address".  The tagName "address" has an
  * attribute with default values, therefore the newly created element
  * will have them.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
  */
-public class documentcreateelementdefaultattrTest extends LoboUnitTest {
+public class DocumentcreateelementdefaultattrTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element newElement;
-        NamedNodeMap defaultAttr;
-        Node child;
-        String name;
-        String value;
+        final Document doc;
+        final Element newElement;
+        final NamedNodeMap defaultAttr;
+        final Node child;
+        final String name;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         newElement = doc.createElement("address");
         defaultAttr = newElement.getAttributes();
         child = defaultAttr.item(0);
-        assertNotNull("defaultAttrNotNull", child);
+        assertNotNull(child, "DocumentcreateelementdefaultattrAssert1");
         name = child.getNodeName();
-        assertEquals("attrName", "street", name);
+        assertEquals("street", name, "DocumentcreateelementdefaultattrAssert2");
         value = child.getNodeValue();
-        assertEquals("attrValue", "Yes", value);
+        assertEquals("Yes", value, "DocumentcreateelementdefaultattrAssert3");
     }
 }
 

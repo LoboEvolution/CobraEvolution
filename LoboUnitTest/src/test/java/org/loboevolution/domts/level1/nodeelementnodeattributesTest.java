@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,10 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,28 +50,24 @@ import static org.junit.Assert.*;
  * invoke the "getAttributes()" method.   It should return
  * a NamedNodeMap containing the attributes of the Element
  * node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  */
-public class nodeelementnodeattributesTest extends LoboUnitTest {
+public class NodeelementnodeattributesTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        NamedNodeMap addrAttr;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final NamedNodeMap addrAttr;
         Node attrNode;
         String attrName;
-        java.util.Collection attrList = new java.util.ArrayList();
-
-        java.util.Collection expected = new java.util.ArrayList();
+        final List<String> attrList = new ArrayList<>();
+        final List<String> expected = new ArrayList<>();
         expected.add("domestic");
         expected.add("street");
 
@@ -81,7 +80,7 @@ public class nodeelementnodeattributesTest extends LoboUnitTest {
             attrName = attrNode.getNodeName();
             attrList.add(attrName);
         }
-        assertEquals("nodeElementNodeValueAssert1", expected, attrList);
+        assertEquals(expected, attrList, "NodeelementnodeattributesAssert1");
     }
 }
 

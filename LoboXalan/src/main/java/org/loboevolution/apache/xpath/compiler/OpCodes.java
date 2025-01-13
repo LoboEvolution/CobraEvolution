@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -231,7 +231,7 @@ public class OpCodes {
   static final int LAST_NODESET_OP = 25;
 
   /**
-   * [OP_ARGUMENT] (Function argument.) [length] {expression}
+   * [OP_ARGUMENT] (final Function argument.) [length] {expression}
    *
    * <p>returns: XNodeSet XNumber XString XBoolean XRTree XObject
    */

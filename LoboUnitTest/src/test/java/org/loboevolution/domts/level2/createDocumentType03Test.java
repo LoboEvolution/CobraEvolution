@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,36 +45,33 @@ import static org.junit.Assert.assertNull;
  * Invoke method createDocumentType(qualifiedName,publicId,systemId) on
  * this domimplementation with qualifiedName "prefix:myDoc".
  * Method should return a new DocumentType node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType</a>
  */
-public class createDocumentType03Test extends LoboUnitTest {
+public class CreateDocumentType03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String qualifiedName = "prefix:myDoc";
-        String publicId = "http://www.localhost.com";
-        String systemId = "myDoc.dtd";
-        Document doc;
-        DOMImplementation domImpl;
-        DocumentType newType;
+        final String qualifiedName = "prefix:myDoc";
+        final String publicId = "http://www.localhost.com";
+        final String systemId = "myDoc.dtd";
+        final Document doc;
+        final DOMImplementation domImpl;
+        final DocumentType newType;
 
-        String nodeName;
-        String nodeValue;
+        final String nodeName;
+        final String nodeValue;
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
         newType = domImpl.createDocumentType(qualifiedName, publicId, systemId);
         nodeName = newType.getNodeName();
-        assertEquals("nodeName", "prefix:myDoc", nodeName);
+        assertEquals("prefix:myDoc", nodeName);
         nodeValue = newType.getNodeValue();
-        assertNull("nodeValue", nodeValue);
+        assertNull(nodeValue);
     }
 }
 

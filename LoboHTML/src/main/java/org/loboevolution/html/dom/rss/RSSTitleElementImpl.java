@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,13 +50,13 @@ public class RSSTitleElementImpl extends RSSElement implements RSSDrawable {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void draw(Graphics2D graphics, int y) {
-		String text = getText();
-		FontKey key = FontValues.getDefaultFontKey(getHtmlRendererConfig());
+	public void draw(final Graphics2D graphics, final int y) {
+		final String text = getText();
+		final FontKey key = FontValues.getDefaultFontKey(getHtmlRendererConfig());
 		key.setFontStyle(LAFType.ITALIC.getValue());
 		key.setFontVariant(CSSValues.SMALL_CAPS.getValue());
 		key.setFontWeight(LAFType.BOLD.getValue());
-		Font font = FontFactory.getInstance().getFont(key);
+		final Font font = FontFactory.getInstance().getFont(key);
 		graphics.setFont(font);
 		graphics.drawString(text, 10, y);
 	}

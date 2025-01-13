@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 package org.loboevolution.domts.level3;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This method declares the attribute specified by node to be of type ID. If the value of the specified attribute
@@ -40,22 +41,20 @@ import static org.junit.Assert.assertTrue;
  * that this simply affects this node and does not change any grammar that may be in use.
  * <p>
  * Invoke setIdAttributeNode with the xmlns attribute of ent4.  Verify that NO_MODIFICATION_ALLOWED_ERR is raised.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode</a>
  */
-public class elementsetidattributenode09Test extends LoboUnitTest {
+public class Elementsetidattributenode09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element varElem;
-        EntityReference entRef;
-        Element entElement;
-        NamedNodeMap attributesMap;
-        Attr attr;
-        DOMConfiguration domConfig;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element varElem;
+        final EntityReference entRef;
+        final Element entElement;
+        final NamedNodeMap attributesMap;
+        final Attr attr;
+        final DOMConfiguration domConfig;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         domConfig.setParameter("entities", Boolean.TRUE);
@@ -71,10 +70,10 @@ public class elementsetidattributenode09Test extends LoboUnitTest {
             boolean success = false;
             try {
                 entElement.setIdAttributeNode(attr, true);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+            assertTrue(success, "Elementsetidattributenode09Assert2");
         }
     }
 }

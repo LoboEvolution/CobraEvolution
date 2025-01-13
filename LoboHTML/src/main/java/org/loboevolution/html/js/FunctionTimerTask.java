@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,20 @@
 
 package org.loboevolution.html.js;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
+import org.loboevolution.js.LoboContextFactory;
+import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 
 import java.awt.event.ActionEvent;
 import java.lang.ref.WeakReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ * The class FunctionTimerTask.
+ */
+@Slf4j
 class FunctionTimerTask extends WeakWindowTask {
-	
-	private static final Logger logger = Logger.getLogger(FunctionTimerTask.class.getName());
 	
 	private final WeakReference<Function> functionRef;
 
@@ -52,7 +55,7 @@ class FunctionTimerTask extends WeakWindowTask {
 	 * @param function a {@link org.mozilla.javascript.Function} object.
 	 * @param removeTask a boolean.
 	 */
-	public FunctionTimerTask(WindowImpl window, Integer timeIDInt, Function function, boolean removeTask) {
+	public FunctionTimerTask(final WindowImpl window, final Integer timeIDInt, final Function function, final boolean removeTask) {
 		super(window);
 		this.timeIDInt = timeIDInt;
 		this.functionRef = new WeakReference<>(function);
@@ -67,9 +70,7 @@ class FunctionTimerTask extends WeakWindowTask {
 		try {
 			final WindowImpl window = this.getWindow();
 			if (window == null) {
-				if (logger.isLoggable(Level.INFO)) {
-					logger.info("actionPerformed(): WindowImpl is no longer available.");
-				}
+				log.info("actionPerformed(): WindowImpl is no longer available.");
 				return;
 			}
 			if (this.removeTask) {
@@ -81,11 +82,14 @@ class FunctionTimerTask extends WeakWindowTask {
 			}
 			final Function function = this.functionRef.get();
 			if (function != null) {
-				Executor.executeFunction(window.getWindowScope(), function, doc.getDocumentURL(), window.getUserAgentContext());
+				LoboContextFactory contextFactory = window.getContextFactory();
+				try (Context ctx = contextFactory.enterContext()) {
+					Executor.executeFunction(window.getWindowScope(ctx), function, window.getContextFactory());
+				}
 			}
 
 		} catch (final Throwable err) {
-			logger.log(Level.WARNING, "actionPerformed()", err);
+			log.error("actionPerformed()", err);
 		}
 	}
 }

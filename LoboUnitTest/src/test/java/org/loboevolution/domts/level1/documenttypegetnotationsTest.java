@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,18 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -45,42 +48,38 @@ import static org.junit.Assert.assertNotNull;
  * Retrieve the Document Type for this document and create
  * a NamedNodeMap object of all the notations.  There
  * should be two items in the list (notation1 and notation2).
- *
- * @author NIST
- * @author Mary Brady
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D46829EF">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D46829EF</a>
  */
-public class documenttypegetnotationsTest extends LoboUnitTest {
+public class DocumenttypegetnotationsTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notationList;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notationList;
         Node notation;
         String notationName;
-        java.util.Collection actual = new java.util.ArrayList();
+        final List<String> actual = new ArrayList<>();
 
-        java.util.Collection expected = new java.util.ArrayList();
+        final List<String> expected = new ArrayList<>();
         expected.add("notation1");
         expected.add("notation2");
 
         doc = sampleXmlFile("staff.xml");
         docType = doc.getDoctype();
-        assertNotNull("docTypeNotNull", docType);
+        assertNotNull(docType, "DocumenttypegetnotationsAssert1");
         notationList = docType.getNotations();
-        assertNotNull("notationsNotNull", notationList);
+        assertNotNull(notationList, "DocumenttypegetnotationsAssert2");
         for (int indexN1005B = 0; indexN1005B < notationList.getLength(); indexN1005B++) {
             notation = notationList.item(indexN1005B);
             notationName = notation.getNodeName();
             actual.add(notationName);
         }
-        assertEquals("names", expected, actual);
+        assertEquals(expected, actual, "DocumenttypegetnotationsAssert3");
     }
 }
 

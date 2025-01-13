@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CDATASection;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,9 +46,7 @@ import static org.junit.Assert.assertNotNull;
  * the "normalize()" method.  The Element under contains
  * two CDATASection nodes that should not be merged together
  * by the "normalize()" method.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-162CF083">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-162CF083</a>
  */
 public class CDataSectionNormalizeTest extends LoboUnitTest {
@@ -56,14 +54,13 @@ public class CDataSectionNormalizeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection nameList;
-        Element lChild;
-        NodeList childNodes;
+        final Document doc;
+        final HTMLCollection nameList;
+        final Element lChild;
+        final NodeList childNodes;
         CDATASection cdataN;
         String data;
         doc = sampleXmlFile("staff.xml");
@@ -72,13 +69,13 @@ public class CDataSectionNormalizeTest extends LoboUnitTest {
         lChild.normalize();
         childNodes = lChild.getChildNodes();
         cdataN = (CDATASection) childNodes.item(1);
-        assertNotNull("firstCDATASection", cdataN);
+        assertNotNull(cdataN, "CDataSectionNormalizeAssert1");
         data = cdataN.getData();
-        assertEquals("data1", "This is a CDATASection with EntityReference number 2 &ent2;", data);
+        assertEquals("This is a CDATASection with EntityReference number 2 &ent2;", data, "CDataSectionNormalizeAssert2");
         cdataN = (CDATASection) childNodes.item(3);
-        assertNotNull("secondCDATASection", cdataN);
+        assertNotNull(cdataN, "CDataSectionNormalizeAssert3");
         data = cdataN.getData();
-        assertEquals("data3", "This is an adjacent CDATASection with a reference to a tab &tab;", data);
+        assertEquals("This is an adjacent CDATASection with a reference to a tab &tab;", data, "CDataSectionNormalizeAssert4");
     }
 }
 

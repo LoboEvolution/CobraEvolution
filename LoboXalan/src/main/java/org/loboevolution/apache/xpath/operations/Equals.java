@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,18 +34,18 @@ public class Equals extends Operation {
 
   /** {@inheritDoc} */
   @Override
-  public XObject operate(XObject left, XObject right)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject operate(final XObject left, final XObject right)
+      throws javax.xml.transform.TransformerException {
     return left.equals(right) ? XBoolean.S_TRUE : XBoolean.S_FALSE;
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean bool(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
-    XObject left = m_left.execute(xctxt, true);
-    XObject right = m_right.execute(xctxt, true);
+  public boolean bool(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
+    final XObject left = m_left.execute(xctxt, true);
+    final XObject right = m_right.execute(xctxt, true);
 
-    boolean result = left.equals(right);
+    final boolean result = left.equals(right);
     left.detach();
     right.detach();
     return result;

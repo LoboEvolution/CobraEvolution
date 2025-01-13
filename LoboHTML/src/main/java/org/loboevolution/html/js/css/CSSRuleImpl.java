@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +26,24 @@
 
 package org.loboevolution.html.js.css;
 
-import org.htmlunit.cssparser.dom.AbstractCSSRuleImpl;
-import org.loboevolution.html.node.css.CSSRule;
-import org.loboevolution.html.node.css.CSSStyleSheet;
+import org.htmlunit.cssparser.dom.*;
+import org.htmlunit.cssparser.dom.CSSFontFaceRuleImpl;
+import org.htmlunit.cssparser.dom.CSSImportRuleImpl;
+import org.htmlunit.cssparser.dom.CSSStyleRuleImpl;
+import org.htmlunit.cssparser.dom.CSSPageRuleImpl;
+import org.htmlunit.cssparser.dom.CSSCharsetRuleImpl;
+import org.htmlunit.cssparser.dom.CSSMediaRuleImpl;
+import org.loboevolution.css.CSSRule;
+import org.loboevolution.css.CSSStyleSheet;
 
+/**
+ * <p>CSSRuleImpl class.</p>
+ */
 public class CSSRuleImpl implements CSSRule {
 
     private final AbstractCSSRuleImpl abstractCSSRule;
 
-    public CSSRuleImpl(AbstractCSSRuleImpl abstractCSSRule) {
+    public CSSRuleImpl(final AbstractCSSRuleImpl abstractCSSRule) {
         this.abstractCSSRule = abstractCSSRule;
     }
 
@@ -47,7 +56,7 @@ public class CSSRuleImpl implements CSSRule {
     /** {@inheritDoc} */
     @Override
     public CSSRule getParentRule() {
-        AbstractCSSRuleImpl parent = abstractCSSRule.getParentRule();
+        final AbstractCSSRuleImpl parent = abstractCSSRule.getParentRule();
         if (parent != null) {
             return new CSSRuleImpl(parent);
         }
@@ -63,7 +72,26 @@ public class CSSRuleImpl implements CSSRule {
     /** {@inheritDoc} */
     @Override
     public int getType() {
-        return 1;
+        if (abstractCSSRule instanceof CSSCharsetRuleImpl) {
+            return CHARSET_RULE;
+        }
+        if (abstractCSSRule instanceof CSSFontFaceRuleImpl) {
+            return FONT_FACE_RULE;
+        }
+        if (abstractCSSRule instanceof CSSImportRuleImpl) {
+            return IMPORT_RULE;
+        }
+        if (abstractCSSRule instanceof CSSMediaRuleImpl) {
+            return MEDIA_RULE;
+        }
+        if (abstractCSSRule instanceof CSSPageRuleImpl) {
+            return PAGE_RULE;
+        }
+        if (abstractCSSRule instanceof CSSStyleRuleImpl) {
+            return STYLE_RULE;
+        }
+
+        return UNKNOWN_RULE;
     }
 
     @Override

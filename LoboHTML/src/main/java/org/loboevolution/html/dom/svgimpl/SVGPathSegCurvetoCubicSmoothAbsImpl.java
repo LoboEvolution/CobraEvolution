@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ public class SVGPathSegCurvetoCubicSmoothAbsImpl implements SVGPathSegCurvetoCub
 	 * @param x2 a float.
 	 * @param y2 a float.
 	 */
-	public SVGPathSegCurvetoCubicSmoothAbsImpl(float x, float y, float x2, float y2) {
+	public SVGPathSegCurvetoCubicSmoothAbsImpl(final float x, final float y, final float x2, final float y2) {
 		this.x = x;
 		this.y = y;
 		this.x2 = x2;
@@ -79,7 +79,7 @@ public class SVGPathSegCurvetoCubicSmoothAbsImpl implements SVGPathSegCurvetoCub
 
 	/** {@inheritDoc} */
 	@Override
-	public void setX(float x) {
+	public void setX(final float x) {
 		this.x = x;
 	}
 
@@ -103,7 +103,7 @@ public class SVGPathSegCurvetoCubicSmoothAbsImpl implements SVGPathSegCurvetoCub
 
 	/** {@inheritDoc} */
 	@Override
-	public void setX2(float x2) {
+	public void setX2(final float x2) {
 		this.x2 = x2;
 	}
 
@@ -115,7 +115,7 @@ public class SVGPathSegCurvetoCubicSmoothAbsImpl implements SVGPathSegCurvetoCub
 
 	/** {@inheritDoc} */
 	@Override
-	public void setY2(float y2) {
+	public void setY2(final float y2) {
 		this.y2 = y2;
 	}
 }

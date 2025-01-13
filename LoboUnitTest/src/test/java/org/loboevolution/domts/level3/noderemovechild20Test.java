@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,57 +28,51 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on the first 'p' Element node attempt to remove a new
  * Element child and verify the name of the returned node that was removed.  Now attempt
  * to do the same on a cloned child and verify if a NOT_FOUND_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild20Test extends LoboUnitTest {
+public class Noderemovechild20Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection parentList;
-        HTMLCollection childList;
-        Element parent;
-        Element child;
-        Element clonedChild;
-        Element removed;
-        String removedName;
-        Node appendedChild;
-        Node removedNode;
+        final Document doc;
+        final HTMLCollection parentList;
+        final Element parent;
+        final Element child;
+        final Element clonedChild;
+        final Element removed;
+        final String removedName;
         doc = sampleXmlFile("hc_staff.xml");
         parentList = doc.getElementsByTagName("p");
         parent = (Element) parentList.item(0);
         child = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:br");
-        appendedChild = parent.appendChild(child);
+        parent.appendChild(child);
         removed = (Element) parent.removeChild(child);
         removedName = removed.getNodeName();
-        assertEquals("noderemovechild20", "dom3:br", removedName);
+        assertEquals("dom3:br", removedName, "Noderemovechild20Assert3");
         clonedChild = (Element) child.cloneNode(true);
 
         {
             boolean success = false;
             try {
-                removedNode = parent.removeChild(clonedChild);
-            } catch (DOMException ex) {
+                parent.removeChild(clonedChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR", success);
+            assertTrue(success, "Noderemovechild20Assert4");
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Check if a type derived by extension from a list of a item type returns true
  * when asked if it derives by list from the item type.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom49Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom49Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        TypeInfo typeInfo;
-        boolean isDerived;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final TypeInfo typeInfo;
+        final boolean isDerived;
         doc = sampleXmlFile("typeinfo.xml");
         elemList = doc.getElementsByTagName("acronym");
         elem = (Element) elemList.item(0);
         typeInfo = elem.getSchemaTypeInfo();
-        assertNotNull("typeInfoNotNull", typeInfo);
+        assertNotNull(typeInfo, "Typeinfoisderivedfrom49Assert3");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/2001/XMLSchema", "double", 8);
-        assertTrue("derivedFromDoubleList", isDerived);
+        assertTrue(isDerived, "Typeinfoisderivedfrom49Assert4");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -51,34 +50,30 @@ import static org.junit.Assert.assertNotNull;
  * Check to see if the new attribute has been successfully added to the document.
  * The new attribute "newValue" contains markup and therefore is escaped
  * by the implementation.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS</a>
  */
-public class setAttributeNS05Test extends LoboUnitTest {
+public class SetAttributeNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String localName = "newAttr";
-        String namespaceURI = "http://www.newattr.com";
-        String qualifiedName = "newAttr";
-        Document doc;
-        HTMLCollection elementList;
-        Node testAddr;
-        Attr addrAttr;
-        String resultAttr;
+        final String localName = "newAttr";
+        final String namespaceURI = "http://www.newattr.com";
+        final String qualifiedName = "newAttr";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node testAddr;
+        final String resultAttr;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
+        assertNotNull(testAddr);
         ((Element) testAddr).setAttributeNS(namespaceURI, qualifiedName, "<newValue>");
         resultAttr = ((Element) testAddr).getAttributeNS(namespaceURI, localName);
-        assertEquals("throw_Equals", "<newValue>", resultAttr);
+        assertEquals("<newValue>", resultAttr);
     }
 }
 

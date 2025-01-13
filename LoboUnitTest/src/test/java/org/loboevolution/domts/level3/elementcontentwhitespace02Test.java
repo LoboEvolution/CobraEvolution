@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Normalize document with element-content-whitespace set to false and validation set to true, check that
  * whitespace in element content is eliminated.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace</a>
  */
-public class elementcontentwhitespace02Test extends LoboUnitTest {
+public class Elementcontentwhitespace02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection bodyList;
-        Element body;
-        DOMConfiguration domConfig;
-        boolean canSet;
-        boolean canSetValidate;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final HTMLCollection bodyList;
+        final Element body;
+        final DOMConfiguration domConfig;
+        final boolean canSet;
+        final boolean canSetValidate;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         Node child;
-        String childName;
+        final String childName;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("element-content-whitespace", Boolean.FALSE);
@@ -72,15 +71,15 @@ public class elementcontentwhitespace02Test extends LoboUnitTest {
             /*DOMErrorMonitor */
             domConfig.setParameter("error-handler", errorMonitor);
             doc.normalizeDocument();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Elementcontentwhitespace02Assert1");
             bodyList = doc.getElementsByTagName("body");
             body = (Element) bodyList.item(0);
             child = body.getFirstChild();
-            assertNotNull("firstChildNotNull", child);
+            assertNotNull(child, "Elementcontentwhitespace02Assert2");
             childName = child.getNodeName();
-            assertEquals("firstChild", "P", childName);
+            assertEquals("P", childName, "Elementcontentwhitespace02Assert3");
             child = child.getNextSibling();
-            assertNull("secondChild", child);
+            assertNull(child, "Elementcontentwhitespace02Assert4");
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,14 @@
 
 package org.loboevolution.html.dom.input;
 
+import lombok.Data;
+
 import java.io.File;
 
 /**
  * The FormInput class contains the state of an HTML form input item.
  */
+@Data
 public class FormInput {
 
 	/** The Constant EMPTY_ARRAY. */
@@ -53,8 +56,7 @@ public class FormInput {
 	 * @param value
 	 *            The value of the input.
 	 */
-	public FormInput(String name, String value) {
-		super();
+	public FormInput(final String name, final String value) {
 		this.name = name;
 		this.textValue = value;
 		this.fileValue = null;
@@ -68,19 +70,10 @@ public class FormInput {
 	 * @param value
 	 *            The value of the input.
 	 */
-	public FormInput(String name, File[] value) {
+	public FormInput(final String name, final File[] value) {
 		this.name = name;
 		this.textValue = null;
 		this.fileValue = value;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
 	}
 
 	/**
@@ -99,24 +92,6 @@ public class FormInput {
 	 */
 	public boolean isFile() {
 		return this.fileValue != null;
-	}
-
-	/**
-	 * Gets the text value.
-	 *
-	 * @return the text value
-	 */
-	public String getTextValue() {
-		return this.textValue;
-	}
-
-	/**
-	 * Gets the file value.
-	 *
-	 * @return the file value
-	 */
-	public File[] getFileValue() {
-		return this.fileValue;
 	}
 
 	/**

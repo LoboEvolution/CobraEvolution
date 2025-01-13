@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,34 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Normalize document with infoset and validation set to true, check that
  * whitespace in element content is preserved.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset</a>
  */
-public class infoset08Test extends LoboUnitTest {
+public class Infoset08Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection bodyList;
-        Element body;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final HTMLCollection bodyList;
+        final Element body;
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         Node child;
         String childName;
-        Text text;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         domConfig.setParameter("infoset", Boolean.TRUE);
@@ -62,17 +61,17 @@ public class infoset08Test extends LoboUnitTest {
         domConfig.setParameter("error-handler", errorMonitor);
 
         doc.normalizeDocument();
-        assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+        assertTrue(errorMonitor.assertLowerSeverity(2), "Infoset08Assert1");
         bodyList = doc.getElementsByTagName("body");
         body = (Element) bodyList.item(0);
         child = body.getFirstChild();
-        assertNotNull("firstChildNotNull", child);
+        assertNotNull(child, "Infoset08Assert2");
         childName = child.getNodeName();
-        assertEquals("firstChild", "#text", childName);
+        assertEquals("#text", childName, "Infoset08Assert3");
         child = child.getNextSibling();
-        assertNotNull("secondChildNotNull", child);
+        assertNotNull(child, "Infoset08Assert4");
         childName = child.getNodeName();
-        assertEquals("secondChild", "p", childName);
+        assertEquals("P", childName, "Infoset08Assert5");
     }
 }
 

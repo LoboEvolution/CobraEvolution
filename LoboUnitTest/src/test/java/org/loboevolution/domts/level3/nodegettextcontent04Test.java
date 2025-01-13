@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,42 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using getTextContent on a new DocumentType node check if the value returned is Null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent04Test extends LoboUnitTest {
+public class Nodegettextcontent04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        String textContent;
-        String nullPubId = null;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
+        final String textContent;
 
-        String nullSysId = null;
-
-        DocumentType oldDocType;
-        String rootName;
+        final DocumentType oldDocType;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         oldDocType = doc.getDoctype();
         rootName = oldDocType.getName();
         domImpl = doc.getImplementation();
-        docType = domImpl.createDocumentType(rootName, nullPubId, nullSysId);
+        docType = domImpl.createDocumentType(rootName, null, null);
         textContent = docType.getTextContent();
-        assertNull("nodegettextcontent04", textContent);
+        assertNull(textContent, "Nodegettextcontent04Assert2");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,17 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -45,29 +43,24 @@ import static org.junit.Assert.assertNotNull;
  * the specified type.
  * <p>
  * Call the createDocument on this DOMImplementation with
- * createDocument ("http://www.w3.org/DOMTest/L2",see the array below for valid QNames,null).
+ * createDocument ("<a href="http://www.w3.org/DOMTest/L2">...</a>",see the array below for valid QNames,null).
  * Check if the returned Document object is empty with no Document Element.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument</a>
  */
-public class domimplementationcreatedocument03Test extends LoboUnitTest {
+public class Domimplementationcreatedocument03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
+        final Document doc;
+        final DOMImplementation domImpl;
         Document newDoc;
-        DocumentType docType = null;
 
-        String namespaceURI = "http://www.w3.org/DOMTest/L2";
+        final String namespaceURI = "http://www.w3.org/DOMTest/L2";
         String qualifiedName;
-        List<String> qualifiedNames = new ArrayList<>();
+        final List<String> qualifiedNames = new ArrayList<>();
         qualifiedNames.add("_:_");
         qualifiedNames.add("_:h0");
         qualifiedNames.add("_:test");
@@ -81,10 +74,10 @@ public class domimplementationcreatedocument03Test extends LoboUnitTest {
 
         doc = sampleXmlFile("staffNS.xml");
         domImpl = doc.getImplementation();
-        for (Object name : qualifiedNames) {
-            qualifiedName = (String) name;
-            newDoc = domImpl.createDocument(namespaceURI, qualifiedName, docType);
-            assertNotNull("domimplementationcreatedocument03", newDoc);
+        for (final String name : qualifiedNames) {
+            qualifiedName = name;
+            newDoc = domImpl.createDocument(namespaceURI, qualifiedName, null);
+            assertNotNull(newDoc);
         }
     }
 }

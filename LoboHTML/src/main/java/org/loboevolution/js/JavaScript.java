@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
  */
 package org.loboevolution.js;
 
+import lombok.Getter;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.node.Document;
 import org.mozilla.javascript.Function;
@@ -37,23 +38,13 @@ import java.util.WeakHashMap;
 
 /**
  * <p>JavaScript class.</p>
- *
- *
- *
  */
 public class JavaScript {
+
+	@Getter
 	private static final JavaScript instance = new JavaScript();
 
-	/**
-	 * <p>Getter for the field instance.</p>
-	 *
-	 * @return a {@link org.loboevolution.js.JavaScript} object.
-	 */
-	public static JavaScript getInstance() {
-		return instance;
-	}
-
-	private static String getStringValue(Object object) {
+	private static String getStringValue(final Object object) {
 		if (object instanceof Undefined) {
 			return "undefined";
 		} else if (object instanceof Scriptable) {
@@ -75,7 +66,7 @@ public class JavaScript {
 	 * @param type a {@link java.lang.Class} object.
 	 * @return a {@link java.lang.Object} object.
 	 */
-	public Object getJavaObject(Object javascriptObject, Class<?> type) {
+	public Object getJavaObject(final Object javascriptObject, final Class<?> type) {
 		if (javascriptObject instanceof JavaObjectWrapper) {
 			final Object rawJavaObject = ((JavaObjectWrapper) javascriptObject).getJavaObject();
 			if (String.class == type) {
@@ -99,21 +90,14 @@ public class JavaScript {
 				return getStringValue(javascriptObject);
 			}
 		} else if (type == int.class || type == Integer.class) {
-			if (javascriptObject instanceof Double) {
-				return ((Double) javascriptObject).intValue();
-			} else if (javascriptObject instanceof Integer) {
-				return javascriptObject;
-			} else if (javascriptObject instanceof String) {
-				return Strings.isNumeric((String) javascriptObject) ? Float.valueOf((String) javascriptObject) : null;
-			} else if (javascriptObject instanceof Short) {
-				return (int) (Short) javascriptObject;
-			} else if (javascriptObject instanceof Long) {
-				return ((Long) javascriptObject).intValue();
-			} else if (javascriptObject instanceof Float) {
-				return ((Float) javascriptObject).intValue();
-			} else {
-				return javascriptObject;
-			}
+            return switch (javascriptObject) {
+                case Double v -> v.intValue();
+                case String s -> Strings.isNumeric(s) ? Float.valueOf(s) : null;
+                case Short i -> (int) i;
+                case Long l -> l.intValue();
+                case Float v -> v.intValue();
+                default -> javascriptObject;
+            };
 		} else {
 			return javascriptObject;
 		}
@@ -126,17 +110,14 @@ public class JavaScript {
 	 * @param scope a {@link org.mozilla.javascript.Scriptable} object.
 	 * @return a {@link java.lang.Object} object.
 	 */
-	public Object getJavascriptObject(Object raw, Scriptable scope) {
-		if (raw instanceof String || raw instanceof Scriptable) {
-			return raw;
-		} else if (raw == null) {
+	public Object getJavascriptObject(final Object raw, final Scriptable scope) {
+		if (raw == null) {
 			return null;
+		} else if (raw instanceof String || raw instanceof Scriptable) {
+			return raw;
 		} else if (raw.getClass().isPrimitive()) {
 			return raw;
 		} else if (raw instanceof ScriptableDelegate) {
-			// Classes that implement ScriptableDelegate retain
-			// the JavaScript object. Reciprocal linking cannot
-			// be done with weak hash maps and without leaking.
 			synchronized (this) {
 				Scriptable javascriptObject = ((ScriptableDelegate) raw).getScriptable();
 				if (javascriptObject == null) {
@@ -172,26 +153,26 @@ public class JavaScript {
 		}
 	}
 
-	public void defineElementClass(Scriptable scope, final Document document, final String jsClassName, final String elementName, Class<?> javaClass) {
-		JavaInstantiator ji = () -> {
-			Document d = document;
+	public void defineElementClass(final Scriptable scope, final Document document, final String jsClassName, final String elementName, final Class<?> javaClass) {
+		final JavaInstantiator ji = (final Object[] args) -> {
+			final Document d = document;
 			if (d == null) {
 				throw new IllegalStateException("Document not set in current context.");
 			}
 			return d.createElement(elementName);
 		};
-		JavaClassWrapper classWrapper = JavaClassWrapperFactory.getInstance().getClassWrapper(javaClass);
-		Function constructorFunction = new JavaConstructorObject(jsClassName, classWrapper, ji);
+		final JavaClassWrapper classWrapper = JavaClassWrapperFactory.getInstance().getClassWrapper(javaClass);
+		final Function constructorFunction = new JavaConstructorObject(jsClassName, classWrapper, ji);
 		ScriptableObject.defineProperty(scope, jsClassName, constructorFunction, ScriptableObject.READONLY);
 	}
 
-	public void defineJsObject(Scriptable scope, final String jsClassName, Class<?> javaClass, JavaInstantiator instantiator) {
-		JavaClassWrapper classWrapper = JavaClassWrapperFactory.getInstance().getClassWrapper(javaClass);
-		Function constructorFunction = new JavaConstructorObject(jsClassName, classWrapper, instantiator);
+	public void defineJsObject(final Scriptable scope, final String jsClassName, final Class<?> javaClass, final JavaInstantiator instantiator) {
+		final JavaClassWrapper classWrapper = JavaClassWrapperFactory.getInstance().getClassWrapper(javaClass);
+		final Function constructorFunction = new JavaConstructorObject(jsClassName, classWrapper, instantiator);
 		ScriptableObject.defineProperty(scope, jsClassName, constructorFunction, ScriptableObject.READONLY);
 	}
 	
-	private boolean isBoxClass(Class clazz) {
+	private boolean isBoxClass(final Class clazz) {
         return clazz == Integer.class || clazz == Boolean.class || clazz == Double.class || clazz == Float.class
                 || clazz == Long.class || clazz == Byte.class || clazz == Short.class || clazz == Character.class;
     }

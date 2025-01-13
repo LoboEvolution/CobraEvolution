@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,16 +28,15 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DocumentType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -46,30 +45,25 @@ import static org.junit.Assert.assertTrue;
  * if parameter qualifiedName contains an illegal character.
  * <p>
  * Invoke method createDocument(namespaceURI,qualifiedName,doctype) on
- * this domimplementation with namespaceURI equals "http://www.ecommerce.org/schema",
+ * this domimplementation with namespaceURI equals "<a href="http://www.ecommerce.org/schema">...</a>",
  * doctype is null and qualifiedName contains an illegal character from
  * illegalChars[].  Method should raise INVALID_CHARACTER_ERR DOMException
  * for all characters in illegalChars[].
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#">http://www.w3.org/TR/DOM-Level-2-Core/core#</a>
  */
-public class createDocument05Test extends LoboUnitTest {
+public class CreateDocument05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.ecommerce.org/schema";
+        final String namespaceURI = "http://www.ecommerce.org/schema";
         String qualifiedName;
-        Document doc;
-        DocumentType docType = null;
+        final Document doc;
 
         DOMImplementation domImpl;
-        List<String> illegalQNames = new ArrayList<>();
+        final List<String> illegalQNames = new ArrayList<>();
         illegalQNames.add("namespaceURI:{");
         illegalQNames.add("namespaceURI:}");
         illegalQNames.add("namespaceURI:~");
@@ -99,19 +93,19 @@ public class createDocument05Test extends LoboUnitTest {
         illegalQNames.add("namespaceURI:\"");
 
         doc = sampleXmlFile("staffNS.xml");
-        
-        for (int indexN1009A = 0; indexN1009A < illegalQNames.size(); indexN1009A++) {
-            qualifiedName = illegalQNames.get(indexN1009A);
+
+        for (String illegalQName : illegalQNames) {
+            qualifiedName = illegalQName;
             domImpl = doc.getImplementation();
 
             {
                 boolean success = false;
                 try {
-                    domImpl.createDocument(namespaceURI, qualifiedName, docType);
-                } catch (DOMException ex) {
+                    domImpl.createDocument(namespaceURI, qualifiedName, null);
+                } catch (final DOMException ex) {
                     success = (ex.getCode() == DOMException.INVALID_CHARACTER_ERR);
                 }
-                assertTrue("throw_INVALID_CHARACTER_ERR", success);
+                assertTrue(success);
             }
         }
     }

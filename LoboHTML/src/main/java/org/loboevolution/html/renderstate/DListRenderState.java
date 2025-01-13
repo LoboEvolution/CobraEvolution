@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class DListRenderState extends AbstractMarginRenderState {
      * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
      * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
      */
-    public DListRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public DListRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element);
         this.element = element;
     }
@@ -56,7 +56,7 @@ public class DListRenderState extends AbstractMarginRenderState {
     @Override
     protected HtmlInsets getDefaultMarginInsets() {
         final HtmlInsets insets = new HtmlInsets();
-        final int topBottom = HtmlValues.getPixelSize("1rem", null, element.getDocumentNode().getDefaultView(), -1);
+        final int topBottom = HtmlValues.getPixelSize("1.12em", null, element.getDocumentNode().getDefaultView(), -1);
         insets.setTop(topBottom);
         insets.setBottom(topBottom);
         insets.setTopType(HtmlInsets.TYPE_PIXELS);

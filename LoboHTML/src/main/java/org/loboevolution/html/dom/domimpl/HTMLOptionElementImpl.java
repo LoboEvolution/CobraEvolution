@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,9 +108,8 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 	@Override
 	public Boolean isSelected() {
 		final Object parent = getParentNode();
-		if (parent instanceof HTMLSelectElement) {
-			final HTMLSelectElement selectElement = (HTMLSelectElement) parent;
-			if (selectElement.isMultiple()) {
+		if (parent instanceof HTMLSelectElement selectElement) {
+            if (selectElement.isMultiple()) {
 				return this.selected != null || getAttributeAsBoolean("selected");
 			} else {
 				if (selected == null) {
@@ -142,25 +141,25 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 
 	/** {@inheritDoc} */
 	@Override
-	public void setDefaultSelected(boolean defaultSelected) {
+	public void setDefaultSelected(final boolean defaultSelected) {
 		setAttribute("selected", defaultSelected ? "selected" : null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(final boolean disabled) {
 		// TODO Unsupported
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		setAttribute("label", label);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSelected(Object selected) {
+	public void setSelected(final Object selected) {
 		if (selected instanceof Boolean) {
 			this.selected = selected;
 		} else{
@@ -175,21 +174,28 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 	 *
 	 * <p>setText.</p>
 	 */
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 		setTextContent(text);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		setAttribute("value", value);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new BlockRenderState(prevRenderState, this);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int getClientHeight() {
+		final int clientHeight = super.getClientHeight();
+		return clientHeight == 0 ? 20 : clientHeight;
 	}
 
 	/** {@inheritDoc} */

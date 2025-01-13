@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,26 +44,23 @@ import static org.junit.Assert.assertNull;
  * Create an new Element with the createElement() method.
  * Invoke the "getPrefix()" method on the newly created element
  * node will cause "null" to be returned.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class prefix01Test extends LoboUnitTest {
+public class Prefix01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Node createdNode;
-        String prefix;
+        final Document doc;
+        final Node createdNode;
+        final String prefix;
         doc = sampleXmlFile("staffNS.xml");
         createdNode = doc.createElement("test:employee");
         prefix = createdNode.getPrefix();
-        assertNull("throw_Null", prefix);
+        assertNull(prefix);
     }
 }
 

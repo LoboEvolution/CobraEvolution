@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,42 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * The method getAttributeNodeNS retrieves an Attr node by local name and namespace URI.
  * Using the getAttributeNodeNS, retrieve and verify the value of the default
  * attribute node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class elementgetattributenodens03Test extends LoboUnitTest {
+public class Elementgetattributenodens03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Attr attribute;
-        String attrValue;
-        HTMLCollection childList;
-        String nullNS = null;
-
+        final Document doc;
+        final Element element;
+        final Attr attribute;
+        final String attrValue;
+        final HTMLCollection childList;
         doc = sampleXmlFile("staffNS.xml");
-        childList = doc.getElementsByTagName( "employee");
+        childList = doc.getElementsByTagName("employee");
         element = (Element) childList.item(1);
-        attribute = element.getAttributeNodeNS(nullNS, "defaultAttr");
+        attribute = element.getAttributeNodeNS(null, "defaultAttr");
         attrValue = attribute.getNodeValue();
-        assertEquals("elementgetattributenodens03", "defaultVal", attrValue);
+        assertEquals("defaultVal", attrValue);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,31 +27,29 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on this Document to set this Documents UserData to a new
  * Element node and using getUserData and isEqualNode check if the returned
  * UserData object is the same as the object that was set.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData</a>
  */
-public class nodegetuserdata03Test extends LoboUnitTest {
+public class Nodegetuserdata03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Object retUserData;
-        boolean success;
-        Element elem;
+        final Document doc;
+        final Object retUserData;
+        final boolean success;
+        final Element elem;
 
         doc = sampleXmlFile("barfoo.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "body");
@@ -59,7 +57,7 @@ public class nodegetuserdata03Test extends LoboUnitTest {
         doc.setUserData("something", elem, null);
         retUserData = doc.getUserData("something");
         success = ((Node) retUserData).isEqualNode(elem);
-        assertTrue("nodegetuserdata03", success);
+        assertTrue(success, "Nodegetuserdata03Assert2");
     }
 }
 

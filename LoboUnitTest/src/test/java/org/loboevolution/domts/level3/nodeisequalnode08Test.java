@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Retreive an element node of this Document having nodeName as employeeId and
- * namespaceURI as http://www.nist.gov.  Create a new Element node having the same attributes
+ * namespaceURI as <a href="http://www.nist.gov">...</a>.  Create a new Element node having the same attributes
  * in this Document and using isEqualNode check if 2 Element nodes are equal.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode08Test extends LoboUnitTest {
+public class Nodeisequalnode08Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem1;
-        Element elem2;
-        HTMLCollection employeeList;
-        Text text;
-        boolean isEqual;
-        Node appendedChild;
+        final Document doc;
+        final Element elem1;
+        final Element elem2;
+        final HTMLCollection employeeList;
+        final Text text;
+        final boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         employeeList = doc.getElementsByTagName("em");
         elem1 = (Element) employeeList.item(0);
         elem2 = doc.createElementNS("http://www.w3.org/1999/xhtml", "em");
         text = doc.createTextNode("EMP0001");
-        appendedChild = elem2.appendChild(text);
+        elem2.appendChild(text);
         isEqual = elem1.isEqualNode(elem2);
-        assertTrue("nodeisequalnode08", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode08Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,13 +46,13 @@ final class RWord extends BaseBoundableRenderable {
 	 * @param word a {@link java.lang.String} object.
 	 * @param container a {@link org.loboevolution.html.renderer.RenderableContainer} object.
 	 * @param fontMetrics a {@link java.awt.FontMetrics} object.
-	 * @param descent a int.
-	 * @param ascentPlusLeading a int.
-	 * @param height a int.
-	 * @param textTransform a int.
+	 * @param descent a {@link java.lang.Integer} object.
+	 * @param ascentPlusLeading a {@link java.lang.Integer} object.
+	 * @param height a {@link java.lang.Integer} object.
+	 * @param textTransform a {@link java.lang.Integer} object.
 	 */
-	public RWord(ModelNode me, String word, RenderableContainer container, FontMetrics fontMetrics, int descent,
-			int ascentPlusLeading, int height, int textTransform) {
+	public RWord(final ModelNode me, final String word, final RenderableContainer container, final FontMetrics fontMetrics, final int descent,
+				 final int ascentPlusLeading, final int height, final int textTransform) {
 		super(container, me);
 		final String renderedWord = textTransform == RenderState.TEXTTRANSFORM_NONE ? word
 				: transformText(word, textTransform);
@@ -66,8 +66,8 @@ final class RWord extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean extractSelectionText(StringBuilder buffer, boolean inSelection, RenderableSpot startPoint,
-			RenderableSpot endPoint) {
+	public boolean extractSelectionText(final StringBuilder buffer, final boolean inSelection, final RenderableSpot startPoint,
+										final RenderableSpot endPoint) {
 		int startX = -1;
 		int endX = -1;
 		if (this == startPoint.renderable) {
@@ -136,7 +136,7 @@ final class RWord extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public RenderableSpot getLowestRenderableSpot(int x, int y) {
+	public RenderableSpot getLowestRenderableSpot(final int x, final int y) {
 		return new RenderableSpot(this, x, y);
 	}
 
@@ -208,7 +208,7 @@ final class RWord extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
+	public boolean paintSelection(final Graphics g, final boolean inSelection, final RenderableSpot startPoint, final RenderableSpot endPoint) {
 		int startX = -1;
 		int endX = -1;
 		if (this == startPoint.renderable) {
@@ -283,21 +283,14 @@ final class RWord extends BaseBoundableRenderable {
 		return "RWord[word=" + this.shownWord + "]";
 	}
 
-	private String transformText(String word, int textTransform) {
-		String string;
-		switch (textTransform) {
-		case RenderState.TEXTTRANSFORM_CAPITALIZE:
-			string = Character.toTitleCase(word.charAt(0)) + word.substring(1).toLowerCase();
-			break;
-		case RenderState.TEXTTRANSFORM_LOWERCASE:
-			string = word.toLowerCase();
-			break;
-		case RenderState.TEXTTRANSFORM_UPPERCASE:
-			string = word.toUpperCase();
-			break;
-		default:
-			string = word;
-		}
-		return string;
+	private String transformText(final String word, final int textTransform) {
+		final String string = switch (textTransform) {
+            case RenderState.TEXTTRANSFORM_CAPITALIZE ->
+                    Character.toTitleCase(word.charAt(0)) + word.substring(1).toLowerCase();
+            case RenderState.TEXTTRANSFORM_LOWERCASE -> word.toLowerCase();
+            case RenderState.TEXTTRANSFORM_UPPERCASE -> word.toUpperCase();
+            default -> word;
+        };
+        return string;
 	}
 }

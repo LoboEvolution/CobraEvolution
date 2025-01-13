@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isSameNode check if 2 Notation nodes that reference the same object are
  * the same.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode</a>
  */
-public class nodeissamenode08Test extends LoboUnitTest {
+public class Nodeissamenode08Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        Notation notation1;
-        Notation notation2;
-        boolean isSame;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final Notation notation1;
+        final Notation notation2;
+        final boolean isSame;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getNotations();
         notation1 = (Notation) entitiesMap.getNamedItem("notation1");
         notation2 = (Notation) entitiesMap.getNamedItem("notation1");
         isSame = notation1.isSameNode(notation2);
-        assertTrue("nodeissamenode08", isSame);
+        assertTrue(isSame, "Nodeissamenode08Assert2");
     }
 }
 

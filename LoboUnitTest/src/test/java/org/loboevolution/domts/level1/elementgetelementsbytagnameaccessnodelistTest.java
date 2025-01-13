@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,36 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Element.getElementsByTagName("employee") should return a NodeList whose length is
  * "5" in the order the children were encountered.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D</a>
  */
-public class elementgetelementsbytagnameaccessnodelistTest extends LoboUnitTest {
+public class ElementgetelementsbytagnameaccessnodelistTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
         Node child;
-        String childName;
-        String childValue;
-        int childType;
+        final String childName;
+        final String childValue;
+        final int childType;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         testEmployee = (Element) elementList.item(3);
@@ -70,10 +67,10 @@ public class elementgetelementsbytagnameaccessnodelistTest extends LoboUnitTest 
             child = child.getNextSibling();
         }
         childName = child.getNodeName();
-        assertEquals("nodename", "EMPLOYEEID",childName);
+        assertEquals("EMPLOYEEID", childName, "ElementgetelementsbytagnameaccessnodelistAssert1");
         child = child.getFirstChild();
         childValue = child.getNodeValue();
-        assertEquals("emp0004", "EMP0004", childValue);
+        assertEquals("EMP0004", childValue, "ElementgetelementsbytagnameaccessnodelistAssert2");
     }
 }
 

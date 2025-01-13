@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ package org.loboevolution.html.control;
 import org.loboevolution.html.dom.rss.RSSElementImpl;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * <p>RSSControl class.</p>
@@ -38,7 +39,8 @@ import java.awt.*;
  */
 public class RSSControl extends BaseControl {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	
 	private final RSSElementImpl modelNode;
 
@@ -47,7 +49,7 @@ public class RSSControl extends BaseControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.rss.RSSElementImpl} object.
 	 */
-	public RSSControl(RSSElementImpl modelNode) {
+	public RSSControl(final RSSElementImpl modelNode) {
 		super(modelNode);
 		this.modelNode = modelNode;
 	}
@@ -56,7 +58,7 @@ public class RSSControl extends BaseControl {
 	@Override
 	public void paint(final Graphics g) {
 		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
+		final Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		modelNode.draw(g2d);
 	}

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,7 @@ public class SVGStringListImpl implements SVGStringList {
 
 	/** {@inheritDoc} */
 	@Override
-	public String initialize(String newItem) throws DOMException, SVGException {
+	public String initialize(final String newItem) throws DOMException, SVGException {
 		pointList = new ArrayList<>();
 		pointList.add(newItem);
 		return newItem;
@@ -73,18 +73,18 @@ public class SVGStringListImpl implements SVGStringList {
 
 	/** {@inheritDoc} */
 	@Override
-	public String getItem(int index) {
+	public String getItem(final int index) {
 		return pointList.get(index);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String insertItemBefore(String newItem, int index) throws DOMException, SVGException {
+	public String insertItemBefore(final String newItem, final int index) throws DOMException, SVGException {
 
         pointList.remove(newItem);
 
 		if (index < 0) {
-			pointList.add(0, newItem);
+			pointList.addFirst(newItem);
 		} else if (index > getNumberOfItems() - 1) { // insert at end
 			pointList.add(newItem);
 		} else {
@@ -95,7 +95,7 @@ public class SVGStringListImpl implements SVGStringList {
 
 	/** {@inheritDoc} */
 	@Override
-	public String replaceItem(String newItem, int index) throws DOMException, SVGException {
+	public String replaceItem(final String newItem, final int index) throws DOMException, SVGException {
 
         pointList.remove(newItem);
 
@@ -110,13 +110,13 @@ public class SVGStringListImpl implements SVGStringList {
 
 	/** {@inheritDoc} */
 	@Override
-	public String removeItem(int index) {
+	public String removeItem(final int index) {
 		return pointList.remove(index);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String appendItem(String newItem) throws DOMException, SVGException {
+	public String appendItem(final String newItem) throws DOMException, SVGException {
 		pointList.add(newItem);
 		return newItem;
 	}

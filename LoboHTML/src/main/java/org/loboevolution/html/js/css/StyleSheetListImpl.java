@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,17 @@
 package org.loboevolution.html.js.css;
 
 import org.loboevolution.html.node.AbstractList;
-import org.loboevolution.html.node.css.CSSStyleSheet;
-import org.loboevolution.html.node.css.StyleSheetList;
+import org.loboevolution.css.CSSStyleSheet;
+import org.loboevolution.css.StyleSheetList;
 
+/**
+ * <p>StyleSheetListImpl class.</p>
+ */
 public class StyleSheetListImpl extends AbstractList<CSSStyleSheet> implements StyleSheetList {
 
     /** {@inheritDoc} */
     @Override
-    public CSSStyleSheet item(int index) {
+    public CSSStyleSheet item(final int index) {
         return this.get(index);
     }
 

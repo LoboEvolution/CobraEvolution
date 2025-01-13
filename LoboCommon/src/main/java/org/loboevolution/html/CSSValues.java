@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@
  */
 package org.loboevolution.html;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,324 +34,337 @@ import java.util.Map;
 /**
  * <p>CSSValues class.</p>
  */
+@Getter
 public enum CSSValues {
 
-	ABSOLUTE("absolute"),
+    ABSOLUTE("absolute"),
 
-	AUTO("auto"),
-	
-	BASELINE("baseline"),
+    AUTO("auto"),
 
-	BACKCOMPAT("BackCompat"),
+    BASELINE("baseline"),
 
-	BLINK("blink"),
+    BACKCOMPAT("BackCompat"),
 
-	BLOCK("block"),
+    BLINK("blink"),
 
-	BOLD("bold"),
+    BLOCK("block"),
 
-	BOLD100("100"),
+    BOLD("bold"),
 
-	BOLD200("200"),
+    BOLD100("100"),
 
-	BOLD300("300"),
+    BOLD200("200"),
 
-	BOLD400("400"),
+    BOLD300("300"),
 
-	BOLD500("500"),
+    BOLD400("400"),
 
-	BOLD600("600"),
+    BOLD500("500"),
 
-	BOLD700("700"),
+    BOLD600("600"),
 
-	BOLD800("800"),
+    BOLD700("700"),
 
-	BOLD900("900"),
+    BOLD800("800"),
 
-	BOLDER("bolder"),
+    BOLD900("900"),
 
-	BORDER_BOX("border-box"),
+    BOLDER("bolder"),
 
-	BOTTOM("bottom"),
+    BORDER_BOX("border-box"),
 
-	CAPITALIZE("capitalize"),
+    BOTTOM("bottom"),
 
-	CAPTION("caption"),
+    CAPITALIZE("capitalize"),
 
-	CENTER("center"),
+    CAPTION("caption"),
 
-	CIRCLE("circle"),
-	
-	COLUMN("column"),
-	
-	COLUMN_REVERSE("column-reverse"),
+    CENTER("center"),
 
-	COLLAPSE("collapse"),
+    CIRCLE("circle"),
 
-	COLSPAN("colspan"),
+    COLUMN("column"),
 
-	CONTENT_BOX("content-box"),
+    COLUMN_REVERSE("column-reverse"),
 
-	CROSSHAIR("crosshair"),
+    COLLAPSE("collapse"),
 
-	CSS1COMPAT("CSS1Compat"),
+    COLSPAN("colspan"),
 
-	DASHED("dashed"),
+    CONTENT_BOX("content-box"),
 
-	DECIMAL("decimal"),
+    CONDENSED("condensed"),
 
-	DECIMAL_LEADING_ZERO("decimal-leading-zero"),
+    CROSSHAIR("crosshair"),
 
-	DEFAULT("default"),
+    CSS1COMPAT("CSS1Compat"),
 
-	DISC("disc"),
+    DASHED("dashed"),
 
-	DOTTED("dotted"),
+    DECIMAL("decimal"),
 
-	DOUBLE("double"),
-	
-	E_RESIZE("e-resize"),
+    DECIMAL_LEADING_ZERO("decimal-leading-zero"),
 
-	EW_RESIZE("ew-resize"),
+    DEFAULT("default"),
 
-	FIXED("fixed"),
-	
-	FLEX("flex"),
-	
-	FLEX_START("flex-start"),
-	
-	FLEX_END("flex-end"),
-	
-	GRAB("grab"),
+    DISC("disc"),
 
-	GROOVE("groove"),
+    DOTTED("dotted"),
 
-	HIDDEN("hidden"),
+    DOUBLE("double"),
 
-	ICON("icon"),
+    EXPANDED("expanded"),
 
-	INHERIT("inherit"),
+    EXTRA_CONDENSED("extra-condensed"),
 
-	INITIAL("initial"),
+    EXTRA_EXPANDED("extra-expanded"),
 
-	INLINE("inline"),
+    E_RESIZE("e-resize"),
 
-	INLINE_BLOCK("inline-block"),
+    EW_RESIZE("ew-resize"),
 
-	INLINE_TABLE("inline-table"),
+    FIXED("fixed"),
 
-	INSET("inset"),
+    FLEX("flex"),
 
-	INSIDE("inside"),
+    FLEX_START("flex-start"),
 
-	ITALIC("italic"),
+    FLEX_END("flex-end"),
 
-	LARGE("large"),
+    GRAB("grab"),
 
-	LARGER("larger"),
+    GROOVE("groove"),
 
-	LEFT("left"),
+    HIDDEN("hidden"),
 
-	LIGHTER("lighter"),
+    ICON("icon"),
 
-	LINE_THROUGH("line-through"),
+    INHERIT("inherit"),
 
-	LIST_ITEM("list-item"),
+    INITIAL("initial"),
 
-	LOWER_ALPHA("lower-alpha"),
+    INLINE("inline"),
 
-	LOWER_LATIN("lower-latin"),
+    INLINE_BLOCK("inline-block"),
 
-	LOWER_ROMAN("lower-roman"),
+    INLINE_TABLE("inline-table"),
 
-	LOWERCASE("lowercase"),
+    INSET("inset"),
 
-	MARGIN("margin"),
+    INSIDE("inside"),
 
-	MEDIUM("medium"),
+    ITALIC("italic"),
 
-	MENU("menu"),
+    LARGE("large"),
 
-	MESSAGE_BOX("message-box"),
+    LARGER("larger"),
 
-	MOVE("move"),
+    LEFT("left"),
 
-	N_RESIZE("n-resize"),
-	
-	NE_RESIZE("ne-resize"),
+    LIGHTER("lighter"),
 
-	NESW_RESIZE("nesw-resize"),
+    LINE_THROUGH("line-through"),
 
-	NONE("none"),
+    LIST_ITEM("list-item"),
 
-	NORMAL("normal"),
+    LOWER_ALPHA("lower-alpha"),
 
-	NOWRAP("nowrap"),
+    LOWER_LATIN("lower-latin"),
 
-	NW_RESIZE("nw-resize"),
+    LOWER_ROMAN("lower-roman"),
 
-	NWSE_RESIZE("nwse-resize"),
+    LOWERCASE("lowercase"),
 
-	OBLIQUE("oblique"),
+    MARGIN("margin"),
 
-	OUTSET("outset"),
+    MEDIUM("medium"),
 
-	OUTSIDE("outside"),
+    MENU("menu"),
 
-	OVERLINE("overline"),
+    MESSAGE_BOX("message-box"),
 
-	POINTER("pointer"),
+    MOVE("move"),
 
-	PRE("pre"),
+    N_RESIZE("n-resize"),
 
-	PROGRESS("progress"),
+    NE_RESIZE("ne-resize"),
 
-	RELATIVE("relative"),
+    NESW_RESIZE("nesw-resize"),
 
-	REPEAT("repeat"),
+    NONE("none"),
 
-	REPEAT_NO("no-repeat"),
+    NORMAL("normal"),
 
-	REPEAT_X("repeat-x"),
+    NOWRAP("nowrap"),
 
-	REPEAT_Y("repeat-y"),
+    NW_RESIZE("nw-resize"),
 
-	RIDGE("ridge"),
+    NWSE_RESIZE("nwse-resize"),
 
-	RIGHT("right"),
-	
-	ROW("row"),
-	
-	ROW_REVERSE("row-reverse"),
+    OBLIQUE("oblique"),
 
-	ROWSPAN("rowspan"),
+    OUTSET("outset"),
 
-	S_RESIZE("s-resize"),
+    OUTSIDE("outside"),
 
-	SCROLL("scroll"),
+    OVERLINE("overline"),
 
-	SE_RESIZE("se-resize"),
+    POINTER("pointer"),
 
-	SMALL("small"),
+    PRE("pre"),
 
-	SMALL_CAPS("small-caps"),
+    PROGRESS("progress"),
 
-	SMALL_CAPTION("small-caption"),
+    RELATIVE("relative"),
 
-	SMALLER("smaller"),
+    REPEAT("repeat"),
 
-	SOLID("solid"),
-	
-	SQUARE("square"),
-	
-	SPACE_AROUND("space-around"),
-	
-	SPACE_BETWEEN("space-between"),
+    REPEAT_NO("no-repeat"),
 
-	STATIC("static"),
+    REPEAT_X("repeat-x"),
 
-	STATUS_BAR("status-bar"),
-	
-	STRETCH("stretch"),
+    REPEAT_Y("repeat-y"),
 
-	SW_RESIZE("sw-resize"),
+    RIDGE("ridge"),
 
-	TABLE("table"),
+    RIGHT("right"),
 
-	TABLE_CELL("table-cell"),
+    ROW("row"),
 
-	TABLE_ROW("table-row"),
+    ROW_REVERSE("row-reverse"),
 
-	TABLE_ROW_GROUP("table-row-group"),
+    ROWSPAN("rowspan"),
 
-	TABLE_CAPTION("table-caption"),
+    S_RESIZE("s-resize"),
 
-	TABLE_COLUMN("table-column"),
+    SCROLL("scroll"),
 
-	TABLE_COLUMN_GROUP("table-column-group"),
+    SE_RESIZE("se-resize"),
 
-	TABLE_HEADER_GROUP("table-header-group"),
+	SEMI_CONDENSED("semi-condensed"),
 
-	TABLE_FOOTER_GROUP("table-footer-group"),
+	SEMI_EXPANDED("semi-expanded"),
 
-	TEXT_CSS("text"),
+    SMALL("small"),
 
-	TOP("top"),
+    SMALL_CAPS("small-caps"),
 
-	UNDERLINE("underline"),
+    SMALL_CAPTION("small-caption"),
 
-	UPPER_ALPHA("upper-alpha"),
+    SMALLER("smaller"),
 
-	UPPER_LATIN("upper-latin"),
+    SOLID("solid"),
 
-	UPPER_ROMAN("upper-roman"),
+    SQUARE("square"),
 
-	UPPERCASE("uppercase"),
+    SPACE_AROUND("space-around"),
 
-	VISIBLE("visible"),
+    SPACE_BETWEEN("space-between"),
 
-	W_RESIZE("w-resize"),
+    STATIC("static"),
 
-	WAIT("wait"),
-	
-	WRAP("wrap"),
-	
-	WRAP_REVERSE("wrap-reverse"),
+    STATUS_BAR("status-bar"),
 
-	X_LARGE("x-large"),
+    STRETCH("stretch"),
 
-	X_SMALL("x-small"),
+    SW_RESIZE("sw-resize"),
 
-	XX_LARGE("xx-large"),
+    TABLE("table"),
 
-	XX_SMALL("xx-small"),
+    TABLE_CELL("table-cell"),
 
-	ZOOM_IN("zoom-in"),
+    TABLE_ROW("table-row"),
 
-	ZOOM_OUT("zoom-out");
-	
-	private final String value;
-	private static final Map<String, CSSValues> ENUM_MAP;
-	
-	static {
-		Map<String, CSSValues> map = new HashMap<>();
-		for (CSSValues instance : CSSValues.values()) {
-			map.put(instance.getValue(), instance);
-		}
-		ENUM_MAP = Collections.unmodifiableMap(map);
-	}
+    TABLE_ROW_GROUP("table-row-group"),
 
-	CSSValues(String value) {
-		this.value = value;
-	}
+    TABLE_CAPTION("table-caption"),
 
-	/**
-	 * <p>Getter for the field value.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getValue() {
-		return value;
-	}
+    TABLE_COLUMN("table-column"),
 
-	/**
-	 * <p>isEqual.</p>
-	 *
-	 * @param value a {@link java.lang.String} object.
-	 * @return a boolean.
-	 */
-	public boolean isEqual(String value) {
-		return this.value.equals(value);
-	}
+    TABLE_COLUMN_GROUP("table-column-group"),
 
-	/**
-	 * <p>get.</p>
-	 *
-	 * @param actionName a {@link java.lang.String} object.
-	 * @return a {@link org.loboevolution.html.CSSValues} object.
-	 */
-	public static CSSValues get(String actionName) {
-		CSSValues value = ENUM_MAP.get(actionName != null ? actionName.toLowerCase() : "");
-		return value == null ? CSSValues.DEFAULT : value;
-	}
+    TABLE_HEADER_GROUP("table-header-group"),
+
+    TABLE_FOOTER_GROUP("table-footer-group"),
+
+    THIN("thin"),
+
+    THICK("thick"),
+
+    TEXT_CSS("text"),
+
+    TOP("top"),
+
+    UNDERLINE("underline"),
+
+    UPPER_ALPHA("upper-alpha"),
+
+    UPPER_LATIN("upper-latin"),
+
+    UPPER_ROMAN("upper-roman"),
+
+    UPPERCASE("uppercase"),
+
+	ULTRA_CONDENSED("ultra-condensed"),
+
+	ULTRA_EXPANDED("ultra-expanded"),
+
+    VISIBLE("visible"),
+
+    W_RESIZE("w-resize"),
+
+    WAIT("wait"),
+
+    WRAP("wrap"),
+
+    WRAP_REVERSE("wrap-reverse"),
+
+    X_LARGE("x-large"),
+
+    X_SMALL("x-small"),
+
+    XX_LARGE("xx-large"),
+
+    XX_SMALL("xx-small"),
+
+    ZOOM_IN("zoom-in"),
+
+    ZOOM_OUT("zoom-out");
+
+    private static final Map<String, CSSValues> ENUM_MAP;
+
+    static {
+        final Map<String, CSSValues> map = new HashMap<>();
+        for (final CSSValues instance : CSSValues.values()) {
+            map.put(instance.getValue(), instance);
+        }
+        ENUM_MAP = Collections.unmodifiableMap(map);
+    }
+
+    private final String value;
+
+    CSSValues(final String value) {
+        this.value = value;
+    }
+
+    /**
+     * <p>get.</p>
+     *
+     * @param actionName a {@link java.lang.String} object.
+     * @return a {@link org.loboevolution.html.CSSValues} object.
+     */
+    public static CSSValues get(final String actionName) {
+        final CSSValues value = ENUM_MAP.get(actionName != null ? actionName.toLowerCase() : "");
+        return value == null ? CSSValues.DEFAULT : value;
+    }
+
+    /**
+     * <p>isEqual.</p>
+     *
+     * @param value a {@link java.lang.String} object.
+     * @return a boolean.
+     */
+    public boolean isEqual(final String value) {
+        return this.value.equals(value);
+    }
 }

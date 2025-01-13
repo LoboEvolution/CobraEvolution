@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -49,31 +49,28 @@ import static org.junit.Assert.*;
  * string.  This method makes use of the
  * "createAttribute(newAttr)" method from the Document
  * interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-666EE0F9">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-666EE0F9</a>
  */
-public class elementgetelementemptyTest extends LoboUnitTest {
+public class ElementgetelementemptyTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr newAttribute;
-        HTMLCollection elementList;
-        Element testEmployee;
-        String attrValue;
+        final Document doc;
+        final Attr newAttribute;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final String attrValue;
         doc = sampleXmlFile("staff.xml");
         newAttribute = doc.createAttribute("district");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(3);
         testEmployee.setAttributeNode(newAttribute);
         attrValue = testEmployee.getAttribute("district");
-        assertEquals("elementGetElementEmptyAssert", null, attrValue);
+        assertNull(attrValue, "ElementgetelementemptyAssert1");
     }
 }
 

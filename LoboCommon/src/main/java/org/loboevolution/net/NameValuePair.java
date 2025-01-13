@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,49 +28,37 @@
  */
 package org.loboevolution.net;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * The Class NameValuePair.
- *
- * Author J. H. S.
- *
  */
-public class NameValuePair extends AbstractBean implements Cloneable {
-	
-	/** The name. */
-	public String name;
-	
-	/** The value. */
-	public String value;
+@AllArgsConstructor
+@Getter
+@ToString
+public class NameValuePair extends AbstractBean {
 
 	/**
-	 * Instantiates a new name value pair.
-	 *
-	 * @param name  the name
-	 * @param value the value
+	 * The name.
 	 */
-	public NameValuePair(String name, String value) {
-		this.name = name;
-		this.value = value;
-	}
+	public String name;
+
+	/**
+	 * The value.
+	 */
+	public String value;
 
 	/**
 	 * Sets the name.
 	 *
 	 * @param name the new name
 	 */
-	public void setName(String name) {
-		String old = getName();
+	public void setName(final String name) {
+		final String old = getName();
 		this.name = name;
 		firePropertyChange("name", old, name);
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public final String getName() {
-		return name;
 	}
 
 	/**
@@ -78,24 +66,9 @@ public class NameValuePair extends AbstractBean implements Cloneable {
 	 *
 	 * @param value the new value
 	 */
-	public void setValue(String value) {
-		String old = getValue();
+	public void setValue(final String value) {
+		final String old = getValue();
 		this.value = value;
 		firePropertyChange("value", old, value);
-	}
-
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	public final String getValue() {
-		return value;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String toString() {
-		return name + "=" + value;
 	}
 }

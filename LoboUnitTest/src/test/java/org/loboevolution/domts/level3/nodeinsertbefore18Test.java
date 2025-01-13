@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,11 @@
 
 package org.loboevolution.domts.level3;
 
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The method insertBefore inserts the node newChild before the existing child node refChild.
@@ -39,39 +38,34 @@ import static org.junit.Assert.assertEquals;
  * <p>
  * Using insertBefore on an Element node attempt to insert new Comment/PI and CDATA nodes
  * before each other and verify the names of the newly inserted nodes.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore18Test extends LoboUnitTest {
+public class Nodeinsertbefore18Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Element newElem;
-        Comment newComment;
-        ProcessingInstruction newPI;
-        CDATASection newCDATA;
-        Comment insertedNode;
-        String data;
-        String target;
-        Node appendedChild;
-        Node inserted;
+        final Document doc;
+        final Element element;
+        final Element newElem;
+        final Comment newComment;
+        final ProcessingInstruction newPI;
+        final CDATASection newCDATA;
+        final Comment insertedNode;
+        final String data;
         doc = sampleXmlFile("hc_staff.xml");
         element = doc.createElement("element");
         newElem = doc.createElementNS("http://www.w3.org/DOM", "dom3:elem");
         newComment = doc.createComment("Comment");
         newCDATA = doc.createCDATASection("CDATASection");
         newPI = doc.createProcessingInstruction("target", "data");
-        appendedChild = element.appendChild(newElem);
-        appendedChild = element.appendChild(newComment);
-        appendedChild = element.appendChild(newPI);
-        appendedChild = element.appendChild(newCDATA);
-        inserted = element.insertBefore(newComment, newElem);
+        element.appendChild(newElem);
+        element.appendChild(newComment);
+        element.appendChild(newPI);
+        element.appendChild(newCDATA);
+        element.insertBefore(newComment, newElem);
         insertedNode = (Comment) element.getFirstChild();
         data = insertedNode.getData();
-        assertEquals("nodeinsertbefore18", "Comment", data);
+        assertEquals("Comment", data, "Nodeinsertbefore18Assert2");
     }
 }
 

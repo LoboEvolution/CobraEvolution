@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -42,7 +43,8 @@ import java.io.Serializable;
 public class CaptionSizeInfo implements Serializable {
 
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -699151415264714503L;
+	@Serial
+    private static final long serialVersionUID = -699151415264714503L;
 
 	/** The height. */
 	private int height;

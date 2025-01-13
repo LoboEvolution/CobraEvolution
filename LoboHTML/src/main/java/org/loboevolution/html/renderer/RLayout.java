@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,10 +42,10 @@ import java.util.Map;
  * <p>RLayout class.</p>
  */
 public class RLayout {
-	
+
 	/** Constant elementLayout */
 	protected static final Map<HTMLTag, MarkupLayout> elementLayout = new HashMap<>();
-	
+
 	static {
 		final Map<HTMLTag, MarkupLayout> el = elementLayout;
 
@@ -87,9 +87,10 @@ public class RLayout {
 		el.put(HTMLTag.MAIN, block);
 		el.put(HTMLTag.PRE, block);
 		el.put(HTMLTag.DETAILS, block);
+		el.put(HTMLTag.P, block);
 
 		el.put(HTMLTag.BR,new BrLayout());
-		el.put(HTMLTag.P,new PLayout());
+
 		el.put(HTMLTag.NOSCRIPT,new NoScriptLayout());
 		final NopLayout nop = new NopLayout();
 		el.put(HTMLTag.SCRIPT,nop);
@@ -136,22 +137,22 @@ public class RLayout {
 	protected static class BrLayout implements MarkupLayout {
 
 		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 			final String clear = markupElement.getAttribute("clear");
 			bodyLayout.addLineBreak(markupElement, LineBreak.getBreakType(clear));
 		}
 	}
 
 	protected abstract static class CommonLayout implements MarkupLayout {
-	
+
 	    private final int display;
 
-		public CommonLayout(int defaultDisplay) {
+		public CommonLayout(final int defaultDisplay) {
 			this.display = defaultDisplay;
 		}
 
 		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 			final int display = calculateLayout(markupElement);
 
 			switch (display) {
@@ -194,8 +195,8 @@ public class RLayout {
 					break;
 			}
 		}
-		
-		private int calculateLayout(HTMLElementImpl markupElement) {
+
+		private int calculateLayout(final HTMLElementImpl markupElement) {
 			final RenderState rs = markupElement.getRenderState();
 			final boolean isHidden = markupElement.isHidden();
 			final int defaultDispaly = rs == null ? this.display : rs.getDisplay();
@@ -226,16 +227,16 @@ public class RLayout {
 	    protected static final int ADD_INLINE_BLOCK = 2;
 	    private final int method;
 
-	    public CommonWidgetLayout(int method) {
+	    public CommonWidgetLayout(final int method) {
 	    	this.method = method;
 	    }
 
-	    protected abstract RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement);
+	    protected abstract RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement);
 
 	    @Override
-	    public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+	    public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 	        final UINode node = markupElement.getUINode();
-	        RElement renderable;
+	        final RElement renderable;
 	        if (node == null) {
 	            renderable = createRenderable(bodyLayout, markupElement);
 	            if (renderable == null) {
@@ -259,17 +260,16 @@ public class RLayout {
 	        }
 	    }
 	}
-	
+
 	protected static class CanvasLayout extends CommonWidgetLayout {
 		public CanvasLayout() {
 			super(ADD_AS_BLOCK);
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new CanvasControl((HTMLCanvasElementImpl) markupElement);
-			return new RUIControl(markupElement,control, bodyLayout.container,
-					bodyLayout.frameContext, bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new CanvasControl((HTMLCanvasElementImpl) markupElement);
+			return new RUIControl(markupElement,control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
 
@@ -279,23 +279,21 @@ public class RLayout {
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new SVGControl((SVGSVGElementImpl) markupElement);
-			return new RUIControl(markupElement,control, bodyLayout.container,
-					bodyLayout.frameContext, bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new SVGControl((SVGSVGElementImpl) markupElement);
+			return new RUIControl(markupElement,control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
-	
+
 	protected static class RSSLayout extends CommonWidgetLayout {
 		public RSSLayout() {
 			super(ADD_AS_BLOCK);
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new RSSControl((RSSElementImpl) markupElement);
-			return new RUIControl(markupElement,control, bodyLayout.container,
-					bodyLayout.frameContext, bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new RSSControl((RSSElementImpl) markupElement);
+			return new RUIControl(markupElement,control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
 
@@ -306,16 +304,16 @@ public class RLayout {
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control;
-			HTMLImageElementImpl image = (HTMLImageElementImpl) markupElement;
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control;
+			final HTMLImageElementImpl image = (HTMLImageElementImpl) markupElement;
 			if (image.getSrc() != null && image.getSrc().endsWith(".svg")) {
 				control = new ImgSvgControl(image);
 			} else {
 				control = new ImgControl(image);
 			}
 
-			return new RImgControl(markupElement, control, bodyLayout.container, bodyLayout.frameContext, bodyLayout.userAgentContext);
+			return new RImgControl(markupElement, control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
 
@@ -326,26 +324,24 @@ public class RLayout {
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new InputControl((HTMLInputElementImpl) markupElement);
-			return new RUIControl(markupElement,control, bodyLayout.container,
-					bodyLayout.frameContext, bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new InputControl((HTMLInputElementImpl) markupElement);
+			return new RUIControl(markupElement,control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
-	
+
 	protected static class IFrameLayout extends CommonWidgetLayout {
 		public IFrameLayout() {
 			super(ADD_INLINE);
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new FrameControl((HTMLIFrameElementImpl)markupElement);
-			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.frameContext,
-					bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new FrameControl((HTMLIFrameElementImpl)markupElement);
+			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
-	
+
 	protected static class ListItemLayout extends CommonLayout {
 		public ListItemLayout() {
 			super(RenderState.DISPLAY_LIST_ITEM);
@@ -360,13 +356,13 @@ public class RLayout {
 
 	protected static class NopLayout implements MarkupLayout {
 		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 		}
 	}
 
 	protected static class NoScriptLayout implements MarkupLayout {
 		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 			final UserAgentContext ucontext = bodyLayout.userAgentContext;
 			if (!ucontext.isScriptingEnabled()) {
 				bodyLayout.layoutMarkup(markupElement);
@@ -386,34 +382,23 @@ public class RLayout {
 		/**
 		 * @param tryToRenderContent If the object is unknown, content is rendered as  HTML.
 		 */
-		public ObjectLayout(boolean tryToRenderContent) {
+		public ObjectLayout(final boolean tryToRenderContent) {
 			super(ADD_INLINE);
 			this.tryToRenderContent = tryToRenderContent;
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 			final HtmlObject ho = this.htmlObject.get();
 			final UIControl uiControl = new UIControlWrapper(ho);
-			return new RUIControl(markupElement, uiControl, bodyLayout.container, bodyLayout.frameContext, bodyLayout.userAgentContext);
+			return new RUIControl(markupElement, uiControl, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 
 		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
+		public void layoutMarkup(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
 			if (this.tryToRenderContent) {
 				bodyLayout.layoutMarkup(markupElement);
 			}
-		}
-	}
-
-	protected static class PLayout extends CommonLayout {
-		public PLayout() {
-			super(RenderState.DISPLAY_BLOCK);
-		}
-
-		@Override
-		public void layoutMarkup(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			super.layoutMarkup(bodyLayout, markupElement);
 		}
 	}
 
@@ -423,10 +408,9 @@ public class RLayout {
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new SelectControl((HTMLSelectElementImpl) markupElement);
-			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.frameContext,
-					bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new SelectControl((HTMLSelectElementImpl) markupElement);
+			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
 
@@ -435,13 +419,13 @@ public class RLayout {
 			super(RenderState.DISPLAY_TABLE);
 		}
 	}
-	
+
 	protected static class TableRowLayout extends CommonLayout {
 		public TableRowLayout() {
 			super(RenderState.DISPLAY_TABLE_ROW);
 		}
 	}
-	
+
 	protected static class TableCellLayout extends CommonLayout {
 		public TableCellLayout() {
 			super(RenderState.DISPLAY_TABLE_CELL);
@@ -454,23 +438,21 @@ public class RLayout {
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new TextAreaControl((HTMLTextAreaElementImpl) markupElement);
-			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.frameContext,
-					bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new TextAreaControl((HTMLTextAreaElementImpl) markupElement);
+			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
-	
+
 	protected static class ButtonLayout extends CommonWidgetLayout {
 		public ButtonLayout() {
 			super(ADD_INLINE);
 		}
 
 		@Override
-		protected RElement createRenderable(RBlockViewport bodyLayout, HTMLElementImpl markupElement) {
-			UIControl control = new ButtonControl((HTMLButtonElementImpl) markupElement);
-			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.frameContext,
-					bodyLayout.userAgentContext);
+		protected RElement createRenderable(final RBlockViewport bodyLayout, final HTMLElementImpl markupElement) {
+			final UIControl control = new ButtonControl((HTMLButtonElementImpl) markupElement);
+			return new RUIControl(markupElement, control, bodyLayout.container, bodyLayout.userAgentContext);
 		}
 	}
 }

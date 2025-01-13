@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,37 +43,34 @@ import static org.junit.Assert.assertNull;
  * Retrieve the entire DOM document and invoke its
  * "createDocumentFragment()" method.  The content, name,
  * type and value of the newly created object are output.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-35CB04B5">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-35CB04B5</a>
  */
-public class documentcreatedocumentfragmentTest extends LoboUnitTest {
+public class DocumentCreateDocumentFragmentTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment newDocFragment;
-        NodeList children;
-        int length;
-        String newDocFragmentName;
-        int newDocFragmentType;
-        String newDocFragmentValue;
+        final Document doc;
+        final DocumentFragment newDocFragment;
+        final NodeList children;
+        final int length;
+        final String newDocFragmentName;
+        final int newDocFragmentType;
+        final String newDocFragmentValue;
         doc = sampleXmlFile("staff.xml");
         newDocFragment = doc.createDocumentFragment();
         children = newDocFragment.getChildNodes();
         length = children.getLength();
-        assertEquals("length", 0, length);
+        assertEquals(0, length, "DocumentCreateDocumentFragmentAssert1");
         newDocFragmentName = newDocFragment.getNodeName();
-        assertEquals("name", "[object DocumentFragment]", newDocFragmentName);
+        assertEquals("[object DocumentFragment]", newDocFragmentName, "DocumentCreateDocumentFragmentAssert2");
         newDocFragmentType = newDocFragment.getNodeType();
-        assertEquals("type", 11, newDocFragmentType);
+        assertEquals(11, newDocFragmentType, "DocumentCreateDocumentFragmentAssert3");
         newDocFragmentValue = newDocFragment.getNodeValue();
-        assertNull("value", newDocFragmentValue);
+        assertNull(newDocFragmentValue, "DocumentCreateDocumentFragmentAssert4");
     }
 }
 

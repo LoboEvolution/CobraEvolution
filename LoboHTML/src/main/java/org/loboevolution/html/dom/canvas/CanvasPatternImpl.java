@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,21 +26,18 @@
 
 package org.loboevolution.html.dom.canvas;
 
-import org.loboevolution.html.dom.CanvasPattern;
+import lombok.Getter;
 import org.loboevolution.html.dom.HTMLCanvasElement;
-import org.loboevolution.html.dom.HTMLImageElement;
 
 /**
  * <p>CanvasPatternImpl class.</p>
- *
- *
- *
  */
+@Getter
 public class CanvasPatternImpl implements CanvasPattern {
 	
 	private HTMLCanvasElement canvas;
 	
-	private HTMLImageElement image;
+	private CanvasImageSource image;
 	
 	private final String repetitionType;
 
@@ -50,7 +47,7 @@ public class CanvasPatternImpl implements CanvasPattern {
 	 * @param canvas a {@link org.loboevolution.html.dom.HTMLCanvasElement} object.
 	 * @param repetitionType a {@link java.lang.String} object.
 	 */
-	public CanvasPatternImpl(HTMLCanvasElement canvas, String repetitionType) {
+	public CanvasPatternImpl(final HTMLCanvasElement canvas, final String repetitionType) {
 		this.canvas = canvas;
 		this.repetitionType = repetitionType;
 	}
@@ -58,10 +55,10 @@ public class CanvasPatternImpl implements CanvasPattern {
 	/**
 	 * <p>Constructor for CanvasPatternImpl.</p>
 	 *
-	 * @param image a {@link org.loboevolution.html.dom.HTMLImageElement} object.
+	 * @param image a {@link CanvasImageSource} object.
 	 * @param repetitionType a {@link java.lang.String} object.
 	 */
-	public CanvasPatternImpl(HTMLImageElement image, String repetitionType) {
+	public CanvasPatternImpl(final CanvasImageSource image, final String repetitionType) {
 		this.image = image;
 		this.repetitionType = repetitionType;
 	}

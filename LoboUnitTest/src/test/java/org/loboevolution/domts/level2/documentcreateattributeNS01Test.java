@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,28 +41,25 @@ import static org.junit.Assert.*;
  * Invoke the createAttributeNS method on this Document object with a null
  * namespaceURI, and a qualifiedName without a prefix.  This should return a valid Attr
  * node object.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS</a>
  */
-public class documentcreateattributeNS01Test extends LoboUnitTest {
+public class DocumentcreateattributeNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr attribute;
-        String namespaceURI = "http://www.w3.org/XML/1998/namespace";
-        String qualifiedName = "test";
+        final Document doc;
+        final Attr attribute;
+        final String namespaceURI = "http://www.w3.org/XML/1998/namespace";
+        final String qualifiedName = "test";
         doc = sampleXmlFile("staffNS.xml");
         attribute = doc.createAttributeNS(namespaceURI, qualifiedName);
-        String nodeName = attribute.getNodeName();
-        assertEquals("documentcreateattributeNS01", "test", nodeName);
+        final String nodeName = attribute.getNodeName();
+        assertEquals("test", nodeName);
     }
 }
 

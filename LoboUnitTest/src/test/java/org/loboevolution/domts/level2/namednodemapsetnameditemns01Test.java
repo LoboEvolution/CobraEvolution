@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,40 +43,35 @@ import static org.junit.Assert.*;
  * that namespace URI and that local name is already present in this map, it is replaced
  * by the new one.
  * <p>
- * Retreive the first element whose localName is address and namespaceURI http://www.nist.gov",
+ * Retreive the first element whose localName is address and namespaceURI <a href="http://www.nist.gov">...</a>",
  * and put its attributes into a named node map.  Create a new attribute node and add it to this map.
  * Verify if the attr node was successfully added by checking the nodeName of the retreived atttribute.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS</a>
  */
-public class namednodemapsetnameditemns01Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        Element element;
-        Attr attribute;
-        Attr newAttribute;
-        Attr newAttr1;
-        HTMLCollection elementList;
-        String attrName;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final Element element;
+        final Attr attribute;
+        final Attr newAttr1;
+        final HTMLCollection elementList;
+        final String attrName;
         doc = sampleXmlFile("staffNS.xml");
-        elementList = doc.getElementsByTagName( "address");
+        elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(0);
         attributes = element.getAttributes();
         newAttr1 = doc.createAttributeNS("http://www.w3.org/DOM/L1", "streets");
-        
-        newAttribute = element.setAttributeNodeNS(newAttr1);
+
+        element.setAttributeNodeNS(newAttr1);
         attribute = (Attr) attributes.getNamedItemNS("http://www.w3.org/DOM/L1", "streets");
         attrName = attribute.getNodeName();
-        assertEquals("namednodemapsetnameditemns01", "streets", attrName);
+        assertEquals("streets", attrName);
     }
 }
 

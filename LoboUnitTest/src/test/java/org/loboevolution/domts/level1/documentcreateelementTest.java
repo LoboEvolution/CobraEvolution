@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,32 +44,29 @@ import static org.junit.Assert.assertNull;
  * The method should create an instance of an Element node
  * whose tagName is "address".  The NodeName, NodeType
  * and NodeValue are returned.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547</a>
  */
-public class documentcreateelementTest extends LoboUnitTest {
+public class DocumentcreateelementTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element newElement;
-        String newElementName;
-        int newElementType;
-        String newElementValue;
+        final Document doc;
+        final Element newElement;
+        final String newElementName;
+        final int newElementType;
+        final String newElementValue;
         doc = sampleXmlFile("staff.xml");
         newElement = doc.createElement("address");
         newElementName = newElement.getNodeName();
-        assertEquals("name", "address", newElementName);
+        assertEquals("ADDRESS", newElementName, "DocumentcreateelementAssert1");
         newElementType = newElement.getNodeType();
-        assertEquals("type", 1, newElementType);
+        assertEquals(1, newElementType, "DocumentcreateelementAssert2");
         newElementValue = newElement.getNodeValue();
-        assertNull("valueInitiallyNull", newElementValue);
+        assertNull(newElementValue, "DocumentcreateelementAssert3");
     }
 }
 

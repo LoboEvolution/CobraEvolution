@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,46 +28,41 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on a new EntityReference node attempt to remove an Element child
  * and verify if a NO_MODIFICATION_ALLOWED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild15Test extends LoboUnitTest {
+public class Noderemovechild15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        EntityReference eRef;
-        Element elem;
-        String entName;
-        Node removed;
+        final Document doc;
+        final EntityReference eRef;
+        final Element elem;
         doc = sampleXmlFile("hc_staff.xml");
         eRef = doc.createEntityReference("ent4");
         elem = (Element) eRef.getFirstChild();
-        assertNotNull("elemNotNull", elem);
+        assertNotNull(elem, "Noderemovechild15Assert3");
 
         {
             boolean success = false;
             try {
-                removed = eRef.removeChild(elem);
-            } catch (DOMException ex) {
+                eRef.removeChild(elem);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+            assertTrue(success, "Noderemovechild15Assert4");
         }
     }
 }

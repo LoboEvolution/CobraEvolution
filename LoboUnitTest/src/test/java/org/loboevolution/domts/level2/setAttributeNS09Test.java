@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -50,44 +50,41 @@ import static org.junit.Assert.assertNotNull;
  * Add a new attribute to the "address" element.
  * Check to see if the new attribute has been successfully added to the document
  * by getting the attributes value, namespace URI, local Name and prefix.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS</a>
  */
-public class setAttributeNS09Test extends LoboUnitTest {
+public class SetAttributeNS09Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String localName = "newAttr";
-        String namespaceURI = "http://www.newattr.com";
-        String qualifiedName = "newAttr";
-        Document doc;
-        HTMLCollection elementList;
-        Node testAddr;
-        Attr addrAttr;
-        String resultAttr;
-        String resultNamespaceURI;
-        String resultLocalName;
-        String resultPrefix;
+        final String localName = "newAttr";
+        final String namespaceURI = "http://www.newattr.com";
+        final String qualifiedName = "newAttr";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node testAddr;
+        final Attr addrAttr;
+        final String resultAttr;
+        final String resultNamespaceURI;
+        final String resultLocalName;
+        final String resultPrefix;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
+        assertNotNull(testAddr);
         ((Element) testAddr).setAttributeNS(namespaceURI, qualifiedName, "newValue");
         addrAttr = ((Element) testAddr).getAttributeNodeNS(namespaceURI, localName);
         resultAttr = ((Element) testAddr).getAttributeNS(namespaceURI, localName);
-        assertEquals("attrValue", "newValue", resultAttr);
+        assertEquals("newValue", resultAttr);
         resultNamespaceURI = addrAttr.getNamespaceURI();
-        assertEquals("nsuri", "http://www.newattr.com", resultNamespaceURI);
+        assertEquals("http://www.newattr.com", resultNamespaceURI);
         resultLocalName = addrAttr.getLocalName();
-        assertEquals("lname", "newAttr", resultLocalName);
+        assertEquals("newAttr", resultLocalName);
         resultPrefix = addrAttr.getPrefix();
-        assertEquals("prefix", "emp", resultPrefix);
+        assertEquals("emp", resultPrefix);
     }
 }
 

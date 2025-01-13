@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -50,33 +50,30 @@ import static org.junit.Assert.assertNotNull;
  * returns the replaced "Attr" node.
  * This test uses the "createAttributeNS(namespaceURI,localName)
  * method from the Document interface to create the new attribute to add.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D095">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D095</a>
  */
-public class setAttributeNodeNS04Test extends LoboUnitTest {
+public class SetAttributeNodeNS04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        HTMLCollection elementList;
-        Document doc;
-        Node testAddr;
-        Attr newAttr;
-        Attr newAddrAttr;
-        String newName;
+        final HTMLCollection elementList;
+        final Document doc;
+        final Node testAddr;
+        final Attr newAttr;
+        final Attr newAddrAttr;
+        final String newName;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("emp:address");
         testAddr = elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
+        assertNotNull(testAddr);
         newAttr = doc.createAttributeNS("http://www.nist.gov", "xxx:domestic");
         newAddrAttr = ((Element) testAddr).setAttributeNodeNS(newAttr);
         newName = newAddrAttr.getNodeName();
-        assertEquals("nodeName", "xxx:domestic", newName);
+        assertEquals("xxx:domestic", newName);
     }
 }
 

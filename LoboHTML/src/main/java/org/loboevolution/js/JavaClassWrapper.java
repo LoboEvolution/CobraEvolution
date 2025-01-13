@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,25 @@
  */
 package org.loboevolution.js;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.loboevolution.info.PropertyInfo;
 import org.mozilla.javascript.Function;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>JavaClassWrapper class.</p>
  */
 public class JavaClassWrapper {
 	private final Map<String, JavaFunctionObject> functions = new HashMap<>();
+	@Getter
+	@Setter
 	private PropertyInfo integerIndexer;
 	private final Class javaClass;
+	@Getter
+	@Setter
 	private PropertyInfo nameIndexer;
 	private final Map<String, PropertyInfo> properties = new HashMap<>();
 
@@ -47,14 +52,14 @@ public class JavaClassWrapper {
 	 *
 	 * @param class1 a {@link java.lang.Class} object.
 	 */
-	public JavaClassWrapper(Class class1) {
+	public JavaClassWrapper(final Class class1) {
 		this.javaClass = class1;
 		scanMethods();
 	}
 
-	private void ensurePropertyKnown(String methodName, Method method) {
-		String capPropertyName;
-		String propertyName;
+	private void ensurePropertyKnown(final String methodName, final Method method) {
+		final String capPropertyName;
+		final String propertyName;
 		boolean getter = false;
 		boolean setter = false;
 		if (methodName.startsWith("get")) {
@@ -104,26 +109,8 @@ public class JavaClassWrapper {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link org.mozilla.javascript.Function} object.
 	 */
-	public Function getFunction(String name) {
+	public Function getFunction(final String name) {
 		return this.functions.get(name);
-	}
-
-	/**
-	 * <p>Getter for the field integerIndexer.</p>
-	 *
-	 * @return a {@link org.loboevolution.info.PropertyInfo} object.
-	 */
-	public PropertyInfo getIntegerIndexer() {
-		return this.integerIndexer;
-	}
-
-	/**
-	 * <p>Getter for the field nameIndexer.</p>
-	 *
-	 * @return a {@link org.loboevolution.info.PropertyInfo} object.
-	 */
-	public PropertyInfo getNameIndexer() {
-		return this.nameIndexer;
 	}
 
 	/**
@@ -132,32 +119,36 @@ public class JavaClassWrapper {
 	 * @param name a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.info.PropertyInfo} object.
 	 */
-	public PropertyInfo getProperty(String name) {
+	public PropertyInfo getProperty(final String name) {
 		return this.properties.get(name);
 	}
 
-	private boolean isIntegerIndexer(String name, Method method) {
+	private boolean isIntegerIndexer(final String name, final Method method) {
 		return "item".equals(name) && method.getParameterTypes().length == 1
 				|| "setItem".equals(name) && method.getParameterTypes().length == 2;
 	}
 
-	private boolean isNameIndexer(String name, Method method) {
+	private boolean isNameIndexer(final String name, final Method method) {
 		return "namedItem".equals(name) && method.getParameterTypes().length == 1
 				|| "setNamedItem".equals(name) && method.getParameterTypes().length == 2;
 	}
 
-	private boolean isPropertyMethod(String name, Method method) {
+	private boolean isPropertyMethod(final String name, final Method method) {
 		if ((name.startsWith("get") || name.startsWith("is")) &&
 				!name.equals("getBoundingClientRect") &&
+				!name.equals("click") &&
 				!name.equals("getClientRects") &&
 				!name.equals("getComputedStyle") &&
-				!name.equals("getPropertyCSSValue")) {
+				!name.equals("getPropertyCSSValue") &&
+				!name.equals("getSelection")) {
 			return method.getParameterTypes().length == 0;
 		} else if (name.startsWith("set") &&
 				!name.equals("setTimeout") &&
 				!name.equals("setNamedItem") &&
 				!name.equals("setProperty") &&
-				!name.equals("setAttributeNode")) {
+				!name.equals("setAttributeNode") &&
+				!name.equals("setStartAfter") &&
+				!name.equals("setStart")) {
 			return method.getParameterTypes().length == 1;
 		} else {
 			return false;
@@ -175,7 +166,7 @@ public class JavaClassWrapper {
 		return this.javaClass.newInstance();
 	}
 
-	private String propertyUncapitalize(String text) {
+	private String propertyUncapitalize(final String text) {
 		try {
 			if ("NodeFilter".equals(text) || "Node".equals(text) ||
 					(text.length() > 1 && Character.isUpperCase(text.charAt(1)))) {
@@ -188,8 +179,8 @@ public class JavaClassWrapper {
 	}
 
 	private void scanMethods() {
-		final Method[] methods = this.javaClass.getMethods();
-		for (final Method method : methods) {
+		final List<Method> methods = Arrays.asList(this.javaClass.getMethods());
+		methods.forEach(method -> {
 			final String name = method.getName();
 			if (isPropertyMethod(name, method)) {
 				ensurePropertyKnown(name, method);
@@ -206,7 +197,7 @@ public class JavaClassWrapper {
 				}
 				f.addMethod(method);
 			}
-		}
+		});
 	}
 
 	/** {@inheritDoc} */
@@ -215,12 +206,9 @@ public class JavaClassWrapper {
 		return this.javaClass.getName();
 	}
 
-	private void updateIntegerIndexer(String methodName, Method method) {
-		boolean getter = true;
-		if (methodName.startsWith("set")) {
-			getter = false;
-		}
-		PropertyInfo indexer = this.integerIndexer;
+	private void updateIntegerIndexer(final String methodName, final Method method) {
+		boolean getter = !methodName.startsWith("set");
+        PropertyInfo indexer = this.integerIndexer;
 		if (indexer == null) {
 			final Class pt = getter ? method.getReturnType() : method.getParameterTypes()[1];
 			indexer = new PropertyInfo("$item", pt);
@@ -233,12 +221,9 @@ public class JavaClassWrapper {
 		}
 	}
 
-	private void updateNameIndexer(String methodName, Method method) {
-		boolean getter = true;
-		if (methodName.startsWith("set")) {
-			getter = false;
-		}
-		PropertyInfo indexer = this.nameIndexer;
+	private void updateNameIndexer(final String methodName, final Method method) {
+		boolean getter = !methodName.startsWith("set");
+        PropertyInfo indexer = this.nameIndexer;
 		if (indexer == null) {
 			indexer = new PropertyInfo("$item", Object.class);
 			this.nameIndexer = indexer;

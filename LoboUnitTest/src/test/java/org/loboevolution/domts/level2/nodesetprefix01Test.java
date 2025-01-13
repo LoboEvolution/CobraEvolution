@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,24 +43,21 @@ import static org.junit.Assert.*;
  * <p>
  * Create a new element node with a namespace prefix.  Add it to a new DocumentFragment Node without
  * a prefix.  Call setPrefix on the elemen node.  Check if the prefix was set correctly on the element.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodesetprefix01Test extends LoboUnitTest {
+public class Nodesetprefix01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFragment;
-        Element element;
-        String elementTagName;
-        String elementNodeName;
+        final Document doc;
+        final DocumentFragment docFragment;
+        final Element element;
+        final String elementTagName;
+        final String elementNodeName;
         doc = sampleXmlFile("staff.xml");
         docFragment = doc.createDocumentFragment();
         element = doc.createElementNS("http://www.w3.org/DOM/Test", "address");
@@ -68,8 +65,8 @@ public class nodesetprefix01Test extends LoboUnitTest {
         element.setPrefix("dmstc");
         elementTagName = element.getTagName();
         elementNodeName = element.getNodeName();
-        assertEquals("nodesetprefix01_tagname", "dmstc:address", elementTagName);
-        assertEquals("nodesetprefix01_nodeName", "dmstc:address", elementNodeName);
+        assertEquals("dmstc:address", elementTagName);
+        assertEquals("dmstc:address", elementNodeName);
     }
 }
 

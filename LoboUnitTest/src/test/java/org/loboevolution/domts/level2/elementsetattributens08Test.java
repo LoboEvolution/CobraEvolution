@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,38 +28,34 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The method setAttributeNS adds a new attribute and raises a NAMESPACE_ERR
  * if the qualifiedName, or its prefix, is "xmlns" and the namespaceURI is
- * different from "http://www.w3.org/2000/xmlns/".
+ * different from "<a href="http://www.w3.org/2000/xmlns/">...</a>".
  * <p>
  * Invoke the setAttributeNS method on a new Element object with namespaceURI that is
- * http://www.w3.org/DOMTest/level2 and a qualifiedName that has the prefix xmlns and once
+ * <a href="http://www.w3.org/DOMTest/level2">...</a> and a qualifiedName that has the prefix xmlns and once
  * again with a qualifiedName that is xmlns.
  * Check if the NAMESPACE_ERR was thrown.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS</a>
  */
-public class elementsetattributens08Test extends LoboUnitTest {
+public class Elementsetattributens08Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
+        final Document doc;
+        final Element element;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("http://www.w3.org/DOMTest/level2", "dom:elem");
 
@@ -67,20 +63,20 @@ public class elementsetattributens08Test extends LoboUnitTest {
             boolean success = false;
             try {
                 element.setAttributeNS("http://www.w3.org/DOMTest/level2", "xmlns", "test");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("elementsetattributens08_Err1", success);
+            assertTrue(success);
         }
 
         {
             boolean success = false;
             try {
                 element.setAttributeNS("http://www.w3.org/DOMTest/level2", "xmlns:root", "test");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("elementsetattributens08_Err2", success);
+            assertTrue(success);
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,37 +45,35 @@ import static org.junit.Assert.assertTrue;
  * discard all Text nodes that contain whitespaces in element content, as described in [element content whitespace].
  * Check to see if this feature can be set to false by invoking canSetParameter method.  Verify that the text node
  * still exist after invoking canSetParameter.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration</a>
  */
-public class domconfigurationcansetparameter06Test extends LoboUnitTest {
+public class Domconfigurationcansetparameter06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
+        final Document doc;
+        final DOMConfiguration domConfig;
         HTMLCollection itemList;
         Element elementStrong;
         Text textNode;
-        boolean canSet;
+        final boolean canSet;
         boolean hasWhitespace;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("element-content-whitespace", Boolean.TRUE);
-        assertTrue("domconfigurationcansetparameter06_1", canSet);
+        assertTrue(canSet, "Domconfigurationcansetparameter06Assert2");
         itemList = doc.getElementsByTagNameNS("*", "strong");
         elementStrong = (Element) itemList.item(0);
         textNode = (Text) elementStrong.getFirstChild();
         textNode.setTextContent("                                                ");
         hasWhitespace = textNode.isElementContentWhitespace();
-        assertTrue("domconfigurationsetparameter06_2", hasWhitespace);
+        assertTrue(hasWhitespace, "Domconfigurationcansetparameter06Assert3");
         doc.normalizeDocument();
         itemList = doc.getElementsByTagNameNS("*", "strong");
         elementStrong = (Element) itemList.item(0);
         textNode = (Text) elementStrong.getFirstChild();
         hasWhitespace = textNode.isElementContentWhitespace();
-        assertTrue("domconfigurationsetparameter06_3", hasWhitespace);
+        assertTrue(hasWhitespace, "Domconfigurationcansetparameter06Assert4");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,30 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of the first new Text node compared to the
  * second text node is PRECEDING and is FOLLOWING vice versa.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition18Test extends LoboUnitTest {
+public class Nodecomparedocumentposition18Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Text txt1;
-        Text txt2;
-        int txt1Position;
-        int txt2Position;
+        final Document doc;
+        final Element docElem;
+        final Text txt1;
+        final Text txt2;
+        final int txt1Position;
+        final int txt2Position;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         txt1 = doc.createTextNode("T1");
@@ -60,9 +58,9 @@ public class nodecomparedocumentposition18Test extends LoboUnitTest {
         docElem.appendChild(txt1);
         docElem.appendChild(txt2);
         txt1Position = txt1.compareDocumentPosition(txt2);
-        assertEquals("nodecomparedocumentpositionFollowing18", 4, txt1Position);
+        assertEquals(4, txt1Position, "Nodecomparedocumentposition18Assert2");
         txt2Position = txt2.compareDocumentPosition(txt1);
-        assertEquals("nodecomparedocumentpositionPRECEDING18", 2, txt2Position);
+        assertEquals(2, txt2Position, "Nodecomparedocumentposition18Assert3");
     }
 }
 

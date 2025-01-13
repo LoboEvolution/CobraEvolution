@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ public class TimeListImpl implements TimeList {
 	 *
 	 * @param times a {@link java.util.List} object.
 	 */
-	public TimeListImpl(List<Time> times) {
+	public TimeListImpl(final List<Time> times) {
 		this.times = times;
 	}
 
@@ -58,8 +58,8 @@ public class TimeListImpl implements TimeList {
 
 	/** {@inheritDoc} */
 	@Override
-	public Time item(int index) {
-		int size = this.times.size();
+	public Time item(final int index) {
+		final int size = this.times.size();
 		if (size > index && index > -1) {
 			return this.times.get(index);
 		} else {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.loboevolution.html.dom.nodeimpl.event.EventTargetImpl;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.Node;
 
@@ -43,7 +42,7 @@ import org.loboevolution.html.node.Node;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EntityReferenceImpl extends EventTargetImpl implements EntityReference {
+public class EntityReferenceImpl extends NodeImpl implements EntityReference {
 
     private String publicId;
     private String systemId;
@@ -52,23 +51,33 @@ public class EntityReferenceImpl extends EventTargetImpl implements EntityRefere
     private String notationName;
 
     @Override
-    public void setNodeValue(String nodeValue) throws DOMException {
-        super.setNodeValue(nodeValue);
-    }
-
-    @Override
-    public Node replaceChild(Node newChild, Node oldChild) {
+    public Node replaceChild(final Node newChild, final Node oldChild) {
         throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR, "readonly node");
     }
 
     @Override
-    public Node appendChild(Node newChild) {
+    public boolean hasAttributes() {
+        return false;
+    }
+
+    @Override
+    public Node appendChild(final Node newChild) {
         throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR, "readonly node");
     }
 
     @Override
-    public Node insertBefore(Node newChild, Node refChild) {
+    public String getLocalName() {
+        return this.nodeName;
+    }
+
+    @Override
+    public Node insertBefore(final Node newChild, final Node refChild) {
         throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR, "readonly node");
+    }
+
+    @Override
+    public void setNodeValue(final String nodeValue) {
+        throw new DOMException(DOMException.INVALID_MODIFICATION_ERR, "readonly node");
     }
 
     @Override

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,8 +45,7 @@ import static org.junit.Assert.*;
  * child of the first "p" and check the string returned
  * by the "getNodeValue()" method.   It should be equal to
  * "Yes".
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  */
 public class HCNodeAttributeNodeValueTest extends LoboUnitTest {
@@ -54,21 +53,20 @@ public class HCNodeAttributeNodeValueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        Attr addrAttr;
-        String attrValue;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final Attr addrAttr;
+        final String attrValue;
         doc = sampleXmlFile("hc_staff.xml");
         elementList = doc.getElementsByTagName("acronym");
         testAddr = (Element) elementList.item(0);
         addrAttr = testAddr.getAttributeNode("title");
         attrValue = addrAttr.getNodeValue();
-        assertEquals("nodeValue", "Yes", attrValue);
+        assertEquals("Yes", attrValue, "HCNodeAttributeNodeValueAssert1");
     }
 }
 

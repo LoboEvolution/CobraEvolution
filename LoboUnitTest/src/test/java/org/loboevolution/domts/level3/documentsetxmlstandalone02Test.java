@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,44 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Create a new document object and set standalone to false and check if it was correctly set.
  * Then repeat this by setting it to true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone</a>
  */
-public class documentsetxmlstandalone02Test extends LoboUnitTest {
+public class Documentsetxmlstandalone02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
         boolean standalone;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         newDoc.setXmlStandalone(false);
         standalone = newDoc.getXmlStandalone();
-        assertFalse("documentsetxmlstandalone02_false", standalone);
+        assertFalse(standalone, "Documentsetxmlstandalone02Assert3");
         newDoc.setXmlStandalone(true);
         standalone = newDoc.getXmlStandalone();
-        assertTrue("documentsetxmlstandalone02_true", standalone);
+        assertTrue(standalone, "Documentsetxmlstandalone02Assert4");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -49,43 +49,40 @@ import static org.junit.Assert.*;
  * Method should return an element node whose name matches "address"
  * and whose children are not imported. The returned node should
  * belong to this document whose systemId is "staff.dtd"
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode05Test extends LoboUnitTest {
+public class ImportNode05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        Element element;
-        Node aNode;
-        boolean hasChild;
-        Document ownerDocument;
-        DocumentType docType;
-        String system;
-        String name;
-        HTMLCollection addresses;
+        final Document doc;
+        final Document aNewDoc;
+        final Element element;
+        final Node aNode;
+        final boolean hasChild;
+        final Document ownerDocument;
+        final DocumentType docType;
+        final String system;
+        final String name;
+        final HTMLCollection addresses;
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         addresses = aNewDoc.getElementsByTagName("address");
         element = (Element) addresses.item(0);
-        assertNotNull("empAddressNotNull", element);
+        assertNotNull(element);
         aNode = doc.importNode(element, false);
         hasChild = aNode.hasChildNodes();
-        assertFalse("hasChild", hasChild);
+        assertFalse(hasChild);
         ownerDocument = aNode.getOwnerDocument();
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertEquals("dtdSystemId", "staffNS.dtd", system);
+        assertEquals("staffNS.dtd", system);
         name = aNode.getNodeName();
-        assertEquals("nodeName", "ADDRESS", name);
+        assertEquals("ADDRESS", name);
     }
 }
 

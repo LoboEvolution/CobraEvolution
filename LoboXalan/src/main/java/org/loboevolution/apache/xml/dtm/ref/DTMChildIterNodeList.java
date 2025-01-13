@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,14 +66,15 @@ public class DTMChildIterNodeList extends DTMNodeListBase {
    * @param parentDTM The DTM containing this node
    * @param parentHandle DTM node-handle integer
    */
-  public DTMChildIterNodeList(DTM parentDTM, int parentHandle) {
+  public DTMChildIterNodeList(final DTM parentDTM, final int parentHandle) {
     m_parentDTM = parentDTM;
     m_firstChild = parentDTM.getFirstChild(parentHandle);
   }
 
   /** {@inheritDoc} */
   @Override
-  public Node item(int index) {
+  public Node item(final int idx) {
+    int index = idx;
     int handle = m_firstChild;
     while (--index >= 0 && handle != DTM.NULL) {
       handle = m_parentDTM.getNextSibling(handle);

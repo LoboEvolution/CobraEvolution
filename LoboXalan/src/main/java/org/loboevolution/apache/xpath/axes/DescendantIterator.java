@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,8 @@ import org.loboevolution.apache.xml.dtm.DTMAxisTraverser;
 import org.loboevolution.apache.xml.dtm.DTMFilter;
 import org.loboevolution.apache.xml.dtm.DTMIterator;
 
+import java.util.Objects;
+
 /**
  * This class implements an optimized iterator for descendant, descendant-or-self, or "//foo"
  * patterns.
@@ -51,15 +53,15 @@ public class DescendantIterator extends LocPathIterator {
    * @param compiler A reference to the Compiler that contains the op map.
    * @param opPos The position within the op map, which contains the location path expression for
    *     this itterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  DescendantIterator(Compiler compiler, int opPos, int analysis)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  DescendantIterator(final Compiler compiler, final int opPos, final int analysis)
+      throws javax.xml.transform.TransformerException {
 
     super(analysis);
 
     int firstStepPos = OpMap.getFirstChildPos(opPos);
-    int stepType = compiler.getOp(firstStepPos);
+    final int stepType = compiler.getOp(firstStepPos);
 
     boolean orSelf = OpCodes.FROM_DESCENDANTS_OR_SELF == stepType;
     boolean fromRoot = false;
@@ -69,7 +71,7 @@ public class DescendantIterator extends LocPathIterator {
     } else if (OpCodes.FROM_ROOT == stepType) {
       fromRoot = true;
       // Ugly code... will go away when AST work is done.
-      int nextStepPos = compiler.getNextStepPos(firstStepPos);
+      final int nextStepPos = compiler.getNextStepPos(firstStepPos);
       if (compiler.getOp(nextStepPos) == OpCodes.FROM_DESCENDANTS_OR_SELF) orSelf = true;
       // firstStepPos += 8;
     }
@@ -79,7 +81,7 @@ public class DescendantIterator extends LocPathIterator {
     while (true) {
       nextStepPos = compiler.getNextStepPos(nextStepPos);
       if (nextStepPos > 0) {
-        int stepOp = compiler.getOp(nextStepPos);
+        final int stepOp = compiler.getOp(nextStepPos);
         if (OpCodes.ENDOP != stepOp) firstStepPos = nextStepPos;
         else break;
       } else break;
@@ -94,7 +96,7 @@ public class DescendantIterator extends LocPathIterator {
     } else if (orSelf) m_axis = Axis.DESCENDANTORSELF;
     else m_axis = Axis.DESCENDANT;
 
-    int whatToShow = compiler.getWhatToShow(firstStepPos);
+    final int whatToShow = compiler.getWhatToShow(firstStepPos);
 
     if ((0
             == (whatToShow
@@ -113,7 +115,7 @@ public class DescendantIterator extends LocPathIterator {
   @Override
   public DTMIterator cloneWithReset() throws CloneNotSupportedException {
 
-    DescendantIterator clone = (DescendantIterator) super.cloneWithReset();
+    final DescendantIterator clone = (DescendantIterator) super.cloneWithReset();
     clone.m_traverser = m_traverser;
 
     clone.resetProximityPositions();
@@ -132,77 +134,75 @@ public class DescendantIterator extends LocPathIterator {
 
     int next;
 
-    try {
-      do {
-        if (0 == m_extendedTypeID) {
-          next =
-              m_lastFetched =
-                  (DTM.NULL == m_lastFetched)
-                      ? m_traverser.first(m_context)
-                      : m_traverser.next(m_context, m_lastFetched);
-        } else {
-          next =
-              m_lastFetched =
-                  (DTM.NULL == m_lastFetched)
-                      ? m_traverser.first(m_context, m_extendedTypeID)
-                      : m_traverser.next(m_context, m_lastFetched, m_extendedTypeID);
-        }
-
-        if (DTM.NULL != next) {
-          if (DTMIterator.FILTER_ACCEPT == acceptNode(next)) break;
-          else continue;
-        } else break;
-      } while (next != DTM.NULL);
+    do {
+      if (0 == m_extendedTypeID) {
+        next =
+                m_lastFetched =
+                        (DTM.NULL == m_lastFetched)
+                                ? m_traverser.first(m_context)
+                                : m_traverser.next(m_context, m_lastFetched);
+      } else {
+        next =
+                m_lastFetched =
+                        (DTM.NULL == m_lastFetched)
+                                ? m_traverser.first(m_context, m_extendedTypeID)
+                                : m_traverser.next(m_context, m_lastFetched, m_extendedTypeID);
+      }
 
       if (DTM.NULL != next) {
-        m_pos++;
-        return next;
-      } else {
-        m_foundLast = true;
+        if (DTMIterator.FILTER_ACCEPT == acceptNode(next)) break;
+        else continue;
+      } else break;
+    } while (next != DTM.NULL);
 
-        return DTM.NULL;
-      }
-    } finally {
+    if (DTM.NULL != next) {
+      m_pos++;
+      return next;
+    } else {
+      m_foundLast = true;
+
+      return DTM.NULL;
     }
   }
 
   /** {@inheritDoc} */
   @Override
-  public void setRoot(int context, Object environment) {
+  public void setRoot(final int context, final Object environment) {
     super.setRoot(context, environment);
     m_traverser = m_cdtm.getAxisTraverser(m_axis);
 
-    String localName = getLocalName();
-    String namespace = getNamespace();
-    int what = m_whatToShow;
+    final String localName = getLocalName();
+    final String namespace = getNamespace();
+    final int what = m_whatToShow;
     if (DTMFilter.SHOW_ALL == what
         || NodeTest.WILD.equals(localName)
         || NodeTest.WILD.equals(namespace)) {
       m_extendedTypeID = 0;
     } else {
-      int type = getNodeTypeTest(what);
+      final int type = getNodeTypeTest(what);
       m_extendedTypeID = m_cdtm.getExpandedTypeID(namespace, localName, type);
     }
   }
 
   /** {@inheritDoc} */
   @Override
-  public int asNode(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public int asNode(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
     if (getPredicateCount() > 0) return super.asNode(xctxt);
 
-    int current = xctxt.getCurrentNode();
+    final int current = xctxt.getCurrentNode();
 
-    DTM dtm = xctxt.getDTM(current);
-    DTMAxisTraverser traverser = dtm.getAxisTraverser(m_axis);
+    final DTM dtm = xctxt.getDTM(current);
+    final DTMAxisTraverser traverser = dtm.getAxisTraverser(m_axis);
 
-    String localName = getLocalName();
-    String namespace = getNamespace();
-    int what = m_whatToShow;
-    if (DTMFilter.SHOW_ALL == what || localName == NodeTest.WILD || namespace == NodeTest.WILD) {
+    final String localName = getLocalName();
+    final String namespace = getNamespace();
+    final int what = m_whatToShow;
+    if (Objects.equals(what, DTMFilter.SHOW_ALL) ||
+            Objects.equals(localName, NodeTest.WILD) || Objects.equals(namespace, NodeTest.WILD)) {
       return traverser.first(current);
     } else {
-      int type = getNodeTypeTest(what);
-      int extendedType = dtm.getExpandedTypeID(namespace, localName, type);
+      final int type = getNodeTypeTest(what);
+      final int extendedType = dtm.getExpandedTypeID(namespace, localName, type);
       return traverser.first(current, extendedType);
     }
   }
@@ -236,11 +236,8 @@ public class DescendantIterator extends LocPathIterator {
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!super.deepEquals(expr)) return false;
-
-    if (m_axis != ((DescendantIterator) expr).m_axis) return false;
-
-    return true;
+    return m_axis == ((DescendantIterator) expr).m_axis;
   }
 }

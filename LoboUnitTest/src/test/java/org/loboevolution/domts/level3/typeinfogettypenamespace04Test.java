@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,25 +43,23 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an attribute having [member type definition]property.  Expose
  * {name} and {target namespace} properties of the [member type definition] property.
  * Verify that the typeNamespace of eldblUnionA's schemaTypeInfo is null??? (sv)
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName</a>
  */
-public class typeinfogettypenamespace04Test extends LoboUnitTest {
+public class Typeinfogettypenamespace04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element emElem;
-        TypeInfo elemTypeInfo;
-        String typeNamespace;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element emElem;
+        final TypeInfo elemTypeInfo;
+        final String typeNamespace;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("em");
         emElem = (Element) elemList.item(0);
         elemTypeInfo = emElem.getSchemaTypeInfo();
         typeNamespace = elemTypeInfo.getTypeNamespace();
-        assertEquals("typeinfogettypenamespace04_1", "http://www.w3.org/1999/xhtml", typeNamespace);
+        assertEquals("http://www.w3.org/1999/xhtml", typeNamespace, "Typeinfogettypenamespace04Assert2");
     }
 }
 

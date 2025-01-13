@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,16 +41,14 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Get the DOMConfiguration object of a document and verify that a NOT_FOUND_ERR is thrown if the parameter
  * is not found.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter</a>
  */
-public class domconfigurationgetparameter02Test extends LoboUnitTest {
+public class Domconfigurationgetparameter02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
+        final Document doc;
+        final DOMConfiguration domConfig;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
 
@@ -58,10 +56,10 @@ public class domconfigurationgetparameter02Test extends LoboUnitTest {
             boolean success = false;
             try {
                 domConfig.getParameter("not-found-param");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("domconfigurationgetparameter02_NOT_FOUND_ERR", success);
+            assertTrue(success, "Domconfigurationgetparameter02Assert2");
         }
     }
 }

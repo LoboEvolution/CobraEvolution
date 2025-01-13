@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,44 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Setting the nodeValue should change the value returned by
  * nodeValue and ProcessingInstruction.getData.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1004215813">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1004215813</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-837822393">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-837822393</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=181">http://www.w3.org/Bugs/Public/show_bug.cgi?id=181</a>
  */
-public class nodeprocessinginstructionsetnodevalueTest extends LoboUnitTest {
+public class NodeprocessinginstructionsetnodevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NodeList testList;
-        Node piNode;
+        final Document doc;
+        final NodeList testList;
+        final Node piNode;
         String piValue;
         doc = sampleXmlFile("staff.xml");
         testList = doc.getChildNodes();
         piNode = testList.item(0);
         piNode.setNodeValue("Something different");
         piValue = piNode.getNodeValue();
-        assertEquals("nodeValue", "Something different", piValue);
+        assertEquals("Something different", piValue, "NodeprocessinginstructionsetnodevalueAssert1");
         piValue = ((ProcessingInstruction) piNode).getData();
-        assertEquals("data", "Something different", piValue);
+        assertEquals("Something different", piValue, "NodeprocessinginstructionsetnodevalueAssert2");
     }
 
 }

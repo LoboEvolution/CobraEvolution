@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,11 @@
 
 package org.loboevolution.domts.level3;
 
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The method getTextContent returns the text content of this node and its descendants.
@@ -39,23 +38,20 @@ import static org.junit.Assert.assertEquals;
  * Invoke the method getTextContent on a new Element node with new Text, EntityReferences
  * CDATASection, PI and Comment nodes and check if the value returned is a single
  * concatenated String with its content.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent15Test extends LoboUnitTest {
+public class Nodegettextcontent15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        Text txt;
-        Comment comment;
-        EntityReference entRef;
-        CDATASection cdata;
-        ProcessingInstruction pi;
-        String textContent;
-        Node appendedChild;
+        final Document doc;
+        final Element elem;
+        final Text txt;
+        final Comment comment;
+        final EntityReference entRef;
+        final CDATASection cdata;
+        final ProcessingInstruction pi;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/DOM/Test", "dom3:elem");
         txt = doc.createTextNode("Text ");
@@ -63,14 +59,14 @@ public class nodegettextcontent15Test extends LoboUnitTest {
         entRef = doc.createEntityReference("beta");
         pi = doc.createProcessingInstruction("PIT", "PIData ");
         cdata = doc.createCDATASection("CData");
-        appendedChild = elem.appendChild(txt);
-        appendedChild = elem.appendChild(comment);
-        appendedChild = elem.appendChild(entRef);
-        appendedChild = elem.appendChild(pi);
-        appendedChild = elem.appendChild(cdata);
+        elem.appendChild(txt);
+        elem.appendChild(comment);
+        elem.appendChild(entRef);
+        elem.appendChild(pi);
+        elem.appendChild(cdata);
         textContent = elem.getTextContent();
         doc.normalizeDocument();
-        assertEquals("nodegettextcontent15", "Text βCData", textContent);
+        assertEquals("Text βCData", textContent, "Nodegettextcontent15Assert2");
     }
 }
 

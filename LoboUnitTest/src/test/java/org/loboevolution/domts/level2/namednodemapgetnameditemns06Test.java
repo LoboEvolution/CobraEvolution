@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,26 +41,23 @@ import static org.junit.Assert.*;
  * Since NamedNodeMaps are live each one should get updated, using the getNamedItemNS retreive
  * the newly created attribute from each node map.
  * Verify if the attr node has been retreived successfully by checking its nodeName atttribute.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS</a>
  */
-public class namednodemapgetnameditemns06Test extends LoboUnitTest {
+public class Namednodemapgetnameditemns06Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributesMap1;
-        NamedNodeMap attributesMap2;
-        Element element;
+        final Document doc;
+        final NamedNodeMap attributesMap1;
+        final NamedNodeMap attributesMap2;
+        final Element element;
         Node attribute;
-        Attr newAttr1;
-        HTMLCollection elementList;
+        final Attr newAttr1;
+        final HTMLCollection elementList;
         String attrName;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
@@ -71,10 +68,10 @@ public class namednodemapgetnameditemns06Test extends LoboUnitTest {
         element.setAttributeNodeNS(newAttr1);
         attribute = attributesMap1.getNamedItemNS("http://www.w3.org/DOM/L1", "street");
         attrName = attribute.getNodeName();
-        assertEquals("namednodemapgetnameditemnsMap106", "street", attrName);
+        assertEquals("street", attrName);
         attribute = attributesMap2.getNamedItemNS("http://www.w3.org/DOM/L1", "street");
         attrName = attribute.getNodeName();
-        assertEquals("namednodemapgetnameditemnsMap206", "street", attrName);
+        assertEquals("street", attrName);
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -48,38 +48,35 @@ import static org.junit.Assert.assertFalse;
  * with importedNode being the newly created DocumentFragment.
  * Method should return an empty DocumentFragment that belongs
  * to this document whose systemId is "staff.dtd"
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-systemId">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-systemId</a>
  */
-public class importNode08Test extends LoboUnitTest {
+public class ImportNode08Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        DocumentFragment docFrag;
-        Node aNode;
-        boolean hasChild;
-        Document ownerDocument;
-        DocumentType docType;
-        String system;
+        final Document doc;
+        final Document aNewDoc;
+        final DocumentFragment docFrag;
+        final Node aNode;
+        final boolean hasChild;
+        final Document ownerDocument;
+        final DocumentType docType;
+        final String system;
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         docFrag = aNewDoc.createDocumentFragment();
         aNode = doc.importNode(docFrag, false);
         hasChild = aNode.hasChildNodes();
-        assertFalse("hasChild", hasChild);
+        assertFalse(hasChild);
         ownerDocument = aNode.getOwnerDocument();
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertEquals("system", "staffNS.dtd", system);
+        assertEquals("staffNS.dtd", system);
     }
 }
 

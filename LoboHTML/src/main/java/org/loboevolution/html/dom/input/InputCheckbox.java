@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ package org.loboevolution.html.dom.input;
 import org.loboevolution.html.control.InputControl;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 import org.loboevolution.html.js.Executor;
+import org.loboevolution.html.js.WindowImpl;
 import org.loboevolution.html.renderer.HtmlController;
 
 import javax.swing.*;
@@ -49,7 +50,7 @@ public class InputCheckbox {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputCheckbox(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputCheckbox(final HTMLInputElementImpl modelNode, final InputControl ic) {
 		checkBox.setOpaque(false);
 		if (modelNode.getTitle() != null) checkBox.setToolTipText(modelNode.getTitle());
 		checkBox.setVisible(!modelNode.isHidden());
@@ -59,12 +60,13 @@ public class InputCheckbox {
 		checkBox.setSelected(modelNode.isChecked());
 		checkBox.setPreferredSize(new Dimension(modelNode.getClientWidth(), modelNode.getClientHeight()));
 		checkBox.addActionListener(event -> HtmlController.getInstance().onPressed(modelNode, null, 0, 0));
-		MouseInputAdapter mouseHandler = new MouseInputAdapter() {
+		final MouseInputAdapter mouseHandler = new MouseInputAdapter() {
 
 			@Override
 			public void mouseEntered(final MouseEvent e) {
 				if (modelNode.getOnmouseover() != null) {
-					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), null, new Object[] {});
+					final WindowImpl win = (WindowImpl) modelNode.getDocumentNode().getDefaultView();
+					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), new Object[] {}, win.getContextFactory());
 				}
 			}
 		};

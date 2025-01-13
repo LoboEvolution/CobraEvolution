@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMStringList;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMStringList;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,37 +44,35 @@ import static org.junit.Assert.assertTrue;
  * DOMConfiguration object.
  * Verify that the list contains features that are required and supported by this DOMConfiguration object.
  * Verify that the contains method returns false for a string that is not contained in this DOMStringList.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-contains">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-contains</a>
  */
-public class domstringlistcontains02Test extends LoboUnitTest {
+public class Domstringlistcontains02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMStringList paramList;
-        DOMConfiguration domConfig;
+        final Document doc;
+        final DOMStringList paramList;
+        final DOMConfiguration domConfig;
         boolean contain;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         paramList = domConfig.getParameterNames();
         contain = paramList.contains("comments");
-        assertTrue("domstringlistcontains02_1", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert3");
         contain = paramList.contains("cdata-sections");
-        assertTrue("domstringlistcontains02_2", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert4");
         contain = paramList.contains("entities");
-        assertTrue("domstringlistcontains02_3", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert5");
         contain = paramList.contains("error-handler");
-        assertTrue("domstringlistcontains02_4", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert6");
         contain = paramList.contains("infoset");
-        assertTrue("domstringlistcontains02_5", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert7");
         contain = paramList.contains("namespace-declarations");
-        assertTrue("domstringlistcontains02_6", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert8");
         contain = paramList.contains("element-content-whitespace");
-        assertTrue("domstringlistcontains02_7", contain);
+        assertTrue(contain, "Domstringlistcontains02Assert9");
         contain = paramList.contains("test");
-        assertFalse("domstringlistcontains02_8", contain);
+        assertFalse(contain, "Domstringlistcontains02Assert10");
     }
 }
 

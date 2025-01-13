@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.html.style.ListStyle;
 
 import java.awt.*;
+import java.util.Objects;
 
 class RListItem extends BaseRListElement {
 
@@ -53,17 +54,17 @@ class RListItem extends BaseRListElement {
 	 *
 	 * @param info a {@link org.loboevolution.html.renderer.info.RBlockInfo} object.
 	 */
-	public RListItem(RBlockInfo info) {
+	public RListItem(final RBlockInfo info) {
 		super(info);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void doLayout(RLayoutInfo info) {
+	public void doLayout(final RLayoutInfo info) {
 		super.doLayout(info);
 		final RenderState renderState = this.modelNode.getRenderState();
 		final Integer value = getValue();
-		if (value == UNSET) {
+		if (Objects.equals(value, UNSET)) {
 			this.count = renderState.incrementCount(DEFAULT_COUNTER_NAME, this.listNesting);
 		} else {
 			final int newCount = value;
@@ -93,7 +94,7 @@ class RListItem extends BaseRListElement {
 
 	/** {@inheritDoc} */
 	@Override
-	public int getViewportListNesting(int blockNesting) {
+	public int getViewportListNesting(final int blockNesting) {
 		return blockNesting + 1;
 	}
 
@@ -113,7 +114,6 @@ class RListItem extends BaseRListElement {
 		final RBlockViewport layout = this.bodyLayout;
 		if (layout != null) {
 			final ListStyle listStyle = this.listStyle;
-			
 			ListValues bulletType = listStyle == null ? ListValues.TYPE_UNSET : ListValues.get(listStyle.getType());
 			if (bulletType != ListValues.TYPE_NONE) {
 				if (bulletType == ListValues.TYPE_UNSET) {
@@ -121,11 +121,12 @@ class RListItem extends BaseRListElement {
 					if (!(parent instanceof RList)) {
 						parent = parent.getOriginalOrCurrentParent();
 					}
+
 					if (parent instanceof RList) {
 						final ListStyle parentListStyle = ((RList) parent).listStyle;
-						bulletType = parentListStyle == null ? ListValues.TYPE_DECIMAL : ListValues.get(parentListStyle.getType());
+						bulletType = parentListStyle == null ? ListValues.TYPE_DISC : ListValues.get(parentListStyle.getType());
 					} else {
-						bulletType = ListValues.TYPE_DECIMAL;
+						bulletType = ListValues.TYPE_DISC;
 					}
 				}
 

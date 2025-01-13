@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Attempt to set textContent for a Document node and check that the document appears
  * to be unaffected.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent01Test extends LoboUnitTest {
+public class Nodesettextcontent01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String nodeName;
-        HTMLCollection elemList;
-        Element elem;
+        final Document doc;
+        final String nodeName;
+        final HTMLCollection elemList;
+        final Element elem;
         doc = sampleXmlFile("hc_staff.xml");
         doc.setTextContent("textContent");
         elemList = doc.getElementsByTagName("acronym");
         elem = (Element) elemList.item(3);
-        assertNotNull("stillHasAcronyms", elem);
+        assertNotNull(elem, "Nodesettextcontent01Assert3");
         nodeName = elem.getNodeName();
-        assertEquals("nodesettextcontent01", "ACRONYM", nodeName);
+        assertEquals("ACRONYM", nodeName, "Nodesettextcontent01Assert4");
     }
 }
 

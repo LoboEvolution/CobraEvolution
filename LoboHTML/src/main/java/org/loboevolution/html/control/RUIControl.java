@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,68 +36,21 @@ import org.loboevolution.http.UserAgentContext;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * <p>RUIControl class.</p>
- *
- * Author J. H. S.
- *
  */
 public class RUIControl extends BaseElementRenderable {
-	private static class LayoutKey {
-		public final int availHeight;
-		public final int availWidth;
-		public final Font font;
-		public final int whitespace;
-
-		public LayoutKey(int availWidth, int availHeight, int whitespace, Font font) {
-			this.availWidth = availWidth;
-			this.availHeight = availHeight;
-			this.whitespace = whitespace;
-			this.font = font;
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			if (!(obj instanceof LayoutKey)) {
-				return false;
-			}
-			final LayoutKey other = (LayoutKey) obj;
-			return other.availWidth == this.availWidth && other.availHeight == this.availHeight
-					&& other.whitespace == this.whitespace && Objects.equals(other.font, this.font);
-		}
-
-		@Override
-		public int hashCode() {
-			final Font font = this.font;
-			return this.availWidth * 1000 + this.availHeight ^ (font == null ? 0 : font.hashCode());
-		}
-	}
-
-	private static class LayoutValue {
-		public final int height;
-		public final int width;
-
-		public LayoutValue(int width, int height) {
-			this.width = width;
-			this.height = height;
-		}
-	}
 
 	private static final int MAX_CACHE_SIZE = 10;
-	private final Map<LayoutKey, LayoutValue> cachedLayout = new HashMap<>();
+	private final Map<LayoutKey, LayoutValue> cachedLayout = new HashMap<>(5);
 
 	protected int declaredHeight = -1;
 
 	protected int declaredWidth = -1;
-
-	private final FrameContext frameContext;
 
 	private LayoutKey lastLayoutKey = null;
 
@@ -113,15 +66,13 @@ public class RUIControl extends BaseElementRenderable {
      * @param me a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
      * @param widget a {@link org.loboevolution.html.control.UIControl} object.
      * @param container a {@link org.loboevolution.html.renderer.RenderableContainer} object.
-     * @param frameContext a {@link org.loboevolution.html.renderer.FrameContext} object.
      * @param ucontext a {@link org.loboevolution.http.UserAgentContext} object.
      */
     public RUIControl(final ModelNode me, final UIControl widget, final RenderableContainer container,
-            final FrameContext frameContext, final UserAgentContext ucontext) {
+					  final UserAgentContext ucontext) {
 		super(container, me, ucontext);
 		this.modelNode = me;
 		this.widget = widget;
-		this.frameContext = frameContext;
 		widget.setRUIControl(this);
 	}
 
@@ -146,9 +97,9 @@ public class RUIControl extends BaseElementRenderable {
 		if (layoutValue == null) {
 			this.applyStyle(availWidth, availHeight);
 
-			Insets paddingInsets = this.paddingInsets == null ? RBlockViewport.ZERO_INSETS : this.paddingInsets;
-			Insets borderInsets = this.borderInsets == null ? RBlockViewport.ZERO_INSETS : this.borderInsets;
-			Insets marginInsets = this.marginInsets == null ? RBlockViewport.ZERO_INSETS : this.marginInsets;
+			final Insets paddingInsets = this.paddingInsets == null ? RBlockViewport.ZERO_INSETS : this.paddingInsets;
+			final Insets borderInsets = this.borderInsets == null ? RBlockViewport.ZERO_INSETS : this.borderInsets;
+			final Insets marginInsets = this.marginInsets == null ? RBlockViewport.ZERO_INSETS : this.marginInsets;
 
 			final int paddingWidth = paddingInsets.left - paddingInsets.right;
 			final int borderWidth = borderInsets.left - borderInsets.right;
@@ -201,8 +152,8 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean extractSelectionText(StringBuilder buffer, boolean inSelection, RenderableSpot startPoint,
-			RenderableSpot endPoint) {
+	public boolean extractSelectionText(final StringBuilder buffer, final boolean inSelection, final RenderableSpot startPoint,
+										final RenderableSpot endPoint) {
 		// No text here
 		return inSelection;
 	}
@@ -233,7 +184,7 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public RenderableSpot getLowestRenderableSpot(int x, int y) {
+	public RenderableSpot getLowestRenderableSpot(final int x, final int y) {
 		// Nothing draggable - return self
 		return new RenderableSpot(this, x, y);
 	}
@@ -246,7 +197,7 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public Iterator<Renderable> getRenderables() {
+	public List<Renderable> getRenderables() {
 		// No children for GUI controls
 		return null;
 	}
@@ -300,8 +251,8 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		inSelection = super.paintSelection(g, inSelection, startPoint, endPoint);
+	public boolean paintSelection(final Graphics g, final boolean isSelection, final RenderableSpot startPoint, final RenderableSpot endPoint) {
+		final boolean inSelection = super.paintSelection(g, isSelection, startPoint, endPoint);
 		if (inSelection) {
 			final Color over = new Color(0, 0, 255, 50);
 			final Color oldColor = g.getColor();
@@ -317,7 +268,7 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public void repaint(ModelNode modelNode) {
+	public void repaint(final ModelNode modelNode) {
 		final Object widget = this.widget;
 		if (widget instanceof UINode) {
 			((UINode) widget).repaint(modelNode);
@@ -328,7 +279,7 @@ public class RUIControl extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public void updateWidgetBounds(int guiX, int guiY) {
+	public void updateWidgetBounds(final int guiX, final int guiY) {
 		super.updateWidgetBounds(guiX, guiY);
         final Insets insets = this.getBorderInsets();
 		final int width = this.getWidth() - insets.left - insets.right;

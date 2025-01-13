@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ package org.loboevolution.html.renderer;
 
 import org.loboevolution.html.ListValues;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderer.info.RBlockInfo;
 import org.loboevolution.html.style.HtmlValues;
 import org.loboevolution.html.style.ListStyle;
@@ -46,20 +46,19 @@ class BaseRListElement extends RBlock {
 	 *
 	 * @param info a {@link org.loboevolution.html.renderer.info.RBlockInfo} object.
 	 */
-	public BaseRListElement(RBlockInfo info) {
+	public BaseRListElement(final RBlockInfo info) {
 		super(info);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void applyStyle(int availWidth, int availHeight) {
+	protected void applyStyle(final int availWidth, final int availHeight) {
 		this.listStyle = null;
 		super.applyStyle(availWidth, availHeight);
 		final Object rootNode = this.modelNode;
-		if (rootNode instanceof HTMLElementImpl) {
+		if (rootNode instanceof HTMLElementImpl rootElement) {
 
-			final HTMLElementImpl rootElement = (HTMLElementImpl) rootNode;
-			final CSSStyleDeclaration props = rootElement.getCurrentStyle();
+            final CSSStyleDeclaration props = rootElement.getCurrentStyle();
 			if (props != null) {
 				ListStyle listStyle = null;
 				final String listStyleText = props.getListStyle();

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,39 +25,41 @@
  */
 package org.loboevolution.css;
 
-import org.htmlunit.cssparser.dom.CSSRuleListImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.loboevolution.annotation.Alerts;
+import org.loboevolution.annotation.AlertsExtension;
 import org.loboevolution.driver.LoboUnitTest;
 
 /**
- * Tests for {@link CSSRuleListImpl}.
+ * Tests for {@link CSSRuleList}.
  */
-
+@ExtendWith(AlertsExtension.class)
 public class CSSRuleListTest extends LoboUnitTest {
-    
+
     @Test
+    @Alerts({"1", "[object CSSStyleRule]"})
     public void ruleList() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  BODY { font-size: 1234px; }\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(rules.length);\n"
-                + "    alert(rules[0]);\n"
+                + "   alert(rules.length);\n"
+                + "   alert(rules[0]);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"1", "[object CSSStyleRule]"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
-
     @Test
+    @Alerts("undefined")
     public void wrongRuleListAccess() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  BODY { font-size: 1234px; }\n"
                 + "</style>\n"
@@ -65,109 +67,107 @@ public class CSSRuleListTest extends LoboUnitTest {
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
                 + "    var r = rules[1];\n"
-                + "    alert(r);\n"
+                + "   alert(r);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"undefined"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
-
     @Test
+    @Alerts("true")
     public void has() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  BODY { font-size: 1234px; }\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(0 in rules);\n"
+                + "   alert(0 in rules);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"true"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts({"0", "undefined"})
     public void ruleListUnknownAtRule() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  @UnknownAtRule valo-animate-in-fade {0 {opacity: 0;}}\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(rules.length);\n"
-                + "    alert(rules[0]);\n"
+                + "   alert(rules.length);\n"
+                + "   alert(rules[0]);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"0", "undefined"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts({"1", "[object CSSKeyFramesRule]"})
     public void ruleListKeyframes() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  @keyframes mymove {from {top: 0px;} to {top: 200px;}}\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(rules.length);\n"
-                + "    alert(rules[0]);\n"
+                + "   alert(rules.length);\n"
+                + "   alert(rules[0]);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"1", "[object CSSKeyframesRule]"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts({"1", "false", "true", "false", "false"})
     public void in() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  BODY { font-size: 1234px; }\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(rules.length);\n"
-                + "    alert(-1 in rules);\n"
-                + "    alert(0 in rules);\n"
-                + "    alert(1 in rules);\n"
-                + "    alert(42 in rules);\n"
+                + "   alert(rules.length);\n"
+                + "   alert(-1 in rules);\n"
+                + "   alert(0 in rules);\n"
+                + "   alert(1 in rules);\n"
+                + "   alert(42 in rules);\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"1", "false", "true", "false", "false"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("[object CSSStyleRule]")
     public void item() {
-        final String html = "<html><head><title>First</title>\n"
+        final String html = "<html><head>\n"
                 + "<style>\n"
                 + "  BODY { font-size: 1234px; }\n"
                 + "</style>\n"
                 + "<script>\n"
                 + "  function test() {\n"
                 + "    var rules = document.styleSheets[0].cssRules;\n"
-                + "    alert(rules.item(0));\n"
+                + "   alert(rules.item(0));\n"
                 + "  }\n"
                 + "</script>\n"
                 + "</head><body onload='test()'>\n"
                 + "</body></html>";
-        final String[] messages = {"[object CSSStyleRule]"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 }

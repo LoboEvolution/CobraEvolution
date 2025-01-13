@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -40,25 +40,22 @@ import static org.junit.Assert.assertNull;
  * this Document node.  Invoke getUserData on this Document node with the same
  * key of the UserData that was just set on the documentElement node and verify
  * if the returned node is null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData</a>
  */
-public class nodesetuserdata09Test extends LoboUnitTest {
+public class Nodesetuserdata09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Object returned;
+        final Document doc;
+        final Element docElem;
+        final Object returned;
 
-        Object retUserData;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         /*Node */
-        retUserData = docElem.setUserData("Key1", doc, null);
+        docElem.setUserData("Key1", doc, null);
         returned = doc.getUserData("Key1");
-        assertNull("nodesetuserdata09", returned);
+        assertNull(returned, "Nodesetuserdata09Assert2");
     }
 }
 

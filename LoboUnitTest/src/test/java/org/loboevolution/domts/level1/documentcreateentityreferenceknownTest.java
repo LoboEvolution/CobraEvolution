@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.EntityReference;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -48,23 +47,20 @@ import static org.junit.Assert.assertTrue;
  * given name.  The referenced entity is known, therefore the child
  * list of the "EntityReference" node is the same as the corresponding
  * "Entity" node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-392B75AE">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-392B75AE</a>
  */
-public class documentcreateentityreferenceknownTest extends LoboUnitTest {
+public class DocumentcreateentityreferenceknownTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc = sampleXmlFile("staff.xml");
-        EntityReference newEntRefNode = doc.createEntityReference("ent3");
-        assertNotNull("createdEntRefNotNull", newEntRefNode);
-        assertTrue(newEntRefNode.getChildNodes().getLength() == 0);
+        final Document doc = sampleXmlFile("staff.xml");
+        final EntityReference newEntRefNode = doc.createEntityReference("ent3");
+        assertNotNull(newEntRefNode, "DocumentcreateentityreferenceknownAssert3");
+        assertEquals(0, newEntRefNode.getChildNodes().getLength(), "DocumentcreateentityreferenceknownAssert4");
     }
 }
 

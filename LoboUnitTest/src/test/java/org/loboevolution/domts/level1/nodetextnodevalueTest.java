@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,30 +45,27 @@ import static org.junit.Assert.*;
  * employee and check the string returned by the
  * "getNodeValue()" method.   It should be equal to
  * "1230 North Ave. Dallas, Texas 98551".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  */
-public class nodetextnodevalueTest extends LoboUnitTest {
+public class NodetextnodevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        Node textNode;
-        String textValue;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final Node textNode;
+        final String textValue;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = (Element) elementList.item(0);
         textNode = testAddr.getFirstChild();
         textValue = textNode.getNodeValue();
-        assertEquals("nodeTextNodeValueAssert1", "1230 North Ave. Dallas, Texas 98551", textValue);
+        assertEquals("1230 North Ave. Dallas, Texas 98551", textValue, "NodetextnodevalueAssert1");
     }
 
 }

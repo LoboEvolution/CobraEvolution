@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,25 +45,23 @@ import static org.junit.Assert.assertNull;
  * second child of the second employee and invoke the
  * "getAttributes()" method on the CDATASection node.
  * It should return null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212</a>
  */
-public class nodecdatasectionnodeattributeTest extends LoboUnitTest {
+public class NodecdatasectionnodeattributeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element cdataName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element cdataName;
         Node cdataNode;
-        NodeList attrList;
-        int nodeType;
+        final NodeList attrList;
+        final int nodeType;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("name");
         cdataName = (Element) elementList.item(1);
@@ -74,7 +72,7 @@ public class nodecdatasectionnodeattributeTest extends LoboUnitTest {
             cdataNode = doc.createCDATASection("");
         }
         attrList = cdataNode.getChildNodes();
-        assertNull("cdataSection", attrList);
+        assertNull(attrList, "NodecdatasectionnodeattributeAssert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,5 +76,5 @@ public interface ITabbedPane {
      * @param tip       Tooltip.
      * @param index     Zero-based index.
      */
-    void insertTab(String title, Icon icon, Component component, String tip, int index);
+    void insertTab(final String title, Icon icon, Component component, final String tip, final int index);
 }

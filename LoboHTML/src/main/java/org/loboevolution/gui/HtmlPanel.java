@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,14 @@
  */
 package org.loboevolution.gui;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.EventDispatch2;
 import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.component.IBrowserPanel;
 import org.loboevolution.config.HtmlRendererConfig;
+import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.dom.nodeimpl.event.DocumentNotificationListener;
@@ -55,6 +59,7 @@ import java.awt.event.ActionEvent;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serial;
 import java.net.SocketTimeoutException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -62,8 +67,6 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The HtmlPanel class is a Swing component that can render a HTML
@@ -74,71 +77,70 @@ import java.util.logging.Logger;
  * Invoke method {@link #setDocument(Document, HtmlRendererContext)} in order to
  * schedule a document for rendering.
  */
+@Slf4j
 public class HtmlPanel extends JComponent implements FrameContext {
-	
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(HtmlPanel.class.getName());
 
-	private class LocalDocumentNotificationListener implements DocumentNotificationListener {
+	private final class LocalDocumentNotificationListener implements DocumentNotificationListener {
 		@Override
 		public void allInvalidated() {
 			addNotification(new DocumentNotification(DocumentNotification.GENERIC, null));
 		}
 
 		@Override
-		public void externalScriptLoading(NodeImpl node) {
+		public void externalScriptLoading(final NodeImpl node) {
 			// Ignorable here.
 		}
 
 		@Override
-		public void invalidated(NodeImpl node) {
+		public void invalidated(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.GENERIC, node));
 		}
 
 		@Override
-		public void lookInvalidated(NodeImpl node) {
+		public void lookInvalidated(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.LOOK, node));
 		}
 
 		@Override
-		public void nodeLoaded(NodeImpl node) {
+		public void nodeLoaded(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.GENERIC, node));
 		}
 
 		@Override
-		public void positionInvalidated(NodeImpl node) {
+		public void positionInvalidated(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.POSITION, node));
 		}
 
 		@Override
-		public void sizeInvalidated(NodeImpl node) {
+		public void sizeInvalidated(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.SIZE, node));
 		}
 
 		@Override
-		public void structureInvalidated(NodeImpl node) {
+		public void structureInvalidated(final NodeImpl node) {
 			addNotification(new DocumentNotification(DocumentNotification.GENERIC, node));
 		}
 	}
 
-	private class NotificationTimerAction implements java.awt.event.ActionListener {
+	private final class NotificationTimerAction implements java.awt.event.ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			processNotifications();
 		}
 	}
 
-	private static class SelectionDispatch extends EventDispatch2 {
+	private final static class SelectionDispatch extends EventDispatch2 {
 
 		@Override
-		protected void dispatchEvent(EventListener listener, EventObject event) {
+		protected void dispatchEvent(final EventListener listener, final EventObject event) {
 			((SelectionChangeListener) listener).selectionChanged((SelectionChangeEvent) event);
 		}
 	}
 
 	private static final int NOTIF_TIMER_DELAY = 300;
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	private volatile int defaultOverflowX = RenderState.OVERFLOW_AUTO;
 	
@@ -158,10 +160,13 @@ public class HtmlPanel extends JComponent implements FrameContext {
 
 	private volatile int preferredWidth = -1;
 
+	@Getter
 	private volatile NodeImpl rootNode;
 
 	private final EventDispatch2 selectionDispatch = new SelectionDispatch();
 
+	@Getter
+	@Setter
 	private IBrowserPanel browserPanel;
 
 	/**
@@ -176,7 +181,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		this.notificationImmediateAction = this::processNotifications;
 	}
 
-	private void addNotification(DocumentNotification notification) {
+	private void addNotification(final DocumentNotification notification) {
 		// This can be called in a random thread.
 		final List<DocumentNotification> notifs = this.notifications;
 		synchronized (notifs) {
@@ -195,7 +200,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param listener An instance of {@link SelectionChangeListener}.
 	 */
-	public void addSelectionChangeListener(SelectionChangeListener listener) {
+	public void addSelectionChangeListener(final SelectionChangeListener listener) {
 		this.selectionDispatch.addListener(listener);
 	}
 
@@ -222,8 +227,8 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * @param rcontext a {@link HtmlRendererContext} object.
 	 * @return a {@link HtmlBlockPanel} object.
 	 */
-	protected HtmlBlockPanel createHtmlBlockPanel(UserAgentContext ucontext, HtmlRendererContext rcontext) {
-		return new HtmlBlockPanel(java.awt.Color.WHITE, true, ucontext, rcontext, this);
+	protected HtmlBlockPanel createHtmlBlockPanel(final UserAgentContext ucontext, final HtmlRendererContext rcontext) {
+		return new HtmlBlockPanel(Color.WHITE, true, ucontext, rcontext, this);
 	}
 
 	/**
@@ -233,7 +238,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * later. Multiple invalidations may be processed in a single document layout.
 	 */
 	@Override
-	public void delayedRelayout(NodeImpl node) {
+	public void delayedRelayout(final NodeImpl node) {
 		final List<DocumentNotification> notifs = this.notifications;
 		synchronized (notifs) {
 			notifs.add(new DocumentNotification(DocumentNotification.SIZE, node));
@@ -249,7 +254,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * Note: This method should be invoked in the GUI thread.
 	 */
 	@Override
-	public void expandSelection(RenderableSpot rpoint) {
+	public void expandSelection(final RenderableSpot rpoint) {
 		final HtmlBlockPanel block = this.htmlBlockPanel;
 		if (block != null) {
 			block.setSelectionEnd(rpoint);
@@ -267,16 +272,6 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	public BoundableRenderable getBlockRenderable() {
 		final HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
 		return htmlBlock == null ? null : htmlBlock.getRootRenderable();
-	}
-
-
-	/**
-	 * Gets the HTML DOM node currently rendered if any.
-	 *
-	 * @return a {@link org.loboevolution.html.dom.nodeimpl.NodeImpl} object.
-	 */
-	public NodeImpl getRootNode() {
-		return this.rootNode;
 	}
 
 	/**
@@ -354,7 +349,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param listener a {@link SelectionChangeListener} object.
 	 */
-	public void removeSelectionChangeListener(SelectionChangeListener listener) {
+	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
 		this.selectionDispatch.removeListener(listener);
 	}
 
@@ -368,7 +363,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * Note: This method should be invoked in the GUI thread.
 	 */
 	@Override
-	public void resetSelection(RenderableSpot rpoint) {
+	public void resetSelection(final RenderableSpot rpoint) {
 		final HtmlBlockPanel block = this.htmlBlockPanel;
 		if (block != null) {
 			block.setSelectionStart(rpoint);
@@ -387,7 +382,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * @param x The x coordinate.
 	 * @param y The y coordinate.
 	 */
-	public void scroll(final double x, double y) {
+	public void scroll(final double x, final double y) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			scrollImpl(x, y);
 		} else {
@@ -401,7 +396,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * @param x a {@link java.lang.Double} object.
 	 * @param y a {@link java.lang.Double} object.
 	 */
-	public void scrollBy(double x, double y) {
+	public void scrollBy(final double x, final double y) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			scrollByImpl(x, y);
 		} else {
@@ -409,14 +404,14 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	private void scrollByImpl(double xOffset, double yOffset) {
+	private void scrollByImpl(final double xOffset, final double yOffset) {
 		final HtmlBlockPanel bp = this.htmlBlockPanel;
 		if (bp != null) {
 			bp.scrollBy(xOffset, yOffset);
 		}
 	}
 
-	private void scrollImpl(double x, double y) {
+	private void scrollImpl(final double x, final double y) {
 		this.scrollTo(new Rectangle((int)x, (int)y, 16, 16), false, false);
 	}
 
@@ -428,7 +423,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param node A DOM node.
 	 */
-	public void scrollTo(Node node) {
+	public void scrollTo(final Node node) {
 		final HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
 		if (htmlBlock != null) {
 			htmlBlock.scrollTo(node);
@@ -448,7 +443,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * @param yIfNeeded If this parameter is true, scrolling will only occur if the
 	 *                  requested bounds are not currently visible vertically.
 	 */
-	public void scrollTo(Rectangle bounds, boolean xIfNeeded, boolean yIfNeeded) {
+	public void scrollTo(final Rectangle bounds, final boolean xIfNeeded, final boolean yIfNeeded) {
 		final HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
 		if (htmlBlock != null) {
 			htmlBlock.scrollTo(bounds, xIfNeeded, yIfNeeded);
@@ -471,11 +466,10 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	private void scrollToElementImpl(String nameOrId) {
+	private void scrollToElementImpl(final String nameOrId) {
 		final NodeImpl node = this.rootNode;
-		if (node instanceof HTMLDocumentImpl) {
-			final HTMLDocumentImpl doc = (HTMLDocumentImpl) node;
-			final Element element = doc.getElementById(nameOrId);
+		if (node instanceof HTMLDocument doc) {
+            final Element element = doc.getElementById(nameOrId);
 			if (element != null) {
 				this.scrollTo(element);
 			}
@@ -489,7 +483,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param overflow See {@link org.loboevolution.html.renderstate.RenderState}.
 	 */
-	public void setDefaultOverflowX(int overflow) {
+	public void setDefaultOverflowX(final int overflow) {
 		this.defaultOverflowX = overflow;
 		final HtmlBlockPanel block = this.htmlBlockPanel;
 		if (block != null) {
@@ -504,7 +498,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param overflow See {@link org.loboevolution.html.renderstate.RenderState}.
 	 */
-	public void setDefaultOverflowY(int overflow) {
+	public void setDefaultOverflowY(final int overflow) {
 		this.defaultOverflowY = overflow;
 		final HtmlBlockPanel block = this.htmlBlockPanel;
 		if (block != null) {
@@ -512,16 +506,16 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	public static HtmlPanel createlocalPanel(URLConnection connection, HtmlPanel panel, HtmlRendererContext rendererContext,
-											 HtmlRendererConfig config, String uri) throws Exception {
-		try (InputStream in = HttpNetwork.openConnectionCheckRedirects(connection);
-			 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+	public static HtmlPanel createlocalPanel(final URLConnection connection, final HtmlPanel panel, final HtmlRendererContext rendererContext,
+                                             final HtmlRendererConfig config, final String uri) throws Exception {
+		try (final InputStream in = HttpNetwork.openConnectionCheckRedirects(connection);
+             final Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
 			final InputSource is = new InputSourceImpl(reader, uri);
 			final DocumentBuilderImpl builder = new DocumentBuilderImpl(rendererContext.getUserAgentContext(),rendererContext, config);
 			final Document document = builder.parse(is);
 			panel.setDocument(document, rendererContext);
-		} catch (SocketTimeoutException e) {
-			logger.log(Level.SEVERE, "More than " + connection.getConnectTimeout() + " elapsed.");
+		} catch (final SocketTimeoutException e) {
+			log.error("More time elapsed {}", connection.getConnectTimeout());
 		}
 		return panel;
 	}
@@ -549,9 +543,9 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	private void setDocumentImpl(Document node, HtmlRendererContext rcontext) {
+	private void setDocumentImpl(final Document node, final HtmlRendererContext rcontext) {
 		// Expected to be called in the GUI thread.
-		if (!(node instanceof HTMLDocumentImpl)) {
+		if (!(node instanceof HTMLDocument)) {
 			throw new IllegalArgumentException(
 					"Only nodes of type HTMLDocumentImpl are currently supported. Use DocumentBuilderImpl.");
 		}
@@ -590,7 +584,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param width The preferred width, or -1 to unset.
 	 */
-	public void setPreferredWidth(int width) {
+	public void setPreferredWidth(final int width) {
 		this.preferredWidth = width;
 		final HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
 		if (htmlBlock != null) {
@@ -598,7 +592,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	private void setUpAsBlock(UserAgentContext ucontext, HtmlRendererContext rcontext) {
+	private void setUpAsBlock(final UserAgentContext ucontext, final HtmlRendererContext rcontext) {
 		final HtmlBlockPanel shp = createHtmlBlockPanel(ucontext, rcontext);
 		shp.setPreferredWidth(this.preferredWidth);
 		shp.setDefaultOverflowX(this.defaultOverflowX);
@@ -607,23 +601,5 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		removeAll();
 		this.add(shp);
 		this.nodeRenderer = shp;
-	}
-	
-	/**
-	 * <p>Getter for the field browserPanel.</p>
-	 *
-	 * @return a {@link org.loboevolution.component.IBrowserPanel} object.
-	 */
-	public IBrowserPanel getBrowserPanel() {
-		return browserPanel;
-	}
-
-	/**
-	 * <p>Setter for the field browserPanel.</p>
-	 *
-	 * @param browserPanel a {@link org.loboevolution.component.IBrowserPanel} object.
-	 */
-	public void setBrowserPanel(IBrowserPanel browserPanel) {
-		this.browserPanel = browserPanel;
 	}
 }

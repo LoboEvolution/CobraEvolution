@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,15 +108,15 @@ public class SVGImageElementImpl extends SVGGraphic implements SVGImageElement {
 	/** {@inheritDoc} */
 	@Override
 	public void draw(final Graphics2D graphics) {
-		TimingInfo info = new TimingInfo();
-		Image image = HttpNetwork.getImage(this, info, false);
-		int realWidth = image.getWidth(null);
-		int realHeight = image.getHeight(null);
+		final TimingInfo info = new TimingInfo();
+		final Image image = HttpNetwork.getImage(this, info, false);
+		final int realWidth = image.getWidth(null);
+		final int realHeight = image.getHeight(null);
 
-		float drawWidth = getWidth().getAnimVal().getValue();
-		float drawHeight = getHeight().getAnimVal().getValue();
+		final float drawWidth = getWidth().getAnimVal().getValue();
+		final float drawHeight = getHeight().getAnimVal().getValue();
 
-		AffineTransform at = new AffineTransform();
+		final AffineTransform at = new AffineTransform();
 		at.translate(getX().getAnimVal().getValue(), getY().getAnimVal().getValue());
 		at.scale(drawWidth / realWidth, drawHeight / realHeight);
 		graphics.drawImage(image, at, null);
@@ -128,7 +128,7 @@ public class SVGImageElementImpl extends SVGGraphic implements SVGImageElement {
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
+	public Shape createShape(final AffineTransform transform) {
 		return null;
 	}
 }

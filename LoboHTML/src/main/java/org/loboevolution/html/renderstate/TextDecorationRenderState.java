@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ public class TextDecorationRenderState extends RenderStateDelegator {
 	 * @param textDecorationMask
 	 *            the text decoration mask
 	 */
-	public TextDecorationRenderState(RenderState prevRenderState, int textDecorationMask) {
+	public TextDecorationRenderState(final RenderState prevRenderState, final int textDecorationMask) {
 		super(prevRenderState);
 		this.textDecorationMask = textDecorationMask;
 	}
@@ -51,8 +51,8 @@ public class TextDecorationRenderState extends RenderStateDelegator {
 	/** {@inheritDoc} */
 	@Override
 	public int getTextDecorationMask() {
-		RenderState prs = this.delegate;
-		int parentMask = prs == null ? 0 : prs.getTextDecorationMask();
+		final RenderState prs = this.delegate;
+		final int parentMask = prs == null ? 0 : prs.getTextDecorationMask();
 		return parentMask | this.textDecorationMask;
 	}
 

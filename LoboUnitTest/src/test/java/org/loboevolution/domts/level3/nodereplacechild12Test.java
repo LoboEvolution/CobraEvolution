@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,50 +27,46 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Using replaceChild on this Document node, attempt to replace a new ProcessingInstruction
  * node with new Comment node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=416">http://www.w3.org/Bugs/Public/show_bug.cgi?id=416</a>
  */
-public class nodereplacechild12Test extends LoboUnitTest {
+public class Nodereplacechild12Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction pi;
-        Node replaced;
-        Comment comment;
-        Node lastChild;
+        final Document doc;
+        final ProcessingInstruction pi;
+        final Comment comment;
+        final Node lastChild;
         String nodeName;
-        Node replacedNode;
-        Node appendedChild;
+        final Node replacedNode;
         doc = sampleXmlFile("barfoo.xml");
         comment = doc.createComment("dom3:doc");
         pi = doc.createProcessingInstruction("PITarget", "PIData");
-        appendedChild = doc.appendChild(comment);
-        appendedChild = doc.appendChild(pi);
+        doc.appendChild(comment);
+        doc.appendChild(pi);
         replacedNode = doc.replaceChild(comment, pi);
-        assertNotNull("returnValueNotNull", replacedNode);
+        assertNotNull(replacedNode, "Nodereplacechild12Assert3");
         nodeName = replacedNode.getNodeName();
-        assertEquals("returnValueIsPI", "PITarget", nodeName);
+        assertEquals("PITarget", nodeName, "Nodereplacechild12Assert4");
         lastChild = doc.getLastChild();
-        assertNotNull("lastChildNotNull", lastChild);
+        assertNotNull(lastChild, "Nodereplacechild12Assert5");
         nodeName = lastChild.getNodeName();
-        assertEquals("lastChildIsComment", "#comment", nodeName);
+        assertEquals("#comment", nodeName, "Nodereplacechild12Assert6");
     }
 }
 

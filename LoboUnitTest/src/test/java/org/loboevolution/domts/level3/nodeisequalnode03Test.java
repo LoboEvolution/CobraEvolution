@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 Document nodes created by parsing
  * documents only differing in declared encoding return false for isEqualNode on
  * the document and true on the document element.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=528">http://www.w3.org/Bugs/Public/show_bug.cgi?id=528</a>
  */
-public class nodeisequalnode03Test extends LoboUnitTest {
+public class Nodeisequalnode03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc1;
-        Document doc2;
-        Element docElem1;
-        Element docElem2;
+        final Document doc1;
+        final Document doc2;
+        final Element docElem1;
+        final Element docElem2;
         boolean isEqual;
         doc1 = sampleXmlFile("barfoo_utf8.xml");
         doc2 = sampleXmlFile("barfoo_utf16.xml");
         isEqual = doc1.isEqualNode(doc2);
-        assertTrue("docAreNotEquals", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode03Assert2");
         docElem1 = doc1.getDocumentElement();
         docElem2 = doc2.getDocumentElement();
         isEqual = docElem1.isEqualNode(docElem2);
-        assertTrue("docElemsAreEquals", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode03Assert3");
     }
 }
 

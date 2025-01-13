@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,52 +27,47 @@
 package org.loboevolution.domts.level3;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the renameNode method on this document node to rename a node such that its
- * qualifiedName has a prefix that is "xmlns:xml"and namespaceURI is "http://www.w3.org/2000/XMLNS/".
+ * qualifiedName has a prefix that is "xmlns:xml"and namespaceURI is "<a href="http://www.w3.org/2000/XMLNS/">...</a>".
  * Check if a NAMESPACE_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode21Test extends LoboUnitTest {
+public class Documentrenamenode21Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Attr attr;
-        Node renamedNode;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Attr attr;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         attr = newDoc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang");
 
         boolean success = false;
         try {
-            renamedNode = newDoc.renameNode(attr, "http://www.w3.org/2000/XMLNS/", "xmlns:xml");
-        } catch (DOMException ex) {
+            newDoc.renameNode(attr, "http://www.w3.org/2000/XMLNS/", "xmlns:xml");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("throw_NAMESPACE_ERR", success);
+        assertTrue(success, "Documentrenamenode21Assert2");
 
     }
 }

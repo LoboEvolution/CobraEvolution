@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,46 +28,43 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on an Entity node attempt to remove an Element child
  * and verify if a NO_MODIFICATION_ALLOWED_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild25Test extends LoboUnitTest {
+public class Noderemovechild25Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        Node ent4;
-        Element span;
-        Node removed;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final Node ent4;
+        final Element span;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
         ent4 = entitiesMap.getNamedItem("ent4");
-        assertNotNull("ent4NotNull", ent4);
+        assertNotNull(ent4, "Noderemovechild25Assert3");
         span = (Element) ent4.getFirstChild();
-        assertNotNull("spanNotNull", span);
+        assertNotNull(span, "Noderemovechild25Assert4");
 
         boolean success = false;
         try {
-            removed = ent4.removeChild(span);
-        } catch (DOMException ex) {
+            ent4.removeChild(span);
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
         }
-        assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+        assertTrue(success, "Noderemovechild25Assert5");
 
     }
 }

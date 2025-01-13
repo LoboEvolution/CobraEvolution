@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,30 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Invoke getFeature method on this DOMImplementation with the value of the feature parameter
  * as "1-1" (some junk) and version equal to "*".  This should return a null DOMObject.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementation3-getFeature">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementation3-getFeature</a>
  */
-public class domimplementationgetfeature06Test extends LoboUnitTest {
+public class Domimplementationgetfeature06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        DOMImplementation domImplReturned;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final DOMImplementation domImplReturned;
         doc = sampleXmlFile("hc_staff.xml");
         domImpl = doc.getImplementation();
         domImplReturned = (DOMImplementation) domImpl.getFeature("1-1", "*");
-        assertNull("domimplementationgetfeature06", domImplReturned);
+        assertNull(domImplReturned, "Domimplementationgetfeature06Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +43,7 @@ import org.mozilla.javascript.Function;
  * <p>HTMLBodyElementImpl class.</p>
  */
 public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {
+
 	/**
 	 * <p>Constructor for HTMLBodyElementImpl.</p>
 	 *
@@ -54,9 +55,9 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void assignAttributeField(String normalName, String value) {
+	public void assignAttributeField(final String normalName, final String value) {
 		if ("onload".equals(normalName)) {
-			final Function onload = getEventFunction(null, normalName);
+			final Function onload = getFunction(this, normalName);
 			if (onload != null) {
 				setOnload(onload);
 			}
@@ -67,14 +68,8 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new BodyRenderState(prevRenderState, this);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getALink() {
-		return getAttribute("alink");
 	}
 
 	/** {@inheritDoc} */
@@ -102,7 +97,7 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 	 */
 	public Function getOnload() {
 		final Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
+		if (document instanceof HTMLDocument) {
 			return ((HTMLDocumentImpl) document).getOnloadHandler();
 		} else {
 			return null;
@@ -123,19 +118,13 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void setALink(String aLink) {
-		setAttribute("alink", aLink);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setBackground(String background) {
+	public void setBackground(final String background) {
 		setAttribute("background", background);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBgColor(String bgColor) {
+	public void setBgColor(final String bgColor) {
 		setAttribute("bgcolor", bgColor);
 	}
 
@@ -146,13 +135,13 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 	}
 
 	@Override
-	public void setBgProperties(String bgProperties) {
+	public void setBgProperties(final String bgProperties) {
 		// TODO Auto-generated method stub
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLink(String link) {
+	public void setLink(final String link) {
 		setAttribute("link", link);
 	}
 
@@ -162,7 +151,7 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 	}
 
 	@Override
-	public void setNoWrap(boolean noWrap) {
+	public void setNoWrap(final boolean noWrap) {
 
 	}
 
@@ -171,47 +160,46 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 	 *
 	 * <p>setOnload.</p>
 	 */
-	public void setOnload(Function onload) {
+	public void setOnload(final Function onload) {
 		final Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
-			// Note that body.onload overrides
-			// WindowImpl.onload.
+		if (document instanceof HTMLDocument) {
 			((HTMLDocumentImpl) document).setOnloadHandler(onload);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setOwnerDocument(Document value) {
+	public void setOwnerDocument(final Document value) {
 		super.setOwnerDocument(value);
 		if (value instanceof HTMLDocument) {
-			((HTMLDocument) value).setBody(this);
+			value.setBody(this);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setOwnerDocument(Document value, boolean deep) {
+	public void setOwnerDocument(final Document value, final boolean deep) {
 		super.setOwnerDocument(value, deep);
 		if (value instanceof HTMLDocument) {
-			((HTMLDocument) value).setBody(this);
+			value.setBody(this);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setText(String text) {
+	public void setText(final String text) {
 		setAttribute("text", text);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setVLink(String vLink) {
+	public void setVLink(final String vLink) {
 		setAttribute("vlink", vLink);
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 
 		if (newChild instanceof HTMLHtmlElement) {
 			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append html");
@@ -225,6 +213,72 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
 			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append doc");
 		}
 		return super.appendChild(newChild);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnafterprint() {
+		return getFunction(this, "afterprint");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setOnafterprint(final Function onafterprint) {
+		addEventListener("afterprint", onafterprint, false);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnbeforeprint() {
+		return getFunction(this, "afterprint");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setOnbeforeprint(final Function onbeforeprint) {
+		addEventListener("beforeprint", onbeforeprint, false);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnlanguagechange() {
+		return getFunction(this, "languagechange");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setOnlanguagechange(final Function onlanguagechange) {
+		addEventListener("languagechange", onlanguagechange, false);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnoffline() {
+		return getFunction(this, "offline");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnonline() {
+		return getFunction(this, "online");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setOnonline(final Function ononline) {
+		addEventListener("online", ononline, false);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Function getOnunload() {
+		return getFunction(this, "unload");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setOnunload(final Function onunload) {
+		addEventListener("unload", onunload, false);
 	}
 
 	/** {@inheritDoc} */

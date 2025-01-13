@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using removeChild on this Document node attempt to remove a new Comment node and
  * verify the data of the removed comment node..
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild08Test extends LoboUnitTest {
+public class Noderemovechild08Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Comment comment;
-        Comment removedCmt;
-        String data;
-        Node appendedChild;
+        final Document doc;
+        final Comment comment;
+        final Comment removedCmt;
+        final String data;
         doc = sampleXmlFile("hc_staff.xml");
         comment = doc.createComment("Comment");
-        appendedChild = doc.appendChild(comment);
+        doc.appendChild(comment);
         removedCmt = (Comment) doc.removeChild(comment);
         data = removedCmt.getData();
-        assertEquals("noderemovechild08", "Comment", data);
+        assertEquals("Comment", data, "Noderemovechild08Assert2");
     }
 }
 

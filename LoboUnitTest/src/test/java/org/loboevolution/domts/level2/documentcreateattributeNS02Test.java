@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -40,27 +41,24 @@ import static org.junit.Assert.*;
  * <p>
  * Invoke the createAttributeNS method on this Document object with a valid values for
  * namespaceURI, and a qualifiedName as below.  This should return a valid Attr node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS</a>
  */
-public class documentcreateattributeNS02Test extends LoboUnitTest {
+public class DocumentcreateattributeNS02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr attribute1;
-        Attr attribute2;
+        final Document doc;
+        final Attr attribute1;
+        final Attr attribute2;
         String name;
         String nodeName;
         String nodeValue;
-        String prefix;
+        final String prefix;
         String namespaceURI;
         doc = sampleXmlFile("staffNS.xml");
         attribute1 = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:xml");
@@ -69,20 +67,20 @@ public class documentcreateattributeNS02Test extends LoboUnitTest {
         nodeValue = attribute1.getNodeValue();
         prefix = attribute1.getPrefix();
         namespaceURI = attribute1.getNamespaceURI();
-        assertEquals("documentcreateattributeNS02_att1_name", "xml:xml", name);
-        assertEquals("documentcreateattributeNS02_att1_nodeName", "xml:xml", nodeName);
-        assertEquals("documentcreateattributeNS02_att1_nodeValue", null, nodeValue);
-        assertEquals("documentcreateattributeNS02_att1_prefix", "xml", prefix);
-        assertEquals("documentcreateattributeNS02_att1_namespaceURI", "http://www.w3.org/XML/1998/namespace", namespaceURI);
+        assertEquals("xml:xml", name);
+        assertEquals("xml:xml", nodeName);
+        assertNull(nodeValue);
+        assertEquals("xml", prefix);
+        assertEquals("http://www.w3.org/XML/1998/namespace", namespaceURI);
         attribute2 = doc.createAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns");
         name = attribute2.getName();
         nodeName = attribute2.getNodeName();
         nodeValue = attribute2.getNodeValue();
         namespaceURI = attribute2.getNamespaceURI();
-        assertEquals("documentcreateattributeNS02_att2_name", "xmlns", name);
-        assertEquals("documentcreateattributeNS02_att2_nodeName", "xmlns", nodeName);
-        assertEquals("documentcreateattributeNS02_att2_nodeValue", null, nodeValue);
-        assertEquals("documentcreateattributeNS02_att2_namespaceURI", "http://www.w3.org/2000/xmlns/", namespaceURI);
+        assertEquals("xmlns", name);
+        assertEquals("xmlns", nodeName);
+        assertNull(nodeValue);
+        assertEquals("http://www.w3.org/2000/xmlns/", namespaceURI);
     }
 
 }

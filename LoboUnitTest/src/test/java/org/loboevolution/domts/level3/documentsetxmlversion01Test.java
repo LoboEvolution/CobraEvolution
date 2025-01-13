@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,30 +28,28 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Set the value of the version attribute of the XML declaration of this document to
  * various invalid characters and  verify if a NOT_SUPPORTED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-version">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-version</a>
  */
-public class documentsetxmlversion01Test extends LoboUnitTest {
+public class Documentsetxmlversion01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         String versionValue;
-        List<String> illegalVersion = new ArrayList<>();
+        final List<String> illegalVersion = new ArrayList<>();
         illegalVersion.add("{");
         illegalVersion.add("}");
         illegalVersion.add("~");
@@ -82,17 +80,17 @@ public class documentsetxmlversion01Test extends LoboUnitTest {
         illegalVersion.add("---");
 
         doc = sampleXmlFile("hc_staff.xml");
-        for (int indexN10087 = 0; indexN10087 < illegalVersion.size(); indexN10087++) {
-            versionValue = illegalVersion.get(indexN10087);
+        for (String s : illegalVersion) {
+            versionValue = s;
 
             {
                 boolean success = false;
                 try {
                     doc.setXmlVersion(versionValue);
-                } catch (DOMException ex) {
+                } catch (final DOMException ex) {
                     success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
                 }
-                assertTrue("NOT_SUPPORTED_ERR_documentsetversion01", success);
+                assertTrue(success, "Documentsetxmlversion01Assert2");
             }
         }
     }

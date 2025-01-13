@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@
  */
 package org.loboevolution.html.renderer.table;
 
+import org.loboevolution.html.control.LayoutKey;
+import org.loboevolution.html.control.LayoutValue;
 import org.loboevolution.html.control.RUIControl;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
 import org.loboevolution.html.renderer.*;
@@ -34,24 +36,31 @@ import org.loboevolution.html.renderstate.RenderState;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 
 /**
  * <p>RTable class.</p>
  */
 public class RTable extends BaseElementRenderable {
 
+	private static final int MAX_CACHE_SIZE = 10;
 	private int otherOrdinal;
+	private final Map<LayoutKey, LayoutValue> cachedLayout = new HashMap<>(5);
 
 	private SortedSet<PositionedRenderable> positionedRenderables;
 
 	private final TableMatrix tableMatrix;
+
+	private LayoutKey lastLayoutKey = null;
+
+	private LayoutValue lastLayoutValue = null;
 
 	/**
 	 * <p>Constructor for RTable.</p>
 	 *
 	 * @param info a {@link org.loboevolution.html.renderer.info.RBlockInfo} object.
 	 */
-	public RTable(RBlockInfo info) {
+	public RTable(final RBlockInfo info) {
 		super(info.getParentContainer(), info.getModelNode(), info.getPcontext());
 		this.tableMatrix = new TableMatrix(info, this);
 	}
@@ -79,53 +88,77 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public void doLayout(int availWidth, int availHeight, boolean sizeOnly) {
-		final Collection<PositionedRenderable> prs = this.positionedRenderables;
-		if (prs != null) {
-			prs.clear();
-		}
-		this.otherOrdinal = 0;
-		clearGUIComponents();
-		clearDelayedPairs();
-		applyStyle(availWidth, availHeight);
-		final TableMatrix tm = this.tableMatrix;
-		final Insets insets = getInsets(false, false);
-		tm.reset(insets, availWidth, availHeight);
-		// TODO: No scrollbars
-		tm.build(availWidth, availHeight, sizeOnly);
-		tm.doLayout(insets);
+	public void doLayout(final int availWidth, final int availHeight, final boolean sizeOnly) {
+		final Map<LayoutKey, LayoutValue> cachedLayout = this.cachedLayout;
+		final RenderState rs = this.modelNode.getRenderState();
 
-		// Import applicable delayed pairs.
-		// Only needs to be done if layout was
-		// forced. Otherwise, they should've
-		// been imported already.
-		final Collection<DelayedPair> pairs = this.delayedPairs;
-		if (pairs != null) {
-			for (DelayedPair pair : pairs) {
-				if (this == pair.getContainingBlock()) {
-					importDelayedPair(pair);
-				}
+		final int whitespace = rs == null ? RenderState.WS_NORMAL : rs.getWhiteSpace();
+		final Font font = rs == null ? null : rs.getFont();
+		final LayoutKey layoutKey = new LayoutKey(availWidth, availHeight, whitespace, font);
+		LayoutValue layoutValue;
+		if (sizeOnly) {
+			layoutValue = cachedLayout.get(layoutKey);
+		} else {
+			if (Objects.equals(layoutKey, this.lastLayoutKey)) {
+				layoutValue = this.lastLayoutValue;
+			} else {
+				layoutValue = null;
 			}
 		}
 
-		this.setWidth(tm.getTableWidth());
-		this.setHeight(tm.getTableHeight());
+
+		if (layoutValue == null) {
+			final Collection<PositionedRenderable> prs = this.positionedRenderables;
+			if (prs != null) {
+				prs.clear();
+			}
+			this.otherOrdinal = 0;
+			clearGUIComponents();
+			clearDelayedPairs();
+			applyStyle(availWidth, availHeight);
+			final TableMatrix tm = this.tableMatrix;
+			final Insets insets = getInsets(false, false);
+			tm.reset(insets, availWidth, availHeight);
+			// TODO: No scrollbars
+			tm.build(availWidth, availHeight, sizeOnly);
+			tm.doLayout(insets);
+
+			final Collection<DelayedPair> pairs = this.delayedPairs;
+			if (pairs != null) {
+				for (final DelayedPair pair : pairs) {
+					if (this == pair.getContainingBlock()) {
+						importDelayedPair(pair);
+					}
+				}
+			}
+
+			layoutValue = new LayoutValue(tm.getTableWidth(), tm.getTableHeight());
+			if (sizeOnly) {
+				if (cachedLayout.size() > MAX_CACHE_SIZE) {
+					cachedLayout.clear();
+				}
+				cachedLayout.put(layoutKey, layoutValue);
+				this.lastLayoutKey = null;
+				this.lastLayoutValue = null;
+			} else {
+				this.lastLayoutKey = layoutKey;
+				this.lastLayoutValue = layoutValue;
+			}
+
+		}
+
+		this.setWidth(layoutValue.width);
+		this.setHeight(layoutValue.height);
 		sendGUIComponentsToParent();
 		sendDelayedPairsToParent();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.loboevolution.html.rendered.BoundableRenderable#getRenderablePoint(int,
-	 * int)
-	 */
 	/** {@inheritDoc} */
 	@Override
-	public RenderableSpot getLowestRenderableSpot(int x, int y) {
+	public RenderableSpot getLowestRenderableSpot(final int x, final int y) {
 		final Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				final int childX = x - r.getX();
 				final int childY = y - r.getY();
@@ -150,25 +183,24 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public Iterator getRenderables() {
+	public List<Renderable> getRenderables() {
 		final SortedSet<PositionedRenderable> prs = this.positionedRenderables;
+		final List<Renderable> c = new LinkedList<>();
 		if (prs != null) {
-			final Collection c = new LinkedList();
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				c.add(r);
 			}
-			final Iterator i2 = this.tableMatrix.getRenderables();
-			while (i2.hasNext()) {
-				c.add(i2.next());
-			}
-			return c.iterator();
+			final List<RTableCell> renderables = this.tableMatrix.getRenderables();
+			c.addAll(renderables);
 		} else {
-			return this.tableMatrix.getRenderables();
+			final List<RTableCell> renderables = this.tableMatrix.getRenderables();
+			c.addAll(renderables);
 		}
+		return c;
 	}
 
-	private void importDelayedPair(DelayedPair pair) {
+	private void importDelayedPair(final DelayedPair pair) {
 	    final BoundableRenderable r = pair.positionPairChild();
 	    this.addPositionedRenderable(r, false, false, pair.isFixed());
 	}
@@ -181,10 +213,10 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean onDoubleClick(final MouseEvent event, int x, int y) {
+	public boolean onDoubleClick(final MouseEvent event, final int x, final int y) {
 		final Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				final Rectangle bounds = r.getVisualBounds();
 				if (bounds.contains(x, y)) {
@@ -203,10 +235,10 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean onMouseClick(final MouseEvent event, int x, int y) {
+	public boolean onMouseClick(final MouseEvent event, final int x, final int y) {
 		final Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				final Rectangle bounds = r.getVisualBounds();
 				if (bounds.contains(x, y)) {
@@ -229,10 +261,10 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean onMousePressed(final MouseEvent event, int x, int y) {
+	public boolean onMousePressed(final MouseEvent event, final int x, final int y) {
 		final Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				final Rectangle bounds = r.getVisualBounds();
 				if (bounds.contains(x, y)) {
@@ -249,10 +281,10 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean onMouseReleased(final MouseEvent event, int x, int y) {
+	public boolean onMouseReleased(final MouseEvent event, final int x, final int y) {
 		final Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			for (PositionedRenderable pr : prs) {
+			for (final PositionedRenderable pr : prs) {
 				final BoundableRenderable r = pr.getRenderable();
 				final Rectangle bounds = r.getVisualBounds();
 				if (bounds.contains(x, y)) {
@@ -283,7 +315,7 @@ public class RTable extends BaseElementRenderable {
 			tm.paint(g, size);
 			final Collection<PositionedRenderable> prs = this.positionedRenderables;
 			if (prs != null) {
-				for (PositionedRenderable pr : prs) {
+				for (final PositionedRenderable pr : prs) {
 					final BoundableRenderable r = pr.getRenderable();
 					r.paintTranslated(g);
 				}
@@ -296,7 +328,7 @@ public class RTable extends BaseElementRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public void repaint(ModelNode modelNode) {
+	public void repaint(final ModelNode modelNode) {
 		// NOP
 	}
 

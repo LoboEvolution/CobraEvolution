@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Invoke setUserData on this Entity node to set this its UserData to a new
  * Attr node and using getUserData with an invalid Key check if the returned
  * UserData object is Null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-getUserData</a>
  */
-public class nodegetuserdata05Test extends LoboUnitTest {
+public class Nodegetuserdata05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entities;
-        Node entity;
-        Attr attr;
-        Object userData;
-        Object retUserData;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entities;
+        final Node entity;
+        final Attr attr;
+        final Object retUserData;
 
-        Object prevUserData;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entities = docType.getEntities();
         entity = entities.getNamedItem("delta");
         attr = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "lang");
         /*Node */
-        prevUserData = entity.setUserData("key", attr, null);
+        entity.setUserData("key", attr, null);
         retUserData = entity.getUserData("Key");
-        assertNull("nodegetuserdata05", retUserData);
+        assertNull(retUserData, "Nodegetuserdata05Assert2");
     }
 }
 

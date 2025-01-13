@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,32 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the adoptNode method on another document using a new CDataSection node created in this
  * Document as the source.  Verify if the node has been adopted correctly by checking the nodeValue
  * of the adopted node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode32Test extends LoboUnitTest {
-
-
+public class Documentadoptnode32Test extends LoboUnitTest {    
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docAdopter;
-        Node newCDATA;
-        Node adoptedCDATA;
-        String nodeValue;
+        final Document doc;
+        final Document docAdopter;
+        final Node newCDATA;
+        final Node adoptedCDATA;
+        final String nodeValue;
         doc = sampleXmlFile("hc_staff.xml");
         docAdopter = sampleXmlFile("hc_staff.xml");
         newCDATA = doc.createCDATASection("Document.adoptNode test for a CDATASECTION_NODE");
@@ -66,7 +60,7 @@ public class documentadoptnode32Test extends LoboUnitTest {
 
         if ((adoptedCDATA != null)) {
             nodeValue = adoptedCDATA.getNodeValue();
-            assertEquals("documentadoptnode32", "Document.adoptNode test for a CDATASECTION_NODE", nodeValue);
+            assertEquals("Document.adoptNode test for a CDATASECTION_NODE", nodeValue, "Documentadoptnode32Assert2");
         }
     }
 }

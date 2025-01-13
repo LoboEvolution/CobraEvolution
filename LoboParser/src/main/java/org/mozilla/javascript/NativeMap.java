@@ -6,6 +6,9 @@
 
 package org.mozilla.javascript;
 
+import java.util.List;
+import java.util.Map;
+
 public class NativeMap extends IdScriptableObject {
     private static final long serialVersionUID = 1171922614280016891L;
     private static final Object MAP_TAG = "Map";
@@ -17,13 +20,15 @@ public class NativeMap extends IdScriptableObject {
 
     static void init(Context cx, Scriptable scope, boolean sealed) {
         NativeMap obj = new NativeMap();
-        obj.exportAsJSClass(MAX_PROTOTYPE_ID, scope, false);
+        IdFunctionObject constructor = obj.exportAsJSClass(MAX_PROTOTYPE_ID, scope, false);
 
         ScriptableObject desc = (ScriptableObject) cx.newObject(scope);
         desc.put("enumerable", desc, Boolean.FALSE);
         desc.put("configurable", desc, Boolean.TRUE);
         desc.put("get", desc, obj.get(NativeSet.GETSIZE, obj));
         obj.defineOwnProperty(cx, "size", desc);
+
+        ScriptRuntimeES6.addSymbolSpecies(cx, scope, constructor);
 
         if (sealed) {
             obj.sealObject();
@@ -33,6 +38,12 @@ public class NativeMap extends IdScriptableObject {
     @Override
     public String getClassName() {
         return "Map";
+    }
+
+    @Override
+    public void fillConstructorProperties(IdFunctionObject ctor) {
+        addIdFunctionProperty(ctor, MAP_TAG, ConstructorId_groupBy, "groupBy", 2);
+        super.fillConstructorProperties(ctor);
     }
 
     @Override
@@ -80,6 +91,30 @@ public class NativeMap extends IdScriptableObject {
                                 args.length > 1 ? args[1] : Undefined.instance);
             case SymbolId_getSize:
                 return realThis(thisObj, f).js_getSize();
+
+            case ConstructorId_groupBy:
+                {
+                    Object items = args.length < 1 ? Undefined.instance : args[0];
+                    Object callback = args.length < 2 ? Undefined.instance : args[1];
+
+                    Map<Object, List<Object>> groups =
+                            AbstractEcmaObjectOperations.groupBy(
+                                    cx,
+                                    scope,
+                                    f,
+                                    items,
+                                    callback,
+                                    AbstractEcmaObjectOperations.KEY_COERCION.COLLECTION);
+
+                    NativeMap map = (NativeMap) cx.newObject(scope, "Map");
+
+                    for (Map.Entry<Object, List<Object>> entry : groups.entrySet()) {
+                        Scriptable elements = cx.newArray(scope, entry.getValue().toArray());
+                        map.entries.put(entry.getKey(), elements);
+                    }
+
+                    return map;
+                }
         }
         throw new IllegalArgumentException("Map.prototype has no method: " + f.getFunctionName());
     }
@@ -313,7 +348,8 @@ public class NativeMap extends IdScriptableObject {
 
     // Note that "SymbolId_iterator" is not present here. That's because the spec
     // requires that it be the same value as the "entries" prototype property.
-    private static final int Id_constructor = 1,
+    private static final int ConstructorId_groupBy = -1,
+            Id_constructor = 1,
             Id_set = 2,
             Id_get = 3,
             Id_delete = 4,

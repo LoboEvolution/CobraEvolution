@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,29 +45,26 @@ import static org.junit.Assert.assertEquals;
  * Invoke the adoptNode method on a new document with the first code element node of this
  * Document as the source.  Verify if the node has been adopted correctly by checking the
  * length of the this elements childNode list before and after.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode24Test extends LoboUnitTest {
+public class Documentadoptnode24Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        HTMLCollection childList;
-        Node adoptedNode;
-        Element codeElem;
-        NodeList codeElemChildren;
-        NodeList adoptedChildren;
-        int codeElemLen;
-        int adoptedLen;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final HTMLCollection childList;
+        final Node adoptedNode;
+        final Element codeElem;
+        final NodeList codeElemChildren;
+        final NodeList adoptedChildren;
+        final int codeElemLen;
+        final int adoptedLen;
 
         doc = sampleXmlFile("hc_staff.xml");
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:test", nullDocType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:test", null);
         childList = doc.getElementsByTagNameNS("*", "code");
         codeElem = (Element) childList.item(0);
         adoptedNode = newDoc.adoptNode(codeElem);
@@ -74,7 +72,7 @@ public class documentadoptnode24Test extends LoboUnitTest {
         adoptedChildren = adoptedNode.getChildNodes();
         codeElemLen = codeElemChildren.getLength();
         adoptedLen = adoptedChildren.getLength();
-        assertEquals("documentadoptnode24", adoptedLen, codeElemLen);
+        assertEquals(adoptedLen, codeElemLen, "Documentadoptnode24Assert2");
     }
 }
 

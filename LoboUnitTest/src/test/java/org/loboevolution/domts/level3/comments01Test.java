@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Check that Node.normalize ignores the setting of configuration parameter 'comments'.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-normalize">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-normalize</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-comments">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-comments</a>
  */
-public class comments01Test extends LoboUnitTest {
+public class Comments01Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         Element elem;
-        Comment newComment;
-        Node lastChild;
-        String nodeName;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Comment newComment;
+        final Node lastChild;
+        final String nodeName;
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         HTMLCollection pList;
         doc = sampleXmlFile("barfoo.xml");
@@ -68,12 +68,12 @@ public class comments01Test extends LoboUnitTest {
         /*DOMErrorMonitor */
         domConfig.setParameter("error-handler", errorMonitor);
         doc.normalize();
-        assertTrue("normalizationError", errorMonitor.assertLowerSeverity(2));
+        assertTrue(errorMonitor.assertLowerSeverity(2), "Comments01Assert3");
         pList = doc.getElementsByTagName("p");
         elem = (Element) pList.item(0);
         lastChild = elem.getLastChild();
         nodeName = lastChild.getNodeName();
-        assertEquals("documentnormalizedocument04_true", "#comment", nodeName);
+        assertEquals("#comment", nodeName, "Comments01Assert4");
     }
 }
 

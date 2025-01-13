@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,12 @@
 
 package org.loboevolution.html.renderer;
 
-import org.loboevolution.common.ArrayUtilities;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>TranslatedRenderable class.</p>
@@ -51,6 +51,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     }
 
     /** {@inheritDoc} */
+    @Override
     public void paint(final Graphics g) {
         translatedChild.paintTranslated(g);
     }
@@ -170,7 +171,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getX.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getX() {
         return translatedChild.getX();
@@ -179,7 +180,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getY.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getY() {
         return translatedChild.getY();
@@ -188,7 +189,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getHeight.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getHeight() {
         return translatedChild.getHeight();
@@ -197,7 +198,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getWidth.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getWidth() {
         return translatedChild.getWidth();
@@ -206,7 +207,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getVisualHeight.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getVisualHeight() {
         return translatedChild.getVisualHeight();
@@ -215,7 +216,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getVisualWidth.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getVisualWidth() {
         return translatedChild.getVisualWidth();
@@ -267,8 +268,8 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
      * <p>onMiddleClick.</p>
      *
      * @param event a {@link java.awt.event.MouseEvent} object.
-     * @param x a int.
-     * @param y a int.
+     * @param x a {@link java.lang.Integer} object.
+     * @param y a {@link java.lang.Integer} object.
      * @return a boolean.
      */
     public boolean onMiddleClick(final MouseEvent event, final int x, final int y) {
@@ -311,7 +312,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
 
     /** {@inheritDoc} */
     @Override
-    public boolean extractSelectionText(StringBuilder buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
+    public boolean extractSelectionText(final StringBuilder buffer, final boolean inSelection, final RenderableSpot startPoint, final RenderableSpot endPoint) {
         return translatedChild.extractSelectionText(buffer, inSelection, startPoint, endPoint);
     }
 
@@ -333,7 +334,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /**
      * <p>getZIndex.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     public int getZIndex() {
         return translatedChild.getZIndex();
@@ -356,9 +357,8 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
 
     /** {@inheritDoc} */
     @Override
-    public void updateWidgetBounds(int guiX, int guiY) {
-        if (translatedChild instanceof RCollection) {
-            final RCollection tc = (RCollection) translatedChild;
+    public void updateWidgetBounds(final int guiX, final int guiY) {
+        if (translatedChild instanceof RCollection tc) {
             tc.updateWidgetBounds(guiX, guiY);
         }
 
@@ -366,15 +366,16 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
 
     /** {@inheritDoc} */
     @Override
-    public Iterator<Renderable> getRenderables() {
-        return ArrayUtilities.singletonIterator(translatedChild);
+    public List<Renderable> getRenderables() {
+        final List<Renderable> renderables = new ArrayList<>();
+        renderables.add(translatedChild);
+        return renderables;
     }
 
     /** {@inheritDoc} */
     @Override
     public void invalidateLayoutDeep() {
-        if (translatedChild instanceof RCollection) {
-            final RCollection tc = (RCollection) translatedChild;
+        if (translatedChild instanceof RCollection tc) {
             tc.invalidateLayoutDeep();
         }
 
@@ -394,9 +395,8 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
 
     /** {@inheritDoc} */
     @Override
-    public BoundableRenderable getRenderable(int x, int y) {
-        if (translatedChild instanceof RCollection) {
-            final RCollection tc = (RCollection) translatedChild;
+    public BoundableRenderable getRenderable(final int x, final int y) {
+        if (translatedChild instanceof RCollection tc) {
             return tc.getRenderable(x, y);
         }
 
@@ -406,8 +406,7 @@ public class TranslatedRenderable extends BaseBoundableRenderable implements RCo
     /** {@inheritDoc} */
     @Override
     public Rectangle getClipBounds() {
-        if (translatedChild instanceof RCollection) {
-            final RCollection tc = (RCollection) translatedChild;
+        if (translatedChild instanceof RCollection tc) {
             return tc.getClipBounds();
         }
 

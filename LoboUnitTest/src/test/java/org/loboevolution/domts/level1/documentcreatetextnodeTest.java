@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,31 +42,28 @@ import static org.junit.Assert.*;
  * "createTextNode(data)" method.  It should create a
  * new Text node whose "data" is the specified string.
  * The NodeName and NodeType are also checked.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1975348127">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1975348127</a>
  */
-public class documentcreatetextnodeTest extends LoboUnitTest {
+public class DocumentcreatetextnodeTest extends LoboUnitTest {
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Text newTextNode;
-        String newTextName;
-        String newTextValue;
-        int newTextType;
+        final Document doc;
+        final Text newTextNode;
+        final String newTextName;
+        final String newTextValue;
+        final int newTextType;
         doc = sampleXmlFile("staff.xml");
         newTextNode = doc.createTextNode("This is a new Text node");
         newTextValue = newTextNode.getNodeValue();
-        assertEquals("value", "This is a new Text node", newTextValue);
+        assertEquals("This is a new Text node", newTextValue, "DocumentcreatetextnodeAssert1");
         newTextName = newTextNode.getNodeName();
-        assertEquals("name", "#text", newTextName);
+        assertEquals("#text", newTextName, "DocumentcreatetextnodeAssert2");
         newTextType = newTextNode.getNodeType();
-        assertEquals("type", 3, newTextType);
+        assertEquals(3, newTextType, "DocumentcreatetextnodeAssert3");
     }
 }
 

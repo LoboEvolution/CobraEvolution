@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 new Text nodes having null text are equal and two others
  * having different data are not equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode28Test extends LoboUnitTest {
+public class Nodeisequalnode28Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Text text1;
-        Text text2;
-        Text text3;
+        final Document doc;
+        final Text text1;
+        final Text text2;
+        final Text text3;
         boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         text1 = doc.createTextNode("");
         text2 = doc.createTextNode("");
         text3 = doc.createTextNode("#Text");
         isEqual = text1.isEqualNode(text2);
-        assertTrue("nodeisequalnodeTrue28", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode28Assert3");
         isEqual = text1.isEqualNode(text3);
-        assertFalse("nodeisequalnodeFalse28", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode28Assert4");
     }
 }
 

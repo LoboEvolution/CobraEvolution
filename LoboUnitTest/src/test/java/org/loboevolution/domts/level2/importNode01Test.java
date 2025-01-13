@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -51,48 +51,45 @@ import static org.junit.Assert.*;
  * Method should return a node whose name matches "attr1" and a child node
  * whose value equals "importedText".
  * The returned node should belong to this document whose systemId is "staff.dtd"
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode01Test extends LoboUnitTest {
+public class ImportNode01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        Attr newAttr;
-        Node aNode;
-        Document ownerDocument;
-        Node attrOwnerElement;
-        DocumentType docType;
-        String system;
-        boolean specified;
-        String nodeName;
-        String childValue;
+        final Document doc;
+        final Document aNewDoc;
+        final Attr newAttr;
+        final Node aNode;
+        final Document ownerDocument;
+        final Node attrOwnerElement;
+        final DocumentType docType;
+        final String system;
+        final boolean specified;
+        final String nodeName;
+        final String childValue;
 
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
-        newAttr = aNewDoc.createAttribute( "attr1");
+        newAttr = aNewDoc.createAttribute("attr1");
         newAttr.setNodeValue("importedText");
         aNode = doc.importNode(newAttr, false);
         ownerDocument = aNode.getOwnerDocument();
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertNotNull("aNode", aNode);
-        assertEquals("systemId", "staffNS.dtd", system);
+        assertNotNull(aNode);
+        assertEquals("staffNS.dtd", system);
         attrOwnerElement = ((Attr) aNode).getOwnerElement();
-        assertNull("ownerElement", attrOwnerElement);
+        assertNull(attrOwnerElement);
         specified = ((Attr) aNode).isSpecified();
-        assertTrue("specified", specified);
+        assertTrue(specified);
         nodeName = aNode.getNodeName();
-        assertEquals("nodeName", "attr1", nodeName);
+        assertEquals("attr1", nodeName);
         childValue = aNode.getNodeValue();
-        assertEquals("childValue", "importedText", childValue);
+        assertEquals("importedText", childValue);
     }
 }

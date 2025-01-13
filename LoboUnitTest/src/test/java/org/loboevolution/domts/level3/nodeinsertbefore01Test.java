@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,32 +42,30 @@ import static org.junit.Assert.assertEquals;
  * this DocumentElement node and verify the name of the inserted Comment node.  Now
  * attempt to insert a new Processing Instruction node before the new Comment and
  * verify the target of the inserted ProcessingInstruction.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore01Test extends LoboUnitTest {
+public class Nodeinsertbefore01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Comment newComment;
-        Comment insertedComment;
-        String data;
-        ProcessingInstruction newPI;
-        ProcessingInstruction insertedPI;
-        String target;
+        final Document doc;
+        final Element docElem;
+        final Comment newComment;
+        final Comment insertedComment;
+        final String data;
+        final ProcessingInstruction newPI;
+        final ProcessingInstruction insertedPI;
+        final String target;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         newComment = doc.createComment("Comment");
         newPI = doc.createProcessingInstruction("PITarget", "PIData");
         insertedComment = (Comment) doc.insertBefore(newComment, docElem);
         data = insertedComment.getData();
-        assertEquals("nodeinsertbefore01_1", "Comment", data);
+        assertEquals("Comment", data, "Nodeinsertbefore01Assert2");
         insertedPI = (ProcessingInstruction) doc.insertBefore(newPI, newComment);
         target = insertedPI.getTarget();
-        assertEquals("nodeinsertbefore01_2", "PITarget", target);
+        assertEquals("PITarget", target, "Nodeinsertbefore01Assert3");
     }
 }
 

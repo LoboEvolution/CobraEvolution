@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,11 @@
  */
 package org.loboevolution.apache.xpath;
 
-import org.loboevolution.javax.xml.transform.SourceLocator;
-import org.loboevolution.javax.xml.transform.TransformerException;
+import lombok.extern.slf4j.Slf4j;
+import javax.xml.transform.SourceLocator;
+import javax.xml.transform.TransformerException;
+
+import java.io.PrintWriter;
 
 /**
  * This class implements an exception object that all XPath classes will throw in case of an error.
@@ -34,6 +37,7 @@ import org.loboevolution.javax.xml.transform.TransformerException;
  * exceptions, printStackTrace will dump all the traces of the nested exceptions, not just the trace
  * of this object.
  */
+@Slf4j
 public class XPathException extends TransformerException {
 
   /**
@@ -41,7 +45,7 @@ public class XPathException extends TransformerException {
    *
    * @param message The error message.
    */
-  public XPathException(String message, SourceLocator ex) {
+  public XPathException(final String message, final SourceLocator ex) {
     super(message);
     this.setLocator(ex);
   }
@@ -51,7 +55,7 @@ public class XPathException extends TransformerException {
    *
    * @param message The error message.
    */
-  public XPathException(String message) {
+  public XPathException(final String message) {
     super(message);
   }
 
@@ -63,26 +67,28 @@ public class XPathException extends TransformerException {
 
     try {
       super.printStackTrace(s);
-    } catch (Exception e) {
+    } catch (final Exception e) {
+      log.info(e.getMessage());
     }
   }
 
   /** {@inheritDoc} */
   @Override
   public String getMessage() {
-    String lastMessage = super.getMessage();
+    final String lastMessage = super.getMessage();
     return (null != lastMessage) ? lastMessage : "";
   }
 
   /** {@inheritDoc} */
   @Override
-  public void printStackTrace(java.io.PrintWriter s) {
+  public void printStackTrace(PrintWriter s) {
 
-    if (s == null) s = new java.io.PrintWriter(System.err);
+    if (s == null) s = new PrintWriter(System.err);
 
     try {
       super.printStackTrace(s);
-    } catch (Exception e) {
+    } catch (final Exception e) {
+      log.info(e.getMessage());
     }
   }
 

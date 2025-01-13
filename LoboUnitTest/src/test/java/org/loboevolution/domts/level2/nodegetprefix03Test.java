@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,28 +43,25 @@ import static org.junit.Assert.assertNull;
  * Ceate two new element nodes and atribute nodes, with and without namespace prefixes.
  * Retreive the prefix part of their qualified names using getPrefix and verify
  * if it is correct.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodegetprefix03Test extends LoboUnitTest {
+public class Nodegetprefix03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Element qelement;
-        Attr attr;
-        Attr qattr;
-        String elemNoPrefix;
-        String elemPrefix;
-        String attrNoPrefix;
-        String attrPrefix;
+        final Document doc;
+        final Element element;
+        final Element qelement;
+        final Attr attr;
+        final Attr qattr;
+        final String elemNoPrefix;
+        final String elemPrefix;
+        final String attrNoPrefix;
+        final String attrPrefix;
         doc = sampleXmlFile("staff.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test/elem", "elem");
         qelement = doc.createElementNS("http://www.w3.org/DOM/Test/elem", "qual:qelem");
@@ -74,10 +71,10 @@ public class nodegetprefix03Test extends LoboUnitTest {
         elemPrefix = qelement.getPrefix();
         attrNoPrefix = attr.getPrefix();
         attrPrefix = qattr.getPrefix();
-        assertNull("nodegetprefix03_1", elemNoPrefix);
-        assertEquals("nodegetprefix03_2", "qual", elemPrefix);
-        assertNull("nodegetprefix03_3", attrNoPrefix);
-        assertEquals("nodegetprefix03_4", "qual", attrPrefix);
+        assertNull(elemNoPrefix);
+        assertEquals("qual", elemPrefix);
+        assertNull(attrNoPrefix);
+        assertEquals("qual", attrPrefix);
     }
 }
 

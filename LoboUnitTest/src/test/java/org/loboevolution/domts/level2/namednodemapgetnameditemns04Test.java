@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -46,36 +46,32 @@ import static org.junit.Assert.*;
  * and add it to this element.  Using the getNamedItemNS retreive the newly created attribute
  * node from a nodemap of attributes of the retreive element node.
  * Verify if the attr node has been retreived successfully by checking its nodeName atttribute.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getNamedItemNS</a>
  */
-public class namednodemapgetnameditemns04Test extends LoboUnitTest {
+public class Namednodemapgetnameditemns04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        Element element;
-        Attr attribute;
-        Attr newAttr1;
-        Attr newAttribute;
-        HTMLCollection elementList;
-        String attrName;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final Element element;
+        final Attr attribute;
+        final Attr newAttr1;
+        final HTMLCollection elementList;
+        final String attrName;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
         element = (Element) elementList.item(1);
         newAttr1 = doc.createAttributeNS("http://www.w3.org/DOM/L1", "street");
-        newAttribute = element.setAttributeNodeNS(newAttr1);
+        element.setAttributeNodeNS(newAttr1);
         attributes = element.getAttributes();
         attribute = (Attr) attributes.getNamedItemNS("http://www.w3.org/DOM/L1", "street");
         attrName = attribute.getNodeName();
-        assertEquals("namednodemapgetnameditemns04", "street", attrName);
+        assertEquals("street", attrName);
     }
 }
 

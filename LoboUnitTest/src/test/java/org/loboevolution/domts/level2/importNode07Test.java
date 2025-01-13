@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,41 +48,38 @@ import static org.junit.Assert.*;
  * Invoke method importNode(importedNode,deep) on this document which
  * defines default attribute for the element name "employee".
  * Method should return an the imported element with an assigned default attribute.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=238">http://www.w3.org/Bugs/Public/show_bug.cgi?id=238</a>
  */
-public class importNode07Test extends LoboUnitTest {
+public class ImportNode07Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        Element element;
-        Element aNode;
-        NamedNodeMap attributes;
-        String name;
-        Attr attr;
-        String lname;
-        String namespaceURI = "http://www.nist.gov";
-        String qualifiedName = "employee";
+        final Document doc;
+        final Document aNewDoc;
+        final Element element;
+        final Element aNode;
+        final NamedNodeMap attributes;
+        final String name;
+        final Attr attr;
+        final String lname;
+        final String namespaceURI = "http://www.nist.gov";
+        final String qualifiedName = "employee";
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staff.xml");
         element = aNewDoc.createElementNS(namespaceURI, qualifiedName);
         aNode = (Element) doc.importNode(element, false);
         attributes = aNode.getAttributes();
-        assertEquals("throw_Size", 1, attributes.getLength());
+        assertEquals(1, attributes.getLength());
         name = aNode.getNodeName();
-        assertEquals("nodeName", "employee", name);
+        assertEquals("employee", name);
         attr = (Attr) attributes.item(0);
         lname = attr.getLocalName();
-        assertEquals("lname", "defaultAttr", lname);
+        assertEquals("defaultAttr", lname);
     }
 }
 

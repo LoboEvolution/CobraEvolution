@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMStringList;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMStringList;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -42,25 +42,23 @@ import static org.junit.Assert.assertNotNull;
  * The range of valid child node indices is 0 to length-1 inclusive.
  * Invoke the length on the list of parameters returned by the DOMConfiguration object.
  * Verify that the list is not null and length is not 0.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-length">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-length</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-parameterNames">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-parameterNames</a>
  */
-public class domstringlistgetlength01Test extends LoboUnitTest {
+public class Domstringlistgetlength01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMStringList paramList;
-        DOMConfiguration domConfig;
-        int listSize;
+        final Document doc;
+        final DOMStringList paramList;
+        final DOMConfiguration domConfig;
+        final int listSize;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         paramList = domConfig.getParameterNames();
-        assertNotNull("domstringlistgetlength01_notNull", paramList);
+        assertNotNull(paramList, "Domstringlistgetlength01Assert3");
         listSize = paramList.getLength();
-        assertNotEquals("domstringlistgetlength01_notZero", 0, listSize);
+        assertNotEquals(0, listSize, "Domstringlistgetlength01Assert4");
     }
 }
 

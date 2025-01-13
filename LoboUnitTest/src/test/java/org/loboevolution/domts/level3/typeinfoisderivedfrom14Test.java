@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,43 +35,40 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Check how classType is derived from itself.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom14Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        Attr attr;
-        Element elem;
-        String elemName;
-        TypeInfo typeInfo;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final Attr attr;
+        final TypeInfo typeInfo;
         boolean isDerived;
-        String typeName;
+        final String typeName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acronymElem = (Element) elemList.item(2);
         attr = acronymElem.getAttributeNode("class");
         typeInfo = attr.getSchemaTypeInfo();
-        assertNotNull("typeInfoNotNull", typeInfo);
+        assertNotNull(typeInfo, "Typeinfoisderivedfrom14Assert1");
         typeName = typeInfo.getTypeName();
-        assertEquals("name", "classType", typeName);
+        assertEquals("classType", typeName, "Typeinfoisderivedfrom14Assert2");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "classType", 1);
-        assertTrue("derivedFromSelfRestriction", isDerived);
+        assertTrue(isDerived, "Typeinfoisderivedfrom14Assert3");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "classType", 14);
-        assertFalse("notDerivedFromSelfOther", isDerived);
+        assertFalse(isDerived, "Typeinfoisderivedfrom14Assert4");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "classType", 15);
-        assertTrue("derivedFromSelfAll", isDerived);
+        assertTrue(isDerived, "Typeinfoisderivedfrom14Assert5");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "classType", 0);
-        assertTrue("derivedFromSelfAny", isDerived);
+        assertTrue(isDerived, "Typeinfoisderivedfrom14Assert6");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public class FilteredObjectList extends AbstractScriptableDelegate {
 	 * @param list a {@link java.util.Collection} object.
 	 * @param lock a {@link java.lang.Object} object.
 	 */
-	public FilteredObjectList(ObjectFilter filter, Collection<Node> list, Object lock) {
+	public FilteredObjectList(final ObjectFilter filter, final Collection<Node> list, final Object lock) {
 		this.filter = filter;
 		this.sourceNodeList = list;
 		this.lock = lock;
@@ -57,12 +57,12 @@ public class FilteredObjectList extends AbstractScriptableDelegate {
 	/**
 	 * <p>getLength.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	public int getLength() {
 		synchronized (this.lock) {
 			int count = 0;
-			for (Node node : sourceNodeList) {
+			for (final Node node : sourceNodeList) {
 				if (this.filter.acceptNode(node)) {
 					count++;
 				}
@@ -74,13 +74,13 @@ public class FilteredObjectList extends AbstractScriptableDelegate {
 	/**
 	 * <p>item.</p>
 	 *
-	 * @param index a int.
+	 * @param index a {@link java.lang.Integer} object.
 	 * @return a {@link java.lang.Object} object.
 	 */
-	public Object item(int index) {
+	public Object item(final int index) {
 		synchronized (this.lock) {
 			int count = 0;
-			for (Node node : sourceNodeList) {
+			for (final Node node : sourceNodeList) {
 				if (this.filter.acceptNode(node)) {
 					if (count == index) {
 						return node;

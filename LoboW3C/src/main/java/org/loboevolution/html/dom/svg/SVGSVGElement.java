@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ package org.loboevolution.html.dom.svg;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NodeList;
-import org.loboevolution.html.node.events.Event;
+import org.loboevolution.events.Event;
 
 /**
  * <p>SVGSVGElement interface.</p>
@@ -149,15 +149,15 @@ public interface SVGSVGElement extends SVGElement, SVGTests, SVGLangSpace, SVGEx
 	/**
 	 * <p>suspendRedraw.</p>
 	 *
-	 * @param max_wait_milliseconds a int.
-	 * @return a int.
+	 * @param max_wait_milliseconds a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int suspendRedraw(int max_wait_milliseconds);
 
 	/**
 	 * <p>unsuspendRedraw.</p>
 	 *
-	 * @param suspend_handle_id a int.
+	 * @param suspend_handle_id a {@link java.lang.Integer} object.
 	 * @throws DOMException if any.
 	 */
 	void unsuspendRedraw(int suspend_handle_id);
@@ -313,7 +313,7 @@ public interface SVGSVGElement extends SVGElement, SVGTests, SVGLangSpace, SVGEx
      * <p>createEvent.</p>
      *
      * @param eventType a {@link java.lang.String} object.
-     * @return a {@link org.loboevolution.html.node.events.Event} object.
+     * @return a {@link Event} object.
      */
     Event createEvent(String eventType);
 }

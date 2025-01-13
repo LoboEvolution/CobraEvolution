@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,7 @@ package org.loboevolution.html.dom.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.util.Objects;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
@@ -44,7 +43,7 @@ public class TagNameFilter implements NodeFilter {
      * {@inheritDoc}
      */
     @Override
-    public short acceptNode(Node node) {
+    public short acceptNode(final Node node) {
         if (!(node instanceof Element)) {
             return NodeFilter.FILTER_REJECT;
         }

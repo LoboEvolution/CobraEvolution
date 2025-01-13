@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -49,31 +49,26 @@ import static org.junit.Assert.*;
  * fourth child.   The second employee should now have two
  * extra children("newChild1" and "newChild2") at
  * positions fourth and fifth respectively.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  */
-public class nodeinsertbeforedocfragmentTest extends LoboUnitTest {
+public class NodeinsertbeforedocfragmentTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node refChild;
-        DocumentFragment newdocFragment;
-        Node newChild1;
-        Node newChild2;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node refChild;
+        final DocumentFragment newdocFragment;
+        final Node newChild1;
+        final Node newChild2;
         Node child;
         String childName;
-        Node appendedChild;
-        Node insertedNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -82,15 +77,15 @@ public class nodeinsertbeforedocfragmentTest extends LoboUnitTest {
         newdocFragment = doc.createDocumentFragment();
         newChild1 = doc.createElement("newChild1");
         newChild2 = doc.createElement("newChild2");
-        appendedChild = newdocFragment.appendChild(newChild1);
-        appendedChild = newdocFragment.appendChild(newChild2);
-        insertedNode = employeeNode.insertBefore(newdocFragment, refChild);
+        newdocFragment.appendChild(newChild1);
+        newdocFragment.appendChild(newChild2);
+        employeeNode.insertBefore(newdocFragment, refChild);
         child = childList.item(3);
         childName = child.getNodeName();
-        assertEquals("childName3", "newChild1", childName);
+        assertEquals("newChild1", childName, "NodeinsertbeforedocfragmentAssert1");
         child = childList.item(4);
         childName = child.getNodeName();
-        assertEquals("childName4", "newChild2", childName);
+        assertEquals("newChild2", childName, "NodeinsertbeforedocfragmentAssert2");
     }
 }
 

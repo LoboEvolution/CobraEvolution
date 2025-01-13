@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,16 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.*;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.node.Document;
+import org.loboevolution.html.node.Element;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,20 +47,17 @@ import static org.junit.Assert.assertTrue;
  * Invoke the renameNode method on a new document node to rename a node to nodes
  * with malformed qualifiedNames.
  * Check if a NAMESPACE_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode19Test extends LoboUnitTest {
+public class Documentrenamenode19Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Element element;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Element element;
 
-        List<String> qualifiedNames = new ArrayList<>();
+        final List<String> qualifiedNames = new ArrayList<>();
         qualifiedNames.add("a_:");
         qualifiedNames.add("_:");
         qualifiedNames.add(":");
@@ -67,16 +66,16 @@ public class documentrenamenode19Test extends LoboUnitTest {
 
         doc = sampleXmlFile("hc_staff.xml");
         domImpl = doc.getImplementation();
-        domImpl.createDocument("http://www.w3.org/DOM/Test", "newD", nullDocType);
+        domImpl.createDocument("http://www.w3.org/DOM/Test", "newD", null);
         element = doc.createElementNS("http://www.w3.org/DOM/Test", "test");
-        for (String qualifiedName : qualifiedNames) {
+        for (final String qualifiedName : qualifiedNames) {
             boolean success = false;
             try {
                 doc.renameNode(element, "http://www.w3.org/2000/XMLNS", qualifiedName);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("documentrenamenode19_NAMESPACE_ERR", success);
+            assertTrue(success, "Documentrenamenode19Assert2");
 
         }
     }

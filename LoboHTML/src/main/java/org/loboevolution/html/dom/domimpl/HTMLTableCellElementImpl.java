@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>HTMLTableCellElementImpl class.</p>
  */
 public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTableCellElement {
-	
-	private int index = -1;
+
+    private int index = -1;
 
 	/**
 	 * <p>Constructor for HTMLTableCellElementImpl.</p>
@@ -55,7 +55,7 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new TableCellRenderState(prevRenderState, this);
 	}
 
@@ -89,14 +89,13 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 		if (index >= 0) {
 			return index;
 		} else {
-			AtomicInteger index = new AtomicInteger(-1);
-			AtomicInteger count = new AtomicInteger(-1);
+			final AtomicInteger index = new AtomicInteger(-1);
+			final AtomicInteger count = new AtomicInteger(-1);
 			if (getParentNode() != null) {
-				NodeListImpl childNodes = (NodeListImpl) getParentNode().getChildNodes();
+				final NodeListImpl childNodes = (NodeListImpl) getParentNode().getChildNodes();
 				childNodes.forEach(node -> {
-					if (node instanceof HTMLTableCellElementImpl) {
-						HTMLTableCellElementImpl cell = (HTMLTableCellElementImpl) node;
-						count.incrementAndGet();
+					if (node instanceof HTMLTableCellElementImpl cell) {
+                        count.incrementAndGet();
 						if (cell.getId().equals(getId()))
 							index.set(count.get());
 					}
@@ -122,7 +121,7 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 	@Override
 	public int getColSpan() {
 		final String colSpanText = getAttribute("colspan");
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
 		return HtmlValues.getPixelSize(colSpanText, null, doc.getDefaultView(), 1);
 	}
 
@@ -148,7 +147,7 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 	@Override
 	public int getRowSpan() {
 		final String rowSpanText = getAttribute("rowspan");
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
 		return HtmlValues.getPixelSize(rowSpanText, null, doc.getDefaultView(), 1);
 	}
 
@@ -173,51 +172,51 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 	/**
 	 * <p>Setter for the field <code>index</code>.</p>
 	 *
-	 * @param index a int.
+	 * @param index a {@link java.lang.Integer} object.
 	 */
-	protected void setIndex(int index) {
+	protected void setIndex(final int index) {
 		this.index = index;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAbbr(String abbr) {
+	public void setAbbr(final String abbr) {
 		setAttribute("abbr", abbr);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAlign(String align) {
+	public void setAlign(final String align) {
 		setAttribute("align", align);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAxis(String axis) {
+	public void setAxis(final String axis) {
 		setAttribute("axis", axis);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBgColor(String bgColor) {
+	public void setBgColor(final String bgColor) {
 		setAttribute("bgcolor", bgColor);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCh(String ch) {
+	public void setCh(final String ch) {
 		setAttribute("ch", ch);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setChOff(String chOff) {
+	public void setChOff(final String chOff) {
 		setAttribute("choff", chOff);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setColSpan(Object colSpan) {
+	public void setColSpan(final Object colSpan) {
 		if (colSpan!= null && Strings.isNumeric(colSpan.toString()) && Double.parseDouble(colSpan.toString()) > 0) {
 			setAttribute("colspan", String.valueOf(colSpan));
 		} else {
@@ -227,25 +226,25 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHeaders(String headers) {
+	public void setHeaders(final String headers) {
 		setAttribute("headers", headers);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHeight(String height) {
+	public void setHeight(final String height) {
 		setAttribute("height", height);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setNoWrap(boolean noWrap) {
+	public void setNoWrap(final boolean noWrap) {
 		setAttribute("nowrap", noWrap ? "nowrap" : null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setRowSpan(Object rowSpan) {		
+	public void setRowSpan(final Object rowSpan) {
 		if (rowSpan != null && Strings.isNumeric(rowSpan.toString()) && Double.parseDouble(rowSpan.toString()) > 0) {
 			setAttribute("rowspan", String.valueOf(rowSpan));
 		} else {
@@ -255,27 +254,30 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 
 	/** {@inheritDoc} */
 	@Override
-	public void setScope(String scope) {
+	public void setScope(final String scope) {
 		setAttribute("scope", scope);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setvAlign(String vAlign) {
+	public void setvAlign(final String vAlign) {
 		setAttribute("valign", vAlign);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setWidth(String width) {
+	public void setWidth(final String width) {
 		setAttribute("width", width);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Integer getOffsetWidth() {
 		return null;
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public Integer getClientWidth() {
 		return null;
 	}

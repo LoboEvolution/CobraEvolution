@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -47,31 +47,28 @@ import static org.junit.Assert.assertNull;
  * Attr node, the "value" can be examined to ensure the
  * proper attribute node was retrieved.  This attribute
  * value should be null since there is no such attribute.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS</a>
  */
-public class getAttributeNodeNS01Test extends LoboUnitTest {
+public class GetAttributeNodeNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.nist.gov";
-        String localName = "invalidlocalname";
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        Attr attribute;
+        final String namespaceURI = "http://www.nist.gov";
+        final String localName = "invalidlocalname";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final Attr attribute;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = (Element) elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
+        assertNotNull(testAddr);
         attribute = testAddr.getAttributeNodeNS(namespaceURI, localName);
-        assertNull("throw_Null", attribute);
+        assertNull(attribute);
     }
 }
 

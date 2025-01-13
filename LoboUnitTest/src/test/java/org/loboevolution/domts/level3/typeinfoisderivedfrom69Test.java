@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Checks that isDerivedFrom(...,DERIVATION_UNION|DERIVATION_LIST) returns false when there
  * is both a union and list derivation steps between the target and
  * ancestor type.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom69Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom69Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        TypeInfo elemTypeInfo;
-        String typeName;
-        HTMLCollection elemList;
-        boolean retValue;
+        final Document doc;
+        final Element elem;
+        final TypeInfo elemTypeInfo;
+        final HTMLCollection elemList;
+        final boolean retValue;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("sup");
         elem = (Element) elemList.item(0);
         elemTypeInfo = elem.getSchemaTypeInfo();
         retValue = elemTypeInfo.isDerivedFrom("http://www.w3.org/2001/XMLSchema", "integer", 12);
-        assertFalse("isDerived", retValue);
+        assertFalse(retValue, "Typeinfoisderivedfrom69Assert2");
     }
 }
 

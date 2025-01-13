@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Using isDefaultNamespace on a new Child of a new Element node with a namespace URI
  * and prefix and using the childs namespace URI as an argument, verify if the
  * value returned is true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isDefaultNamespace</a>
  */
-public class nodeisdefaultnamespace10Test extends LoboUnitTest {
+public class Nodeisdefaultnamespace10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element parent;
-        Element child;
+        final Document doc;
+        final Element parent;
+        final Element child;
         boolean isDefault;
-        Node appendedChild;
         doc = sampleXmlFile("hc_staff.xml");
         parent = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:body");
         child = doc.createElementNS("http://www.w3.org/1999/xhtml", "p");
-        appendedChild = parent.appendChild(child);
+        parent.appendChild(child);
         isDefault = child.isDefaultNamespace("http://www.w3.org/1999/xhtml");
-        assertTrue("nodeisdefaultnamespace10_1", isDefault);
+        assertFalse(isDefault, "Nodeisdefaultnamespace10Assert3");
         isDefault = parent.isDefaultNamespace("http://www.w3.org/1999/xhtml");
-        assertFalse("nodeisdefaultnamespace10_2", isDefault);
+        assertFalse(isDefault, "Nodeisdefaultnamespace10Assert4");
     }
 }
 

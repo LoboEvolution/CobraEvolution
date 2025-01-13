@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,26 +41,23 @@ import static org.junit.Assert.*;
  * Get the "domestic" attribute from the first "address" node.
  * Apply the "getOwnerElement()" method to get the Element associated
  * with the attribute.  The value returned should be "address".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D095">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D095</a>
  */
-public class ownerElement01Test extends LoboUnitTest {
+public class OwnerElement01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Attr domesticAttr;
-        Node elementNode;
-        String name;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Attr domesticAttr;
+        final Node elementNode;
+        final String name;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
         testNode = (Element) addressList.item(0);
@@ -68,7 +65,7 @@ public class ownerElement01Test extends LoboUnitTest {
         domesticAttr = (Attr) attributes.getNamedItem("domestic");
         elementNode = domesticAttr.getOwnerElement();
         name = elementNode.getNodeName();
-        assertEquals("throw_Equals", "ADDRESS", name);
+        assertEquals("ADDRESS", name);
     }
 }
 

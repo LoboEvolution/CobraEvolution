@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,8 @@
  */
 package org.loboevolution.html.dom.nodeimpl;
 
+import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
+import org.loboevolution.html.js.WindowImpl;
 import org.loboevolution.html.node.AbstractList;
 import org.loboevolution.html.js.Executor;
 import org.loboevolution.html.node.Node;
@@ -57,7 +59,7 @@ public class NodeListImpl extends AbstractList<Node> implements NodeList {
 	 *
 	 * @param collection a {@link java.util.List} object.
 	 */
-	public NodeListImpl(List<Node> collection) {
+	public NodeListImpl(final List<Node> collection) {
 		super(collection);
 	}
 
@@ -69,8 +71,8 @@ public class NodeListImpl extends AbstractList<Node> implements NodeList {
 
 	/** {@inheritDoc} */
 	@Override
-	public Node item(int index) {
-		int size = this.size();
+	public Node item(final int index) {
+		final int size = this.size();
 		if (size > index && index > -1) {
 			return this.get(index);
 		} else {
@@ -99,11 +101,14 @@ public class NodeListImpl extends AbstractList<Node> implements NodeList {
 	/** {@inheritDoc} */
 	@Override
 	public void forEach(final Function function) {
-		AtomicInteger integer = new AtomicInteger(0);
+		final AtomicInteger integer = new AtomicInteger(0);
 		this.forEach(node -> {
 			final int i = integer.getAndIncrement();
 			final NodeImpl n = (NodeImpl) node;
-			Executor.executeFunction(n, function, null, new Object[] { n.getScriptable(), i, this});
+			if (n instanceof HTMLElementImpl element) {
+				final WindowImpl win = (WindowImpl) element.getDocumentNode().getDefaultView();
+				Executor.executeFunction(n, function, new Object[]{n.getScriptable(), i, this}, win.getContextFactory());
+			}
 		});
 	}
 

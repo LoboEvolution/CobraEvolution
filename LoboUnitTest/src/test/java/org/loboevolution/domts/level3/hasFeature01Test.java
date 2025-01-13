@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,29 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * DOMImplementation.hasFeature("XML", "3.0") should return true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-5CED94D7">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-5CED94D7</a>
  */
-public class hasFeature01Test extends LoboUnitTest {
+public class HasFeature01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        DOMImplementation impl;
-        boolean state;
+        final DOMImplementation impl;
+        final boolean state;
         impl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
         state = impl.hasFeature("xMl", "3.0");
-        assertTrue("hasXML30", state);
+        assertTrue(state, "HasFeature01Assert2");
     }
 }
 

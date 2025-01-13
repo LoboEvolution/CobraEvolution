@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,8 +92,8 @@ public interface SVGFilterElement
 	/**
 	 * <p>setFilterRes.</p>
 	 *
-	 * @param filterResX a int.
-	 * @param filterResY a int.
+	 * @param filterResX a {@link java.lang.Integer} object.
+	 * @param filterResY a {@link java.lang.Integer} object.
 	 */
 	void setFilterRes(int filterResX, int filterResY);
 }

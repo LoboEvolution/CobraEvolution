@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
  */
 package org.loboevolution.html.dom.filter;
 
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.renderstate.RenderState;
@@ -37,9 +37,8 @@ public class ColumnsFilter implements NodeFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public final short acceptNode(Node node) {
-        if (node instanceof HTMLElementImpl) {
-            final HTMLElementImpl elem = (HTMLElementImpl) node;
+	public final short acceptNode(final Node node) {
+        if (node instanceof HTMLElementImpl elem) {
             return elem.getRenderState().getDisplay() == RenderState.DISPLAY_TABLE_CELL ?
                     NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         }

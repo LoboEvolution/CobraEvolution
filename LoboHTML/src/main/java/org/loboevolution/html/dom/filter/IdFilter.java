@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import org.loboevolution.common.Nodes;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.NamedNodeMap;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
@@ -44,20 +44,22 @@ public class IdFilter implements NodeFilter {
 	 *
 	 * @param _id a {@link java.lang.String} object.
 	 */
-	public IdFilter(String _id) {
+	public IdFilter(final String _id) {
 		this._id = _id;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public short acceptNode(Node node) {
+	public short acceptNode(final Node node) {
 		if ((node instanceof Element) && this._id != null) {
-			NamedNodeMap attributes = node.getAttributes();
-			for (Node attribute : Nodes.iterable(attributes)) {
-				Attr attr = (Attr) attribute;
-				if (Strings.isNotBlank(attr.getNodeValue())) {
-					if (this._id.equals(attr.getNodeValue()) && attr.isId()) {
-						return NodeFilter.FILTER_ACCEPT;
+			final NamedNodeMap attributes = node.getAttributes();
+			if (attributes != null) {
+				for (final Node attribute : Nodes.iterable(attributes)) {
+					final Attr attr = (Attr) attribute;
+					if (Strings.isNotBlank(attr.getNodeValue())) {
+						if (this._id.equals(attr.getNodeValue()) && attr.isId()) {
+							return NodeFilter.FILTER_ACCEPT;
+						}
 					}
 				}
 			}

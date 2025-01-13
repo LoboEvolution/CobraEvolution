@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -41,26 +41,23 @@ import static org.junit.Assert.assertFalse;
  * <p>
  * Call the isSupported method specifying empty strings for feature and version on a docType
  * Node.  Check if the value returned value was false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports</a>
  */
-public class nodeissupported03Test extends LoboUnitTest {
+public class Nodeissupported03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        boolean success;
+        final Document doc;
+        final DocumentType docType;
+        final boolean success;
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         success = docType.isSupported("", "");
-        assertFalse("nodeissupported03", success);
+        assertFalse(success);
     }
 }
 

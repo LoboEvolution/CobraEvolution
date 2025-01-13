@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,45 +27,42 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Create a new Element node, add new Text, Element and Processing Instruction nodes to it.
  * Using compareDocumentPosition, compare the position of the Element with respect to the Text
  * and the Text with respect to the Processing Instruction.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition34Test extends LoboUnitTest {
+public class Nodecomparedocumentposition34Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elemMain;
-        Element elem;
-        Text txt;
-        ProcessingInstruction pi;
-        int elementToTxtPosition;
-        int txtToPiPosition;
-        Node appendedChild;
+        final Document doc;
+        final Element elemMain;
+        final Element elem;
+        final Text txt;
+        final ProcessingInstruction pi;
+        final int elementToTxtPosition;
+        final int txtToPiPosition;
         doc = sampleXmlFile("hc_staff.xml");
         elemMain = doc.createElementNS("http://www.w3.org/1999/xhtml", "p");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "br");
         txt = doc.createTextNode("TEXT");
         pi = doc.createProcessingInstruction("PIT", "PID");
-        appendedChild = elemMain.appendChild(txt);
-        appendedChild = elemMain.appendChild(elem);
-        appendedChild = elemMain.appendChild(pi);
+        elemMain.appendChild(txt);
+        elemMain.appendChild(elem);
+        elemMain.appendChild(pi);
         elementToTxtPosition = txt.compareDocumentPosition(elem);
-        assertEquals("nodecomparedocumentpositionFollowing34", 4, elementToTxtPosition);
+        assertEquals(4, elementToTxtPosition, "Nodecomparedocumentposition34Assert2");
         txtToPiPosition = pi.compareDocumentPosition(txt);
-        assertEquals("nodecomparedocumentpositionPRECEDING34", 2, txtToPiPosition);
+        assertEquals(2, txtToPiPosition, "Nodecomparedocumentposition34Assert3");
     }
 }
 

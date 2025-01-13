@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,15 @@
 
 package org.loboevolution.html.js.geom;
 
-import org.loboevolution.html.node.js.geom.DOMRect;
-import org.loboevolution.html.node.js.geom.DOMRectInit;
-import org.loboevolution.html.node.js.geom.DOMRectReadOnly;
+import lombok.Data;
+import org.loboevolution.js.geom.DOMRect;
+import org.loboevolution.js.geom.DOMRectInit;
+import org.loboevolution.js.geom.DOMRectReadOnly;
 
 /**
  * <p>DOMRectImpl class.</p>
  */
+@Data
 public class DOMRectImpl implements DOMRect {
 
     /** The x. */
@@ -89,7 +91,7 @@ public class DOMRectImpl implements DOMRect {
      * {@inheritDoc}
      */
     @Override
-    public DOMRectReadOnly fromRect(DOMRectInit other) {
+    public DOMRectReadOnly fromRect(final DOMRectInit other) {
         return null;
     }
 
@@ -106,14 +108,6 @@ public class DOMRectImpl implements DOMRect {
      * {@inheritDoc}
      */
     @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public int getY() {
         if(y == 0) return getTop();
         return y;
@@ -123,24 +117,8 @@ public class DOMRectImpl implements DOMRect {
      * {@inheritDoc}
      */
     @Override
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public int getWidth() {
         return width;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     /**
@@ -191,54 +169,6 @@ public class DOMRectImpl implements DOMRect {
     @Override
     public int getTop() {
         return this.top;
-    }
-
-    /**
-     * <p>setBottom.</p>
-     *
-     * @param bottom a {@link Integer} object.
-     */
-    @Override
-    public void setBottom(int bottom) {
-        this.bottom = bottom;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    /**
-     * <p>setLeft.</p>
-     *
-     * @param left a {@link Integer} object.
-     */
-    @Override
-    public void setLeft(int left) {
-        this.left = left;
-    }
-
-    /**
-     * <p>setRight.</p>
-     *
-     * @param right a {@link Integer} object.
-     */
-    @Override
-    public void setRight(int right) {
-        this.right = right;
-    }
-
-    /**
-     * <p>setTop.</p>
-     *
-     * @param top a {@link Integer} object.
-     */
-    @Override
-    public void setTop(int top) {
-        this.top = top;
     }
 
     @Override

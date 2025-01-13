@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,9 @@ public class FuncCount extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
-    DTMIterator nl = m_arg0.asIterator(xctxt, xctxt.getCurrentNode());
-    int i = nl.getLength();
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
+    final DTMIterator nl = m_arg0.asIterator(xctxt, xctxt.getCurrentNode());
+    final int i = nl.getLength();
     nl.detach();
 
     return new XNumber(i);

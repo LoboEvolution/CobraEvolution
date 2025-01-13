@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,18 @@
 
 package org.loboevolution.html.parser;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.Entities;
 import org.loboevolution.html.HTMLEntities;
 import org.loboevolution.html.HTMLTag;
-import org.loboevolution.html.dom.nodeimpl.*;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
+import org.loboevolution.html.dom.nodeimpl.DocumentTypeImpl;
+import org.loboevolution.html.dom.nodeimpl.ElementImpl;
+import org.loboevolution.html.dom.nodeimpl.EntityReferenceImpl;
+import org.loboevolution.html.dom.nodeimpl.NotationImpl;
 import org.loboevolution.html.node.*;
 import org.loboevolution.http.UserAgentContext;
 import org.loboevolution.info.AttributeInfo;
@@ -46,8 +51,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -56,8 +59,8 @@ import java.util.stream.Collectors;
  * {@link org.loboevolution.html.parser.DocumentBuilderImpl}. This parser class
  * may be used directly when a different DOM implementation is preferred.
  */
+@Slf4j
 public class XHtmlParser {
-	private static final Logger logger = Logger.getLogger(XHtmlParser.class.getName());
 
 	/** Constant MODIFYING_KEY="cobra.suspend" */
 	public static final String MODIFYING_KEY = "cobra.suspend";
@@ -94,7 +97,8 @@ public class XHtmlParser {
 
 	private boolean needRoot = false;
 
-	private Map<String, String> namespaces = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	@Getter
+	private final Map<String, String> namespaces = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	/**
 	 * Constructs a XHtmlParser.
@@ -102,7 +106,7 @@ public class XHtmlParser {
 	 * @param ucontext The user agent context.
 	 * @param document A W3C Document instance.
 	 */
-	public XHtmlParser(UserAgentContext ucontext, Document document) {
+	public XHtmlParser(final UserAgentContext ucontext, final Document document) {
 		this.ucontext = ucontext;
 		this.document = document;
 	}
@@ -114,7 +118,7 @@ public class XHtmlParser {
 	 * @param document     An W3C Document instance.
 	 * @param needRoot a boolean.
 	 */
-	public XHtmlParser(UserAgentContext ucontext, Document document, final boolean needRoot) {
+	public XHtmlParser(final UserAgentContext ucontext, final Document document, final boolean needRoot) {
 		this.ucontext = ucontext;
 		this.document = document;
 		this.needRoot = needRoot;
@@ -126,7 +130,7 @@ public class XHtmlParser {
 	 * @param elementName a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isDecodeEntities(String elementName) {
+	public static boolean isDecodeEntities(final String elementName) {
 		final ElementInfo einfo = HTMLEntities.ELEMENT_INFOS.get(HTMLTag.get(elementName.toUpperCase()));
 		return einfo == null || einfo.isDecodeEntities();
 	}
@@ -208,75 +212,74 @@ public class XHtmlParser {
 	 * @return {@link java.lang.Number} object.
 	 */
 	private int parseToken(final Node parent, final LineNumberReader reader, final Set<HTMLTag> stopTags,
-						   final LinkedList<String> ancestors) throws IOException, StopException {
+						   final List<String> ancestors) throws IOException, StopException {
 		final Document doc = this.document;
 		final HTMLDocumentImpl htmlDoc = (HTMLDocumentImpl) doc;
 		final StringBuilder textSb = this.readUpToTagBegin(reader);
 		if (textSb == null) {
 			return TOKEN_EOD;
 		}
-		if (textSb.length() > 0) {
+		if (!textSb.isEmpty()) {
 			final String text = textSb.toString();
 			if (Strings.isNotBlank(text.trim())) {
 
-				StringBuilder ent = new StringBuilder();
-				StringBuilder txt = new StringBuilder();
-				StringBuilder cdata = new StringBuilder();
-				AtomicBoolean isEnt = new AtomicBoolean(false);
-				AtomicBoolean isCda = new AtomicBoolean(false);
+				final StringBuilder ent = new StringBuilder();
+				final StringBuilder txt = new StringBuilder();
+				final StringBuilder cdata = new StringBuilder();
+				final AtomicBoolean isEnt = new AtomicBoolean(false);
+				final AtomicBoolean isCda = new AtomicBoolean(false);
 
 				try {
 					text.chars()
 							.forEach(i -> {
-										final char ch = (char) i;
-										if (ch == '&') {
-											if (txt.length() > 0) {
-												final Node textNode = doc.createTextNode(txt.toString());
-												safeAppendChild(parent, textNode);
-												txt.setLength(0);
-											}
-
-											isEnt.set(true);
-										}
-
-										if (ch == '<') {
-											isCda.set(true);
-										}
-
-										if (ch == '>') {
-											isCda.set(false);
-											cdata.append(ch);
-											final Node textNode = doc.createCDATASection(cdata.toString());
-											safeAppendChild(parent, textNode);
-											cdata.setLength(0);
-										}
-
-										if (!isEnt.get() && !isCda.get()) {
-											txt.append(ch);
-										} else if (isCda.get()) {
-											cdata.append(ch);
-										} else {
-											ent.append(ch);
-										}
-
-										if (ch == ';') {
-											isEnt.set(false);
-											final Node textNode = doc.createEntityReference(ent.toString());
-											safeAppendChild(parent, textNode);
-											ent.setLength(0);
-
-										}
+								final char ch = (char) i;
+								if (ch == '&') {
+									if (!txt.isEmpty()) {
+										final Node textNode = doc.createTextNode(txt.toString());
+										safeAppendChild(parent, textNode);
+										txt.setLength(0);
 									}
-							);
 
-					if(txt.length() > 0) {
+									isEnt.set(true);
+								}
+
+								if (ch == '<') {
+									isCda.set(true);
+								}
+
+								if (ch == '>') {
+									isCda.set(false);
+									cdata.append(ch);
+									final Node textNode = doc.createCDATASection(cdata.toString());
+									safeAppendChild(parent, textNode);
+									cdata.setLength(0);
+								}
+
+								if (!isEnt.get() && !isCda.get()) {
+									txt.append(ch);
+								} else if (isCda.get()) {
+									cdata.append(ch);
+								} else {
+									ent.append(ch);
+								}
+
+								if (ch == ';') {
+									isEnt.set(false);
+									final Node textNode = doc.createEntityReference(ent.toString());
+									safeAppendChild(parent, textNode);
+									ent.setLength(0);
+
+								}
+							});
+
+					if (!txt.isEmpty()) {
 						final Node textNode = doc.createTextNode(txt.toString());
 						safeAppendChild(parent, textNode);
 						txt.setLength(0);
 					}
 				} catch (final DOMException de) {
 					if ((parent.getNodeType() != Node.DOCUMENT_NODE) || (de.getCode() != DOMException.HIERARCHY_REQUEST_ERR)) {
-						logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
+						log.error("parseToken(): Unable to append child to  {} ", parent, de);
 					}
 				}
 			}
@@ -298,14 +301,14 @@ public class XHtmlParser {
 							safeAppendChild(parent, doc.createComment(decText.toString()));
 							return TOKEN_COMMENT;
 						case "!DOCTYPE":
-							String doctypeStr = this.parseEndOfTag(reader);
+							final String doctypeStr = this.parseEndOfTag(reader);
 							String qName = null;
 							String publicId = null;
 							String systemId = null;
 							if (Strings.containsIgnoreCase(doctypeStr, "public")) {
-								String[] publics = Strings.splitIgnoreCase(doctypeStr, "public");
-								String[] result = publics[1].replace("[", "").split("\"");
-								List<String> list = Arrays.stream(result)
+								final String[] publics = Strings.splitIgnoreCase(doctypeStr, "public");
+								final String[] result = publics[1].replace("[", "").split("\"");
+								final List<String> list = Arrays.stream(result)
 										.filter(s -> Strings.isNotBlank(s) && s.length() > 1)
 										.collect(Collectors.toList());
 
@@ -323,7 +326,7 @@ public class XHtmlParser {
 							}
 
 							if (qName == null && Strings.containsIgnoreCase(doctypeStr, "svg")) {
-								String[] publics = Strings.splitIgnoreCase(doctypeStr, "svg");
+								final String[] publics = Strings.splitIgnoreCase(doctypeStr, "svg");
 								qName = publics[0];
 								this.document.setXml(true);
 							}
@@ -332,7 +335,7 @@ public class XHtmlParser {
 								qName = "html";
 							}
 
-							DocumentType docType = new DocumentTypeImpl(qName, publicId, systemId);
+							final DocumentType docType = new DocumentTypeImpl(qName, publicId, systemId);
 							docType.setOwnerDocument(htmlDoc);
 							htmlDoc.setDoctype(docType);
 							needRoot = false;
@@ -341,7 +344,7 @@ public class XHtmlParser {
 							String doctypeStr2 = this.parseEndOfTag(reader);
 							doctypeStr2 = doctypeStr2.substring(0, doctypeStr2.length() - 1);
 							String[] sp = doctypeStr2.split("\"");
-							EntityReferenceImpl reference;
+							final EntityReferenceImpl reference;
 
 							if (sp.length == 2) {
 								reference = new EntityReferenceImpl(null, null, sp[0].trim(), sp[1], null);
@@ -349,13 +352,15 @@ public class XHtmlParser {
 							} else {
 								reference = new EntityReferenceImpl();
 							}
+							reference.setOwnerDocument(document);
+							reference.setParentImpl(document);
 
 							if (sp.length > 2) {
 								sp = doctypeStr2.split("[\"\\s+]");
 
-								AtomicInteger ai = new AtomicInteger(0);
-								AtomicBoolean isPublic = new AtomicBoolean(false);
-								AtomicBoolean isNotation = new AtomicBoolean(false);
+								final AtomicInteger ai = new AtomicInteger(0);
+								final AtomicBoolean isPublic = new AtomicBoolean(false);
+								final AtomicBoolean isNotation = new AtomicBoolean(false);
 
 								Arrays.stream(sp).forEach(s -> {
 
@@ -387,11 +392,13 @@ public class XHtmlParser {
 							return TOKEN_BAD;
 						case "!NOTATION":
 							final String notationStr = this.parseEndOfTag(reader);
-							NotationImpl not = new NotationImpl();
+							final NotationImpl not = new NotationImpl();
+							not.setOwnerDocument(document);
+							not.setParentImpl(document);
 
 							if (notationStr.contains("PUBLIC")) {
-								String[] split = notationStr.split("PUBLIC");
-								AtomicInteger ai = new AtomicInteger(0);
+								final String[] split = notationStr.split("PUBLIC");
+								final AtomicInteger ai = new AtomicInteger(0);
 								Arrays.stream(split).forEach(s -> {
 									if(ai.get() == 0) {
 										not.setNodeName(s.trim());
@@ -408,8 +415,8 @@ public class XHtmlParser {
 							}
 
 							if (notationStr.contains("SYSTEM")) {
-								String[] split = notationStr.split("SYSTEM");
-								AtomicInteger ai = new AtomicInteger(0);
+								final String[] split = notationStr.split("SYSTEM");
+								final AtomicInteger ai = new AtomicInteger(0);
 								Arrays.stream(split).forEach(s -> {
 									if(ai.get() == 0) {
 										not.setNodeName(s.trim());
@@ -442,7 +449,7 @@ public class XHtmlParser {
 					if (!tag.equals("xml")) {
 						String processData = data.toString();
 						processData = processData.substring(0, processData.length() - 1);
-						ProcessingInstruction pi = doc.createProcessingInstruction(tag, processData);
+						final ProcessingInstruction pi = doc.createProcessingInstruction(tag, processData);
 						parent.appendChild(pi);
 						return TOKEN_FULL_ELEMENT;
 					} else {
@@ -450,7 +457,7 @@ public class XHtmlParser {
 						return TOKEN_TEXT;
 					}
 				} else {
-					List<AttributeInfo> attributeInfo = new ArrayList<>();
+					final List<AttributeInfo> attributeInfo = new ArrayList<>();
 					ElementImpl element = null;
 					try {
 						if (!this.justReadTagEnd) {
@@ -459,18 +466,18 @@ public class XHtmlParser {
 							}
 						}
 						if (this.document.isXml()) {
-							AtomicReference<String> atomicReference = new AtomicReference<>(normalTag);
-							AtomicReference<String> reference = new AtomicReference<>();
-							String elm = atomicReference.get();
+							final AtomicReference<String> atomicReference = new AtomicReference<>(normalTag);
+							final AtomicReference<String> reference = new AtomicReference<>();
+							final String elm = atomicReference.get();
 
 							if (attributeInfo.isEmpty()) {
 								reference.set(getNamespaces().get(elm.contains(":") ? elm.split(":")[0] : ""));
 							}
 
 							attributeInfo.forEach(info -> {
-								String attribute = info.getAttributeName();
-								int index = attribute.contains("xmlns") ? 1 : 0;
-								String attributeSplit = attribute.contains(":") ? attribute.split(":")[index] : attribute;
+								final String attribute = info.getAttributeName();
+								final int index = attribute.contains("xmlns") ? 1 : 0;
+								final String attributeSplit = attribute.contains(":") ? attribute.split(":")[index] : attribute;
 
 								if (attribute.equals("xmlns") ||
 										(attributeSplit.equalsIgnoreCase((elm.contains(":") ? elm.split(":")[0] : elm).toLowerCase()))) {
@@ -492,11 +499,9 @@ public class XHtmlParser {
 						element.setUserData(MODIFYING_KEY, Boolean.TRUE, null);
 
 						safeAppendChild(parent, element);
-						AtomicReference<ElementImpl> atomicReference = new AtomicReference<>(element);
+						final AtomicReference<ElementImpl> elementAtomicReference = new AtomicReference<>(element);
 
-						attributeInfo.forEach(info -> {
-							setAttributeNode(atomicReference.get(), info.getAttributeName(), info.getAttributeValue());
-						});
+						attributeInfo.forEach(info -> setAttributeNode(elementAtomicReference.get(), info.getAttributeName(), info.getAttributeValue()));
 
 						if (stopTags != null && stopTags.contains(HTMLTag.get(normalTag))) {
 							throw new StopException(element);
@@ -527,7 +532,7 @@ public class XHtmlParser {
 								try {
 									for (;;) {
 										try {
-											int token;
+											final int token;
 											if ((einfo != null) && einfo.isNoScriptElement()) {
 												final UserAgentContext ucontext = this.ucontext;
 												if ((ucontext == null) || ucontext.isScriptingEnabled()) {
@@ -657,8 +662,8 @@ public class XHtmlParser {
 	 * Assumes that the content is completely made up of text, and parses until an
 	 * ending tag is found.
 	 */
-	private int parseForEndTag(Node parent, final LineNumberReader reader, final String tagName,
-							   final boolean addTextNode, final boolean decodeEntities) throws IOException {
+	private int parseForEndTag(final Node parent, final LineNumberReader reader, final String tagName,
+                               final boolean addTextNode, final boolean decodeEntities) throws IOException {
 		final Document doc = this.document;
 		int intCh;
 		StringBuilder sb = new StringBuilder();
@@ -736,7 +741,7 @@ public class XHtmlParser {
 		return XHtmlParser.TOKEN_EOD;
 	}
 
-	private static void readCData(LineNumberReader reader, StringBuilder sb) throws IOException {
+	private static void readCData(final LineNumberReader reader, final StringBuilder sb) throws IOException {
 
 		int next = reader.read();
 
@@ -764,13 +769,13 @@ public class XHtmlParser {
 
 	// Tries to read at most n characters.
 	private static String readN(final LineNumberReader reader, final int n) {
-		char[] chars = new char[n];
+		final char[] chars = new char[n];
 		int i = 0;
 		while (i < n) {
-			int ich;
+			final int ich;
 			try {
 				ich = reader.read();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				break;
 			}
 			if (ich >= 0) {
@@ -844,14 +849,14 @@ public class XHtmlParser {
 					while ((chInt = reader.read()) == '<') {
 						ltText.append('<');
 					}
-					String text = ltText.toString();
+					final String text = ltText.toString();
 					final Node textNode = text.trim().startsWith("&") ? this.document.createEntityReference(text) : this.document.createTextNode(text);
 					try {
 						parent.appendChild(textNode);
 					} catch (final DOMException de) {
 						if ((parent.getNodeType() != Node.DOCUMENT_NODE)
 								|| (de.getCode() != DOMException.HIERARCHY_REQUEST_ERR)) {
-							logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
+							log.error("parseToken(): Unable to append child to  {} ", parent, de);
 						}
 					}
 					if (chInt == -1) {
@@ -871,14 +876,14 @@ public class XHtmlParser {
 						}
 						ltText.append(ch);
 					}
-					String text = ltText.toString();
+					final String text = ltText.toString();
 					final Node textNode = text.trim().startsWith("&") ? this.document.createEntityReference(text) : this.document.createTextNode(text);
 					try {
 						parent.appendChild(textNode);
 					} catch (final DOMException de) {
 						if ((parent.getNodeType() != Node.DOCUMENT_NODE)
 								|| (de.getCode() != DOMException.HIERARCHY_REQUEST_ERR)) {
-							logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
+							log.error("parseToken(): Unable to append child to  {} ", parent, de);
 						}
 					}
 					if (chInt == -1) {
@@ -916,7 +921,7 @@ public class XHtmlParser {
 				}
 			}
 		}
-		if (sb.length() > 0) {
+		if (!sb.isEmpty()) {
 			this.justReadTagEnd = false;
 			this.justReadTagBegin = false;
 			this.justReadEmptyElement = false;
@@ -986,7 +991,7 @@ public class XHtmlParser {
 				sb.append(ch);
 			}
 		}
-		if (sb.length() > 0) {
+		if (!sb.isEmpty()) {
 			this.justReadTagBegin = false;
 			this.justReadTagEnd = false;
 		}
@@ -997,7 +1002,7 @@ public class XHtmlParser {
 		if (this.justReadTagEnd) {
 			return "";
 		}
-		StringBuilder result = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
 		boolean readSomething = false;
 		for (;;) {
 			final int chInt = reader.read();
@@ -1058,7 +1063,7 @@ public class XHtmlParser {
 		return pidata;
 	}
 
-	private boolean readAttribute(final LineNumberReader reader, List<AttributeInfo> attributes)
+	private boolean readAttribute(final LineNumberReader reader, final List<AttributeInfo> attributes)
 			throws IOException {
 		if (this.justReadTagEnd) {
 			return false;
@@ -1257,7 +1262,7 @@ public class XHtmlParser {
 	}
 
 	private void ensureBodyAppendChild(final Node parent, final Node child) {
-		Node newParent = parent;
+		final Node newParent = parent;
 		if (needRoot) {
 			final String nodeNameTU = child.getNodeName().toUpperCase();
 			if ("BODY".equals(nodeNameTU)) {
@@ -1266,7 +1271,7 @@ public class XHtmlParser {
 				lastHeadElement = child;
 			}
 		}
-		if(newParent != null) newParent.appendChild(child);
+		if(newParent != null) {newParent.appendChild(child);}
 	}
 
 	private void ensureBodyElement(final Node parent) {
@@ -1323,7 +1328,7 @@ public class XHtmlParser {
 						decimal = Integer.parseInt(number);
 					}
 				} catch (final NumberFormatException nfe) {
-					logger.log(Level.WARNING, "entityDecode()", nfe);
+					log.warn("entityDecode() ", nfe);
 					decimal = 0;
 				}
 				sb.append((char) decimal);
@@ -1351,20 +1356,18 @@ public class XHtmlParser {
 		return c;
 	}
 
-	private void setAttributeNode(ElementImpl element, String attributeName, String attributeValue) {
+	private void setAttributeNode(final ElementImpl element, final String attributeName, final String attributeValue) {
 
 		if (this.document.isXml()) {
 			String namespaceURI = null;
-
-			String key = attributeName.contains(":") ?
-					attributeName.split(":")[attributeName.contains("xmlns") ? 1 : 0] :
-					attributeName;
-
-			if (getNamespaces().get(key) == null) {
-				getNamespaces().put(key, attributeValue);
-				namespaceURI = attributeValue;
-			} else {
-				namespaceURI = getNamespaces().get(key);
+			if (attributeName.contains(":")) {
+				String key = attributeName.split(":")[attributeName.contains("xmlns") ? 1 : 0];
+				if (getNamespaces().get(key) == null) {
+					getNamespaces().put(key, attributeValue);
+					namespaceURI = attributeValue;
+				} else {
+					namespaceURI = getNamespaces().get(key);
+				}
 			}
 
 			if (Strings.isNotBlank(namespaceURI)) {
@@ -1375,9 +1378,5 @@ public class XHtmlParser {
 		} else {
 			element.setAttribute(attributeName, attributeValue);
 		}
-	}
-
-	public Map<String, String> getNamespaces() {
-		return namespaces;
 	}
 }

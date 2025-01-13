@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.html.style.setter;
 
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.js.css.CSSStyleDeclarationImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.style.HtmlValues;
 
 /**
@@ -47,7 +47,7 @@ public class FourCornersSetter implements SubPropertySetter {
 	 * @param prefix a {@link java.lang.String} object.
 	 * @param suffix a {@link java.lang.String} object.
 	 */
-	public FourCornersSetter(String property, String prefix, String suffix) {
+	public FourCornersSetter(final String property, final String prefix, final String suffix) {
 		this.prefix = prefix;
 		this.suffix = suffix;
 		this.property = property;
@@ -55,12 +55,12 @@ public class FourCornersSetter implements SubPropertySetter {
 
 	/** {@inheritDoc} */
 	@Override
-	public void changeValue(CSSStyleDeclaration declaration, String newValue) {
-		CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
+	public void changeValue(final CSSStyleDeclaration declaration, String newValue) {
+		final CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
+
 		
 		if (Strings.isNotBlank(newValue)) {
-			properties.setProperty(this.property, newValue);
-			
+			newValue = newValue.toLowerCase();
 			final String[] array = HtmlValues.splitCssValue(newValue);
 			switch (array.length) {
 			case 1:
@@ -87,9 +87,12 @@ public class FourCornersSetter implements SubPropertySetter {
 				properties.setProperty(prefix + "right" + suffix,  array[1]);
 				properties.setProperty(prefix + "bottom" + suffix, array[2]);
 				properties.setProperty(prefix + "left" + suffix, array[3]);
+				break;
 			default:
 				break;
 			}
+
+			properties.removeProperty(property);
 		}
 	}
 }

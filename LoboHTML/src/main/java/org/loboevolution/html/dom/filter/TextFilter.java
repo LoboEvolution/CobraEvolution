@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.dom.filter;
 
 import org.loboevolution.html.node.Text;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.node.Node;
 
 /**
@@ -43,7 +43,7 @@ public class TextFilter implements NodeFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public short acceptNode(Node node) {
+	public short acceptNode(final Node node) {
 		return node instanceof Text ?
 				NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
 	}

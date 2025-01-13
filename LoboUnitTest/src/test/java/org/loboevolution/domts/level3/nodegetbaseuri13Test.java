@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,41 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using getBaseURI verify if the notation defined in an internal subset
  * is the base URI of the document.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Notation">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Notation</a>
  */
-public class nodegetbaseuri13Test extends LoboUnitTest {
+public class Nodegetbaseuri13Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notationsMap;
-        Notation notation;
-        String baseURI;
-        String docURI;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notationsMap;
+        final Notation notation;
+        final String baseURI;
+        final String docURI;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         notationsMap = docType.getNotations();
         notation = (Notation) notationsMap.getNamedItem("notation1");
         baseURI = notation.getBaseURI();
         docURI = doc.getDocumentURI();
-        assertEquals("sameAsDocURI", docURI, baseURI);
-        assertURIEquals("entityBase", null, null, null, null, "hc_staff", null, null, Boolean.TRUE, baseURI);
+        assertEquals(docURI, baseURI, "Nodegetbaseuri13Assert2");
+        assertURIEquals(new URIEquals(null, null, null, null, "hc_staff", null, null, true, baseURI));
     }
 }
 

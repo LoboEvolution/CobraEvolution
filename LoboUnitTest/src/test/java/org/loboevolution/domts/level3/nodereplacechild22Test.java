@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,67 +28,62 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using replaceChild on a new EntityReference node attempt to replace an EntityReference node with
  * its Element parent, with itself and vice versa verify if a NO_MODIFICATION_ALLOWED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild22Test extends LoboUnitTest {
+public class Nodereplacechild22Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        EntityReference entRefMain;
-        EntityReference entRef;
-        Element elem;
-        Node appendedChild;
-        Node replacedChild;
+        final Document doc;
+        final EntityReference entRefMain;
+        final EntityReference entRef;
+        final Element elem;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         entRefMain = doc.createEntityReference("delta");
         entRef = doc.createEntityReference("beta");
-        appendedChild = elem.appendChild(entRef);
+        elem.appendChild(entRef);
 
         {
             boolean success = false;
             try {
-                replacedChild = entRefMain.replaceChild(elem, entRef);
-            } catch (DOMException ex) {
+                entRefMain.replaceChild(elem, entRef);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_1", success);
+            assertTrue(success, "Nodereplacechild22Assert2");
         }
 
         {
             boolean success = false;
             try {
-                replacedChild = entRefMain.replaceChild(entRef, elem);
-            } catch (DOMException ex) {
+                entRefMain.replaceChild(entRef, elem);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_2", success);
+            assertTrue(success, "Nodereplacechild22Assert3");
         }
 
         {
             boolean success = false;
             try {
-                replacedChild = entRefMain.replaceChild(entRefMain, entRef);
-            } catch (DOMException ex) {
+                entRefMain.replaceChild(entRefMain, entRef);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_3", success);
+            assertTrue(success, "Nodereplacechild22Assert4");
         }
     }
 }

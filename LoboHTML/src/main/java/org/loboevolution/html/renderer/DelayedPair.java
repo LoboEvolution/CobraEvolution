@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import lombok.Data;
 import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
-import org.loboevolution.html.node.js.Window;
+import org.loboevolution.js.Window;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.html.style.HtmlValues;
 
@@ -89,7 +89,7 @@ public class DelayedPair {
 		if (isRelative) {
 			final RElement rChild = (RElement) this.child;
 			rChild.setupRelativePosition(this.immediateContainingBlock);
-			TranslatedRenderable tr = new TranslatedRenderable(rChild);
+			final TranslatedRenderable tr = new TranslatedRenderable(rChild);
 			rChild.setDelegator(tr);
 			return tr;
 		}
@@ -150,19 +150,19 @@ public class DelayedPair {
 	}
 
 	private Integer getLeft() {
-		return helperGetPixelSize(left, rs, 0, containingBlock.getInnerWidth());
+		return helperGetPixelSize(left == null ? rs.getLeft() : left, rs, 0, containingBlock.getInnerWidth());
 	}
 
 	private Integer getRight() {
-		return helperGetPixelSize(right, rs, 0, containingBlock.getInnerWidth());
+		return helperGetPixelSize(right == null ? rs.getRight() : right, rs, 0, containingBlock.getInnerWidth());
 	}
 
 	private Integer getTop() {
-		return helperGetPixelSize(top, rs, 0, containingBlock.getInnerHeight());
+		return helperGetPixelSize(top == null ? rs.getTop() : top, rs, 0, containingBlock.getInnerHeight());
 	}
 
 	private Integer getBottom() {
-		return helperGetPixelSize(bottom, rs, 0, containingBlock.getInnerHeight());
+		return helperGetPixelSize(bottom == null ? rs.getBottom() : bottom, rs, 0, containingBlock.getInnerHeight());
 	}
 
 	private Integer getWidth() {
@@ -177,9 +177,9 @@ public class DelayedPair {
 			final int avail) {
 		if (spec != null) {
 			Window window = null;
-			ModelNode node  = getModelNode();
+			final ModelNode node  = getModelNode();
 			if (node instanceof HTMLDocument) {
-				HTMLDocumentImpl doc = (HTMLDocumentImpl)node;
+				final HTMLDocumentImpl doc = (HTMLDocumentImpl)node;
 				window = doc.getDefaultView();
 			}
 			return "auto".equals(spec) ? null : HtmlValues.getPixelSize(spec, rs, window, errorValue, avail);

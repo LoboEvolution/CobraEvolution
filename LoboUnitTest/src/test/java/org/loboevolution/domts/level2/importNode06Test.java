@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -47,41 +47,38 @@ import static org.junit.Assert.*;
  * with importedNode being the element from above and deep is true.
  * Method should return an element node whose name matches "address" and
  * whose descendant is imported.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode06Test extends LoboUnitTest {
+public class ImportNode06Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        Element element;
-        Node aNode;
-        boolean hasChild;
-        String name;
-        Node child;
-        String value;
-        HTMLCollection addresses;
+        final Document doc;
+        final Document aNewDoc;
+        final Element element;
+        final Node aNode;
+        final boolean hasChild;
+        final String name;
+        final Node child;
+        final String value;
+        final HTMLCollection addresses;
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         addresses = aNewDoc.getElementsByTagName("address");
         element = (Element) addresses.item(0);
-        assertNotNull("empAddressNotNull", element);
+        assertNotNull(element);
         aNode = doc.importNode(element, true);
         hasChild = aNode.hasChildNodes();
-        assertTrue("throw_True", hasChild);
+        assertTrue(hasChild);
         name = aNode.getNodeName();
-        assertEquals("nodeName", "ADDRESS", name);
+        assertEquals("ADDRESS", name);
         child = aNode.getFirstChild();
         value = child.getNodeValue();
-        assertEquals("nodeValue", "27 South Road. Dallas, texas 98556", value);
+        assertEquals("27 South Road. Dallas, texas 98556", value);
     }
 }
 

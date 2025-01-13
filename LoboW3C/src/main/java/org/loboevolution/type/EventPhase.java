@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,6 @@ import java.util.Map;
 
 /**
  * <p>EventPhase class.</p>
- *
- *
- *
  */
 public enum EventPhase {
 	
@@ -88,7 +85,7 @@ public enum EventPhase {
 	 * @return a {@link org.loboevolution.type} object.
 	 */
 	public static EventPhase get(String actionName) {
-		EventPhase value = ENUM_MAP.get(actionName);
+		final EventPhase value = ENUM_MAP.get(actionName);
 		return value == null ? EventPhase.NONE : value;
 	}
 

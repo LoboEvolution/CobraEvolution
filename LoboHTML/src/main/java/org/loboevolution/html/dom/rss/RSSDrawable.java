@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public interface RSSDrawable {
 	 * <p>draw.</p>
 	 *
 	 * @param graphics a {@link java.awt.Graphics2D} object.
-	 * @param yy a int.
+	 * @param yy a {@link java.lang.Integer} object.
 	 */
-	void draw(Graphics2D graphics, int yy);
+	void draw(Graphics2D graphics, final int yy);
 }

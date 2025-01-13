@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ public class UserDataHandlerImpl implements UserDataHandler {
     }
 
     @Override
-    public void handle(short operation, String key, Object data, Node src, Node dst) {
+    public void handle(final short operation, final String key, final Object data, final Node src, final Node dst) {
         notifications.add(new UserDataNotification(operation, key, data, src, dst));
     }
 

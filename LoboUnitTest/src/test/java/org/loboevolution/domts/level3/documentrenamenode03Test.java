@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,42 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the renameNode method to rename a new attribute node to one whose
- * namespaceURI is http://www.w3.org/DOM/Test and name is pre0:fix1.
+ * namespaceURI is <a href="http://www.w3.org/DOM/Test">...</a> and name is pre0:fix1.
  * Check if this attribute has been renamed successfully by verifying the
  * nodeName, namespaceURI, nodeType attributes of the renamed node.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode03Test extends LoboUnitTest {
+public class Documentrenamenode03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr;
-        Node renamedNode;
-        String nodeName;
-        String namespaceURI;
-        String nullNSURI = null;
+        final Document doc;
+        final Attr attr;
+        final Node renamedNode;
+        final String nodeName;
+        final String namespaceURI;
 
         doc = sampleXmlFile("hc_staff.xml");
-        attr = doc.createAttributeNS(nullNSURI, "test");
+        attr = doc.createAttributeNS(null, "test");
         renamedNode = doc.renameNode(attr, "http://www.w3.org/DOM/Test", "pre0:fix1");
         nodeName = renamedNode.getNodeName();
         namespaceURI = renamedNode.getNamespaceURI();
-        assertEquals("documentrenamenode03_nodeName", "pre0:fix1", nodeName);
-        assertEquals("documentrenamenode02_namespaceURI", "http://www.w3.org/DOM/Test", namespaceURI);
+        assertEquals("pre0:fix1", nodeName, "Documentrenamenode03Assert2");
+        assertEquals("http://www.w3.org/DOM/Test", namespaceURI, "Documentrenamenode03Assert3");
     }
 }
 

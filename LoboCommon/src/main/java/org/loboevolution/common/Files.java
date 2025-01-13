@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,18 @@
  */
 package org.loboevolution.common;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <p>Files class.</p>
  */
+@Slf4j
 public class Files {
-	
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(Files.class.getName());
 
 	public static final int DEFAULT_BUFFER_SIZE = 819;
 
@@ -48,7 +46,7 @@ public class Files {
 	 * @param in a {@link java.io.InputStream} object.
 	 * @return a {@link java.io.File} object.
 	 */
-	public static File getResourceAsFile(InputStream in) {
+	public static File getResourceAsFile(final InputStream in) {
 		try {
 			if (in == null) {
 				return null;
@@ -57,7 +55,7 @@ public class Files {
 			final File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
 			tempFile.deleteOnExit();
 
-			try (FileOutputStream out = new FileOutputStream(tempFile)) {
+			try (final FileOutputStream out = new FileOutputStream(tempFile)) {
 				// copy stream
 				final byte[] buffer = new byte[1024];
 				int bytesRead;
@@ -67,18 +65,18 @@ public class Files {
 			}
 			return tempFile;
 		} catch (final IOException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			return null;
 		}
 	}
 
-	public static void copyInputStreamToFile(InputStream inputStream, File file)
+	public static void copyInputStreamToFile(final InputStream inputStream, final File file)
 			throws IOException {
 
 		// append = false
-		try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+		try (final FileOutputStream outputStream = new FileOutputStream(file, false)) {
 			int read;
-			byte[] bytes = new byte[DEFAULT_BUFFER_SIZE];
+			final byte[] bytes = new byte[DEFAULT_BUFFER_SIZE];
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
 			}

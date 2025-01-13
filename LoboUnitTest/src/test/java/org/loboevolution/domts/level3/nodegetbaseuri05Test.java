@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,33 +27,30 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
- * Using getBaseURI check if the baseURI attribute of this DocumentElement is http://www.w3.org/DOM/L3Test.
- *
- * @author IBM
- * @author Neil Delima
+ * Using getBaseURI check if the baseURI attribute of this DocumentElement is <a href="http://www.w3.org/DOM/L3Test">...</a>.
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element</a>
  */
-public class nodegetbaseuri05Test extends LoboUnitTest {
+public class Nodegetbaseuri05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        String baseURI;
+        final Document doc;
+        final Element docElem;
+        final String baseURI;
         doc = sampleXmlFile("barfoo_base.xml");
         docElem = doc.getDocumentElement();
         baseURI = docElem.getBaseURI();
-        assertEquals("nodegetbaseuri05", "http://www.w3.org/DOM/L3Test", baseURI);
+        assertEquals("http://www.w3.org/DOM/L3Test", baseURI, "Nodegetbaseuri05Assert2");
     }
 }
 

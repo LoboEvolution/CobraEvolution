@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,40 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 Attr nodes having the same nodeName and a null namespaceURI
  * attribute, one created using createAttributeNS and the other retreived from this document
  * are equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode15Test extends LoboUnitTest {
+public class Nodeisequalnode15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr1;
-        Attr attr2;
-        Element addrElement;
-        HTMLCollection elementList;
-        boolean isEqual;
-        String nullNS = null;
-
+        final Document doc;
+        final Attr attr1;
+        final Attr attr2;
+        final Element addrElement;
+        final HTMLCollection elementList;
+        final boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         elementList = doc.getElementsByTagName("acronym");
         addrElement = (Element) elementList.item(3);
-        attr1 = addrElement.getAttributeNodeNS(nullNS, "title");
-        attr2 = doc.createAttributeNS(nullNS, "title");
+        attr1 = addrElement.getAttributeNodeNS(null, "title");
+        attr2 = doc.createAttributeNS(null, "title");
         attr2.setValue("Yes");
         isEqual = attr1.isEqualNode(attr2);
-        assertTrue("nodeisequalnode15", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode15Assert2");
     }
 }
 

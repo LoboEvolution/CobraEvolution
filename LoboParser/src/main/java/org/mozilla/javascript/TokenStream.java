@@ -9,17 +9,18 @@ package org.mozilla.javascript;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigInteger;
+import java.util.HashMap;
 
 /**
  * This class implements the JavaScript scanner.
  *
  * <p>It is based on the C source files jsscan.c and jsscan.h in the jsref package.
  *
- * @see org.mozilla.javascript.Parser
+ * @see Parser
  * @author Mike McCabe
  * @author Brendan Eich
  */
-class TokenStream {
+class TokenStream implements Parser.CurrentPositionReporter {
     /*
      * For chars - because we need something out-of-range
      * to check.  (And checking EOF by exception is annoying.)
@@ -576,12 +577,37 @@ class TokenStream {
         return id & 0xff;
     }
 
+    @SuppressWarnings("AndroidJdkLibsChecker")
+    private static boolean isValidIdentifierName(String str) {
+        int i = 0;
+        for (int c : str.codePoints().toArray()) {
+            if (i++ == 0) {
+                if (c != '$' && c != '_' && !Character.isUnicodeIdentifierStart(c)) {
+                    return false;
+                }
+            } else {
+                if (c != '$'
+                        && c != '\u200c'
+                        && c != '\u200d'
+                        && !Character.isUnicodeIdentifierPart(c)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     final String getSourceString() {
         return sourceString;
     }
 
-    final int getLineno() {
+    @Override
+    public int getLineno() {
         return lineno;
+    }
+
+    public int getTokenStartLineno() {
+        return tokenStartLineno;
     }
 
     final String getString() {
@@ -628,11 +654,15 @@ class TokenStream {
             for (; ; ) {
                 c = getChar();
                 if (c == EOF_CHAR) {
+                    tokenStartLastLineEnd = lastLineEnd;
+                    tokenStartLineno = lineno;
                     tokenBeg = cursor - 1;
                     tokenEnd = cursor;
                     return Token.EOF;
                 } else if (c == '\n') {
                     dirtyLine = false;
+                    tokenStartLastLineEnd = lastLineEnd;
+                    tokenStartLineno = lineno;
                     tokenBeg = cursor - 1;
                     tokenEnd = cursor;
                     return Token.EOL;
@@ -645,6 +675,8 @@ class TokenStream {
             }
 
             // Assume the token will be 1 char - fixed up below.
+            tokenStartLastLineEnd = lastLineEnd;
+            tokenStartLineno = lineno;
             tokenBeg = cursor - 1;
             tokenEnd = cursor;
 
@@ -666,7 +698,7 @@ class TokenStream {
                     c = '\\';
                 }
             } else {
-                identifierStart = Character.isJavaIdentifierStart((char) c);
+                identifierStart = Character.isUnicodeIdentifierStart(c) || c == '$' || c == '_';
                 if (identifierStart) {
                     stringBufferTop = 0;
                     addToString(c);
@@ -684,12 +716,32 @@ class TokenStream {
                         // escape sequence in an identifier, we can report
                         // an error here.
                         int escapeVal = 0;
-                        for (int i = 0; i != 4; ++i) {
-                            c = getChar();
-                            escapeVal = Kit.xDigitToInt(c, escapeVal);
-                            // Next check takes care about c < 0 and bad escape
-                            if (escapeVal < 0) {
+                        if (matchTemplateLiteralChar('{')) {
+                            for (; ; ) {
+                                c = getTemplateLiteralChar();
+
+                                if (c == '}') {
+                                    break;
+                                }
+                                escapeVal = Kit.xDigitToInt(c, escapeVal);
+                                if (escapeVal < 0) {
+                                    break;
+                                }
+                            }
+
+                            if (escapeVal < 0 || escapeVal > 0x10FFFF) {
+                                parser.reportError("msg.invalid.escape");
                                 break;
+                            }
+                        } else {
+                            for (int i = 0; i != 4; ++i) {
+                                c = getChar();
+                                escapeVal = Kit.xDigitToInt(c, escapeVal);
+                                // Next check takes care about c < 0 and bad escape
+                                if (escapeVal < 0) {
+                                    parser.reportError("msg.invalid.escape");
+                                    break;
+                                }
                             }
                         }
                         if (escapeVal < 0) {
@@ -712,7 +764,7 @@ class TokenStream {
                         } else {
                             if (c == EOF_CHAR
                                     || c == BYTE_ORDER_MARK
-                                    || !Character.isJavaIdentifierPart((char) c)) {
+                                    || !(Character.isUnicodeIdentifierPart(c) || c == '$')) {
                                 break;
                             }
                             addToString(c);
@@ -722,7 +774,8 @@ class TokenStream {
                 ungetChar(c);
 
                 String str = getStringFromBuffer();
-                if (!containsEscape) {
+                if (!containsEscape
+                        || parser.compilerEnv.getLanguageVersion() >= Context.VERSION_ES6) {
                     // OPT we shouldn't have to make a string (object!) to
                     // check if it's a keyword.
 
@@ -741,7 +794,7 @@ class TokenStream {
                         }
                         // Save the string in case we need to use in
                         // object literal definitions.
-                        this.string = (String) allStrings.intern(str);
+                        this.string = internString(str);
                         if (result != Token.RESERVED) {
                             return result;
                         } else if (parser.compilerEnv.getLanguageVersion() >= Context.VERSION_ES6) {
@@ -758,7 +811,15 @@ class TokenStream {
                     // we convert the last character back to unicode
                     str = convertLastCharToHex(str);
                 }
-                this.string = (String) allStrings.intern(str);
+
+                if (containsEscape
+                        && parser.compilerEnv.getLanguageVersion() >= Context.VERSION_ES6
+                        && !isValidIdentifierName(str)) {
+                    parser.reportError("msg.invalid.escape");
+                    return Token.ERROR;
+                }
+
+                this.string = internString(str);
                 return Token.NAME;
             }
 
@@ -963,8 +1024,8 @@ class TokenStream {
                                 c = '\t';
                                 break;
 
-                                // \v a late addition to the ECMA spec,
-                                // it is not in Java, so use 0xb
+                            // \v a late addition to the ECMA spec,
+                            // it is not in Java, so use 0xb
                             case 'v':
                                 c = 0xb;
                                 break;
@@ -976,13 +1037,38 @@ class TokenStream {
                                 int escapeStart = stringBufferTop;
                                 addToString('u');
                                 escapeVal = 0;
-                                for (int i = 0; i != 4; ++i) {
-                                    c = getChar();
-                                    escapeVal = Kit.xDigitToInt(c, escapeVal);
-                                    if (escapeVal < 0) {
+                                if (matchChar('{')) {
+                                    for (; ; ) {
+                                        c = getChar();
+
+                                        if (c == '}') {
+                                            addToString(c);
+                                            break;
+                                        }
+                                        escapeVal = Kit.xDigitToInt(c, escapeVal);
+                                        if (escapeVal < 0) {
+                                            break;
+                                        }
+                                        addToString(c);
+                                    }
+
+                                    if (escapeVal < 0 || escapeVal > 0x10FFFF) {
+                                        parser.reportError("msg.invalid.escape");
                                         continue strLoop;
                                     }
-                                    addToString(c);
+                                } else {
+                                    for (int i = 0; i != 4; ++i) {
+                                        c = getChar();
+                                        escapeVal = Kit.xDigitToInt(c, escapeVal);
+                                        if (escapeVal < 0) {
+                                            if (parser.compilerEnv.getLanguageVersion()
+                                                    >= Context.VERSION_ES6) {
+                                                parser.reportError("msg.invalid.escape");
+                                            }
+                                            continue strLoop;
+                                        }
+                                        addToString(c);
+                                    }
                                 }
                                 // prepare for replace of stored 'u' sequence
                                 // by escape value
@@ -1040,8 +1126,19 @@ class TokenStream {
                 }
 
                 String str = getStringFromBuffer();
-                this.string = (String) allStrings.intern(str);
+                this.string = internString(str);
+                cursor = sourceCursor;
+                tokenEnd = cursor;
                 return Token.STRING;
+            }
+
+            if (c == '#'
+                    && cursor == 1
+                    && peekChar() == '!'
+                    && !this.parser.calledByCompileFunction) {
+                // #! hashbang: only on the first line of a Script, no leading whitespace
+                skipLine();
+                return Token.COMMENT;
             }
 
             switch (c) {
@@ -1062,6 +1159,21 @@ class TokenStream {
                 case ',':
                     return Token.COMMA;
                 case '?':
+                    if (parser.compilerEnv.getLanguageVersion() >= Context.VERSION_ES6) {
+                        if (peekChar() == '.') {
+                            // ?.digit is to be treated as ? .num
+                            getChar();
+                            if (!isDigit(peekChar())) {
+                                return Token.QUESTION_DOT;
+                            }
+                            ungetChar('.');
+                        } else if (matchChar('?')) {
+                            if (matchChar('=')) {
+                                return Token.ASSIGN_NULLISH;
+                            }
+                            return Token.NULLISH_COALESCING;
+                        }
+                    }
                     return Token.HOOK;
                 case ':':
                     if (matchChar(':')) {
@@ -1070,6 +1182,10 @@ class TokenStream {
                     return Token.COLON;
                 case '.':
                     if (matchChar('.')) {
+                        if (parser.compilerEnv.getLanguageVersion() >= Context.VERSION_1_8
+                                && matchChar('.')) {
+                            return Token.DOTDOTDOT;
+                        }
                         return Token.DOTDOT;
                     } else if (matchChar('(')) {
                         return Token.DOTQUERY;
@@ -1079,7 +1195,8 @@ class TokenStream {
 
                 case '|':
                     if (matchChar('|')) {
-                        return Token.OR;
+                        if (matchChar('=')) return Token.ASSIGN_LOGICAL_OR;
+                        else return Token.OR;
                     } else if (matchChar('=')) {
                         return Token.ASSIGN_BITOR;
                     } else {
@@ -1094,7 +1211,8 @@ class TokenStream {
 
                 case '&':
                     if (matchChar('&')) {
-                        return Token.AND;
+                        if (matchChar('=')) return Token.ASSIGN_LOGICAL_AND;
+                        else return Token.AND;
                     } else if (matchChar('=')) {
                         return Token.ASSIGN_BITAND;
                     } else {
@@ -1127,6 +1245,8 @@ class TokenStream {
                     if (matchChar('!')) {
                         if (matchChar('-')) {
                             if (matchChar('-')) {
+                                tokenStartLastLineEnd = lastLineEnd;
+                                tokenStartLineno = lineno;
                                 tokenBeg = cursor - 4;
                                 skipLine();
                                 commentType = Token.CommentType.HTML;
@@ -1183,6 +1303,8 @@ class TokenStream {
                     markCommentStart();
                     // is it a // comment?
                     if (matchChar('/')) {
+                        tokenStartLastLineEnd = lastLineEnd;
+                        tokenStartLineno = lineno;
                         tokenBeg = cursor - 2;
                         skipLine();
                         commentType = Token.CommentType.LINE;
@@ -1191,6 +1313,8 @@ class TokenStream {
                     // is it a /* or /** comment?
                     if (matchChar('*')) {
                         boolean lookForSlash = false;
+                        tokenStartLastLineEnd = lastLineEnd;
+                        tokenStartLineno = lineno;
                         tokenBeg = cursor - 2;
                         if (matchChar('*')) {
                             lookForSlash = true;
@@ -1208,6 +1332,7 @@ class TokenStream {
                                 lookForSlash = true;
                             } else if (c == '/') {
                                 if (lookForSlash) {
+                                    cursor = sourceCursor;
                                     tokenEnd = cursor;
                                     return Token.COMMENT;
                                 }
@@ -1316,6 +1441,20 @@ class TokenStream {
         return c;
     }
 
+    // Use a HashMap to ensure that we only have one copy -- the original one
+    // of any particular string. Yes, the "String.intern" function also does this,
+    // but this is how Rhino has worked for years and it's not clear that we
+    // want to make the JVM-wide intern pool as big as it might happen if we
+    // used that.
+    private String internString(String s) {
+        String existing = allStrings.putIfAbsent(s, s);
+        if (existing == null) {
+            // First time we saw it
+            return s;
+        }
+        return existing;
+    }
+
     private static boolean isAlpha(int c) {
         // Use 'Z' < 'a'
         if (c <= 'Z') {
@@ -1414,8 +1553,8 @@ class TokenStream {
             if (matchChar('g')) addToString('g');
             else if (matchChar('i')) addToString('i');
             else if (matchChar('m')) addToString('m');
-            else if (matchChar('y')) // FireFox 3
-            addToString('y');
+            else if (matchChar('s')) addToString('s');
+            else if (matchChar('y')) addToString('y');
             else break;
         }
         tokenEnd = start + stringBufferTop + 2; // include slashes
@@ -1517,6 +1656,8 @@ class TokenStream {
                 case '`':
                     rawString.setLength(rawString.length() - 1); // don't include "`"
                     this.string = hasInvalidEscapeSequences ? null : getStringFromBuffer();
+                    cursor = sourceCursor;
+                    tokenEnd = cursor;
                     return Token.TEMPLATE_LITERAL;
                 case '$':
                     if (matchTemplateLiteralChar('{')) {
@@ -1611,7 +1752,12 @@ class TokenStream {
                                             escapeVal = -1;
                                             break;
                                         }
+
                                         c = getTemplateLiteralChar();
+                                        if (c == EOF_CHAR) {
+                                            parser.reportError("msg.syntax");
+                                            return Token.ERROR;
+                                        }
 
                                         if (c == '}') {
                                             break;
@@ -1717,6 +1863,8 @@ class TokenStream {
     }
 
     int getNextXMLToken() throws IOException {
+        tokenStartLastLineEnd = lastLineEnd;
+        tokenStartLineno = lineno;
         tokenBeg = cursor;
         stringBufferTop = 0; // remember the XML
 
@@ -1764,6 +1912,8 @@ class TokenStream {
 
                 if (!xmlIsTagContent && xmlOpenTagsCount == 0) {
                     this.string = getStringFromBuffer();
+                    cursor = sourceCursor;
+                    tokenEnd = cursor;
                     return Token.XMLEND;
                 }
             } else {
@@ -1971,13 +2121,19 @@ class TokenStream {
 
     private void addToString(int c) {
         int N = stringBufferTop;
-        if (N == stringBuffer.length) {
+        int codePointLen = Character.charCount(c);
+        if (N + codePointLen >= stringBuffer.length) {
             char[] tmp = new char[stringBuffer.length * 2];
             System.arraycopy(stringBuffer, 0, tmp, 0, N);
             stringBuffer = tmp;
         }
-        stringBuffer[N] = (char) c;
-        stringBufferTop = N + 1;
+        if (codePointLen == 1) {
+            stringBuffer[N] = (char) c;
+        } else {
+            stringBuffer[N] = Character.highSurrogate(c);
+            stringBuffer[N + 1] = Character.lowSurrogate(c);
+        }
+        stringBufferTop = N + codePointLen;
     }
 
     private boolean canUngetChar() {
@@ -2029,7 +2185,8 @@ class TokenStream {
                     return EOF_CHAR;
                 }
                 cursor++;
-                c = sourceString.charAt(sourceCursor++);
+                c = sourceString.codePointAt(sourceCursor);
+                sourceCursor += Character.charCount(c);
             } else {
                 if (sourceCursor == sourceEnd) {
                     if (!fillSourceBuffer()) {
@@ -2048,6 +2205,7 @@ class TokenStream {
                 }
                 lineEndChar = -1;
                 lineStart = sourceCursor - 1;
+                lastLineEnd = tokenEnd;
                 lineno++;
             }
 
@@ -2092,7 +2250,8 @@ class TokenStream {
     }
 
     /** Returns the offset into the current line. */
-    final int getOffset() {
+    @Override
+    public int getOffset() {
         int n = sourceCursor - lineStart;
         if (lineEndChar >= 0) {
             --n;
@@ -2120,7 +2279,7 @@ class TokenStream {
                 // ignore it, we're already displaying an error...
                 return EOF_CHAR;
             }
-            // index recalculuation as fillSourceBuffer can move saved
+            // index recalculation as fillSourceBuffer can move saved
             // line buffer and change sourceCursor
             index -= (oldSourceCursor - sourceCursor);
         }
@@ -2135,7 +2294,8 @@ class TokenStream {
         return new String(sourceBuffer, beginIndex, count);
     }
 
-    final String getLine() {
+    @Override
+    public String getLine() {
         int lineEnd = sourceCursor;
         if (lineEndChar >= 0) {
             // move cursor before newline sequence
@@ -2288,6 +2448,20 @@ class TokenStream {
         return buf.toString();
     }
 
+    @Override
+    public int getPosition() {
+        return tokenBeg;
+    }
+
+    @Override
+    public int getLength() {
+        return tokenEnd - tokenBeg;
+    }
+
+    public int getTokenColumn() {
+        return tokenBeg - tokenStartLastLineEnd + 1;
+    }
+
     // stuff other than whitespace since start of line
     private boolean dirtyLine;
 
@@ -2310,7 +2484,7 @@ class TokenStream {
 
     private char[] stringBuffer = new char[128];
     private int stringBufferTop;
-    private ObjToIntMap allStrings = new ObjToIntMap(50);
+    private final HashMap<String, String> allStrings = new HashMap<>();
 
     // Room to backtrace from to < on failed match of the last - in <!--
     private final int[] ungetBuffer = new int[3];
@@ -2339,6 +2513,10 @@ class TokenStream {
     // Record start and end positions of last scanned token.
     int tokenBeg;
     int tokenEnd;
+
+    private int lastLineEnd;
+    private int tokenStartLastLineEnd;
+    private int tokenStartLineno;
 
     // Type of last comment scanned.
     Token.CommentType commentType;

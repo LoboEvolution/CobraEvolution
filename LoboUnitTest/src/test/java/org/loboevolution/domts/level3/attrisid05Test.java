@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -42,20 +42,18 @@ import static org.junit.Assert.assertTrue;
  * Deep clone the element node and append it as a sibling of the acronym node.
  * We now have two id attributes of type ID with identical values.
  * Invoke isID on the class attribute, should this return true???
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId</a>
  */
-public class attrisid05Test extends LoboUnitTest {
+public class Attrisid05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        Element clonedacronymElem;
-        Element acronymParentElem;
-        Attr attr;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final Element clonedacronymElem;
+        final Element acronymParentElem;
+        final Attr attr;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acronymElem = (Element) elemList.item(3);
@@ -63,7 +61,7 @@ public class attrisid05Test extends LoboUnitTest {
         clonedacronymElem = (Element) acronymElem.cloneNode(true);
         acronymParentElem.appendChild(clonedacronymElem);
         attr = acronymElem.getAttributeNode("id");
-        assertTrue("AttrIsIDTrue05", attr.isId());
+        assertTrue(attr.isId(), "Attrisid05Assert2");
     }
 }
 

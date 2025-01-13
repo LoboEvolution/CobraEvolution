@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,14 @@ import org.loboevolution.html.dom.HTMLBodyElement;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.gui.HtmlPanel;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
-import org.loboevolution.html.node.css.ComputedCSSStyleDeclaration;
-import org.loboevolution.html.node.js.Window;
+import org.loboevolution.css.CSSStyleDeclaration;
+import org.loboevolution.css.ComputedCSSStyleDeclaration;
+import org.loboevolution.js.Window;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.laf.ColorFactory;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * <p>ComputedCSSStyleDeclaration class.</p>
@@ -48,11 +49,9 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
 
     private final HTMLElementImpl element;
 
-    private final RenderState renderState;
-
     private final Window window;
 
-    private CSSStyleDeclaration style;
+    private final CSSStyleDeclaration style;
 
     private int availHeight = -1;
 
@@ -65,9 +64,8 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
      **/
 
-    public ComputedCSSStyleDeclarationImpl(HTMLElementImpl element, CSSStyleDeclaration style) {
+    public ComputedCSSStyleDeclarationImpl(final HTMLElementImpl element, final CSSStyleDeclaration style) {
         this.element = element;
-        this.renderState = element.getRenderState();
         this.style = style;
 
         final HTMLDocumentImpl doc = (HTMLDocumentImpl) element.getDocumentNode();
@@ -79,8 +77,8 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
 
         if (parent != null) {
             final CSSStyleDeclaration currentStyle = parent.getStyle();
-            availHeight = HtmlValues.getPixelSize(currentStyle.getHeight(), renderState, window, -1);
-            availWidth = HtmlValues.getPixelSize(currentStyle.getWidth(), renderState, window, -1);
+            availHeight = HtmlValues.getPixelSize(currentStyle.getHeight(), element.getRenderState(), window, -1);
+            availWidth = HtmlValues.getPixelSize(currentStyle.getWidth(), element.getRenderState(), window, -1);
         }
 
         availHeight = availHeight == -1 ? htmlPanel.getHeight() : availHeight;
@@ -132,26 +130,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBackgroundColor() {
-        if (Strings.isBlank(style.getBackgroundColor())) {
-            return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-        }
-
-        final Color c = ColorFactory.getInstance().getColor(style.getBackgroundColor());
-        if (c != null) {
-            final float alpha = (float) (c.getAlpha()) / 255.0f;
-
-            if (c.getRed() == 0 && c.getGreen() == 0 && c.getBlue() == 0) {
-                return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-            }
-
-            if (alpha > 0 && alpha < 1) {
-                return this.element.getParentNode() == null ? null : "rgba(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ", " + alpha + ")";
-            } else {
-                return this.element.getParentNode() == null ? null : "rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ")";
-            }
-        } else {
-            return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-        }
+        return ColorFactory.getInstance().getColorString(this.element, style.getBackgroundColor(), CSSValues.INITIAL.getValue());
     }
 
     /**
@@ -167,7 +146,41 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBackgroundPosition() {
-        return this.element.getParentNode() == null ? null : style.getBackgroundPosition();
+        String backgroundPosition = style.getBackgroundPosition();
+        if (this.element.getParentNode() != null && Strings.isNotBlank(backgroundPosition)) {
+            StringBuilder builder = new StringBuilder();
+            Arrays.stream(backgroundPosition.split(" ")).forEach(position -> {
+
+                if (!builder.isEmpty()) {
+                    builder.append(" ");
+                }
+
+                switch (CSSValues.get(position)) {
+                    case BOTTOM:
+                    case RIGHT:
+                        builder.append("100%");
+                        break;
+                    case TOP:
+                    case LEFT:
+                        if (builder.indexOf("100%") > -1) {
+                            builder.insert(0, "0% ");
+                        } else {
+                            builder.append("0%");
+                        }
+                        break;
+                    case CENTER:
+                        builder.append("50%");
+                        break;
+                    default:
+                        builder.append(position);
+                        break;
+                }
+            });
+
+            return builder.toString().trim();
+        }
+
+        return null;
     }
 
     /**
@@ -200,15 +213,8 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getBorderWidth() {
         final String ccsBorderWidth = style.getBorderWidth();
-        final int borderWidth = HtmlValues.getPixelSize(ccsBorderWidth, renderState, window.getWindow(), -1, 0);
-        if (borderWidth == -1) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : "0px";
-            }
-        }
-        return this.element.getParentNode() == null ? null : borderWidth + "px";
+        final int borderWidth = HtmlValues.getPixelSize(ccsBorderWidth, element.getRenderState(), window.getWindow(), -1, 0);
+        return this.element.getParentNode() == null ? "" : borderWidth == -1 ? "0px" : borderWidth + "px";
     }
 
     /**
@@ -216,7 +222,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderBottomColor() {
-        return this.element.getParentNode() == null ? null : style.getBorderBottomColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getBorderBottomColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -224,7 +230,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderBottomStyle() {
-        return this.element.getParentNode() == null ? null : style.getBorderBottomStyle();
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderBottomStyle()) ? CSSValues.INITIAL.getValue() : style.getBorderBottomStyle();
     }
 
     /**
@@ -232,16 +238,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderBottomWidth() {
-        final String cssBorderBottomWidth = style.getBorderBottomWidth();
-        final int borderBottomWidth = HtmlValues.getPixelSize(cssBorderBottomWidth, renderState, window.getWindow(), -1, availHeight);
-        if (borderBottomWidth == -1) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : "0px";
-            }
+        if (element.getRenderState() != null) {
+            final int borderBottomWidth = ((HtmlInsets) element.getRenderState().getBorderInfo().getInsets()).getBottom();
+            return this.element.getParentNode() == null ? "" : borderBottomWidth == -1 ? "0px" : borderBottomWidth + "px";
         }
-        return this.element.getParentNode() == null ? null : borderBottomWidth + "px";
+        return "";
     }
 
     /**
@@ -257,7 +258,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderLeftColor() {
-        return this.element.getParentNode() == null ? null : style.getBorderLeftColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getBorderLeftColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -265,7 +266,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderLeftStyle() {
-        return this.element.getParentNode() == null ? null : style.getBorderLeftStyle();
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderLeftStyle()) ? CSSValues.INITIAL.getValue() : style.getBorderLeftStyle();
     }
 
     /**
@@ -273,16 +274,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderLeftWidth() {
-        final String cssBorderBottomLeft = style.getBorderLeftWidth();
-        final int borderBottomLeft = HtmlValues.getPixelSize(cssBorderBottomLeft, renderState, window.getWindow(), -1, availWidth);
-        if (borderBottomLeft == -1) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : "0px";
-            }
+        if (element.getRenderState() != null) {
+            final int borderLeftWidth = ((HtmlInsets) element.getRenderState().getBorderInfo().getInsets()).getLeft();
+            return this.element.getParentNode() == null ? "" : borderLeftWidth == -1 ? "0px" : borderLeftWidth + "px";
         }
-        return this.element.getParentNode() == null ? null : borderBottomLeft + "px";
+        return "";
     }
 
     /**
@@ -298,7 +294,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderRightColor() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderRightColor()) ? "rgb(0, 0, 0)" : style.getBorderRightColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getBorderRightColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -306,7 +302,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderRightStyle() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderRightStyle()) ? CSSValues.NONE.getValue() : style.getBorderRightStyle();
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderRightStyle()) ? CSSValues.INITIAL.getValue() : style.getBorderRightStyle();
     }
 
     /**
@@ -314,16 +310,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderRightWidth() {
-        final String getBorderRightWidth = style.getBorderRightWidth();
-        final int borderRightWidth = HtmlValues.getPixelSize(getBorderRightWidth, renderState, window.getWindow(), -1, availWidth);
-        if (borderRightWidth == -1) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : "0px";
-            }
+        if (element.getRenderState() != null) {
+            final int borderRightWidth = ((HtmlInsets) element.getRenderState().getBorderInfo().getInsets()).getRight();
+            return this.element.getParentNode() == null ? "" : borderRightWidth == -1 ? "0px" : borderRightWidth + "px";
         }
-        return this.element.getParentNode() == null ? null : borderRightWidth + "px";
+        return "";
     }
 
     /**
@@ -339,7 +330,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderColor() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderColor()) ? "rgb(0, 0, 0)" : style.getBorderColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getBorderColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -347,15 +338,16 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderLeft() {
-        return this.element.getParentNode() == null ? null : style.getBorderSpacing();
+        return this.element.getParentNode() == null ? null : style.getBorderLeft();
     }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String getBorderTopColor() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderTopColor()) ? "rgb(0, 0, 0)" : style.getBorderTopColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getBorderTopColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -379,7 +371,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderTopStyle() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderTopStyle()) ? CSSValues.NONE.getValue() : style.getBorderTopStyle();
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getBorderTopStyle()) ? CSSValues.INITIAL.getValue() : style.getBorderTopStyle();
     }
 
     /**
@@ -387,16 +379,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBorderTopWidth() {
-        final String cssBorderToptWidth = style.getBorderTopWidth();
-        final int borderTopWidth = HtmlValues.getPixelSize(cssBorderToptWidth, renderState, window.getWindow(), -1, availHeight);
-        if (borderTopWidth == -1) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : "0px";
-            }
+        if (element.getRenderState() != null) {
+            final int borderTopWidth = ((HtmlInsets) element.getRenderState().getBorderInfo().getInsets()).getTop();
+            return this.element.getParentNode() == null ? "" : borderTopWidth == -1 ? "0px" : borderTopWidth + "px";
         }
-        return this.element.getParentNode() == null ? null : borderTopWidth + "px";
+        return "";
     }
 
     /**
@@ -408,10 +395,10 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
             if (element.getParentNode() != null) {
                 return this.element.getParentNode() == null ? null : CSSValues.AUTO.getValue();
             } else {
-                return this.element.getParentNode() == null ? null : "";
+                return "";
             }
         } else {
-            return this.element.getParentNode() == null ? null : HtmlValues.getPixelSize(style.getBottom(), renderState, window, 0, availHeight) + "px";
+            return this.element.getParentNode() == null ? "" : HtmlValues.getPixelSize(style.getBottom(), element.getRenderState(), window, 0, availHeight) + "px";
         }
     }
 
@@ -420,25 +407,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getColor() {
-        final String col = style.getColor();
-
-        if (Strings.isBlank(col)) {
-            return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-        }
-        final Color c = ColorFactory.getInstance().getColor(col);
-        if (c != null) {
-            if (c.getRed() == 0 && c.getGreen() == 0 && c.getBlue() == 0) {
-                return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-            }
-            final float alpha = (float) (c.getAlpha()) / 255.0f;
-            if (alpha > 0 && alpha < 1) {
-                return this.element.getParentNode() == null ? null : "rgba(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ", " + alpha + ")";
-            } else {
-                return this.element.getParentNode() == null ? null : "rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ")";
-            }
-        } else {
-            return this.element.getParentNode() == null ? null : "rgb(0, 0, 0)";
-        }
+        return ColorFactory.getInstance().getColorString(this.element, style.getColor(), "rgb(0, 0, 0)");
     }
 
     /**
@@ -486,9 +455,8 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getCssFloat() {
-        final String ccFloat = style.getCssFloat();
-        return this.element.getParentNode() == null ? null : Strings.isCssBlank(ccFloat) ? CSSValues.NONE.getValue() :
-                HtmlValues.getPixelSize(ccFloat, renderState, window, 0, availWidth) + "px";
+        final String cssFloat = Strings.isNotBlank(style.getCssFloat()) ? style.getCssFloat() : Strings.isNotBlank(getFloat()) ? getFloat() : CSSValues.NONE.getValue();
+        return this.element.getParentNode() == null ? null : cssFloat;
     }
 
     /**
@@ -521,7 +489,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getCursor() {
         final RenderState rs = element.getRenderState();
-        return this.element.getParentNode() == null ? null : rs.getCursor().get().getType() == Cursor.DEFAULT_CURSOR ? "auto" : style.getCursor();
+        return this.element.getParentNode() == null ? null : rs.getCursor().getType() == Cursor.DEFAULT_CURSOR ? "auto" : style.getCursor();
     }
 
     /**
@@ -540,65 +508,33 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
 
         final String cssDisplay = style.getDisplay();
         if (Strings.isNotBlank(cssDisplay) && !"null".equals(cssDisplay)) {
-            return this.element.getParentNode() == null ? null : cssDisplay;
+            return this.element.getParentNode() == null ? "" : cssDisplay;
         } else {
             final RenderState rs = element.getRenderState();
-            CSSValues display;
+            final CSSValues display;
             if (rs == null) {
-                return this.element.getParentNode() == null ? null : style.getDisplay() == null ? "" : style.getDisplay();
+                return this.element.getParentNode() == null ? "" : style.getDisplay() == null ? "" : style.getDisplay();
             } else {
-                switch (rs.getDefaultDisplay()) {
-                    case RenderState.DISPLAY_BLOCK:
-                        display = CSSValues.BLOCK;
-                        break;
-                    case RenderState.DISPLAY_NONE:
-                        display = CSSValues.NONE;
-                        break;
-                    case RenderState.DISPLAY_LIST_ITEM:
-                        display = CSSValues.LIST_ITEM;
-                        break;
-                    case RenderState.DISPLAY_TABLE:
-                        display = CSSValues.TABLE;
-                        break;
-                    case RenderState.DISPLAY_TABLE_CELL:
-                        display = CSSValues.TABLE_CELL;
-                        break;
-                    case RenderState.DISPLAY_TABLE_ROW:
-                        display = CSSValues.TABLE_ROW;
-                        break;
-                    case RenderState.DISPLAY_TABLE_CAPTION:
-                        display = CSSValues.TABLE_CAPTION;
-                        break;
-                    case RenderState.DISPLAY_TABLE_COLUMN:
-                        display = CSSValues.TABLE_COLUMN;
-                        break;
-                    case RenderState.DISPLAY_TABLE_FOOTER_GROUP:
-                        display = CSSValues.TABLE_FOOTER_GROUP;
-                        break;
-                    case RenderState.DISPLAY_TABLE_HEADER_GROUP:
-                        display = CSSValues.TABLE_HEADER_GROUP;
-                        break;
-                    case RenderState.DISPLAY_TABLE_COLUMN_GROUP:
-                        display = CSSValues.TABLE_COLUMN_GROUP;
-                        break;
-                    case RenderState.DISPLAY_TABLE_ROW_GROUP:
-                        display = CSSValues.TABLE_ROW_GROUP;
-                        break;
-                    case RenderState.DISPLAY_INLINE_BLOCK:
-                        display = CSSValues.INLINE_BLOCK;
-                        break;
-                    case RenderState.DISPLAY_INLINE_TABLE:
-                        display = CSSValues.INLINE_TABLE;
-                        break;
-                    case RenderState.DISPLAY_FLEX_BOX:
-                        display = CSSValues.FLEX;
-                        break;
-                    default:
-                        display = CSSValues.INLINE;
-                        break;
-                }
+                display = switch (rs.getDefaultDisplay()) {
+                    case RenderState.DISPLAY_BLOCK -> CSSValues.BLOCK;
+                    case RenderState.DISPLAY_NONE -> CSSValues.NONE;
+                    case RenderState.DISPLAY_LIST_ITEM -> CSSValues.LIST_ITEM;
+                    case RenderState.DISPLAY_TABLE -> CSSValues.TABLE;
+                    case RenderState.DISPLAY_TABLE_CELL -> CSSValues.TABLE_CELL;
+                    case RenderState.DISPLAY_TABLE_ROW -> CSSValues.TABLE_ROW;
+                    case RenderState.DISPLAY_TABLE_CAPTION -> CSSValues.TABLE_CAPTION;
+                    case RenderState.DISPLAY_TABLE_COLUMN -> CSSValues.TABLE_COLUMN;
+                    case RenderState.DISPLAY_TABLE_FOOTER_GROUP -> CSSValues.TABLE_FOOTER_GROUP;
+                    case RenderState.DISPLAY_TABLE_HEADER_GROUP -> CSSValues.TABLE_HEADER_GROUP;
+                    case RenderState.DISPLAY_TABLE_COLUMN_GROUP -> CSSValues.TABLE_COLUMN_GROUP;
+                    case RenderState.DISPLAY_TABLE_ROW_GROUP -> CSSValues.TABLE_ROW_GROUP;
+                    case RenderState.DISPLAY_INLINE_BLOCK -> CSSValues.INLINE_BLOCK;
+                    case RenderState.DISPLAY_INLINE_TABLE -> CSSValues.INLINE_TABLE;
+                    case RenderState.DISPLAY_FLEX_BOX -> CSSValues.FLEX;
+                    default -> CSSValues.INLINE;
+                };
             }
-            return this.element.getParentNode() == null ? null : display.getValue();
+            return this.element.getParentNode() == null ? "" : display.getValue();
         }
     }
 
@@ -624,24 +560,24 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getFont() {
-        StringBuilder font = new StringBuilder();
+        final StringBuilder font = new StringBuilder();
         final String fontStyle = style.getFontStyle();
         final String lineHeight = getLineHeight();
         final String fontSize = getFontSize();
         final String fontFamily = getFontFamily();
 
         if (Strings.isCssNotBlank(fontStyle) && !fontStyle.equals(CSSValues.NORMAL.getValue())) {
-            font.append(CSSValues.ITALIC.getValue() + " ");
+            font.append(CSSValues.ITALIC.getValue()).append(" ");
         }
 
         font.append(fontSize);
 
         if (Strings.isCssNotBlank(lineHeight) && !lineHeight.equals(CSSValues.NORMAL.getValue())) {
-            font.append(" / " + lineHeight);
+            font.append(" / ").append(lineHeight);
         }
 
         if (Strings.isCssNotBlank(fontFamily)) {
-            font.append(" " + fontFamily);
+            font.append(" ").append(fontFamily);
         }
 
         return this.element.getParentNode() == null ? null : font.toString().trim();
@@ -655,7 +591,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     public String getFontSize() {
         final HTMLElementImpl parent = (HTMLElementImpl) element.getParentElement();
         final CSSStyleDeclaration style = element.getStyle();
-        int fontSize;
+        final int fontSize;
 
         if (Strings.isCssBlank(style.getFontSize()) && parent != null && parent.getStyle().getLength() > 0) {
             final CSSStyleDeclaration currentStyle = parent.getStyle();
@@ -663,7 +599,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
         } else {
             fontSize = Float.valueOf(FontValues.getFontSize(style.getFontSize(), window, null)).intValue();
         }
-        return this.element.getParentNode() == null ? null : fontSize + "px";
+        return this.element.getParentNode() == null ? null : (fontSize < 7 ? 6 : fontSize) + "px";
     }
 
     /**
@@ -750,9 +686,21 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getLineHeight() {
+        final HTMLElementImpl parent = (HTMLElementImpl) element.getParentElement();
         final CSSStyleDeclaration style = element.getStyle();
-        final String lineHeight = style.getLineHeight();
-        return this.element.getParentNode() == null ? null : Strings.isCssBlank(lineHeight) ? CSSValues.NORMAL.getValue() : lineHeight;
+        int lineHeight;
+
+        if (Strings.isCssBlank(style.getLineHeight()) && parent != null && parent.getStyle().getLength() > 0) {
+            final CSSStyleDeclaration currentStyle = parent.getStyle();
+            lineHeight = FontValues.getPixelSize(currentStyle.getLineHeight(), element.getRenderState(), window, -1);
+        } else {
+            if (style.getLineHeight() == null || CSSValues.NORMAL.isEqual(style.getLineHeight())) {
+                return CSSValues.NORMAL.getValue();
+            } else {
+                lineHeight = Float.valueOf(FontValues.getFontSize(style.getLineHeight(), window, element.getRenderState())).intValue();
+            }
+        }
+        return this.element.getParentNode() == null ? null : lineHeight + "px";
     }
 
     /**
@@ -761,14 +709,14 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getHeight() {
         if (element.getParentNode() == null) {
-            return this.element.getParentNode() == null ? null : "";
+            return "";
         }
 
         if (CSSValues.NONE.isEqual(style.getDisplay())) {
             return this.element.getParentNode() == null ? null : CSSValues.AUTO.getValue();
         }
 
-        return this.element.getParentNode() == null ? null : element.calculateHeight(false, false) + "px";
+        return this.element.getParentNode() == null ? "" : element.calculateHeight(false, false, true) + "px";
     }
 
     /**
@@ -783,130 +731,16 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setClipPath(String clip) {
-        style.setClipPath(clip);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setClipRule(String clip) {
-        style.setClipRule(clip);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFloat(String flt) {
-        style.setFloat(flt);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFill(String value) {
-        style.setFill(value);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFillOpacity(String value) {
-        style.setFillOpacity(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setOpacity(String value) {
-        style.setOpacity(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTransform(String value) {
-        style.setTransform(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeWidth(String value) {
-        style.setStrokeWidth(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeOpacity(String value) {
-        style.setStrokeOpacity(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeMiterLimit(String value) {
-        style.setStrokeMiterLimit(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeLineJoin(String value) {
-        style.setStrokeLineJoin(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeDashArray(String value) {
-        style.setStrokeDashArray(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStroke(String value) {
-        style.setStroke(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStrokeLineCap(String value) {
-        style.setStrokeLineCap(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getLeft() {
-        if (Strings.isCssBlank(style.getLeft())) {
-            if (element.getParentNode() != null && !(element.getParentNode() instanceof HTMLBodyElement)) {
-                return this.element.getParentNode() == null ? null : "0px";
-            } else if (element.getParentNode() != null && element.getParentNode() instanceof HTMLBodyElement) {
-                return this.element.getParentNode() == null ? null : CSSValues.AUTO.getValue();
-            } else {
-                return this.element.getParentNode() == null ? null : "";
-            }
+        final String left = style.getLeft();
+        if (this.element.getParentNode() == null) {
+            return null;
+        }
+        if (Strings.isBlank(left)) {
+            return "0px";
         } else {
-            return this.element.getParentNode() == null ? null : HtmlValues.getPixelSize(style.getLeft(), renderState, window, 0, availHeight) + "px";
+            final int lft = HtmlValues.getPixelSize(left, element.getRenderState(), window.getWindow(), -1, availHeight);
+            return lft + "px";
         }
     }
 
@@ -932,11 +766,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getMarginBottom() {
         final String cssMarginBottom = style.getMarginBottom();
-        if (element.getParentNode() == null) return this.element.getParentNode() == null ? null : "";
+        if (element.getParentNode() == null) return "";
         if (Strings.isCssBlank(cssMarginBottom))
             return this.element.getParentNode() == null ? null : CSSValues.NONE.getValue();
-        final int marginBottom = HtmlValues.getPixelSize(cssMarginBottom, renderState, window.getWindow(), -1, availHeight);
-        return this.element.getParentNode() == null ? null : marginBottom + "px";
+        final int marginBottom = HtmlValues.getPixelSize(cssMarginBottom, element.getRenderState(), window.getWindow(), -1, availHeight);
+        return this.element.getParentNode() == null ? "" : marginBottom + "px";
     }
 
     /**
@@ -945,11 +779,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getMarginLeft() {
         final String cssMarginLeft = style.getMarginLeft();
-        if (element.getParentNode() == null) return this.element.getParentNode() == null ? null : "";
+        if (element.getParentNode() == null) return "";
         if (Strings.isCssBlank(cssMarginLeft))
             return this.element.getParentNode() == null ? null : CSSValues.NONE.getValue();
-        final int marginLeft = HtmlValues.getPixelSize(cssMarginLeft, renderState, window.getWindow(), -1, availWidth);
-        return this.element.getParentNode() == null ? null : marginLeft + "px";
+        final int marginLeft = HtmlValues.getPixelSize(cssMarginLeft, element.getRenderState(), window.getWindow(), -1, availWidth);
+        return this.element.getParentNode() == null ? "" : marginLeft + "px";
     }
 
     /**
@@ -958,10 +792,10 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getMarginRight() {
         final String cssMarginRight = style.getMarginRight();
-        if (element.getParentNode() == null) return this.element.getParentNode() == null ? null : "";
+        if (element.getParentNode() == null) return "";
         if (Strings.isCssBlank(cssMarginRight)) return this.element.getParentNode() == null ? null : "0px";
-        final int marginRight = HtmlValues.getPixelSize(cssMarginRight, renderState, window.getWindow(), -1, availWidth);
-        return this.element.getParentNode() == null ? null : marginRight + "px";
+        final int marginRight = HtmlValues.getPixelSize(cssMarginRight, element.getRenderState(), window.getWindow(), -1, availWidth);
+        return this.element.getParentNode() == null ? "" : marginRight + "px";
     }
 
     /**
@@ -970,11 +804,11 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getMarginTop() {
         final String cssMarginTop = style.getMarginTop();
-        if (element.getParentNode() == null) return this.element.getParentNode() == null ? null : "";
+        if (element.getParentNode() == null) return "";
         if (Strings.isCssBlank(cssMarginTop))
             return this.element.getParentNode() == null ? null : CSSValues.NONE.getValue();
-        final int marginTop = HtmlValues.getPixelSize(cssMarginTop, renderState, window.getWindow(), -1, availHeight);
-        return this.element.getParentNode() == null ? null : marginTop + "px";
+        final int marginTop = HtmlValues.getPixelSize(cssMarginTop, element.getRenderState(), window.getWindow(), -1, availHeight);
+        return this.element.getParentNode() == null ? "" : marginTop + "px";
     }
 
     /**
@@ -1055,7 +889,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getPaddingBottom() {
         final String cssPaddingBottom = style.getPaddingBottom();
-        final int paddingBottom = HtmlValues.getPixelSize(cssPaddingBottom, renderState, window.getWindow(), -1, availHeight);
+        final int paddingBottom = HtmlValues.getPixelSize(cssPaddingBottom, element.getRenderState(), window.getWindow(), -1, availHeight);
         return this.element.getParentNode() == null ? null : paddingBottom + "px";
     }
 
@@ -1065,7 +899,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getPaddingLeft() {
         final String cssPaddingLeft = style.getPaddingLeft();
-        final int paddingLeft = HtmlValues.getPixelSize(cssPaddingLeft, renderState, window.getWindow(), -1, availWidth);
+        final int paddingLeft = HtmlValues.getPixelSize(cssPaddingLeft, element.getRenderState(), window.getWindow(), -1, availWidth);
         return this.element.getParentNode() == null ? null : paddingLeft + "px";
     }
 
@@ -1075,7 +909,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getPaddingRight() {
         final String cssPaddingRight = style.getPaddingRight();
-        final int paddingRight = HtmlValues.getPixelSize(cssPaddingRight, renderState, window.getWindow(), -1, availWidth);
+        final int paddingRight = HtmlValues.getPixelSize(cssPaddingRight, element.getRenderState(), window.getWindow(), -1, availWidth);
         return this.element.getParentNode() == null ? null : paddingRight + "px";
     }
 
@@ -1085,7 +919,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getPaddingTop() {
         final String cssPaddingTop = style.getPaddingTop();
-        final int paddingTop = HtmlValues.getPixelSize(cssPaddingTop, renderState, window.getWindow(), -1, availHeight);
+        final int paddingTop = HtmlValues.getPixelSize(cssPaddingTop, element.getRenderState(), window.getWindow(), -1, availHeight);
         return this.element.getParentNode() == null ? null : paddingTop + "px";
     }
 
@@ -1174,7 +1008,16 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getRight() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getRight()) ? CSSValues.AUTO.getValue() : style.getRight();
+        final String right = style.getRight();
+        if (this.element.getParentNode() == null) {
+            return null;
+        }
+        if (Strings.isBlank(right)) {
+            return "0px";
+        } else {
+            final int lft = HtmlValues.getPixelSize(right, element.getRenderState(), window.getWindow(), -1, availHeight);
+            return lft + "px";
+        }
     }
 
     /**
@@ -1280,14 +1123,14 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     public String getTop() {
         if (Strings.isCssBlank(style.getTop())) {
             if (element.getParentNode() != null && !(element.getParentNode() instanceof HTMLBodyElement)) {
-                return this.element.getParentNode() == null ? null : "0px";
+                return "0px";
             } else if (element.getParentNode() != null && element.getParentNode() instanceof HTMLBodyElement) {
-                return this.element.getParentNode() == null ? null : CSSValues.AUTO.getValue();
+                return CSSValues.AUTO.getValue();
             } else {
-                return this.element.getParentNode() == null ? null : "";
+                return "";
             }
         } else {
-            return this.element.getParentNode() == null ? null : HtmlValues.getPixelSize(style.getTop(), renderState, window, 0, availHeight) + "px";
+            return this.element.getParentNode() == null ? "" : HtmlValues.getPixelSize(style.getTop(), element.getRenderState(), window, 0, availHeight) + "px";
         }
     }
 
@@ -1319,8 +1162,8 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public String getWidows() {
-        return this.element.getParentNode() == null ? null : style.getWidows();
+    public String getVisibility() {
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getVisibility()) ? CSSValues.NONE.getValue() : style.getVisibility();
     }
 
     /**
@@ -1344,7 +1187,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getOutlineColor() {
-        return this.element.getParentNode() == null ? null : style.getOutlineColor();
+        return ColorFactory.getInstance().getColorString(this.element, style.getOutlineColor(), CSSValues.INITIAL.getValue());
     }
 
     /**
@@ -1362,7 +1205,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getPosition() {
         final String position = style.getPosition();
-        CSSValues pos = CSSValues.get(position);
+        final CSSValues pos = CSSValues.get(position);
         return this.element.getParentNode() == null ? null : pos != null && pos != CSSValues.DEFAULT ? pos.getValue() : "static";
     }
 
@@ -1388,14 +1231,22 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getWidth() {
         if (element.getParentNode() == null) {
-            return this.element.getParentNode() == null ? null : "";
+            return "";
         }
 
         if (CSSValues.NONE.isEqual(style.getDisplay())) {
-            return this.element.getParentNode() == null ? null : CSSValues.AUTO.getValue();
+            return this.element.getParentNode() == null ? "" : CSSValues.AUTO.getValue();
         }
 
-        return this.element.getParentNode() == null ? null : element.calculateWidth(false, false) + "px";
+        return this.element.getParentNode() == null ? "" : element.calculateWidth(false, false, false) + "px";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getWidows() {
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getWidows()) ? "2" : style.getWidows();
     }
 
     /**
@@ -1410,7 +1261,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setAzimuth(String azimuth) {
+    public void setAzimuth(final String azimuth) {
         style.setAzimuth(azimuth);
     }
 
@@ -1418,7 +1269,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackground(String background) {
+    public void setBackground(final String background) {
         style.setBackground(background);
     }
 
@@ -1426,7 +1277,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundAttachment(String backgroundAttachment) {
+    public void setBackgroundAttachment(final String backgroundAttachment) {
         style.setBackgroundAttachment(backgroundAttachment);
     }
 
@@ -1434,7 +1285,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundColor(String backgroundColor) {
+    public void setBackgroundColor(final String backgroundColor) {
         style.setBackgroundColor(backgroundColor);
     }
 
@@ -1442,7 +1293,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundImage(String backgroundImage) {
+    public void setBackgroundImage(final String backgroundImage) {
         style.setBackgroundImage(backgroundImage);
     }
 
@@ -1450,7 +1301,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundPosition(String backgroundPosition) {
+    public void setBackgroundPosition(final String backgroundPosition) {
         style.setBackgroundPosition(backgroundPosition);
     }
 
@@ -1458,7 +1309,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBackgroundRepeat(String backgroundRepeat) {
+    public void setBackgroundRepeat(final String backgroundRepeat) {
         style.setBackgroundRepeat(backgroundRepeat);
     }
 
@@ -1466,7 +1317,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorder(String border) {
+    public void setBorder(final String border) {
         style.setBorder(border);
     }
 
@@ -1474,7 +1325,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderBottom(String borderBottom) {
+    public void setBorderBottom(final String borderBottom) {
         style.setBorderBottom(borderBottom);
     }
 
@@ -1482,7 +1333,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderBottomColor(String borderBottomColor) {
+    public void setBorderBottomColor(final String borderBottomColor) {
         style.setBorderBottomColor(borderBottomColor);
     }
 
@@ -1490,7 +1341,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderBottomStyle(String borderBottomStyle) {
+    public void setBorderBottomStyle(final String borderBottomStyle) {
         style.setBorderBottomStyle(borderBottomStyle);
     }
 
@@ -1498,7 +1349,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderBottomWidth(String borderBottomWidth) {
+    public void setBorderBottomWidth(final String borderBottomWidth) {
         style.setBorderBottomWidth(borderBottomWidth);
     }
 
@@ -1506,7 +1357,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderCollapse(String borderCollapse) {
+    public void setBorderCollapse(final String borderCollapse) {
         style.setBorderCollapse(borderCollapse);
     }
 
@@ -1514,7 +1365,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderColor(String borderColor) {
+    public void setBorderColor(final String borderColor) {
         style.setBorderColor(borderColor);
     }
 
@@ -1522,7 +1373,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderLeft(String borderLeft) {
+    public void setBorderLeft(final String borderLeft) {
         style.setBorderLeft(borderLeft);
     }
 
@@ -1530,7 +1381,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderLeftColor(String borderLeftColor) {
+    public void setBorderLeftColor(final String borderLeftColor) {
         style.setBorderLeftColor(borderLeftColor);
     }
 
@@ -1538,7 +1389,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderLeftStyle(String borderLeftStyle) {
+    public void setBorderLeftStyle(final String borderLeftStyle) {
         style.setBorderLeftStyle(borderLeftStyle);
     }
 
@@ -1546,7 +1397,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderLeftWidth(String borderLeftWidth) {
+    public void setBorderLeftWidth(final String borderLeftWidth) {
         style.setBorderLeftWidth(borderLeftWidth);
     }
 
@@ -1554,7 +1405,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderRight(String borderRight) {
+    public void setBorderRight(final String borderRight) {
         style.setBorderRight(borderRight);
     }
 
@@ -1562,7 +1413,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderRightColor(String borderRightColor) {
+    public void setBorderRightColor(final String borderRightColor) {
         style.setBorderRightColor(borderRightColor);
     }
 
@@ -1570,7 +1421,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderRightStyle(String borderRightStyle) {
+    public void setBorderRightStyle(final String borderRightStyle) {
         style.setBorderRightStyle(borderRightStyle);
     }
 
@@ -1578,7 +1429,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderRightWidth(String borderRightWidth) {
+    public void setBorderRightWidth(final String borderRightWidth) {
         style.setBorderRightWidth(borderRightWidth);
     }
 
@@ -1586,7 +1437,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderSpacing(String borderSpacing) {
+    public void setBorderSpacing(final String borderSpacing) {
         style.setBorderSpacing(borderSpacing);
     }
 
@@ -1594,7 +1445,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderStyle(String borderStyle) {
+    public void setBorderStyle(final String borderStyle) {
         style.setBorderStyle(borderStyle);
     }
 
@@ -1602,7 +1453,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderTop(String borderTop) {
+    public void setBorderTop(final String borderTop) {
         style.setBorderTop(borderTop);
     }
 
@@ -1610,7 +1461,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderTopColor(String borderTopColor) {
+    public void setBorderTopColor(final String borderTopColor) {
         style.setBorderTopColor(borderTopColor);
     }
 
@@ -1618,7 +1469,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderTopStyle(String borderTopStyle) {
+    public void setBorderTopStyle(final String borderTopStyle) {
         style.setBorderTopStyle(borderTopStyle);
     }
 
@@ -1626,7 +1477,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderTopWidth(String borderTopWidth) {
+    public void setBorderTopWidth(final String borderTopWidth) {
         style.setBorderTopWidth(borderTopWidth);
     }
 
@@ -1634,7 +1485,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBorderWidth(String borderWidth) {
+    public void setBorderWidth(final String borderWidth) {
         style.setBorderWidth(borderWidth);
     }
 
@@ -1642,7 +1493,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setBottom(String bottom) {
+    public void setBottom(final String bottom) {
         style.setBottom(bottom);
     }
 
@@ -1650,7 +1501,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCaptionSide(String captionSide) {
+    public void setCaptionSide(final String captionSide) {
         style.setCaptionSide(captionSide);
     }
 
@@ -1658,7 +1509,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setClear(String clear) {
+    public void setClear(final String clear) {
         style.setClear(clear);
     }
 
@@ -1666,7 +1517,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setClip(String clip) {
+    public void setClip(final String clip) {
         style.setClip(clip);
     }
 
@@ -1674,7 +1525,23 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setColor(String color) {
+    public void setClipPath(final String clip) {
+        style.setClipPath(clip);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setClipRule(final String clip) {
+        style.setClipRule(clip);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setColor(final String color) {
         style.setColor(color);
     }
 
@@ -1682,7 +1549,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setContent(String content) {
+    public void setContent(final String content) {
         style.setContent(content);
     }
 
@@ -1690,7 +1557,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCounterIncrement(String counterIncrement) {
+    public void setCounterIncrement(final String counterIncrement) {
         style.setCounterIncrement(counterIncrement);
     }
 
@@ -1698,7 +1565,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCounterReset(String counterReset) {
+    public void setCounterReset(final String counterReset) {
         style.setCounterReset(counterReset);
     }
 
@@ -1706,7 +1573,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCssFloat(String cssFloat) {
+    public void setCssFloat(final String cssFloat) {
         style.setCssFloat(cssFloat);
     }
 
@@ -1714,7 +1581,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCue(String cue) {
+    public void setCue(final String cue) {
         style.setCue(cue);
     }
 
@@ -1722,7 +1589,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCueAfter(String cueAfter) {
+    public void setCueAfter(final String cueAfter) {
         style.setCueAfter(cueAfter);
     }
 
@@ -1730,7 +1597,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCueBefore(String cueBefore) {
+    public void setCueBefore(final String cueBefore) {
         style.setCueBefore(cueBefore);
     }
 
@@ -1738,7 +1605,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setCursor(String cursor) {
+    public void setCursor(final String cursor) {
         style.setCursor(cursor);
     }
 
@@ -1746,7 +1613,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setDirection(String direction) {
+    public void setDirection(final String direction) {
         style.setDirection(direction);
     }
 
@@ -1754,7 +1621,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setDisplay(String display) {
+    public void setDisplay(final String display) {
         style.setDisplay(display);
     }
 
@@ -1762,7 +1629,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setElevation(String elevation) {
+    public void setElevation(final String elevation) {
         style.setElevation(elevation);
     }
 
@@ -1770,7 +1637,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setEmptyCells(String emptyCells) {
+    public void setEmptyCells(final String emptyCells) {
         style.setEmptyCells(emptyCells);
     }
 
@@ -1778,15 +1645,39 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFont(String font) {
-        style.setFont(font);
+    public void setFill(final String value) {
+        style.setFill(value);
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setFontFamily(String fontFamily) {
+    public void setFillOpacity(final String value) {
+        style.setFillOpacity(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFloat(final String flt) {
+        style.setFloat(flt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFont(final String font) {
+        style.setFont(font);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFontFamily(final String fontFamily) {
         style.setFontFamily(fontFamily);
     }
 
@@ -1794,7 +1685,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontSize(String fontSize) {
+    public void setFontSize(final String fontSize) {
         style.setFontSize(fontSize);
     }
 
@@ -1802,7 +1693,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontSizeAdjust(String fontSizeAdjust) {
+    public void setFontSizeAdjust(final String fontSizeAdjust) {
         style.setFontSizeAdjust(fontSizeAdjust);
     }
 
@@ -1810,7 +1701,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontStretch(String fontStretch) {
+    public void setFontStretch(final String fontStretch) {
         style.setFontStretch(fontStretch);
     }
 
@@ -1818,7 +1709,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontStyle(String fontStyle) {
+    public void setFontStyle(final String fontStyle) {
         style.setFontStyle(fontStyle);
     }
 
@@ -1826,7 +1717,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontVariant(String fontVariant) {
+    public void setFontVariant(final String fontVariant) {
         style.setFontVariant(fontVariant);
     }
 
@@ -1834,7 +1725,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setFontWeight(String fontWeight) {
+    public void setFontWeight(final String fontWeight) {
         style.setFontWeight(fontWeight);
     }
 
@@ -1851,7 +1742,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getzIndex() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getzIndex()) ? CSSValues.AUTO.getValue() : style.getzIndex() + "px";
+        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getzIndex()) ? CSSValues.AUTO.getValue() : style.getzIndex();
     }
 
     /**
@@ -1868,14 +1759,7 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      */
     @Override
     public String getBoxSizing() {
-        if (style.getBoxSizing() == null) {
-            if (element.getParentNode() == null) {
-                return this.element.getParentNode() == null ? null : "";
-            } else {
-                return this.element.getParentNode() == null ? null : CSSValues.CONTENT_BOX.getValue();
-            }
-        }
-        return this.element.getParentNode() == null ? null : style.getBoxSizing();
+        return this.element.getParentNode() == null ? "" : style.getBoxSizing() == null ? CSSValues.CONTENT_BOX.getValue() : style.getBoxSizing();
     }
 
     /**
@@ -1970,14 +1854,6 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
     @Override
     public String getClipPath() {
         return this.element.getParentNode() == null ? null : Strings.isBlank(style.getClipPath()) ? CSSValues.NONE.getValue() : style.getClipPath();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getVisibility() {
-        return this.element.getParentNode() == null ? null : Strings.isBlank(style.getVisibility()) ? CSSValues.NONE.getValue() : style.getVisibility();
     }
 
     /**
@@ -2084,139 +1960,21 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
         return this.element.getParentNode() == null ? null : Strings.isBlank(style.getTextDecoration()) ? CSSValues.NONE.getValue() : style.getTextDecoration();
     }
 
+
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setTextAlign(String textAlign) {
-        style.setTextAlign(textAlign);
+    public void setBoxSizing(String boxSizing) {
+        style.setBoxSizing(boxSizing);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setTextDecoration(String textDecoration) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTextIndent(String textIndent) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTextShadow(String textShadow) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTextTransform(String textTransform) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTop(String top) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setUnicodeBidi(String unicodeBidi) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setVerticalAlign(String verticalAlign) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setVisibility(String visibility) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setVoiceFamily(String voiceFamily) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setVolume(String volume) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWhiteSpace(String whiteSpace) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWidows(String widows) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWidth(String width) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWordSpacing(String wordSpacing) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setzIndex(String zIndex) {
-        style.setzIndex(zIndex);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setHeight(String textAlign) {
+    public void setHeight(final String textAlign) {
         style.setHeight(textAlign);
     }
 
@@ -2224,151 +1982,159 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setLeft(String left) {
-
+    public void setLeft(final String left) {
+        style.setLeft(left);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLineHeight(String lineHeight) {
-
+    public void setLineHeight(final String lineHeight) {
+        style.setLineHeight(lineHeight);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setListStyle(String listStyle) {
-
+    public void setListStyle(final String listStyle) {
+        style.setListStyle(listStyle);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setListStyleImage(String listStyleImage) {
-
+    public void setListStyleImage(final String listStyleImage) {
+        style.setListStyleImage(listStyleImage);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setListStylePosition(String listStylePosition) {
-
+    public void setListStylePosition(final String listStylePosition) {
+        style.setListStylePosition(listStylePosition);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setListStyleType(String listStyleType) {
-
+    public void setListStyleType(final String listStyleType) {
+        style.setListStyleType(listStyleType);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMargin(String margin) {
-
+    public void setMargin(final String margin) {
+        style.setMargin(margin);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarginBottom(String marginBottom) {
-
+    public void setMarginBottom(final String marginBottom) {
+        style.setMarginBottom(marginBottom);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarginLeft(String marginLeft) {
-
+    public void setMarginLeft(final String marginLeft) {
+        style.setMarginLeft(marginLeft);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarginRight(String marginRight) {
-
+    public void setMarginRight(final String marginRight) {
+        style.setMarginRight(marginRight);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarginTop(String marginTop) {
-
+    public void setMarginTop(final String marginTop) {
+        style.setMarginTop(marginTop);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarkerOffset(String markerOffset) {
-
+    public void setMarkerOffset(final String markerOffset) {
+        style.setMarkerOffset(markerOffset);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMarks(String marks) {
-
+    public void setMarks(final String marks) {
+        style.setMarks(marks);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMaxHeight(String maxHeight) {
-
+    public void setMaxHeight(final String maxHeight) {
+        style.setMaxHeight(maxHeight);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMaxWidth(String maxWidth) {
-
+    public void setMaxWidth(final String maxWidth) {
+        style.setMaxWidth(maxWidth);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMinHeight(String minHeight) {
-
+    public void setMinHeight(final String minHeight) {
+        style.setMinHeight(minHeight);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMinWidth(String minWidth) {
-
+    public void setMinWidth(final String minWidth) {
+        style.setMinWidth(minWidth);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLetterSpacing(String letterSpacing) {
-
+    public void setLetterSpacing(final String letterSpacing) {
+        style.setLetterSpacing(letterSpacing);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOrphans(String orphans) {
+    public void setOpacity(final String value) {
+        style.setOpacity(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOrphans(final String orphans) {
         style.setOrphans(orphans);
     }
 
@@ -2376,7 +2142,415 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setOutline(String outline) {
+    public void setOutline(final String outline) {
+        style.setOutline(outline);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOutlineColor(final String outlineColor) {
+        style.setOutlineColor(outlineColor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOutlineStyle(final String outlineStyle) {
+        style.setOutlineStyle(outlineStyle);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOutlineWidth(final String outlineWidth) {
+        style.setOutlineWidth(outlineWidth);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOverflow(final String overflow) {
+        style.setOverflow(overflow);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding(final String padding) {
+        style.setPadding(padding);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaddingBottom(final String paddingBottom) {
+        style.setPaddingBottom(paddingBottom);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaddingLeft(final String paddingLeft) {
+        style.setPaddingLeft(paddingLeft);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaddingRight(final String paddingRight) {
+        style.setPaddingRight(paddingRight);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaddingTop(final String paddingTop) {
+        style.setPaddingTop(paddingTop);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPage(final String page) {
+        style.setPage(page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPageBreakAfter(final String pageBreakAfter) {
+        style.setPageBreakAfter(pageBreakAfter);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPageBreakBefore(final String pageBreakBefore) {
+        style.setPageBreakBefore(pageBreakBefore);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPageBreakInside(final String pageBreakInside) {
+        style.setPageBreakInside(pageBreakInside);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPause(final String pause) {
+        style.setPause(pause);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPauseAfter(final String pauseAfter) {
+        style.setPauseAfter(pauseAfter);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPauseBefore(final String pauseBefore) {
+        style.setPauseBefore(pauseBefore);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPitch(final String pitch) {
+        style.setPitch(pitch);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPitchRange(final String pitchRange) {
+        style.setPitchRange(pitchRange);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPlayDuring(final String playDuring) {
+        style.setPlayDuring(playDuring);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPosition(final String position) {
+        style.setPosition(position);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setQuotes(final String quotes) {
+        style.setQuotes(quotes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRichness(final String richness) {
+        style.setRichness(richness);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRight(final String right) {
+        style.setRight(right);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSize(final String size) {
+        style.setSize(size);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSpeak(final String speak) {
+        style.setSpeak(speak);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSpeakHeader(final String speakHeader) {
+        style.setSpeakHeader(speakHeader);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSpeakNumeral(final String speakNumeral) {
+        style.setSpeakNumeral(speakNumeral);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSpeakPunctuation(final String speakPunctuation) {
+        style.setSpeakPunctuation(speakPunctuation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSpeechRate(final String speechRate) {
+        style.setSpeechRate(speechRate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStress(final String stress) {
+        style.setStress(stress);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeWidth(final String value) {
+        style.setStrokeWidth(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeOpacity(final String value) {
+        style.setStrokeOpacity(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeMiterLimit(final String value) {
+        style.setStrokeMiterLimit(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeLineJoin(final String value) {
+        style.setStrokeLineJoin(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeDashArray(final String value) {
+        style.setStrokeDashArray(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStroke(final String value) {
+        style.setStroke(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStrokeLineCap(final String value) {
+        style.setStrokeLineCap(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTableLayout(final String tableLayout) {
+        style.setTableLayout(tableLayout);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextAlign(final String textAlign) {
+        style.setTextAlign(textAlign);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextDecoration(final String textDecoration) {
+        style.setTextDecoration(textDecoration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextIndent(final String textIndent) {
+        style.setTextIndent(textIndent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextShadow(final String textShadow) {
+        style.setTextShadow(textShadow);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextTransform(final String textTransform) {
+        style.setTransform(textTransform);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTop(final String top) {
+        style.setTop(top);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTransform(final String value) {
+        style.setTransform(value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUnicodeBidi(final String unicodeBidi) {
+        style.setUnicodeBidi(unicodeBidi);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVerticalAlign(final String verticalAlign) {
+        style.setVerticalAlign(verticalAlign);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVisibility(final String visibility) {
+        style.setVisibility(visibility);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVoiceFamily(final String voiceFamily) {
+        style.setVoiceFamily(voiceFamily);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVolume(final String volume) {
+        style.setVolume(volume);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWhiteSpace(final String whiteSpace) {
 
     }
 
@@ -2384,257 +2558,41 @@ public class ComputedCSSStyleDeclarationImpl implements ComputedCSSStyleDeclarat
      * {@inheritDoc}
      */
     @Override
-    public void setOutlineColor(String outlineColor) {
-
+    public void setWidows(final String widows) {
+        style.setWidows(widows);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOutlineStyle(String outlineStyle) {
-
+    public void setWidth(final String width) {
+        style.setWidth(width);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOutlineWidth(String outlineWidth) {
-
+    public void setWordSpacing(final String wordSpacing) {
+        style.setWordSpacing(wordSpacing);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOverflow(String overflow) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPadding(String padding) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaddingBottom(String paddingBottom) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaddingLeft(String paddingLeft) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaddingRight(String paddingRight) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaddingTop(String paddingTop) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPage(String page) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPageBreakAfter(String pageBreakAfter) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPageBreakBefore(String pageBreakBefore) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPageBreakInside(String pageBreakInside) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPause(String pause) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPauseAfter(String pauseAfter) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPauseBefore(String pauseBefore) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPitch(String pitch) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPitchRange(String pitchRange) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPlayDuring(String playDuring) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPosition(String position) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setQuotes(String quotes) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setRichness(String richness) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setRight(String right) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSize(String size) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSpeak(String speak) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSpeakHeader(String speakHeader) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSpeakNumeral(String speakNumeral) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSpeakPunctuation(String speakPunctuation) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSpeechRate(String speechRate) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStress(String stress) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTableLayout(String tableLayout) {
-
+    public void setzIndex(final String zIndex) {
+        style.setzIndex(zIndex);
     }
 
     @Override
-    public String getPropertyValue(String property) {
-        return this.element.getParentNode() == null ? null : style.getPropertyValue(property);
+    public String getPropertyValue(final String property) {
+        return style.getPropertyValue(property);
     }
 
     @Override
     public String toString() {
-        return this.element.getParentNode() == null ? null : "[object CSSStyleDeclaration]";
+        return "[object CSSStyleDeclaration]";
     }
 }

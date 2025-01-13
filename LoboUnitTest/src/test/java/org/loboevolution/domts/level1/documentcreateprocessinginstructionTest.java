@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,37 +46,33 @@ import static org.junit.Assert.assertNotNull;
  * It should create a new PI node with the specified target
  * and data.  The target, data and type are retrieved and
  * output.
- *
- * @author NIST
- * @author Mary Brady
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2001Apr/0020.html">http://lists.w3.org/Archives/Public/www-dom-ts/2001Apr/0020.html</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-135944439">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-135944439</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=249">http://www.w3.org/Bugs/Public/show_bug.cgi?id=249</a>
  */
-public class documentcreateprocessinginstructionTest extends LoboUnitTest {
+public class DocumentcreateprocessinginstructionTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction newPINode;
-        String piValue;
-        String piName;
-        int piType;
+        final Document doc;
+        final ProcessingInstruction newPINode;
+        final String piValue;
+        final String piName;
+        final int piType;
         doc = sampleXmlFile("staff.xml");
         newPINode = doc.createProcessingInstruction("TESTPI", "This is a new PI node");
-        assertNotNull("createdPINotNull", newPINode);
+        assertNotNull(newPINode, "DocumentcreateprocessinginstructionAssert1");
         piName = newPINode.getNodeName();
-        assertEquals("name", "TESTPI", piName);
+        assertEquals("TESTPI", piName, "DocumentcreateprocessinginstructionAssert2");
         piValue = newPINode.getNodeValue();
-        assertEquals("value", "This is a new PI node", piValue);
+        assertEquals("This is a new PI node", piValue, "DocumentcreateprocessinginstructionAssert3");
         piType = newPINode.getNodeType();
-        assertEquals("type", 7, piType);
+        assertEquals(7, piType, "DocumentcreateprocessinginstructionAssert4");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the method getTextContent on an Entity node and check if the value returned
  * is its replacement text.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent18Test extends LoboUnitTest {
+public class Nodegettextcontent18Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        Node entity;
-        NamedNodeMap entitymap;
-        String textContent;
+        final Document doc;
+        final DocumentType docType;
+        final Node entity;
+        final NamedNodeMap entitymap;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitymap = docType.getEntities();
         entity = entitymap.getNamedItem("delta");
         textContent = entity.getTextContent();
-        assertEquals("nodegettextcontent18", "δ", textContent);
+        assertEquals("δ", textContent, "Nodegettextcontent18Assert2");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,26 +47,23 @@ import static org.junit.Assert.*;
  * the specified data to the already existing character
  * data.  The new value return by the "getLength()" method
  * should be 24.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-32791A2F">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-32791A2F</a>
  */
-public class characterdataappenddataTest extends LoboUnitTest {
+public class CharacterDataAppendDataTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node nameNode;
-        CharacterData child;
-        String childValue;
-        int childLength;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node nameNode;
+        final CharacterData child;
+        final String childValue;
+        final int childLength;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("name");
         nameNode = elementList.item(0);
@@ -74,7 +71,7 @@ public class characterdataappenddataTest extends LoboUnitTest {
         child.appendData(", Esquire");
         childValue = child.getData();
         childLength = childValue.length();
-        assertEquals("characterdataAppendDataAssert", 24, childLength);
+        assertEquals(24, childLength, "characterdataAppendDataAssert");
     }
 }
 

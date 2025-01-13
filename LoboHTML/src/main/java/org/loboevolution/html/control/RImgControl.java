@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@
 package org.loboevolution.html.control;
 
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
-import org.loboevolution.html.renderer.FrameContext;
 import org.loboevolution.html.renderer.RenderableContainer;
 import org.loboevolution.http.UserAgentContext;
 
@@ -34,9 +33,6 @@ import java.awt.*;
 
 /**
  * <p>RImgControl class.</p>
- *
- *
- *
  */
 public class RImgControl extends RUIControl {
 	/**
@@ -45,12 +41,10 @@ public class RImgControl extends RUIControl {
 	 * @param me a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
 	 * @param widget a {@link org.loboevolution.html.control.UIControl} object.
 	 * @param container a {@link org.loboevolution.html.renderer.RenderableContainer} object.
-	 * @param frameContext a {@link org.loboevolution.html.renderer.FrameContext} object.
 	 * @param ucontext a {@link org.loboevolution.http.UserAgentContext} object.
 	 */
-	public RImgControl(ModelNode me, UIControl widget, RenderableContainer container, FrameContext frameContext,
-			UserAgentContext ucontext) {
-		super(me, widget, container, frameContext, ucontext);
+	public RImgControl(final ModelNode me, final UIControl widget, final RenderableContainer container, final UserAgentContext ucontext) {
+		super(me, widget, container, ucontext);
 	}
 
 	/** {@inheritDoc} */
@@ -61,7 +55,7 @@ public class RImgControl extends RUIControl {
 
 	/** {@inheritDoc} */
 	@Override
-	public void doLayout(int availWidth, int availHeight, boolean sizeOnly) {
+	public void doLayout(final int availWidth, final int availHeight, final boolean sizeOnly) {
 		super.doLayout(availWidth, availHeight, sizeOnly);
 		final boolean widthConstrained =  (this.declaredWidth == -1);
 		final boolean heightConstrained = (this.declaredHeight == -1);

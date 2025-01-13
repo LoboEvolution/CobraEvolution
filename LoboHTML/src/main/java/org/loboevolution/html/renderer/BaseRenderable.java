@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,33 +26,11 @@
 
 package org.loboevolution.html.renderer;
 
+import lombok.Data;
+
+@Data
 abstract class BaseRenderable implements Renderable {
+	
 	private int ordinal = 0;
-
-	/**
-	 * <p>Getter for the field ordinal.</p>
-	 *
-	 * @return a int.
-	 */
-	public int getOrdinal() {
-		return this.ordinal;
-	}
-
-	/**
-	 * <p>getZIndex.</p>
-	 *
-	 * @return a int.
-	 */
-	public int getZIndex() {
-		return 0;
-	}
-
-	/**
-	 * <p>Setter for the field ordinal.</p>
-	 *
-	 * @param ordinal a int.
-	 */
-	public void setOrdinal(int ordinal) {
-		this.ordinal = ordinal;
-	}
+	private int zIndex = 0;
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,10 +44,10 @@ class DocumentNotification {
 	/**
 	 * <p>Constructor for DocumentNotification.</p>
 	 *
-	 * @param type a int.
+	 * @param type a {@link java.lang.Integer} object.
 	 * @param node a {@link org.loboevolution.html.dom.nodeimpl.NodeImpl} object.
 	 */
-	public DocumentNotification(int type, NodeImpl node) {
+	public DocumentNotification(final int type, final NodeImpl node) {
 		this.type = type;
 		this.node = node;
 	}

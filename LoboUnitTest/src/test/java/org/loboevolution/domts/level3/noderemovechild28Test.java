@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,35 +28,33 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on an Attribute node attempt to remove its Text child node and
  * and verify the name of the returned node that was removed.  Now attempt the reverse
  * and verify if a NOT_FOUND_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild28Test extends LoboUnitTest {
+public class Noderemovechild28Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection parentList;
-        NamedNodeMap attrsMap;
-        Attr parent;
-        Text child;
-        Element elem;
-        Text removed;
-        String removedName;
+        final Document doc;
+        final HTMLCollection parentList;
+        final NamedNodeMap attrsMap;
+        final Attr parent;
+        final Text child;
+        final Element elem;
+        final Text removed;
+        final String removedName;
         doc = sampleXmlFile("hc_staff.xml");
         parentList = doc.getElementsByTagName("acronym");
         elem = (Element) parentList.item(0);
@@ -65,15 +63,15 @@ public class noderemovechild28Test extends LoboUnitTest {
         child = (Text) parent.getFirstChild();
         removed = (Text) parent.removeChild(child);
         removedName = removed.getNodeValue();
-        assertEquals("noderemovechild28", "Yes", removedName);
+        assertEquals("Yes", removedName, "Noderemovechild28Assert3");
 
         boolean success = false;
         try {
             child.removeChild(parent);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
         }
-        assertTrue("NOT_FOUND_ERR_noderemovechild28", success);
+        assertTrue(success, "Noderemovechild28Assert4");
 
     }
 }

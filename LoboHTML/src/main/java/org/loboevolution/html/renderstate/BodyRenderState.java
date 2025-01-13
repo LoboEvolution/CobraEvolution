@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class BodyRenderState extends StyleSheetRenderState {
      * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
      * @param element         a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
      */
-    public BodyRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public BodyRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element);
     }
 
@@ -89,7 +89,7 @@ public class BodyRenderState extends StyleSheetRenderState {
         if (c != null) {
             return c;
         }
-        String tcolor = this.element.getAttribute("text");
+        final String tcolor = this.element.getAttribute("text");
 
         if (Strings.isNotBlank(tcolor)) {
             c = ColorFactory.getInstance().getColor(tcolor);
@@ -116,14 +116,6 @@ public class BodyRenderState extends StyleSheetRenderState {
 
         this.marginInsets = insets;
         return insets;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void invalidate() {
-        super.invalidate();
     }
 
     @Override

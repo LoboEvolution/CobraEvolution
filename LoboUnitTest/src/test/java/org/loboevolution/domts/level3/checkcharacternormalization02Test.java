@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.DOMError;
 import org.loboevolution.html.dom.DOMLocator;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 
 /**
  * Normalize document with check-character-normalization set to true, check that
  * non-normalized characters are signaled.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-check-character-normalization">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-check-character-normalization</a>
  * @see <a href="http://www.w3.org/TR/2003/WD-charmod-20030822/">http://www.w3.org/TR/2003/WD-charmod-20030822/</a>
  */
-public class checkcharacternormalization02Test extends LoboUnitTest {
+public class Checkcharacternormalization02Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
-        HTMLCollection pList;
-        Element pElem;
-        Text text;
-        String textValue;
-        Node retval;
-        boolean canSet;
-        List<DOMError> errors;
+        final HTMLCollection pList;
+        final Element pElem;
+        final Text text;
+        final boolean canSet;
+        final List<DOMError> errors;
 
         DOMError error;
         int severity;
@@ -85,23 +82,23 @@ public class checkcharacternormalization02Test extends LoboUnitTest {
             pList = doc.getElementsByTagName("p");
             pElem = (Element) pList.item(0);
             text = doc.createTextNode("suçon");
-            retval = pElem.appendChild(text);
+            pElem.appendChild(text);
             doc.normalizeDocument();
             errors = errorMonitor.getErrors();
-            for (int indexN100AA = 0; indexN100AA < errors.size(); indexN100AA++) {
-                error = (DOMError) errors.get(indexN100AA);
+            for (DOMError domError : errors) {
+                error = domError;
                 severity = error.getSeverity();
 
                 if (severity == 2) {
                     errorCount += 1;
                     errorType = error.getType();
-                    assertEquals("errorType", "check-character-normalization-failure", errorType);
+                    assertEquals("check-character-normalization-failure", errorType, "Checkcharacternormalization02Assert3");
                     locator = error.getLocation();
                     relatedNode = locator.getRelatedNode();
-                    assertSame("relatedNodeSame", text, relatedNode);
+                    assertSame(text, relatedNode, "Checkcharacternormalization02Assert4");
                 }
             }
-            assertEquals("oneError", 1, errorCount);
+            assertEquals(1, errorCount, "Checkcharacternormalization02Assert5");
         }
     }
 }

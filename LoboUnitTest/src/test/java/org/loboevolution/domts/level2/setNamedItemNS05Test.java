@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -40,33 +40,29 @@ import static org.junit.Assert.*;
  * NamedNodeMap should replace an existing node n1 found in the map with arg if n1
  * has the same namespaceURI and localName as arg and return n1.
  * <p>
- * Create an attribute node in with namespaceURI "http://www.usa.com"
+ * Create an attribute node in with namespaceURI "<a href="http://www.usa.com">...</a>"
  * and qualifiedName "dmstc:domestic" whose value is "newVal".
  * Invoke method setNamedItemNS((Attr)arg) on the map of the first "address"
  * element. Method should return the old attribute node identified
  * by namespaceURI and qualifiedName from above,whose value is "Yes".
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS</a>
  */
-public class setNamedItemNS05Test extends LoboUnitTest {
+public class SetNamedItemNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.usa.com";
-        String qualifiedName = "dmstc:domestic";
-        Document doc;
-        Attr arg;
-        HTMLCollection elementList;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Node retnode;
-        String value;
+        final String namespaceURI = "http://www.usa.com";
+        final String qualifiedName = "dmstc:domestic";
+        final Document doc;
+        final Attr arg;
+        final HTMLCollection elementList;
+        final Element testAddress;
+        final NamedNodeMap attributes;
+        final Node retnode;
+        final String value;
         doc = sampleXmlFile("staffNS.xml");
         arg = doc.createAttributeNS(namespaceURI, qualifiedName);
         arg.setNodeValue("newValue");
@@ -75,7 +71,7 @@ public class setNamedItemNS05Test extends LoboUnitTest {
         attributes = testAddress.getAttributes();
         retnode = attributes.setNamedItemNS(arg);
         value = retnode.getNodeValue();
-        assertEquals("throw_Equals", "Yes", value);
+        assertEquals("Yes", value);
     }
 }
 

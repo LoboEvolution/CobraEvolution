@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on a new Attr to set its UserData to two Document nodes
  * obtained by parsing the same xml document.  Using getUserData and isNodeEqual
  * verify if the returned nodes are Equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData</a>
  */
-public class nodesetuserdata05Test extends LoboUnitTest {
+public class Nodesetuserdata05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document doc2;
-        Object userData;
-        Object returned1;
-        Object returned2;
-        Object retUserData;
-        boolean success;
-        Attr attr;
+        final Document doc;
+        final Document doc2;
+        final Object returned1;
+        final Object returned2;
+        final boolean success;
+        final Attr attr;
 
         doc = sampleXmlFile("hc_staff.xml");
         doc2 = sampleXmlFile("hc_staff.xml");
         attr = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "lang");
         /*Node */
-        retUserData = attr.setUserData("Key1", doc, null);
+        attr.setUserData("Key1", doc, null);
         /*Node */
-        retUserData = attr.setUserData("Key2", doc2, null);
+        attr.setUserData("Key2", doc2, null);
         returned1 = attr.getUserData("Key1");
         returned2 = attr.getUserData("Key2");
         success = ((Node) /*DOMUserData */returned1).isEqualNode(((Node) /*DOMUserData */returned2));
-        assertTrue("nodesetuserdata05", success);
+        assertTrue(success, "Nodesetuserdata05Assert2");
     }
 }
 

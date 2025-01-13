@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@ package org.loboevolution.html.control;
 import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.html.dom.domimpl.HTMLImageElementImpl;
 
+import java.io.Serial;
+
 /**
  * <p>
  * ImgControl class.
@@ -39,7 +41,8 @@ import org.loboevolution.html.dom.domimpl.HTMLImageElementImpl;
  */
 public class ImgSvgControl extends BaseControl {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	private final HTMLImageElementImpl modelNode;
 
@@ -50,7 +53,7 @@ public class ImgSvgControl extends BaseControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLImageElementImpl} object.
 	 */
-	public ImgSvgControl(HTMLImageElementImpl modelNode) {
+	public ImgSvgControl(final HTMLImageElementImpl modelNode) {
 		super(modelNode);
 		setLayout(WrapperLayout.getInstance());
 		this.modelNode = modelNode;

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,12 +35,12 @@ public class FuncLocalPart extends FunctionDef1Arg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    int context = getArg0AsNode(xctxt);
+    final int context = getArg0AsNode(xctxt);
     if (DTM.NULL == context) return XString.EMPTYSTRING;
-    DTM dtm = xctxt.getDTM(context);
-    String s = (context != DTM.NULL) ? dtm.getLocalName(context) : "";
+    final DTM dtm = xctxt.getDTM(context);
+    final String s = (context != DTM.NULL) ? dtm.getLocalName(context) : "";
     if (s.startsWith("#") || s.equals("xmlns")) return XString.EMPTYSTRING;
 
     return new XString(s);

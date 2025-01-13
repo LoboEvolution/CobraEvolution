@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,13 +31,9 @@ import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.node.Node;
 
 import java.awt.*;
-import java.util.Iterator;
 
 /**
  * <p>RSSItemElementImpl class.</p>
- *
- *
- *
  */
 public class RSSItemElementImpl extends HTMLElementImpl {
 	
@@ -54,19 +50,18 @@ public class RSSItemElementImpl extends HTMLElementImpl {
 	 * <p>draw.</p>
 	 *
 	 * @param graphics a {@link java.awt.Graphics2D} object.
-	 * @param y a int.
+	 * @param ydraw a {@link java.lang.Integer} object.
 	 */
-	public void draw(Graphics2D graphics, int y) {
+	public void draw(final Graphics2D graphics, final int ydraw) {
+		int y = ydraw;
 		if (hasChildNodes()) {
-			NodeListImpl children = (NodeListImpl)getChildNodes();
-			for (Iterator<Node> i= children.iterator(); i.hasNext();) {
-				Node child = i.next();
-				if (child instanceof RSSDrawable) {
-					RSSDrawable channel = (RSSDrawable) child;
-					channel.draw(graphics, y);
-					y = y + 20;
-				}
-			}
+			final NodeListImpl children = (NodeListImpl)getChildNodes();
+            for (final Node child : children) {
+                if (child instanceof RSSDrawable channel) {
+                    channel.draw(graphics, y);
+                    y = y + 20;
+                }
+            }
 		}
 	}
 }

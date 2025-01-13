@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,32 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using setTextContent on a new DocumentFragment node Element child, attempt to set its content to
  * DOCUMENTFRAGMENT.  Retreive the textContent and verify if it is was set to DOCUMENTFRAGMENT
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent11Test extends LoboUnitTest {
+public class Nodesettextcontent11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Element elem;
-        Element elemChild;
-        Text txt;
-        Comment comment;
-        EntityReference entRef;
-        CDATASection cdata;
-        ProcessingInstruction pi;
-        String textContent;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Element elem;
+        final Element elemChild;
+        final Text txt;
+        final Comment comment;
+        final EntityReference entRef;
+        final CDATASection cdata;
+        final ProcessingInstruction pi;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:p");
@@ -72,7 +70,7 @@ public class nodesettextcontent11Test extends LoboUnitTest {
         elem.setTextContent("DOCUMENTFRAGMENT");
         elemChild = (Element) docFrag.getLastChild();
         textContent = elemChild.getTextContent();
-        assertEquals("nodegettextcontent11", "DOCUMENTFRAGMENT", textContent);
+        assertEquals("DOCUMENTFRAGMENT", textContent, "Nodesettextcontent11Assert2");
     }
 }
 

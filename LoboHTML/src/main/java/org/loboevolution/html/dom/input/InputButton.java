@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class InputButton {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputButton(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputButton(final HTMLInputElementImpl modelNode, final InputControl ic) {
 		final JButton button = new JButton();
 		button.setContentAreaFilled(false);
 		
@@ -69,7 +69,7 @@ public class InputButton {
 		ic.add(button);
 	}
 
-	private String getText(HTMLInputElementImpl element) {
+	private String getText(final HTMLInputElementImpl element) {
 		String text = element.getAttribute("value");
 		if (Strings.isBlank(text)) {
 			final String type = element.getType();

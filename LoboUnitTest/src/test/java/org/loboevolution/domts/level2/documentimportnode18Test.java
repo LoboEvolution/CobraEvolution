@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,35 +44,31 @@ import static org.junit.Assert.*;
  * Using the method importNode with deep=true, import a newly created PI node for this
  * Document.  Verify if the node has been imported correctly by checking the PITarget and
  * PIData values of the imported PI node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode18Test extends LoboUnitTest {
+public class Documentimportnode18Test extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docImp;
-        ProcessingInstruction piImport;
-        ProcessingInstruction piToImport;
-        String piData;
-        String piTarget;
+        final Document doc;
+        final ProcessingInstruction piImport;
+        final ProcessingInstruction piToImport;
+        final String piData;
+        final String piTarget;
         doc = sampleXmlFile("staffNS.xml");
-        docImp = sampleXmlFile("staffNS.xml");
+        sampleXmlFile("staffNS.xml");
         piToImport = doc.createProcessingInstruction("Target", "Data");
         piImport = (ProcessingInstruction) doc.importNode(piToImport, false);
         piTarget = piImport.getTarget();
         piData = piImport.getData();
-        assertEquals("documentimportnode18_Target", "Target", piTarget);
-        assertEquals("documentimportnode18_Data", "Data", piData);
+        assertEquals("Target", piTarget);
+        assertEquals("Data", piData);
     }
 }
 

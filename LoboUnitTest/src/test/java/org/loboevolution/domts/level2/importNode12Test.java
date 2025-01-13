@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -44,44 +44,39 @@ import static org.junit.Assert.assertNotNull;
  * Invoke method importNode(importedNode,deep) on this document with deep as false.
  * Method should return a node of type Entity whose descendant is copied.
  * The returned node should belong to this document whose systemId is "staffNS.dtd"
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode12Test extends LoboUnitTest {
+public class ImportNode12Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        DocumentType doc1Type;
-        NamedNodeMap entityList;
-        EntityReference entity2;
-        EntityReference entity1;
-        Document ownerDocument;
-        DocumentType docType;
-        String system;
-        String entityName;
-        Node child;
-        String childName;
+        final Document doc;
+        final Document aNewDoc;
+        final DocumentType doc1Type;
+        final NamedNodeMap entityList;
+        final EntityReference entity2;
+        final EntityReference entity1;
+        final Document ownerDocument;
+        final DocumentType docType;
+        final String system;
+        final String entityName;
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         doc1Type = aNewDoc.getDoctype();
         entityList = doc1Type.getEntities();
-        assertNotNull("entitiesNotNull", entityList);
+        assertNotNull(entityList);
         entity2 = (EntityReference) entityList.getNamedItem("ent4");
         entity1 = (EntityReference) doc.importNode(entity2, true);
         ownerDocument = entity1.getOwnerDocument();
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertEquals("systemId", "staffNS.dtd", system);
+        assertEquals("staffNS.dtd", system);
         entityName = entity1.getNodeName();
-        assertEquals("entityName", "ent4", entityName);
+        assertEquals("ent4", entityName);
     }
 }
 

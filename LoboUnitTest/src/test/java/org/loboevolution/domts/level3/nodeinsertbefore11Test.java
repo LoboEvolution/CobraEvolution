@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,36 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using insertBefore on a DocumentFragment node attempt to insert a child nodes before
  * other permissible nodes and verify the contents/name of each inserted node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore11Test extends LoboUnitTest {
+public class Nodeinsertbefore11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Element elem;
-        ProcessingInstruction pi;
-        Comment comment;
-        Text txt;
-        CDATASection cdata;
-        EntityReference eRef;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Element elem;
+        final ProcessingInstruction pi;
+        final Comment comment;
+        final Text txt;
+        final CDATASection cdata;
+        final EntityReference eRef;
         Node inserted;
         String insertedVal;
-        Node appendedChild;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "body");
@@ -65,24 +62,24 @@ public class nodeinsertbefore11Test extends LoboUnitTest {
         txt = doc.createTextNode("Text");
         cdata = doc.createCDATASection("CDATA");
         eRef = doc.createEntityReference("alpha");
-        appendedChild = docFrag.appendChild(elem);
-        appendedChild = docFrag.appendChild(pi);
-        appendedChild = docFrag.appendChild(comment);
-        appendedChild = docFrag.appendChild(txt);
-        appendedChild = docFrag.appendChild(cdata);
-        appendedChild = docFrag.appendChild(eRef);
+        docFrag.appendChild(elem);
+        docFrag.appendChild(pi);
+        docFrag.appendChild(comment);
+        docFrag.appendChild(txt);
+        docFrag.appendChild(cdata);
+        docFrag.appendChild(eRef);
         inserted = docFrag.insertBefore(comment, pi);
         insertedVal = ((CharacterData) /*Node */inserted).getData();
-        assertEquals("nodeinsertbefore11_Comment", "Comment", insertedVal);
+        assertEquals("Comment", insertedVal, "Nodeinsertbefore11Assert2");
         inserted = docFrag.insertBefore(txt, comment);
         insertedVal = ((CharacterData) /*Node */inserted).getData();
-        assertEquals("nodeinsertbefore11_Text", "Text", insertedVal);
+        assertEquals("Text", insertedVal, "Nodeinsertbefore11Assert3");
         inserted = docFrag.insertBefore(cdata, txt);
         insertedVal = ((CharacterData) /*Node */inserted).getData();
-        assertEquals("nodeinsertbefore11_CDATA", "CDATA", insertedVal);
+        assertEquals("CDATA", insertedVal, "Nodeinsertbefore11Assert4");
         inserted = docFrag.insertBefore(eRef, cdata);
         insertedVal = inserted.getNodeName();
-        assertEquals("nodeinsertbefore11_Ent1", "alpha", insertedVal);
+        assertEquals("alpha", insertedVal, "Nodeinsertbefore11Assert5");
     }
 }
 

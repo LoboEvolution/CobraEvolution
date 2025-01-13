@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ public class DDRenderState extends BlockRenderState {
      * @param prevRenderState a {@link RenderState} object.
      * @param element         a {@link HTMLElementImpl} object.
      */
-    public DDRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public DDRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element);
     }
 
@@ -60,7 +60,7 @@ public class DDRenderState extends BlockRenderState {
     }
 
     private HtmlInsets getDefaultPaddingInsets() {
-        HtmlInsets insets = new HtmlInsets();
+        final HtmlInsets insets = new HtmlInsets();
         final int leftRight = HtmlValues.getPixelSize("40px", null, element.getDocumentNode().getDefaultView(), -1);
         insets.setLeft(leftRight);
         insets.setRight(0);

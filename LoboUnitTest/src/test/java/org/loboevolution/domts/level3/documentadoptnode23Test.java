@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the adoptNode method on this document with the first acronym element node of this
  * Document as the source.  Verify if the node has been adopted correctly by checking the
  * length of the this elements childNode list before and after.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode23Test extends LoboUnitTest {
+public class Documentadoptnode23Test extends LoboUnitTest {
+
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Node adoptedNode;
-        Node acronymElem;
-        int acronymElemLen;
-        int adoptedLen;
-        NodeList acronymElemChild;
-        NodeList adoptedNodeChild;
+        final Document doc;
+        final HTMLCollection childList;
+        final Node adoptedNode;
+        final Node acronymElem;
+        final int acronymElemLen;
+        final int adoptedLen;
+        final NodeList acronymElemChild;
+        final NodeList adoptedNodeChild;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("acronym");
         acronymElem = childList.item(0);
@@ -72,7 +69,7 @@ public class documentadoptnode23Test extends LoboUnitTest {
             acronymElemLen = acronymElemChild.getLength();
             adoptedNodeChild = adoptedNode.getChildNodes();
             adoptedLen = adoptedNodeChild.getLength();
-            assertEquals("documentadoptnode23", adoptedLen, acronymElemLen);
+            assertEquals(adoptedLen, acronymElemLen, "Documentadoptnode23Assert2");
         }
     }
 }

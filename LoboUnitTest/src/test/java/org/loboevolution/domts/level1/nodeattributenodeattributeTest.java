@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,33 +44,30 @@ import static org.junit.Assert.assertNull;
  * Retrieve the first attribute from the last child of the
  * first employee and invoke the "getAttributes()" method
  * on the Attribute Node.  It should return null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-637646024">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-637646024</a>
  */
-public class nodeattributenodeattributeTest extends LoboUnitTest {
+public class NodeattributenodeattributeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node testAddr;
-        NamedNodeMap addrAttr;
-        Attr attrNode;
-        NamedNodeMap attrList;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node testAddr;
+        final NamedNodeMap addrAttr;
+        final Attr attrNode;
+        final NamedNodeMap attrList;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = elementList.item(0);
         addrAttr = testAddr.getAttributes();
         attrNode = (Attr) addrAttr.item(0);
         attrList = attrNode.getAttributes();
-        assertNull("nodeAttributeNodeAttributeAssert1", attrList);
+        assertNull(attrList, "NodeattributenodeattributeAssert2");
     }
 }
 

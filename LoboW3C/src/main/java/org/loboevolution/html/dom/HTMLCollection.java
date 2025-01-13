@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,24 +47,21 @@ public interface HTMLCollection {
     /**
      * <p>getLength.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getLength();
     
     /**
      * <p>item.</p>
      *
-     * @param index a int.
+     * @param index a {@link java.lang.Integer} object.
      * @return a {@link org.loboevolution.html.node.Node} object.
      */
     Node item(Object index);
 
-
     /**
      * <p>item.</p>
-     *
-     * @param index a int.
-     * @return a {@link org.loboevolution.html.node.Node} object.
+     * @param index a {@link java.lang.Integer} object.
      */
     void setItem(Integer index, Node node);
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,7 @@ public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElem
 	}
 
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new BlockRenderState(prevRenderState, this);
 	}
 
@@ -65,7 +65,7 @@ public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElem
 
 	/** {@inheritDoc} */
 	@Override
-	public void setVersion(String version) {
+	public void setVersion(final String version) {
 		setAttribute("version", version);
 	}
 

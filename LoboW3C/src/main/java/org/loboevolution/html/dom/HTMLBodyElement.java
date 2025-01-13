@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,31 +26,14 @@
 
 package org.loboevolution.html.dom;
 
-import org.loboevolution.html.node.js.WindowEventHandlers;
+import org.loboevolution.js.WindowEventHandlers;
 
 /**
  * Provides special properties (beyond those inherited from the regular
  * HTMLElement interface) for manipulating &lt;body&gt; elements.
- *
- *
- *
  */
 public interface HTMLBodyElement extends HTMLElement, WindowEventHandlers {
 
-	/**
-	 * <p>getALink.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	@Deprecated
-	String getALink();
-
-	/**
-	 * <p>setALink.</p>
-	 *
-	 * @param aLink a {@link java.lang.String} object.
-	 */
-	void setALink(String aLink);
 
 	/**
 	 * <p>getBackground.</p>

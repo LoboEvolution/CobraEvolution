@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -46,33 +45,30 @@ import static org.junit.Assert.assertNotNull;
  * a NamedNodeMap of all its entities.  Traverse the
  * entire list and examine the NodeType of each node
  * in the list.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1788794630">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1788794630</a>
  */
-public class documenttypegetentitiestypeTest extends LoboUnitTest {
+public class DocumenttypegetentitiestypeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entityList;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entityList;
         Node entity;
         int entityType;
         doc = sampleXmlFile("staff.xml");
         docType = doc.getDoctype();
-        assertNotNull("docTypeNotNull", docType);
+        assertNotNull(docType, "DocumenttypegetentitiestypeAssert1");
         entityList = docType.getEntities();
-        assertNotNull("entitiesNotNull", entityList);
+        assertNotNull(entityList, "DocumenttypegetentitiestypeAssert2");
         for (int indexN10049 = 0; indexN10049 < entityList.getLength(); indexN10049++) {
             entity = entityList.item(indexN10049);
             entityType = entity.getNodeType();
-            assertEquals("documenttypeGetEntitiesTypeAssert", 6, entityType);
+            assertEquals(6, entityType, "DocumenttypegetentitiestypeAssert3");
         }
     }
 }

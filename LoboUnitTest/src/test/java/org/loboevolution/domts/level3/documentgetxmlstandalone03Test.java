@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,29 +27,27 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * The value of the standalone attribute for an XML document with the standalone="no"
  * should be false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-standalone</a>
  */
-public class documentgetxmlstandalone03Test extends LoboUnitTest {
+public class Documentgetxmlstandalone03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        boolean standalone;
+        final Document doc;
+        final boolean standalone;
         doc = sampleXmlFile("barfoo_standalone_no.xml");
         standalone = doc.getXmlStandalone();
-        assertFalse("documentgetxmlstandalone03", standalone);
+        assertFalse(standalone, "Documentgetxmlstandalone03Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,40 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Checks that isDerivedFrom(...,DERIVATION_LIST|DERIVATION_UNION) returns false when target type is a list
  * of an union.
  * ancestor type.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom72Test extends LoboUnitTest {
-
+public class Typeinfoisderivedfrom72Test extends LoboUnitTest {
+    
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        TypeInfo elemTypeInfo;
-        String typeName;
-        HTMLCollection elemList;
-        boolean retValue;
+        final Document doc;
+        final Element elem;
+        final TypeInfo elemTypeInfo;
+        final HTMLCollection elemList;
+        final boolean retValue;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("code");
         elem = (Element) elemList.item(0);
         elemTypeInfo = elem.getSchemaTypeInfo();
         retValue = elemTypeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "field", 12);
-        assertFalse("isDerived", retValue);
+        assertFalse(retValue, "Typeinfoisderivedfrom72Assert2");
     }
 }

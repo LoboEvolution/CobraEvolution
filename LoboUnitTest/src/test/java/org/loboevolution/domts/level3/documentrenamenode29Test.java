@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,42 +28,38 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the renameNode method to attempt to rename an Element node of a XML1.0 document
  * with a name that contains an invalid XML 1.0 character and check if a INVALID_CHARACTER_ERR
  * gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode29Test extends LoboUnitTest {
+public class Documentrenamenode29Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Node renamed;
+        final Document doc;
+        final Element docElem;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
 
         {
             boolean success = false;
             try {
-                renamed = doc.renameNode(docElem, "http://www.w3.org/DOM/Test", "@");
-            } catch (DOMException ex) {
+                doc.renameNode(docElem, "http://www.w3.org/DOM/Test", "@");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.INVALID_CHARACTER_ERR);
             }
-            assertTrue("documentrenamenode29_ENTITY_NOT_SUPPORTED_ERR", success);
+            assertTrue(success, "Documentrenamenode29Assert2");
         }
     }
 }

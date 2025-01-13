@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,40 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the DocumentFragment node contains and precedes  an Element
  * node appended to it, and that the Element node is contained and follows the DocumentFragment node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition14Test extends LoboUnitTest {
+public class Nodecomparedocumentposition14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Element docElem;
-        Node docFragChild;
-        int docFragPosition;
-        int docFragChildPosition;
-        Node appendedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Element docElem;
+        final Node docFragChild;
+        final int docFragPosition;
+        final int docFragChildPosition;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         docFrag = doc.createDocumentFragment();
-        appendedChild = docFrag.appendChild(docElem);
+        docFrag.appendChild(docElem);
         docFragChild = docFrag.getFirstChild();
         docFragPosition = docFrag.compareDocumentPosition(docFragChild);
-        assertEquals("nodecomparedocumentpositionContainsPRECEDING14", 20, docFragPosition);
+        assertEquals(20, docFragPosition, "Nodecomparedocumentposition14Assert2");
         docFragChildPosition = docFragChild.compareDocumentPosition(docFrag);
-        assertEquals("nodecomparedocumentpositionIsContainedFollowing14", 10, docFragChildPosition);
+        assertEquals(10, docFragChildPosition, "Nodecomparedocumentposition14Assert3");
     }
 }
 

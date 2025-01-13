@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.js;
 
 import org.loboevolution.html.js.geolocation.Geolocation;
-import org.loboevolution.html.node.js.Navigator;
+import org.loboevolution.js.Navigator;
 import org.loboevolution.js.AbstractScriptableDelegate;
 import org.loboevolution.net.UserAgent;
 
@@ -43,7 +43,7 @@ public class NavigatorImpl extends AbstractScriptableDelegate implements Navigat
 	 *
 	 * @param window a {@link org.loboevolution.html.js.WindowImpl} object.
 	 */
-	public NavigatorImpl(WindowImpl window) {
+	public NavigatorImpl(final WindowImpl window) {
 		this.window = window;
 	}
 
@@ -89,7 +89,7 @@ public class NavigatorImpl extends AbstractScriptableDelegate implements Navigat
 	 * @return a {@link java.lang.String} object.
 	 */
 	public String getAppVersion() {
-		return "1.0";
+		return "5.0";
 	}
 
 	/**
@@ -156,14 +156,14 @@ public class NavigatorImpl extends AbstractScriptableDelegate implements Navigat
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean vibrate(int pattern) {
+	public boolean vibrate(final int pattern) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean vibrate(int... pattern) {
+	public boolean vibrate(final int... pattern) {
 		// TODO Auto-generated method stub
 		return false;
 	}

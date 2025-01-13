@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using removeChild on a new DocumentFragment node attempt to remove a new Text node and
  * verify the name of the removed Element node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild11Test extends LoboUnitTest {
+public class Noderemovechild11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Text txt;
-        Text removedTxt;
-        Node appendedChild;
-        Node removedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Text txt;
+        final Text removedTxt;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         txt = doc.createTextNode("TEXT");
-        appendedChild = docFrag.appendChild(txt);
-        removedChild = docFrag.removeChild(txt);
+        docFrag.appendChild(txt);
+        docFrag.removeChild(txt);
         removedTxt = (Text) docFrag.getFirstChild();
-        assertNull("noderemovechild11", removedTxt);
+        assertNull(removedTxt, "Noderemovechild11Assert2");
     }
 }
 

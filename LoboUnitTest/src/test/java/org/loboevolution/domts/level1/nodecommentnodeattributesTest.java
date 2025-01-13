@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,23 +44,20 @@ import static org.junit.Assert.assertNull;
  * and assert that Node.attributes is null.  Then create
  * a new comment node (in case they had been omitted) and
  * make the assertion.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1728279322">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1728279322</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=248">http://www.w3.org/Bugs/Public/show_bug.cgi?id=248</a>
  */
-public class nodecommentnodeattributesTest extends LoboUnitTest {
+public class NodecommentnodeattributesTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NodeList childList;
+        final Document doc;
+        final NodeList childList;
         Node childNode;
         NamedNodeMap attrList;
         int nodeType;
@@ -72,12 +69,12 @@ public class nodecommentnodeattributesTest extends LoboUnitTest {
 
             if (nodeType == 8) {
                 attrList = childNode.getAttributes();
-                assertNull("attributesNull", attrList);
+                assertNull(attrList, "NodecommentnodeattributesAssert4");
             }
         }
         childNode = doc.createComment("This is a comment");
         attrList = childNode.getAttributes();
-        assertNull("createdAttributesNull", attrList);
+        assertNull(attrList, "NodecommentnodeattributesAssert5");
     }
 }
 
