@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,30 +35,27 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Create a new attribute node on the second strong element.  Invoke setIdAttributeNode on a newly created
  * attribute node.  Verify by calling isID on the attribute node and getElementById on document node.
  * Call setIdAttributeNode again with isId=false to reset.  Invoke isId on the attribute node should return false.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode</a>
  */
-public class elementsetidattributenode03Test extends LoboUnitTest {
+public class Elementsetidattributenode03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element nameElem;
-        NamedNodeMap attributesMap;
-        Attr attr;
-        Attr newAttr;
-        boolean id = false;
-        Element elem;
-        String elemName;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element nameElem;
+        final NamedNodeMap attributesMap;
+        final Attr attr;
+        boolean id;
+        final Element elem;
+        final String elemName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("strong");
         nameElem = (Element) elemList.item(1);
@@ -67,13 +64,13 @@ public class elementsetidattributenode03Test extends LoboUnitTest {
         attr = (Attr) attributesMap.getNamedItem("title");
         nameElem.setIdAttributeNode(attr, true);
         id = attr.isId();
-        assertTrue("elementsetidattributenodeIsIdTrue03", id);
+        assertTrue(id, "Elementsetidattributenode03Assert1");
         elem = doc.getElementById("Karen");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributenodeGetElementById03", "STRONG", elemName);
+        assertEquals("STRONG", elemName, "Elementsetidattributenode03Assert2");
         elem.setIdAttributeNode(attr, false);
         id = attr.isId();
-        assertFalse("elementsetidattributenodeIsIdFalse03", id);
+        assertFalse(id, "Elementsetidattributenode03Assert3");
     }
 }
 

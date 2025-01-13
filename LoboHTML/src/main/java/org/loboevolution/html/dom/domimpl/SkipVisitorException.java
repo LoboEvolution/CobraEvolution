@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,14 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import java.io.Serial;
+
 class SkipVisitorException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 * <p>Constructor for SkipVisitorException.</p>
@@ -46,7 +49,7 @@ class SkipVisitorException extends RuntimeException {
 	 *
 	 * @param message a {@link java.lang.String} object.
 	 */
-	public SkipVisitorException(String message) {
+	public SkipVisitorException(final String message) {
 		super(message);
 	}
 
@@ -56,7 +59,7 @@ class SkipVisitorException extends RuntimeException {
 	 * @param message a {@link java.lang.String} object.
 	 * @param cause a {@link java.lang.Throwable} object.
 	 */
-	public SkipVisitorException(String message, Throwable cause) {
+	public SkipVisitorException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -65,7 +68,7 @@ class SkipVisitorException extends RuntimeException {
 	 *
 	 * @param cause a {@link java.lang.Throwable} object.
 	 */
-	public SkipVisitorException(Throwable cause) {
+	public SkipVisitorException(final Throwable cause) {
 		super(cause);
 	}
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,34 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the method getTextContent on a new EntityReference node and check if the
  * value returned is the EntityReference's content.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent17Test extends LoboUnitTest {
+public class Nodegettextcontent17Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        EntityReference entRef;
-        String textContent;
-        Node appendedChild;
+        final Document doc;
+        final Element elem;
+        final EntityReference entRef;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.getDocumentElement();
         entRef = doc.createEntityReference("beta");
-        appendedChild = elem.appendChild(entRef);
+        elem.appendChild(entRef);
         textContent = entRef.getTextContent();
-        assertEquals("nodegettextcontent17", "β", textContent);
+        assertEquals("β", textContent, "Nodegettextcontent17Assert2");
     }
 }
 

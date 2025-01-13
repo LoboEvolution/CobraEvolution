@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,33 +45,29 @@ import static org.junit.Assert.*;
  * remove its "street" Attr node.  Since this node has a
  * default value defined in the DTD file, that default
  * should immediately be the new value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D589198">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D589198</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
  */
-public class elementremoveattributerestoredefaultvalueTest extends LoboUnitTest {
+public class ElementremoveattributerestoredefaultvalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        Attr streetAttr;
-        String attribute;
-        Attr removedAttr;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final Attr streetAttr;
+        final String attribute;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(2);
         streetAttr = testEmployee.getAttributeNode("street");
-        removedAttr = testEmployee.removeAttributeNode(streetAttr);
+        testEmployee.removeAttributeNode(streetAttr);
         attribute = testEmployee.getAttribute("street");
-        assertEquals("streetYes", "Yes", attribute);
+        assertEquals("Yes", attribute, "ElementremoveattributerestoredefaultvalueAssert1");
     }
 }
 

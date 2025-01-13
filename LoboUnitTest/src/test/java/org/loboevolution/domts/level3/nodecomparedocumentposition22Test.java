@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -35,27 +35,25 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Using compareDocumentPosition check if the Entity node precedes the Notation node and the Notation
  * node follows the Entity node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition22Test extends LoboUnitTest {
+public class Nodecomparedocumentposition22Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        NamedNodeMap notationsMap;
-        Node entity;
-        Notation notation;
-        int entityPosition;
-        int notationPosition;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final NamedNodeMap notationsMap;
+        final Node entity;
+        final Notation notation;
+        final int entityPosition;
+        final int notationPosition;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
@@ -63,9 +61,9 @@ public class nodecomparedocumentposition22Test extends LoboUnitTest {
         entity = entitiesMap.getNamedItem("alpha");
         notation = (Notation) notationsMap.getNamedItem("notation1");
         entityPosition = entity.compareDocumentPosition(notation);
-        assertEquals("nodecomparedocumentpositionFollowing22", 4, entityPosition);
-        notationPosition = (int) notation.compareDocumentPosition(entity);
-        assertEquals("nodecomparedocumentpositionPRECEDING22", 2, notationPosition);
+        assertEquals(4, entityPosition, "Nodecomparedocumentposition22Assert2");
+        notationPosition = notation.compareDocumentPosition(entity);
+        assertEquals(2, notationPosition, "Nodecomparedocumentposition22Assert3");
     }
 }
 

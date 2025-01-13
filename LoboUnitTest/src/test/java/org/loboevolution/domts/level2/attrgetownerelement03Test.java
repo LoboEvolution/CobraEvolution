@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -42,26 +42,23 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Create a new attribute node for this document node.  Since the newly attribute is
  * not it use its owner element should be null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement">http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement</a>
  */
-public class attrgetownerelement03Test extends LoboUnitTest {
+public class Attrgetownerelement03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Node ownerElement;
-        Attr attr;
+        final Document doc;
+        final Node ownerElement;
+        final Attr attr;
         doc = sampleXmlFile("staffNS.xml");
         attr = doc.createAttributeNS("http://www.w3.org/DOM", "dom:attr");
         ownerElement = attr.getOwnerElement();
-        assertNull("attrgetownerelement03", ownerElement);
+        assertNull(ownerElement);
     }
 }
 

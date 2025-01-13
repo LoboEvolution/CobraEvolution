@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,10 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.htmlunit.cssparser.dom.DOMException;
+import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
@@ -39,9 +42,12 @@ import org.loboevolution.html.node.ProcessingInstruction;
  * HTML DOM object representing processing instruction as per HTML 4.0
  * specification.
  */
+@Getter
+@Setter
 public class HTMLProcessingInstruction extends HTMLElementImpl implements ProcessingInstruction {
 
 	private String data;
+
 	private String target;
 
 	/**
@@ -49,14 +55,8 @@ public class HTMLProcessingInstruction extends HTMLElementImpl implements Proces
 	 *
 	 * @param name a {@link java.lang.String} object.
 	 */
-	public HTMLProcessingInstruction(String name) {
+	public HTMLProcessingInstruction(final String name) {
 		super(name);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getData() {
-		return this.data;
 	}
 
 	/** {@inheritDoc} */
@@ -83,31 +83,11 @@ public class HTMLProcessingInstruction extends HTMLElementImpl implements Proces
 		return this.data;
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public String getTarget() {
-		return this.target;
-	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setData(String data) {
-		this.data = data;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setNodeValue(String nodeValue) {
+	public void setNodeValue(final String nodeValue) {
 		this.data = nodeValue;
-	}
-
-	/**
-	 * <p>Setter for the field <code>target</code>.</p>
-	 *
-	 * @param target a {@link java.lang.String} object.
-	 */
-	public void setTarget(String target) {
-		this.target = target;
 	}
 
 	/** {@inheritDoc} */
@@ -119,47 +99,52 @@ public class HTMLProcessingInstruction extends HTMLElementImpl implements Proces
 
 	/** {@inheritDoc} */
 	@Override
-	public void appendData(String data) {
+	public void appendData(final String data) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void deleteData(int offset, int count) {
+	public void deleteData(final int offset, final int count) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void insertData(int offset, String data) {
+	public void insertData(final int offset, final String data) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void replaceData(int offset, int count, String data) {
+	public void replaceData(final int offset, final int count, final String data) {
 		// TODO Auto-generated method stub
 
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String substringData(int offset, int count) {
+	public String substringData(final int offset, final int count) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 16 : clientHeight;
 	}
 
 	@Override
-	public Node appendChild(Node newChild) {
+	public NamedNodeMap getAttributes() {
+		return null;
+	}
+
+	@Override
+	public Node appendChild(final Node newChild) {
 		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append node.");
 	}
 

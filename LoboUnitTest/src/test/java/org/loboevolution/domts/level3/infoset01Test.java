@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,41 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Normalize document with infoset set to true, check that
  * entity references are expanded and unused entity declaration are maintained.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset</a>
  */
-public class infoset01Test extends LoboUnitTest {
+public class Infoset01Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         HTMLCollection pList;
         Element pElem;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         Node child;
-        String childName;
-        EntityReference entRef;
-        String childValue;
-        NamedNodeMap entities;
-        Node ent2;
-        DocumentType doctype;
+        final String childName;
+        final EntityReference entRef;
+        final String childValue;
+        final NamedNodeMap entities;
+        final Node ent2;
+        final DocumentType doctype;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         domConfig.setParameter("infoset", Boolean.TRUE);
@@ -70,21 +70,21 @@ public class infoset01Test extends LoboUnitTest {
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(0);
         entRef = doc.createEntityReference("ent1");
-        child = pElem.appendChild(entRef);
+        pElem.appendChild(entRef);
         doc.normalizeDocument();
-        assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+        assertTrue(errorMonitor.assertLowerSeverity(2), "Infoset01Assert1");
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(0);
         child = pElem.getLastChild();
-        assertNotNull("lastChildNotNull", child);
+        assertNotNull(child, "Infoset01Assert2");
         childName = child.getNodeName();
-        assertEquals("firstChildName", "#text", childName);
+        assertEquals("#text", childName, "Infoset01Assert3");
         childValue = child.getNodeValue();
-        assertEquals("firstChildValue", "barfoo", childValue);
+        assertEquals("barfoo", childValue, "Infoset01Assert4");
         doctype = doc.getDoctype();
         entities = doctype.getEntities();
         ent2 = entities.getNamedItem("ent2");
-        assertNotNull("ent2NotNull", ent2);
+        assertNotNull(ent2, "Infoset01Assert5");
     }
 }
 

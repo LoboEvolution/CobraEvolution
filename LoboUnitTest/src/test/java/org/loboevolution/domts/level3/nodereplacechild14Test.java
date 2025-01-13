@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,12 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -40,38 +41,34 @@ import static org.junit.Assert.assertEquals;
  * Using replaceChild on the documentElement of a newly created Document node, attempt to replace an
  * element child of this documentElement node with a child that was imported from another document.
  * Verify the nodeName of the replaced element node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild14Test extends LoboUnitTest {
+public class Nodereplacechild14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        Element docElem;
-        Element elem;
-        Element elem2;
-        Node imported;
-        Element replaced;
-        DOMImplementation domImpl;
-        String nodeName;
-        Node appendedChild;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final Element docElem;
+        final Element elem;
+        final Element elem2;
+        final Node imported;
+        final Element replaced;
+        final DOMImplementation domImpl;
+        final String nodeName;
 
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/DOM/Test", "dom3:doc1elem");
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/test", "dom3:doc", nullDocType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/test", "dom3:doc", null);
         elem2 = newDoc.createElementNS("http://www.w3.org/DOM/Test", "dom3:doc2elem");
         imported = newDoc.importNode(elem, true);
         docElem = newDoc.getDocumentElement();
-        appendedChild = docElem.appendChild(imported);
-        appendedChild = docElem.appendChild(elem2);
+        docElem.appendChild(imported);
+        docElem.appendChild(elem2);
         replaced = (Element) docElem.replaceChild(imported, elem2);
         nodeName = replaced.getNodeName();
-        assertEquals("nodereplacechild14", "dom3:doc2elem", nodeName);
+        assertEquals("dom3:doc2elem", nodeName, "Nodereplacechild14Assert2");
     }
 }
 

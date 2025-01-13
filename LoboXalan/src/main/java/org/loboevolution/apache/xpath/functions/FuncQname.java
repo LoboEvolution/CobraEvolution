@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,14 +35,14 @@ public class FuncQname extends FunctionDef1Arg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    int context = getArg0AsNode(xctxt);
-    XObject val;
+    final int context = getArg0AsNode(xctxt);
+    final XObject val;
 
     if (DTM.NULL != context) {
-      DTM dtm = xctxt.getDTM(context);
-      String qname = dtm.getNodeNameX(context);
+      final DTM dtm = xctxt.getDTM(context);
+      final String qname = dtm.getNodeNameX(context);
       val = (null == qname) ? XString.EMPTYSTRING : new XString(qname);
     } else {
       val = XString.EMPTYSTRING;

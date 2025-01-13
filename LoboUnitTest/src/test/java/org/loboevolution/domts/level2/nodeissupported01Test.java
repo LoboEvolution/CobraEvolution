@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,51 +46,44 @@ import static org.junit.Assert.assertTrue;
  * versions and versions as below.  Valid feature names are case insensitive and versions
  * "2.0", "1.0" and if the version is not specified, supporting any version of the feature
  * should return true.  Check if the value returned value was true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports</a>
  */
-public class nodeissupported01Test extends LoboUnitTest {
+public class Nodeissupported01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        String version = "";
-        String version1 = "1.0";
-        String version2 = "2.0";
-        String featureCore;
-        String featureXML;
+        final Document doc;
+        final Element element;
+        final String version = "";
+        final String version1 = "1.0";
+        final String version2 = "2.0";
         boolean success;
-        java.util.List featuresXML = new java.util.ArrayList();
+        List<String> featuresXML = new ArrayList<>();
         featuresXML.add("XML");
         featuresXML.add("xmL");
 
-        java.util.List featuresCore = new java.util.ArrayList();
+        List<String> featuresCore = new ArrayList<>();
         featuresCore.add("Core");
         featuresCore.add("CORE");
 
         doc = sampleXmlFile("staffNS.xml");
         element = doc.getDocumentElement();
-        for (int indexN10063 = 0; indexN10063 < featuresXML.size(); indexN10063++) {
-            featureXML = (String) featuresXML.get(indexN10063);
+        for (String featureXML : featuresXML) {
             success = element.isSupported(featureXML, version);
-            assertTrue("nodeissupported01_XML1", success);
+            assertTrue(success);
             success = element.isSupported(featureXML, version1);
-            assertTrue("nodeissupported01_XML2", success);
+            assertTrue(success);
         }
-        for (int indexN1007C = 0; indexN1007C < featuresCore.size(); indexN1007C++) {
-            featureCore = (String) featuresCore.get(indexN1007C);
+        for (String featureCore : featuresCore) {
             success = element.isSupported(featureCore, version);
-            assertTrue("nodeissupported01_Core1", success);
-            success = element.isSupported(featureCore, version1);
+            assertTrue(success);
+            element.isSupported(featureCore, version1);
             success = element.isSupported(featureCore, version2);
-            assertTrue("nodeissupported01_Core3", success);
+            assertTrue(success);
         }
     }
 }

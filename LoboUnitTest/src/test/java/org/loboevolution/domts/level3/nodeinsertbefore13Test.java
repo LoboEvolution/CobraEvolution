@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,40 +26,34 @@
 
 package org.loboevolution.domts.level3;
 
-
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using insertBefore on a DocumentFragment node attempt to insert a new Element node
  * created by another Document, before this DocumentFragment's Element node and
  * verify if a WRONG_DOCUMENT_ERR is raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore13Test extends LoboUnitTest {
+public class Nodeinsertbefore13Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document docAlt;
-        DocumentFragment docFrag;
-        Element elemAlt;
-        Element elem;
-        Node appendedChild;
-        Node inserted;
-        Element docElem;
-        String rootNS;
-        String rootTagname;
+        final Document doc;
+        final Document docAlt;
+        final DocumentFragment docFrag;
+        final Element elemAlt;
+        final Element elem;
+        final Element docElem;
+        final String rootNS;
+        final String rootTagname;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
@@ -68,16 +62,16 @@ public class nodeinsertbefore13Test extends LoboUnitTest {
         docFrag = doc.createDocumentFragment();
         elem = doc.createElementNS(rootNS, rootTagname);
         elemAlt = docAlt.createElementNS(rootNS, rootTagname);
-        appendedChild = docFrag.appendChild(elem);
+        docFrag.appendChild(elem);
 
         {
             boolean success = false;
             try {
-                inserted = docFrag.insertBefore(elemAlt, elem);
-            } catch (DOMException ex) {
+                docFrag.insertBefore(elemAlt, elem);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
             }
-            assertTrue("throw_WRONG_DOCUMENT_ERR", success);
+            assertTrue(success, "Nodeinsertbefore13Assert2");
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.dom.svg.*;
 import org.loboevolution.html.node.Node;
@@ -42,6 +43,7 @@ import java.util.List;
 /**
  * <p>SVGGElementImpl class.</p>
  */
+@Slf4j
 public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 
 	/**
@@ -111,6 +113,7 @@ public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 					try {
 						imageTransform.preConcatenate(screenCTM.createInverse());
 					} catch (NoninvertibleTransformException e) {
+						log.info(e.getMessage());
 					}
 					graphics.drawImage(image, imageTransform, null);
 					graphics.setComposite(oldComposite);
@@ -127,16 +130,16 @@ public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 
 	@Override
 	public SVGRect getBBox() {
-		Shape shape = createShape(null);
+		final Shape shape = createShape(null);
 		return new SVGRectImpl(shape.getBounds2D());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
-		GeneralPath path = new GeneralPath();
+	public Shape createShape(final AffineTransform transform) {
+		final GeneralPath path = new GeneralPath();
 		if (hasChildNodes()) {
-			NodeListImpl nodeList = (NodeListImpl)getChildNodes();
+			final NodeListImpl nodeList = (NodeListImpl)getChildNodes();
 			nodeList.forEach(child -> {
 				Shape childShape = null;
 				if (child instanceof SVGGElementImpl) {
@@ -153,9 +156,8 @@ public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 					SVGRect bbox = ((SVGUseElement) child).getBBox();
 					childShape = new Rectangle2D.Float(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 
-				} else if (child instanceof SVGSVGElementImpl) {
-					SVGSVGElement svg = (SVGSVGElement) child;
-					AffineTransform ctm = getCTM().getAffineTransform();
+				} else if (child instanceof SVGSVGElementImpl svg) {
+                    AffineTransform ctm = getCTM().getAffineTransform();
 					AffineTransform inverseTransform;
 					try {
 						inverseTransform = ctm.createInverse();
@@ -185,10 +187,10 @@ public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 		return path;
 	}
 	
-	private void drawChildren(Graphics2D graphics) {
-		List<Node> drawableChildren = new ArrayList<>();
+	private void drawChildren(final Graphics2D graphics) {
+		final List<Node> drawableChildren = new ArrayList<>();
 		if (hasChildNodes()) {
-			NodeListImpl childNodes = (NodeListImpl) getChildNodes();
+			final NodeListImpl childNodes = (NodeListImpl) getChildNodes();
 			childNodes.forEach(child -> {
 				if (child instanceof Drawable) {
 					drawableChildren.add(child);
@@ -196,11 +198,11 @@ public class SVGGElementImpl extends SVGGraphic implements SVGGElement {
 			});
 		}
 
-		for (Node node : drawableChildren) {
-			SVGElement selem = (SVGElement)node;
+		for (final Node node : drawableChildren) {
+			final SVGElement selem = ( SVGElement)node;
 			selem.setOwnerSVGElement(getOwnerSVGElement());
 			drawStyle(node);
-			Drawable child = (Drawable) node;
+			final Drawable child = (Drawable) node;
 			child.draw(graphics);
 		}
 	}

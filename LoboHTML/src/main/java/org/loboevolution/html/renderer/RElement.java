@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,51 +32,48 @@ import org.loboevolution.html.dom.domimpl.UINode;
 /**
  * A renderer node for elements such as blocks, lists, tables, inputs, images,
  * etc.
- *
- *
- *
  */
 public interface RElement extends RCollection, UINode {
 
 	/**
 	 * <p>getCollapsibleMarginBottom.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getCollapsibleMarginBottom();
 
 	/**
 	 * <p>getCollapsibleMarginTop.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getCollapsibleMarginTop();
 
 	/**
 	 * <p>getMarginBottom.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getMarginBottom();
 
 	/**
 	 * <p>getMarginLeft.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getMarginLeft();
 
 	/**
 	 * <p>getMarginRight.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getMarginRight();
 
 	/**
 	 * <p>getMarginTop.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getMarginTop();
 
@@ -84,7 +81,7 @@ public interface RElement extends RCollection, UINode {
 	 * Vertical alignment for elements rendered in a line. Returns one of the
 	 * constants defined in this class.
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	default int getVAlign() {
 		return AlignValues.BASELINE.getValue();
@@ -98,7 +95,7 @@ public interface RElement extends RCollection, UINode {
 	 * @param availHeight The available height from the parent's canvas.
 	 * @param sizeOnly    Whether the layout is for sizing determination only.
 	 */
-	void layout(int availWidth, int availHeight, boolean sizeOnly);
+	void layout(int availWidth, final int availHeight, boolean sizeOnly);
 
 	/**
 	 * <p>setupRelativePosition.</p>

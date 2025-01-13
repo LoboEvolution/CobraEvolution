@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Normalize document with datatype-normalization set to false, string values
  * should not be normalized.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-datatype-normalization">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-datatype-normalization</a>
  */
-public class datatypenormalization17Test extends LoboUnitTest {
+public class Datatypenormalization17Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
+        final Document doc;
+        final HTMLCollection elemList;
         Element element;
-        DOMConfiguration domConfig;
-        String str;
-        boolean canSetValidate;
-        boolean canSetXMLSchema;
-        String xsdNS = "http://www.w3.org/2001/XMLSchema";
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final DOMConfiguration domConfig;
+        final boolean canSetValidate;
+        final boolean canSetXMLSchema;
+        final String xsdNS = "http://www.w3.org/2001/XMLSchema";
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         Node childNode;
         String childValue;
@@ -79,20 +77,20 @@ public class datatypenormalization17Test extends LoboUnitTest {
             /*DOMErrorMonitor */
             domConfig.setParameter("error-handler", errorMonitor);
             doc.normalizeDocument();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Datatypenormalization17Assert1");
             elemList = doc.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "code");
             element = (Element) elemList.item(1);
             childNode = element.getFirstChild();
             childValue = childNode.getNodeValue();
-            assertEquals("content2", "EMP  0001", childValue);
+            assertEquals("EMP  0001", childValue, "Datatypenormalization17Assert2");
             element = (Element) elemList.item(2);
             childNode = element.getFirstChild();
             childValue = childNode.getNodeValue();
-            assertEquals("content3", "EMP 0001", childValue);
+            assertEquals("EMP 0001", childValue, "Datatypenormalization17Assert3");
             element = (Element) elemList.item(0);
             childNode = element.getFirstChild();
             childValue = childNode.getNodeValue();
-            assertNotEquals("content1", "EMP 0001", childValue);
+            assertNotEquals("EMP 0001", childValue, "Datatypenormalization17Assert4");
         }
     }
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,34 +46,31 @@ import static org.junit.Assert.assertNotNull;
  * Add the new attribute and value with the "setAttributeNS()" method.
  * The value returned by the "getAttributeNS()" method should be
  * the string "NewValue" since the attribute had a specified value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS</a>
  */
-public class getAttributeNS04Test extends LoboUnitTest {
+public class GetAttributeNS04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.nist.gov";
-        String localName = "blank";
-        String qualifiedName = "blank";
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        String attrValue;
+        final String namespaceURI = "http://www.nist.gov";
+        final String localName = "blank";
+        final String qualifiedName = "blank";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final String attrValue;
         doc = sampleXmlFile("staffNS.xml");
         doc.createAttributeNS(namespaceURI, qualifiedName);
         elementList = doc.getElementsByTagName("address");
         testAddr = (Element) elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
+        assertNotNull(testAddr);
         testAddr.setAttributeNS(namespaceURI, qualifiedName, "NewValue");
         attrValue = testAddr.getAttributeNS(namespaceURI, localName);
-        assertEquals("throw_Equals", "NewValue", attrValue);
+        assertEquals("NewValue", attrValue);
     }
 }
 

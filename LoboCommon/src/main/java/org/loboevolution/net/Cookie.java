@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,17 @@
  */
 package org.loboevolution.net;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The Class Cookie.
- *
- * Author J. H. S.
- *
  */
+@Getter
 public class Cookie extends NameValuePair {
 	
 	/** The comment. */
@@ -46,6 +48,7 @@ public class Cookie extends NameValuePair {
 	private String domain;
 	
 	/** The expires. */
+	@Setter
 	private String expires;
 	
 	/** The max age. */
@@ -69,7 +72,7 @@ public class Cookie extends NameValuePair {
 	 * @param name a {@link java.lang.String} object.
 	 * @param value a {@link java.lang.String} object.
 	 */
-	public Cookie(String name, String value) {
+	public Cookie(final String name, final String value) {
 		super(name, value);
 	}
 	
@@ -80,7 +83,7 @@ public class Cookie extends NameValuePair {
 	 * @throws java.io.UnsupportedEncodingException if any.
 	 */
 	public String getEncodedName() throws UnsupportedEncodingException {
-		return URLEncoder.encode(this.name, "UTF-8");
+		return URLEncoder.encode(this.name, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class Cookie extends NameValuePair {
 	 * @throws java.io.UnsupportedEncodingException if any.
 	 */
 	public String getEncodedValue() throws UnsupportedEncodingException {
-		return URLEncoder.encode(this.value, "UTF-8");
+		return URLEncoder.encode(this.value, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -99,39 +102,11 @@ public class Cookie extends NameValuePair {
 	 * @param comment
 	 *            the new comment
 	 */
-	public void setComment(String comment) {
-		String old = getComment();
+	public void setComment(final String comment) {
+		final String old = getComment();
 		this.comment = comment;
 		firePropertyChange("comment", old, getComment());
 	}
-
-	/**
-	 * Gets the comment.
-	 *
-	 * @return the comment
-	 */
-	public String getComment() {
-		return comment;
-	}
-
-	/**
-	 * Gets the expires.
-	 *
-	 * @return the expires
-	 */
-	public String getExpires() {
-		return expires;
-	}
-
-	/**
-	 * <p>Setter for the field expires.</p>
-	 *
-	 * @param expires the expires to set
-	 */
-	public void setExpires(String expires) {
-		this.expires = expires;
-	}
-
 
 
 	/**
@@ -140,20 +115,12 @@ public class Cookie extends NameValuePair {
 	 * @param domain
 	 *            the new domain
 	 */
-	public void setDomain(String domain) {
-		String old = getDomain();
+	public void setDomain(final String domain) {
+		final String old = getDomain();
 		this.domain = domain;
 		firePropertyChange("domain", old, getDomain());
 	}
 
-	/**
-	 * Gets the domain.
-	 *
-	 * @return the domain
-	 */
-	public String getDomain() {
-		return domain;
-	}
 
 	/**
 	 * Sets the max age.
@@ -161,19 +128,10 @@ public class Cookie extends NameValuePair {
 	 * @param age
 	 *            the new max age
 	 */
-	public void setMaxAge(int age) {
-		long old = getMaxAge();
+	public void setMaxAge(final int age) {
+		final long old = getMaxAge();
 		this.maxAge = age;
 		firePropertyChange("maxAge", old, getMaxAge());
-	}
-
-	/**
-	 * Gets the max age.
-	 *
-	 * @return the max age
-	 */
-	public int getMaxAge() {
-		return maxAge;
 	}
 
 	/**
@@ -182,19 +140,10 @@ public class Cookie extends NameValuePair {
 	 * @param path
 	 *            the new path
 	 */
-	public void setPath(String path) {
-		String old = getPath();
+	public void setPath(final String path) {
+		final String old = getPath();
 		this.path = path;
 		firePropertyChange("path", old, getPath());
-	}
-
-	/**
-	 * Gets the path.
-	 *
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
 	}
 
 	/**
@@ -203,19 +152,10 @@ public class Cookie extends NameValuePair {
 	 * @param secure
 	 *            the new secure
 	 */
-	public void setSecure(boolean secure) {
-		boolean old = isSecure();
+	public void setSecure(final boolean secure) {
+		final boolean old = isSecure();
 		this.secure = secure;
 		firePropertyChange("secure", old, isSecure());
-	}
-
-	/**
-	 * Checks if is secure.
-	 *
-	 * @return the secure
-	 */
-	public boolean isSecure() {
-		return secure;
 	}
 
 	/**
@@ -224,28 +164,10 @@ public class Cookie extends NameValuePair {
 	 * @param version
 	 *            the new version
 	 */
-	public void setVersion(int version) {
-		int old = getVersion();
+	public void setVersion(final int version) {
+		final int old = getVersion();
 		this.version = version;
 		firePropertyChange("version", old, getVersion());
-	}
-
-	/**
-	 * Gets the version.
-	 *
-	 * @return the version
-	 */
-	public int getVersion() {
-		return version;
-	}
-
-	/**
-	 * <p>isHttpOnly.</p>
-	 *
-	 * @return a boolean.
-	 */
-	public boolean isHttpOnly() {
-		return httpOnly;
 	}
 
 	/**
@@ -253,17 +175,9 @@ public class Cookie extends NameValuePair {
 	 *
 	 * @param httpOnly a boolean.
 	 */
-	public void setHttpOnly(boolean httpOnly) {
-		boolean old = isHttpOnly();
+	public void setHttpOnly(final boolean httpOnly) {
+		final boolean old = isHttpOnly();
 		this.httpOnly = httpOnly;
 		firePropertyChange("httpOnly", old, isHttpOnly());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String toString() {
-		return "Cookie [" + getName() + "=" + getValue() + ", " + "Comment=" + getComment() + ", " + "Domain="
-				+ getDomain() + ", " + "Max-Age=" + getMaxAge() + ", " + "Path=" + getPath() + ", " + "Secure="
-				+ isSecure() + ", " + "Version=" + getVersion() + "]";
 	}
 }

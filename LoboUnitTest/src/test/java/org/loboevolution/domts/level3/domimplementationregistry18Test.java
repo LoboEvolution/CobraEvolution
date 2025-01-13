@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,36 +28,34 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementationList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
- * DOMImplementationRegistry.getDOMImplementationList("http://www.example.com/bogus-feature 99.0")
+ * DOMImplementationRegistry.getDOMImplementationList("<a href="http://www.example.com/bogus-feature">...</a> 99.0")
  * should return a zero-length list.
- *
- * @author Curt Arnold
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls</a>
  */
-public class domimplementationregistry18Test extends LoboUnitTest {
+public class Domimplementationregistry18Test extends LoboUnitTest {
     @Test
     @SneakyThrows
     public void runTest() {
 
-        DOMImplementationList domImplList;
-        int length;
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        final DOMImplementationList domImplList;
+        final int length;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry18Assert3");
         domImplList = domImplRegistry.getDOMImplementationList("http://www.example.com/bogus-feature 99.0");
         length = domImplList.getLength();
-        assertEquals("emptyList", 0, length);
+        assertEquals(0, length, "Domimplementationregistry18Assert4");
     }
 }
 

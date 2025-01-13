@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,15 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,25 +45,36 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Invoke createDocument on this DOMImplementation with qualifiedNames having illegal characters.
  * Check if an INVALID_CHARACTER_ERR is raised in each case.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType</a>
  */
-public class domimplementationcreatedocumenttype04Test extends LoboUnitTest {
+public class Domimplementationcreatedocumenttype04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        String publicId = "http://www.w3.org/DOM/Test/dom2.dtd";
-        String systemId = "dom2.dtd";
-        String qualifiedName;
-        List<String> qualifiedNames = new ArrayList<>();
+        final Document doc;
+        final DOMImplementation domImpl;
+        final String publicId = "http://www.w3.org/DOM/Test/dom2.dtd";
+        final String systemId = "dom2.dtd";
+        final List<String> qualifiedNames = getStrings();
+        doc = sampleXmlFile("staffNS.xml");
+        domImpl = doc.getImplementation();
+        for (String qualifiedName : qualifiedNames) {
+            boolean success = false;
+            try {
+                domImpl.createDocumentType(qualifiedName, publicId, systemId);
+            } catch (final DOMException ex) {
+                success = (ex.getCode() == DOMException.INVALID_CHARACTER_ERR);
+            }
+            assertTrue(success);
+        }
+    }
+
+    private static List<String> getStrings() {
+        final List<String> qualifiedNames = new ArrayList<>();
         qualifiedNames.add("{");
         qualifiedNames.add("}");
         qualifiedNames.add("'");
@@ -78,23 +89,7 @@ public class domimplementationcreatedocumenttype04Test extends LoboUnitTest {
         qualifiedNames.add("*");
         qualifiedNames.add("(");
         qualifiedNames.add(")");
-
-        doc = sampleXmlFile("staffNS.xml");
-        
-        domImpl = doc.getImplementation();
-        for (int indexN10073 = 0; indexN10073 < qualifiedNames.size(); indexN10073++) {
-            qualifiedName = qualifiedNames.get(indexN10073);
-
-            {
-                boolean success = false;
-                try {
-                    domImpl.createDocumentType(qualifiedName, publicId, systemId);
-                } catch (DOMException ex) {
-                    success = (ex.getCode() == DOMException.INVALID_CHARACTER_ERR);
-                }
-                assertTrue("domimplementationcreatedocumenttype04", success);
-            }
-        }
+        return qualifiedNames;
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,30 +43,27 @@ import static org.junit.Assert.*;
  * <p>
  * Create a new element and attribute node, attach the attribute to the element.
  * Check the value of owner element of the new attribute node
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement">http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement</a>
  */
-public class attrgetownerelement02Test extends LoboUnitTest {
+public class Attrgetownerelement02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Node ownerElement;
-        String ownerElementName;
+        final Document doc;
+        final Element element;
+        final Node ownerElement;
+        final String ownerElementName;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElement("root");
-        Attr attr = doc.createAttributeNS("http://www.w3.org/DOM/L1", "L1:att");
+        final Attr attr = doc.createAttributeNS("http://www.w3.org/DOM/L1", "L1:att");
         element.setAttributeNodeNS(attr);
         ownerElement = attr.getOwnerElement();
         ownerElementName = ownerElement.getNodeName();
-        assertEquals("attrgetownerelement02", "root", ownerElementName);
+        assertEquals("root", ownerElementName);
     }
 }
 

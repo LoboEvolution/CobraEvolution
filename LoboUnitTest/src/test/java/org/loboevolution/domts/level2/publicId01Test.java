@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,26 +42,23 @@ import static org.junit.Assert.*;
  * Retrieve the documenttype.
  * Apply the "getPublicId()" method.  The string "STAFF" should be
  * returned.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-publicId">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-publicId</a>
  */
-public class publicId01Test extends LoboUnitTest {
+public class PublicId01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        String publicId;
+        final Document doc;
+        final DocumentType docType;
+        final String publicId;
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         publicId = docType.getPublicId();
-        assertEquals("throw_Equals", "STAFF", publicId);
+        assertEquals("STAFF", publicId);
     }
 }
 

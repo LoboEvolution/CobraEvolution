@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.dom;
 
 
-import org.loboevolution.html.node.css.CSSStyleSheet;
+import org.loboevolution.css.CSSStyleSheet;
 
 /**
  * A &lt;style&gt; element. It inherits properties and methods from its parent, HTMLElement, and from LinkStyle.
@@ -85,7 +85,7 @@ public interface HTMLStyleElement extends HTMLElement {
 	/**
 	 * <p>isDisabled.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.css.CSSStyleSheet} object.
+	 * @return a {@link CSSStyleSheet} object.
 	 */
 	CSSStyleSheet getStyleSheet();
 

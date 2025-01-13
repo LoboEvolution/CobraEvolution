@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,51 +27,49 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Using getBaseURI verify if the imported notation notation2 is null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Notation">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Notation</a>
  */
-public class nodegetbaseuri14Test extends LoboUnitTest {
+public class Nodegetbaseuri14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        Element docElem;
-        String docElemNS;
-        String docElemName;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        NamedNodeMap notationsMap;
-        Notation notation;
-        Notation notationImported;
-        String baseURI;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final Element docElem;
+        final String docElemNS;
+        final String docElemName;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
+        final NamedNodeMap notationsMap;
+        final Notation notation;
+        final Notation notationImported;
+        final String baseURI;
 
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         docElemNS = docElem.getNamespaceURI();
         docElemName = docElem.getLocalName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(docElemNS, docElemName, nullDocType);
+        newDoc = domImpl.createDocument(docElemNS, docElemName, null);
         docType = doc.getDoctype();
         notationsMap = docType.getNotations();
         notation = (Notation) notationsMap.getNamedItem("notation2");
         notationImported = (Notation) newDoc.importNode(notation, true);
         baseURI = notationImported.getBaseURI();
-        assertNull("nodegetbaseuri14", baseURI);
+        assertNull(baseURI, "Nodegetbaseuri14Assert2");
     }
 }
 

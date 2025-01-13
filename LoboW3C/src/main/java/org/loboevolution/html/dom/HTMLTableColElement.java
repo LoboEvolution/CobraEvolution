@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,14 +85,14 @@ public interface HTMLTableColElement extends HTMLElement {
 	/**
 	 * Sets or retrieves the number of columns in the group.
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getSpan();
 
 	/**
 	 * <p>setSpan.</p>
 	 *
-	 * @param span a int.
+	 * @param span a {@link java.lang.Integer} object.
 	 */
 	void setSpan(int span);
 

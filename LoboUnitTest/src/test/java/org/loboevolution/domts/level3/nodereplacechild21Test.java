@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The method replaceChild replaces the child node oldChild with newChild in the list of
@@ -45,23 +45,20 @@ import static org.junit.Assert.assertTrue;
  * a notation node of retieved from the DTD of another document and verify if a
  * NO_MODIFICATION_ALLOWED_ERR is thrown since DocumentType node is read-only.
  * Also try replacing the docType with an entity node and see if the same exception gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild21Test extends LoboUnitTest {
+public class Nodereplacechild21Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        Node ent;
-        Document doc1;
-        DocumentType docType1;
-        NamedNodeMap notationsMap;
-        Notation notation;
-        Node replacedChild;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final Node ent;
+        final Document doc1;
+        final DocumentType docType1;
+        final NamedNodeMap notationsMap;
+        final Notation notation;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
@@ -74,21 +71,21 @@ public class nodereplacechild21Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                replacedChild = docType.replaceChild(notation, ent);
-            } catch (DOMException ex) {
+                docType.replaceChild(notation, ent);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("NO_MODIFICATION_ALLOWED_ERR1_nodereplacechild21", success);
+            assertTrue(success, "Nodereplacechild21Assert2");
         }
 
         {
             boolean success = false;
             try {
-                replacedChild = docType.replaceChild(ent, docType);
-            } catch (DOMException ex) {
+                docType.replaceChild(ent, docType);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("NO_MODIFICATION_ALLOWED_ERR2_nodereplacechild21", success);
+            assertTrue(success, "Nodereplacechild21Assert3");
         }
     }
 }

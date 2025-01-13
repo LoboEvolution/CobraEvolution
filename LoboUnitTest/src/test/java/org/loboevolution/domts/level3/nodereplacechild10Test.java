@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -42,47 +42,40 @@ import org.loboevolution.html.node.Node;
  * Using replaceChild on this Document node attempt to replace an Entity node with
  * a notation node of retieved from the DTD of another document and verify if a
  * NOT_FOUND_ERR or WRONG_DOCUMENT_ERR or HIERARCHY_REQUEST err is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild10Test extends LoboUnitTest {
-@Test
-public void runTest(){
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        Node ent;
-        Document doc1;
-        DocumentType docType1;
-        NamedNodeMap notationsMap;
-        Notation notation;
-        Node replaced;
-        doc=sampleXmlFile("hc_staff.xml");
-        docType=doc.getDoctype();
-        entitiesMap=docType.getEntities();
-        ent=entitiesMap.getNamedItem("alpha");
-        doc1=sampleXmlFile("hc_staff.xml");
-        docType1=doc1.getDoctype();
-        notationsMap=docType1.getNotations();
-        notation=(Notation)notationsMap.getNamedItem("notation1");
+public class Nodereplacechild10Test extends LoboUnitTest {
+    @Test
+    public void runTest() {
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final Node ent;
+        final Document doc1;
+        final DocumentType docType1;
+        final NamedNodeMap notationsMap;
+        final Notation notation;
+        doc = sampleXmlFile("hc_staff.xml");
+        docType = doc.getDoctype();
+        entitiesMap = docType.getEntities();
+        ent = entitiesMap.getNamedItem("alpha");
+        doc1 = sampleXmlFile("hc_staff.xml");
+        docType1 = doc1.getDoctype();
+        notationsMap = docType1.getNotations();
+        notation = (Notation) notationsMap.getNamedItem("notation1");
 
-        try{
-        replaced=doc.replaceChild(notation,ent);
+        try {
+            doc.replaceChild(notation, ent);
 
-        }catch(DOMException ex){
-        switch(ex.getCode()){
-        case 8:
-        break;
-        case 4:
-        break;
-        case 3:
-        break;
-default:
-        throw ex;
+        } catch (final DOMException ex) {
+            switch (ex.getCode()) {
+                case 8, 3, 4:
+                    break;
+                default:
+                    throw ex;
+            }
         }
-        }
-        }
-        }
+    }
+}
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,26 +43,23 @@ import static org.junit.Assert.assertNull;
  * Apply the "getOwnerElement()" method to get the Element associated
  * with the attribute.  The value returned should be "null" since this
  * attribute is not in use.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement">http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement</a>
  */
-public class ownerElement02Test extends LoboUnitTest {
+public class OwnerElement02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr newAttr;
-        Node elementNode;
+        final Document doc;
+        final Attr newAttr;
+        final Node elementNode;
         doc = sampleXmlFile("staff.xml");
         newAttr = doc.createAttribute("newAttribute");
         elementNode = newAttr.getOwnerElement();
-        assertNull("throw_Null", elementNode);
+        assertNull(elementNode);
     }
 }
 

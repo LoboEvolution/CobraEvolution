@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,33 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
  * Using insertBefore on this Document node attempt to insert a new Element node before
  * another Element node and verify a DOMException with a
  * HIERARCHY_REQUEST_ERR, NOT_FOUND_ERR or NOT_SUPPORTED_ERR is raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=415">http://www.w3.org/Bugs/Public/show_bug.cgi?id=415</a>
  */
-public class nodeinsertbefore10Test extends LoboUnitTest {
+public class Nodeinsertbefore10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        Element newElem;
-        Node inserted;
-        Element docElem;
-        String rootNS;
-        String rootTagname;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final Element newElem;
+        final Element docElem;
+        final String rootNS;
+        final String rootTagname;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
@@ -68,10 +64,10 @@ public class nodeinsertbefore10Test extends LoboUnitTest {
         newElem = doc.createElementNS(rootNS, rootTagname);
 
         try {
-            inserted = doc.insertBefore(newElem, elem);
+            doc.insertBefore(newElem, elem);
             fail("throw_DOMException");
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             switch (ex.getCode()) {
                 case 3:
                 case 8:

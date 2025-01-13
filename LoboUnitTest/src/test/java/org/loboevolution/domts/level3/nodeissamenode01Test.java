@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,31 +27,29 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Using isSameNode to check if 2 Document nodes that are equal but do not reference the
  * same object are not the same
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isSameNode</a>
  */
-public class nodeissamenode01Test extends LoboUnitTest {
+public class Nodeissamenode01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc1;
-        Document doc2;
-        boolean isSame;
+        final Document doc1;
+        final Document doc2;
+        final boolean isSame;
         doc1 = sampleXmlFile("hc_staff.xml");
         doc2 = sampleXmlFile("hc_staff.xml");
         isSame = doc1.isSameNode(doc2);
-        assertFalse("nodeissamenode01", isSame);
+        assertFalse(isSame, "Nodeissamenode01Assert2");
     }
 }
 

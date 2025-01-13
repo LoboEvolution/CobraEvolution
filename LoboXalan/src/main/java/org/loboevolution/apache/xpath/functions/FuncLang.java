@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,22 +35,22 @@ public class FuncLang extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    String lang = m_arg0.execute(xctxt).str();
+    final String lang = m_arg0.execute(xctxt).str();
     int parent = xctxt.getCurrentNode();
     boolean isLang = false;
-    DTM dtm = xctxt.getDTM(parent);
+    final DTM dtm = xctxt.getDTM(parent);
 
     while (DTM.NULL != parent) {
       if (DTM.ELEMENT_NODE == dtm.getNodeType(parent)) {
-        int langAttr = dtm.getAttributeNode(parent, "http://www.w3.org/XML/1998/namespace", "lang");
+        final int langAttr = dtm.getAttributeNode(parent, "http://www.w3.org/XML/1998/namespace", "lang");
 
         if (DTM.NULL != langAttr) {
-          String langVal = dtm.getNodeValue(langAttr);
+          final String langVal = dtm.getNodeValue(langAttr);
           // %OPT%
           if (langVal.toLowerCase().startsWith(lang.toLowerCase())) {
-            int valLen = lang.length();
+            final int valLen = lang.length();
 
             if ((langVal.length() == valLen) || (langVal.charAt(valLen) == '-')) {
               isLang = true;

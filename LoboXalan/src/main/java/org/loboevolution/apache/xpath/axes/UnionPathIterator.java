@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import org.loboevolution.apache.xpath.compiler.OpMap;
 import org.loboevolution.apache.xml.dtm.Axis;
 import org.loboevolution.apache.xml.dtm.DTM;
 import org.loboevolution.apache.xml.dtm.DTMIterator;
+import javax.xml.transform.TransformerException;
 
 /**
  * This class extends NodeSetDTM, which implements DTMIterator, and fetches nodes one at a time in
@@ -46,22 +47,22 @@ public class UnionPathIterator extends LocPathIterator
 
   /** {@inheritDoc} */
   @Override
-  public void setRoot(int context, Object environment) {
+  public void setRoot(final int context, final Object environment) {
     super.setRoot(context, environment);
 
     try {
       if (null != m_exprs) {
-        int n = m_exprs.length;
-        DTMIterator[] newIters = new DTMIterator[n];
+        final int n = m_exprs.length;
+        final DTMIterator[] newIters = new DTMIterator[n];
 
         for (int i = 0; i < n; i++) {
-          DTMIterator iter = m_exprs[i].asIterator(m_execContext, context);
+          final DTMIterator iter = m_exprs[i].asIterator(m_execContext, context);
           newIters[i] = iter;
           iter.nextNode();
         }
         m_iterators = newIters;
       }
-    } catch (Exception e) {
+    } catch (final Exception e) {
       throw new WrappedRuntimeException(e);
     }
   }
@@ -70,7 +71,7 @@ public class UnionPathIterator extends LocPathIterator
   @Override
   public void detach() {
     if (m_allowDetach && null != m_iterators) {
-      for (DTMIterator m_iterator : m_iterators) {
+      for (final DTMIterator m_iterator : m_iterators) {
         m_iterator.detach();
       }
       m_iterators = null;
@@ -83,16 +84,12 @@ public class UnionPathIterator extends LocPathIterator
    *
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the opcode list from the compiler.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  public UnionPathIterator(Compiler compiler, int opPos)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public UnionPathIterator(final Compiler compiler, final int opPos)
+      throws TransformerException {
 
-    super();
-
-    opPos = OpMap.getFirstChildPos(opPos);
-
-    loadLocationPaths(compiler, opPos, 0);
+    loadLocationPaths(compiler, OpMap.getFirstChildPos(opPos), 0);
   }
 
   /**
@@ -101,19 +98,19 @@ public class UnionPathIterator extends LocPathIterator
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the opcode list from the compiler.
    * @return Object that is derived from LocPathIterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  public static LocPathIterator createUnionIterator(Compiler compiler, int opPos)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public static LocPathIterator createUnionIterator(final Compiler compiler, final int opPos)
+      throws javax.xml.transform.TransformerException {
     // For the moment, I'm going to first create a full UnionPathIterator, and
     // then see if I can reduce it to a UnionChildIterator. It would obviously
     // be more effecient to just test for the conditions for a UnionChildIterator,
     // and then create that directly.
-    UnionPathIterator upi = new UnionPathIterator(compiler, opPos);
-    int nPaths = upi.m_exprs.length;
+    final UnionPathIterator upi = new UnionPathIterator(compiler, opPos);
+    final int nPaths = upi.m_exprs.length;
     boolean isAllChildIterators = true;
     for (int i = 0; i < nPaths; i++) {
-      LocPathIterator lpi = upi.m_exprs[i];
+      final LocPathIterator lpi = upi.m_exprs[i];
 
       if (lpi.getAxis() != Axis.CHILD) {
         isAllChildIterators = false;
@@ -127,10 +124,10 @@ public class UnionPathIterator extends LocPathIterator
       }
     }
     if (isAllChildIterators) {
-      UnionChildIterator uci = new UnionChildIterator();
+      final UnionChildIterator uci = new UnionChildIterator();
 
       for (int i = 0; i < nPaths; i++) {
-        PredicatedNodeTest lpi = upi.m_exprs[i];
+        final PredicatedNodeTest lpi = upi.m_exprs[i];
         // I could strip the lpi down to a pure PredicatedNodeTest, but
         // I don't think it's worth it. Note that the test can be used
         // as a static object... so it doesn't have to be cloned.
@@ -147,8 +144,8 @@ public class UnionPathIterator extends LocPathIterator
     int bits = 0;
 
     if (m_exprs != null) {
-      for (LocPathIterator m_expr : m_exprs) {
-        int bit = m_expr.getAnalysisBits();
+      for (final LocPathIterator m_expr : m_exprs) {
+        final int bit = m_expr.getAnalysisBits();
         bits |= bit;
       }
     }
@@ -160,9 +157,9 @@ public class UnionPathIterator extends LocPathIterator
   @Override
   public Object clone() throws CloneNotSupportedException {
 
-    UnionPathIterator clone = (UnionPathIterator) super.clone();
+    final UnionPathIterator clone = (UnionPathIterator) super.clone();
     if (m_iterators != null) {
-      int n = m_iterators.length;
+      final int n = m_iterators.length;
 
       clone.m_iterators = new DTMIterator[n];
 
@@ -180,10 +177,10 @@ public class UnionPathIterator extends LocPathIterator
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the
    * @return New location path iterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  protected LocPathIterator createDTMIterator(Compiler compiler, int opPos)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected LocPathIterator createDTMIterator(final Compiler compiler, final int opPos)
+      throws javax.xml.transform.TransformerException {
     return (LocPathIterator)
         WalkerFactory.newDTMIterator(compiler, opPos, compiler.getLocationPathDepth() <= 0);
   }
@@ -194,13 +191,13 @@ public class UnionPathIterator extends LocPathIterator
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the opcode list from the compiler.
    * @param count The insert position of the iterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  protected void loadLocationPaths(Compiler compiler, int opPos, int count)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected void loadLocationPaths(final Compiler compiler, final int opPos, final int count)
+      throws javax.xml.transform.TransformerException {
 
     // TODO: Handle unwrapped FilterExpr
-    int steptype = compiler.getOp(opPos);
+    final int steptype = compiler.getOp(opPos);
 
     if (steptype == OpCodes.OP_LOCATIONPATH) {
       loadLocationPaths(compiler, compiler.getNextOpPos(opPos), count + 1);
@@ -218,7 +215,7 @@ public class UnionPathIterator extends LocPathIterator
         case OpCodes.OP_GROUP:
           loadLocationPaths(compiler, compiler.getNextOpPos(opPos), count + 1);
 
-          WalkingIterator iter = new WalkingIterator(compiler.getNamespaceContext());
+          final WalkingIterator iter = new WalkingIterator(compiler.getNamespaceContext());
           iter.exprSetParent(this);
 
           if (compiler.getLocationPathDepth() <= 0) iter.setIsTopLevel(true);
@@ -245,11 +242,11 @@ public class UnionPathIterator extends LocPathIterator
     int earliestNode = DTM.NULL;
 
     if (null != m_iterators) {
-      int n = m_iterators.length;
+      final int n = m_iterators.length;
       int iteratorUsed = -1;
 
       for (int i = 0; i < n; i++) {
-        int node = m_iterators[i].getCurrentNode();
+        final int node = m_iterators[i].getCurrentNode();
 
         if (DTM.NULL == node) continue;
         else if (DTM.NULL == earliestNode) {
@@ -261,7 +258,7 @@ public class UnionPathIterator extends LocPathIterator
             // Found a duplicate, so skip past it.
             m_iterators[i].nextNode();
           } else {
-            DTM dtm = getDTM(node);
+            final DTM dtm = getDTM(node);
 
             if (dtm.isNodeAfter(node, earliestNode)) {
               iteratorUsed = i;
@@ -310,10 +307,10 @@ public class UnionPathIterator extends LocPathIterator
 
   /** {@inheritDoc} */
   @Override
-  public void callVisitors(XPathVisitor visitor) {
+  public void callVisitors(final XPathVisitor visitor) {
     if (visitor.visitUnionPath()) {
       if (null != m_exprs) {
-        for (LocPathIterator m_expr : m_exprs) {
+        for (final LocPathIterator m_expr : m_exprs) {
           m_expr.callVisitors(visitor);
         }
       }
@@ -322,13 +319,13 @@ public class UnionPathIterator extends LocPathIterator
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!super.deepEquals(expr)) return false;
 
-    UnionPathIterator upi = (UnionPathIterator) expr;
+    final UnionPathIterator upi = (UnionPathIterator) expr;
 
     if (null != m_exprs) {
-      int n = m_exprs.length;
+      final int n = m_exprs.length;
 
       if ((null == upi.m_exprs) || (upi.m_exprs.length != n)) return false;
 

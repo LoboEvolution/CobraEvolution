@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,12 +43,12 @@ public abstract class RRectangle extends BaseRenderable {
 
     protected RRectangle() {}
 
-    public void setOrigin(int x, int y) {
+    public void setOrigin(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
 
-    public void setBounds(int x, int y, int width, int height) {
+    public void setBounds(final int x, final int y, final int width, final int height) {
         this.x = x;
         this.y = y;
         this.width = width;

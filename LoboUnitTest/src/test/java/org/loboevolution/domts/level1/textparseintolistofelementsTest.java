@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,18 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -45,38 +48,35 @@ import static org.junit.Assert.assertNotNull;
  * the content node is parsed, the "address" Element
  * should contain four children with each one of the
  * EntityReferences containing one child.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1451460987">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1451460987</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-11C98490">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-11C98490</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-745549614">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-745549614</a>
  */
-public class textparseintolistofelementsTest extends LoboUnitTest {
+public class TextparseintolistofelementsTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node addressNode;
-        NodeList childList;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node addressNode;
+        final NodeList childList;
         Node child;
-        int length;
+        final int length;
         String value;
         Node grandChild;
-        java.util.List result = new java.util.ArrayList();
+        final List<String> result = new ArrayList<>();
 
-        java.util.List expectedNormal = new java.util.ArrayList();
+        final List<String> expectedNormal = new ArrayList<>();
         expectedNormal.add("1900 Dallas Road");
         expectedNormal.add(" Dallas, ");
         expectedNormal.add("Texas");
         expectedNormal.add("\n 98554");
 
-        java.util.List expectedExpanded = new java.util.ArrayList();
+        final List<String> expectedExpanded = new ArrayList<>();
         expectedExpanded.add("1900 Dallas Road Dallas, Texas\n 98554");
 
         doc = sampleXmlFile("staff.xml");
@@ -90,7 +90,7 @@ public class textparseintolistofelementsTest extends LoboUnitTest {
 
             if ((value == null)) {
                 grandChild = child.getFirstChild();
-                assertNotNull("grandChildNotNull", grandChild);
+                assertNotNull(grandChild, "TextparseintolistofelementsAssert1");
                 value = grandChild.getNodeValue();
                 result.add(value);
             } else {
@@ -100,9 +100,9 @@ public class textparseintolistofelementsTest extends LoboUnitTest {
         }
 
         if (length == 4) {
-            assertEquals("assertEqNormal", expectedNormal, result);
+            assertEquals(expectedNormal, result, "TextparseintolistofelementsAssert2");
         } else {
-            assertEquals("assertEqCoalescing", expectedExpanded, result);
+            assertEquals(expectedExpanded, result, "TextparseintolistofelementsAssert3");
         }
 
     }

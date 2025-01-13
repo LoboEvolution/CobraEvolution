@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,29 +41,26 @@ import static org.junit.Assert.assertTrue;
  * return true if the element has an attribute with the given name.
  * Retrieve the first "address" element and the "hasAttribute()" method
  * should return true since the attribute "street" has a default value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttr">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttr</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=238">http://www.w3.org/Bugs/Public/show_bug.cgi?id=238</a>
  */
-public class hasAttribute02Test extends LoboUnitTest {
+public class HasAttribute02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testNode;
-        boolean state;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testNode;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testNode = (Element) elementList.item(1);
         state = testNode.hasAttribute("street");
-        assertTrue("throw_True", state);
+        assertTrue(state);
     }
 }
 

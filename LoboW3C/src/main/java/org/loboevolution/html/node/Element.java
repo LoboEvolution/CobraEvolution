@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@
 
 package org.loboevolution.html.node;
 
+import org.loboevolution.html.dom.DOMTokenList;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.js.geom.DOMRectList;
-import org.mozilla.javascript.Function;
-import org.loboevolution.html.node.js.geom.DOMRect;
+import org.loboevolution.js.geom.DOMRectList;
+import org.loboevolution.js.geom.DOMRect;
 
 /**
  * Element is the most general base class from which all objects in a Document inherit.
@@ -41,7 +41,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
      /**
      * Allows for manipulation of element's class content attribute as a set of whitespace-separated tokens through a DOMTokenList object.
      *
-     * @return a {@link org.loboevolution.html.node.DOMTokenList} object.
+     * @return a {@link DOMTokenList} object.
      */
     DOMTokenList getClassList();
 
@@ -120,14 +120,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
      * @return a {@link java.lang.String} object.
      */
     String getNamespaceURI();
-
-
-    /**
-     * <p>getOnfullscreenchange.</p>
-     *
-     * @return a {@link org.mozilla.javascript.Function} object.
-     */
-    Function getOnfullscreenchange();
+    
 
     /**
      * <p>getOuterHTML.</p>
@@ -135,6 +128,21 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
      * @return a {@link java.lang.String} object.
      */
     String getOuterHTML();
+
+    /**
+     * <p>getInnerHTML.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    String getInnerHTML();
+
+
+    /**
+     * <p>getInnerText.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    String getInnerText();
 
     /**
      * <p>getBoundingClientRect.</p>
@@ -191,7 +199,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
     /**
      * <p>setScrollLeft.</p>
      *
-     * @param scrollLeft a int.
+     * @param scrollLeft a {@link java.lang.Integer} object.
      */
     void setScrollLeft(double scrollLeft);
 
@@ -207,7 +215,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
     /**
      * <p>setScrollTop.</p>
      *
-     * @param scrollTop a int.
+     * @param scrollTop a {@link java.lang.Integer} object.
      */
     void setScrollTop(double scrollTop);
 
@@ -340,7 +348,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
     /**
      * <p>hasPointerCapture.</p>
      *
-     * @param pointerId a int.
+     * @param pointerId a {@link java.lang.Integer} object.
      * @return a boolean.
      */
     boolean hasPointerCapture(int pointerId);
@@ -356,7 +364,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
     /**
      * <p>releasePointerCapture.</p>
      *
-     * @param pointerId a int.
+     * @param pointerId a {@link java.lang.Integer} object.
      */
     void releasePointerCapture(int pointerId);
 
@@ -486,7 +494,7 @@ public interface Element extends Node, InnerHTML, NonDocumentTypeChildNode, Pare
     /**
      * <p>setPointerCapture.</p>
      *
-     * @param pointerId a int.
+     * @param pointerId a {@link java.lang.Integer} object.
      */
     void setPointerCapture(int pointerId);
 

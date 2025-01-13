@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,37 +35,35 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition to check if the document position of the first class attribute
  * of the element acronym when compared with the elements text content as a parameter is
  * is FOLLOWING, and is PRECEDING vice versa.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition37Test extends LoboUnitTest {
+public class Nodecomparedocumentposition37Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        Text txt;
-        Attr attr;
-        int attrPosition;
-        int txtPosition;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final Text txt;
+        final Attr attr;
+        final int attrPosition;
+        final int txtPosition;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         elem = (Element) elemList.item(3);
         attr = elem.getAttributeNode("class");
         txt = (Text) elem.getFirstChild();
         attrPosition = attr.compareDocumentPosition(txt);
-        assertEquals("nodecomparetreepositionFollowing37", 4, attrPosition);
+        assertEquals(4, attrPosition, "Nodecomparedocumentposition37Assert2");
         txtPosition = txt.compareDocumentPosition(attr);
-        assertEquals("nodecomparetreepositionPRECEDING37", 2, txtPosition);
+        assertEquals(2, txtPosition, "Nodecomparedocumentposition37Assert3");
     }
 }
 

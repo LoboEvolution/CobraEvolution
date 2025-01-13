@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,10 @@ final class RSpacing extends BaseBoundableRenderable {
 	 *
 	 * @param me a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
 	 * @param container a {@link org.loboevolution.html.renderer.RenderableContainer} object.
-	 * @param width a int.
-	 * @param height a int.
+	 * @param width a {@link java.lang.Integer} object.
+	 * @param height a {@link java.lang.Integer} object.
 	 */
-	public RSpacing(ModelNode me, RenderableContainer container, int width, int height) {
+	public RSpacing(final ModelNode me, final RenderableContainer container, final int width, final int height) {
 		super(container, me);
 		this.setWidth(width);
 		this.setHeight(height);
@@ -52,8 +52,8 @@ final class RSpacing extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean extractSelectionText(StringBuilder buffer, boolean inSelection, RenderableSpot startPoint,
-			RenderableSpot endPoint) {
+	public boolean extractSelectionText(final StringBuilder buffer, final boolean inSelection, final RenderableSpot startPoint,
+                                        final RenderableSpot endPoint) {
 		if (this == startPoint.renderable || this == endPoint.renderable) {
             return !inSelection;
 		} else return inSelection;
@@ -61,7 +61,7 @@ final class RSpacing extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public RenderableSpot getLowestRenderableSpot(int x, int y) {
+	public RenderableSpot getLowestRenderableSpot(final int x, final int y) {
 		return new RenderableSpot(this, x, y);
 	}
 
@@ -84,7 +84,7 @@ final class RSpacing extends BaseBoundableRenderable {
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
+	public boolean paintSelection(final Graphics g, final boolean inSelection, final RenderableSpot startPoint, final RenderableSpot endPoint) {
 		if (this == startPoint.renderable || this == endPoint.renderable) {
 			if (inSelection) {
 				return false;

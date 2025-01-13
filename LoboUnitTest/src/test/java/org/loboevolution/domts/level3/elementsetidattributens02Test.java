@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -34,29 +34,27 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Invoke setIdAttributeNS on an existing attribute with a namespace URI and a qualified name.  Verify by calling
  * isID on the attribute node and getElementById on document node. Assume the grammar has not defined any
  * element of typeID. Call setIdAttributeNS with isId=false to reset. Method isId should now return false.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNS</a>
  */
-public class elementsetidattributens02Test extends LoboUnitTest {
+public class Elementsetidattributens02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element addressElem;
-        NamedNodeMap attributesMap;
-        Attr attr;
-        boolean id = false;
-        Element elem;
-        String elemName;
-        String xsiNS = "http://www.w3.org/2001/XMLSchema-instance";
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element addressElem;
+        final NamedNodeMap attributesMap;
+        final Attr attr;
+        boolean id;
+        final Element elem;
+        final String elemName;
+        final String xsiNS = "http://www.w3.org/2001/XMLSchema-instance";
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagNameNS("*", "acronym");
         addressElem = (Element) elemList.item(2);
@@ -64,14 +62,14 @@ public class elementsetidattributens02Test extends LoboUnitTest {
         attributesMap = addressElem.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("xsi:noNamespaceSchemaLocation");
         id = attr.isId();
-        assertTrue("elementsetidattributensIsIdTrue02", id);
+        assertTrue(id, "Elementsetidattributens02Assert1");
         elem = doc.getElementById("Yes");
-        assertNotNull("getElementByIDNotNull", elem);
+        assertNotNull(elem, "Elementsetidattributens02Assert2");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributensGetElementById01", "ACRONYM", elemName);
+        assertEquals("ACRONYM", elemName, "Elementsetidattributens02Assert3");
         addressElem.setIdAttributeNS(xsiNS, "noNamespaceSchemaLocation", false);
         id = attr.isId();
-        assertFalse("elementsetidattributensIsIdFalse02", id);
+        assertFalse(id, "Elementsetidattributens02Assert4");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ import org.loboevolution.html.ListValues;
 import org.loboevolution.html.dom.domimpl.HTMLImageElementImpl;
 import org.loboevolution.gui.HtmlPanel;
 import org.loboevolution.html.js.WindowImpl;
-import org.loboevolution.html.node.js.Window;
+import org.loboevolution.js.Window;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.info.TimingInfo;
 import org.loboevolution.laf.FontFactory;
@@ -55,7 +55,7 @@ public class HtmlValues {
 	 * @param listStyleText a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.html.style.ListStyle} object.
 	 */
-	public static ListStyle getListStyle(String listStyleText) {
+	public static ListStyle getListStyle(final String listStyleText) {
 		final ListStyle listStyle = new ListStyle();
 		final String[] tokens = HtmlValues.splitCssValue(listStyleText);
 		for (final String token : tokens) {
@@ -82,27 +82,27 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a {@link java.awt.Image} object.
 	 */
-	public static Image getListStyleImage(String token) {
+	public static Image getListStyleImage(final String token) {
 		Image image;
-		String start = "url(";
-		int startIdx = start.length();
-		int closingIdx = token.lastIndexOf(')');
-		String quotedUri = token.substring(startIdx, closingIdx);
-		String[] items = { "http", "https", "file" };
-		TimingInfo info = new TimingInfo();
-		HTMLImageElementImpl img = new HTMLImageElementImpl();
+		final String start = "url(";
+		final int startIdx = start.length();
+		final int closingIdx = token.lastIndexOf(')');
+		final String quotedUri = token.substring(startIdx, closingIdx);
+		final String[] items = { "http", "https", "file" };
+		final TimingInfo info = new TimingInfo();
+		final HTMLImageElementImpl img = new HTMLImageElementImpl();
 		if (Strings.containsWords(quotedUri, items)) {
 			try {
 				img.setSrc(quotedUri);
 				image = HttpNetwork.getImage(img, info, false);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				image = null;
 			}
 		} else {
 			try {
 				img.setSrc(quotedUri);
 				image = HttpNetwork.getImage(img, info, true);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				image = null;
 			}
 		}
@@ -122,17 +122,14 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.html.ListValues} object.
 	 */
-	public static ListValues getListStylePosition(String token) {
+	public static ListValues getListStylePosition(final String token) {
 		final String tokenTL = token.toLowerCase();
-		CSSValues tkn = CSSValues.get(tokenTL);
-		switch (tkn) {
-		case INSIDE:
-			return ListValues.POSITION_INSIDE;
-		case OUTSIDE:
-			return ListValues.POSITION_OUTSIDE;
-		default:
-			return ListValues.POSITION_UNSET;
-		}
+		final CSSValues tkn = CSSValues.get(tokenTL);
+        return switch (tkn) {
+            case INSIDE -> ListValues.POSITION_INSIDE;
+            case OUTSIDE -> ListValues.POSITION_OUTSIDE;
+            default -> ListValues.POSITION_UNSET;
+        };
 	}
 
 	/**
@@ -141,35 +138,22 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.html.ListValues} object.
 	 */
-	public static ListValues getListStyleType(String token) {
+	public static ListValues getListStyleType(final String token) {
 		final String tokenTL = token.toLowerCase();
-		CSSValues tkn = CSSValues.get(tokenTL);
-		switch (tkn) {
-		case NONE:
-			return ListValues.TYPE_NONE;
-		case DISC:
-			return ListValues.TYPE_DISC;
-		case CIRCLE:
-			return ListValues.TYPE_CIRCLE;
-		case SQUARE:
-			return ListValues.TYPE_SQUARE;
-		case DECIMAL:
-			return ListValues.TYPE_DECIMAL;
-		case DECIMAL_LEADING_ZERO:
-			return ListValues.TYPE_DECIMAL_LEADING_ZERO;
-		case LOWER_ALPHA:
-		case LOWER_LATIN:
-			return ListValues.TYPE_LOWER_ALPHA;
-		case UPPER_ALPHA:
-		case UPPER_LATIN:
-			return ListValues.TYPE_UPPER_ALPHA;
-		case LOWER_ROMAN:
-			return ListValues.TYPE_LOWER_ROMAN;
-		case UPPER_ROMAN:
-			return ListValues.TYPE_UPPER_ROMAN;
-		default:
-			return ListValues.TYPE_UNSET;
-		}
+		final CSSValues tkn = CSSValues.get(tokenTL);
+        return switch (tkn) {
+            case NONE -> ListValues.TYPE_NONE;
+            case DISC -> ListValues.TYPE_DISC;
+            case CIRCLE -> ListValues.TYPE_CIRCLE;
+            case SQUARE -> ListValues.TYPE_SQUARE;
+            case DECIMAL -> ListValues.TYPE_DECIMAL;
+            case DECIMAL_LEADING_ZERO -> ListValues.TYPE_DECIMAL_LEADING_ZERO;
+            case LOWER_ALPHA, LOWER_LATIN -> ListValues.TYPE_LOWER_ALPHA;
+            case UPPER_ALPHA, UPPER_LATIN -> ListValues.TYPE_UPPER_ALPHA;
+            case LOWER_ROMAN -> ListValues.TYPE_LOWER_ROMAN;
+            case UPPER_ROMAN -> ListValues.TYPE_UPPER_ROMAN;
+            default -> ListValues.TYPE_UNSET;
+        };
 	}
 
 	/**
@@ -177,10 +161,10 @@ public class HtmlValues {
 	 *
 	 * @param spec a {@link java.lang.String} object.
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
-	 * @param errorValue a int.
-	 * @return a int.
+	 * @param errorValue a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
-	public static int getPixelSize(String spec, RenderState renderState, Window window, int errorValue) {
+	public static int getPixelSize(final String spec, final RenderState renderState, final Window window, final int errorValue) {
 		try {
 			final int dpi = GraphicsEnvironment.isHeadless() ? 72 : Toolkit.getDefaultToolkit().getScreenResolution();
 			final String lcSpec = spec.toLowerCase();
@@ -207,11 +191,15 @@ public class HtmlValues {
 			case "em":
 				final FontFactory FONT_FACTORY = FontFactory.getInstance();
 				final WindowImpl win = (WindowImpl) window;
+				if (win == null || win.getConfig() == null) {
+					return (int) Math.round(16.0f * Double.parseDouble(text));
+				}
+
 				final Font DEFAULT_FONT = FONT_FACTORY.getFont(FontValues.getDefaultFontKey(win.getConfig()));
 				final Font f = (renderState == null) ? DEFAULT_FONT : renderState.getFont();
 				final int fontSize = f.getSize();
-				final double pixelSize = fontSize * dpi / 96;
-				return (int) Math.round(pixelSize * Double.parseDouble(text));
+				return (int) Math.round(fontSize * Double.parseDouble(text));
+
 			case "rem":
 				final WindowImpl win2 = (WindowImpl) window;
 				final float fs = win2.getConfig() != null ? win2.getConfig().getFontSize() : 16.0f;
@@ -258,11 +246,11 @@ public class HtmlValues {
 	 *
 	 * @param spec a {@link java.lang.String} object.
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
-	 * @param errorValue a int.
-	 * @param availSize a int.
-	 * @return a int.
+	 * @param errorValue a {@link java.lang.Integer} object.
+	 * @param availSize a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
-	public static int getPixelSize(String spec, RenderState renderState, Window window, int errorValue, int availSize) {
+	public static Integer getPixelSize(final String spec, final RenderState renderState, final Window window, final Integer errorValue, final Integer availSize) {
 		try {
 			if (spec.endsWith("%")) {
 				final String perText = spec.substring(0, spec.length() - 1);
@@ -280,7 +268,7 @@ public class HtmlValues {
 	 * <p>resolutionValue.</p>
 	 *
 	 * @param cssValue a {@link CSSValueImpl} object.
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	public static int resolutionValue(final CSSValueImpl cssValue) {
         if (cssValue == null) {
@@ -288,20 +276,18 @@ public class HtmlValues {
         }
         
         if (cssValue.getPrimitiveType() == CSSPrimitiveValueType.CSS_DIMENSION) {
-        	String units = cssValue.getCssText().substring(cssValue.getCssText().length() - 3);
-        	switch (units) {
-        	case "dpi":
-        		return (int)cssValue.getDoubleValue();
-        	case "dpcm":
-        		return (int)( 2.54f * cssValue.getDoubleValue());
-        	case "dppx":
-        		return (int)( 96 * cssValue.getDoubleValue());
-        	default:
-				if (HtmlValues.isUnits(cssValue.getCssText())) {
-					return HtmlValues.getPixelSize(cssValue.getCssText(), null, null, -1);
-				}
-				return -1;
-        	}
+        	final String units = cssValue.getCssText().substring(cssValue.getCssText().length() - 3);
+            return switch (units) {
+                case "dpi" -> (int) cssValue.getDoubleValue();
+                case "dpcm" -> (int) (2.54f * cssValue.getDoubleValue());
+                case "dppx" -> (int) (96 * cssValue.getDoubleValue());
+                default -> {
+                    if (HtmlValues.isUnits(cssValue.getCssText())) {
+                        yield HtmlValues.getPixelSize(cssValue.getCssText(), null, null, -1);
+                    }
+                    yield -1;
+                }
+            };
        }
         return -1;
     }
@@ -312,10 +298,21 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isBackgroundPosition(String token) {
+	public static boolean isBackgroundPosition(final String token) {
 		return isLength(token) || token.endsWith("%") || token.equalsIgnoreCase("top")
 				|| token.equalsIgnoreCase("center") || token.equalsIgnoreCase("bottom")
 				|| token.equalsIgnoreCase("left") || token.equalsIgnoreCase("right");
+	}
+
+	/**
+	 * <p>isBackgroundPosition.</p>
+	 *
+	 * @param token a {@link java.lang.String} object.
+	 * @return a boolean.
+	 */
+	public static boolean isBackgroundAttachment(final String token) {
+		return token.equalsIgnoreCase("scroll") || token.equalsIgnoreCase("fixed")
+				|| token.equalsIgnoreCase("local");
 	}
 
 	/**
@@ -324,7 +321,7 @@ public class HtmlValues {
 	 * @param repeat a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isBackgroundRepeat(String repeat) {
+	public static boolean isBackgroundRepeat(final String repeat) {
 		final String repeatTL = repeat.toLowerCase();
 		return repeatTL.contains("repeat");
 	}
@@ -335,7 +332,7 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isBorderStyle(String token) {
+	public static boolean isBorderStyle(final String token) {
 		final String tokenTL = token.toLowerCase();
 		return tokenTL.equals("solid") || tokenTL.equals("dashed") || tokenTL.equals("dotted")
 				|| tokenTL.equals("double") || tokenTL.equals("none") || tokenTL.equals("hidden")
@@ -349,7 +346,7 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isUrl(String token) {
+	public static boolean isUrl(final String token) {
 		return token.toLowerCase().startsWith("url(");
 	}
 	
@@ -359,7 +356,7 @@ public class HtmlValues {
 	 * @param token a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isGradient(String token) {
+	public static boolean isGradient(final String token) {
 		return token.toLowerCase().contains("gradient");
 	}
 	
@@ -369,7 +366,7 @@ public class HtmlValues {
 	 * @param text a {@link java.lang.String} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String quoteAndEscape(String text) {
+	public static String quoteAndEscape(final String text) {
 		final StringBuilder result = new StringBuilder();
 		result.append("'");
 		int index = 0;
@@ -398,7 +395,7 @@ public class HtmlValues {
 	 * @param cssValue a {@link java.lang.String} object.
 	 * @return an array of {@link java.lang.String} objects.
 	 */
-	public static String[] splitCssValue(String cssValue) {
+	public static String[] splitCssValue(final String cssValue) {
 		final ArrayList<String> tokens = new ArrayList<>(4);
 		final int len = cssValue.length();
 		int parenCount = 0;
@@ -451,7 +448,7 @@ public class HtmlValues {
 	 * @param text a {@link java.lang.String} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public static String unquoteAndUnescape(String text) {
+	public static String unquoteAndUnescape(final String text) {
 		final StringBuilder result = new StringBuilder();
 		int index = 0;
 		final int length = text.length();
@@ -511,7 +508,7 @@ public class HtmlValues {
 		return result.toString();
 	}
 
-	public static boolean isUnits(String token) {
+	public static boolean isUnits(final String token) {
 		return token.endsWith("px") ||
 				token.endsWith("pt") ||
 				token.endsWith("pc") ||
@@ -519,20 +516,20 @@ public class HtmlValues {
 				token.endsWith("mm") ||
 				token.endsWith("ex") ||
 				token.endsWith("em") ||
-				(token.endsWith("in")  && !token.startsWith("zoom")) ||
+				(token.endsWith("in")  && !token.startsWith("zoom") && !token.equals("thin")) ||
 				token.endsWith("q") ||
 				token.endsWith("vh") ||
 				token.endsWith("vw") ||
 				token.endsWith("rem");
 	}
 
-	private static int inches(double value, int dpi, String text) {
-		double val = Double.parseDouble(text);
+	private static int inches(final double value, final int dpi, final String text) {
+		final double val = Double.parseDouble(text);
 		final double inches = val / value;
 		return (int) Math.round(dpi * inches);
 	}
 
-	private static boolean isLength(String token) {
+	private static boolean isLength(final String token) {
 		if (isUnits(token)) {
 			return true;
 		} else {

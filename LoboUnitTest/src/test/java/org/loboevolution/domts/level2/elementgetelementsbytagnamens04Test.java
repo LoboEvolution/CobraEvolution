@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,25 +44,22 @@ import static org.junit.Assert.*;
  * Test 1: invoke getElementsByTagNameNS to retrieve one of the children.
  * Test 2: invoke getElementsByTagNameNS with the value of namespace equals to '*', and
  * verify that the node list has length of 3.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class elementgetelementsbytagnamens04Test extends LoboUnitTest {
+public class Elementgetelementsbytagnamens04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Element child1;
-        Element child2;
-        Element child3;
+        final Document doc;
+        final Element element;
+        final Element child1;
+        final Element child2;
+        final Element child3;
         HTMLCollection elementList;
 
         doc = sampleXmlFile("staffNS.xml");
@@ -74,9 +71,9 @@ public class elementgetelementsbytagnamens04Test extends LoboUnitTest {
         element.appendChild(child2);
         element.appendChild(child3);
         elementList = element.getElementsByTagNameNS(null, "child");
-        assertEquals( "elementgetelementsbytagnamens04_1", 1, elementList.getLength());
+        assertEquals(1, elementList.getLength());
         elementList = element.getElementsByTagNameNS("*", "child");
-        assertEquals( "elementgetelementsbytagnamens04_2", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
     }
 }
 

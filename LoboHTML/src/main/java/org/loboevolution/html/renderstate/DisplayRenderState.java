@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +38,9 @@ public class DisplayRenderState extends StyleSheetRenderState {
 	 *
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
-	 * @param defaultDisplay a int.
+	 * @param defaultDisplay a {@link java.lang.Integer} object.
 	 */
-	public DisplayRenderState(RenderState prevRenderState, HTMLElementImpl element, final int defaultDisplay) {
+	public DisplayRenderState(final RenderState prevRenderState, final HTMLElementImpl element, final int defaultDisplay) {
 		super(prevRenderState, element);
 		this.defaultDisplay = defaultDisplay;
 	}

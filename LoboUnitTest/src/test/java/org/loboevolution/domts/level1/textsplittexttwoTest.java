@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,32 +48,28 @@ import static org.junit.Assert.*;
  * up to the offset point.   The "getNodeValue()" method
  * is called to check that the original node now contains
  * the first five characters.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-38853C1D">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-38853C1D</a>
  */
-public class textsplittexttwoTest extends LoboUnitTest {
+public class TextsplittexttwoTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node nameNode;
-        Text textNode;
-        Text splitNode;
-        String value;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node nameNode;
+        final Text textNode;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("name");
         nameNode = elementList.item(2);
         textNode = (Text) nameNode.getFirstChild();
-        splitNode = textNode.splitText(5);
+        textNode.splitText(5);
         value = textNode.getNodeValue();
-        assertEquals("textSplitTextTwoAssert", "Roger", value);
+        assertEquals("Roger", value, "TextsplittexttwoAssert1");
     }
 
 }

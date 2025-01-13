@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,23 +26,21 @@
 
 package org.loboevolution.html.js.xml;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.node.Document;
 import org.xml.sax.*;
 
-import org.loboevolution.javax.xml.XMLConstants;
-import org.loboevolution.javax.xml.parsers.ParserConfigurationException;
-import org.loboevolution.javax.xml.parsers.SAXParser;
-import org.loboevolution.javax.xml.parsers.SAXParserFactory;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * <p>XMLDocumentBuilder class.</p>
  */
+@Slf4j
 public class XMLDocumentBuilder {
-
-    /** The Constant logger. */
-    protected static final Logger logger = Logger.getLogger(XMLDocumentBuilder.class.getName());
 
     private final SAXParserFactory parserFactory;
 
@@ -51,43 +49,43 @@ public class XMLDocumentBuilder {
 
         try {
             parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            parserFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-            parserFactory.setFeature("http://xml.org/sax/features/xmlns-uris", true);
+            parserFactory.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
+            parserFactory.setFeature("http://xml.org/sax/features/xmlns-uris", false);
             parserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
             parserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
             parserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
             parserFactory.setXIncludeAware(false);
             parserFactory.setNamespaceAware(true);
-        } catch (SAXNotRecognizedException | SAXNotSupportedException | ParserConfigurationException e) {
-            logger.severe(e.getMessage());
+        } catch (final SAXNotRecognizedException | SAXNotSupportedException | ParserConfigurationException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
-    public Document parse(InputSource is) throws SAXException, IOException {
+    public Document parse(final InputSource is) throws SAXException, IOException {
         try {
-            SAXParser saxParser = parserFactory.newSAXParser();
+            final SAXParser saxParser = parserFactory.newSAXParser();
             return parse(is, saxParser.getXMLReader());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (final Exception ex) {
+            log.error(ex.getMessage(), ex);
         }
 
         return null;
     }
 
-    private Document parse(InputSource is, XMLReader xmlReader) {
+    private Document parse(final InputSource is, final XMLReader xmlReader) {
         try {
-            XMLContentHandler handler = new XMLContentHandler();
+            final XMLContentHandler handler = new XMLContentHandler();
             xmlReader.setContentHandler(handler);
             xmlReader.setErrorHandler(handler);
             xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
             xmlReader.parse(is);
-            Document document = handler.getDocument();
+            final Document document = handler.getDocument();
             document.setDocumentURI(is.getSystemId());
             return document;
-        } catch (Throwable e) {
-            logger.severe(e.getMessage());
+        } catch (final Throwable e) {
+            log.error(e.getMessage(), e);
         }
         return null;
     }

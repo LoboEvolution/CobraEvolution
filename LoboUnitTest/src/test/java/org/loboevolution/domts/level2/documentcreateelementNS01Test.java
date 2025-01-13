@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -40,29 +40,26 @@ import static org.junit.Assert.*;
  * <p>
  * Invoke the createElementNS method on this Document object with a valid namespaceURI
  * and qualifiedName.  Check if a valid Element object is returned with the same node attributes.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS</a>
  */
-public class documentcreateelementNS01Test extends LoboUnitTest {
+public class DocumentcreateelementNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        String namespaceURI = "http://www.w3.org/DOM/Test/level2";
-        String qualifiedName = "XML:XML";
-        String nodeName;
-        String nsURI;
-        String localName;
-        String prefix;
-        String tagName;
+        final Document doc;
+        final Element element;
+        final String namespaceURI = "http://www.w3.org/DOM/Test/level2";
+        final String qualifiedName = "XML:XML";
+        final String nodeName;
+        final String nsURI;
+        final String localName;
+        final String prefix;
+        final String tagName;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS(namespaceURI, qualifiedName);
         nodeName = element.getNodeName();
@@ -70,11 +67,11 @@ public class documentcreateelementNS01Test extends LoboUnitTest {
         localName = element.getLocalName();
         prefix = element.getPrefix();
         tagName = element.getTagName();
-        assertEquals("documentcreateelementNS01_nodeName", "XML:XML", nodeName);
-        assertEquals("documentcreateelementNS01_namespaceURI", "http://www.w3.org/DOM/Test/level2", nsURI);
-        assertEquals("documentcreateelementNS01_localName", "XML", localName);
-        assertEquals("documentcreateelementNS01_prefix", "XML", prefix);
-        assertEquals("documentcreateelementNS01_tagName", "XML:XML", tagName);
+        assertEquals("XML:XML", nodeName);
+        assertEquals("http://www.w3.org/DOM/Test/level2", nsURI);
+        assertEquals("XML", localName);
+        assertEquals("XML", prefix);
+        assertEquals("XML:XML", tagName);
     }
 }
 

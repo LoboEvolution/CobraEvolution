@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,34 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * hasFeature("XML", "") should return true for implementations that can read staff files.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-5CED94D7">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-5CED94D7</a>
  * @see <a href="http://www.w3.org/2000/11/DOM-Level-2-errata#core-14">http://www.w3.org/2000/11/DOM-Level-2-errata#core-14</a>
  */
-public class domimplementationfeaturenoversionTest extends LoboUnitTest {
+public class DomimplementationfeaturenoversionTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        boolean state;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         domImpl = doc.getImplementation();
         state = domImpl.hasFeature("XML", "");
-        assertTrue("hasXMLEmpty", state);
+        assertTrue(state, "DomimplementationfeaturenoversionAssert2");
     }
 }
 

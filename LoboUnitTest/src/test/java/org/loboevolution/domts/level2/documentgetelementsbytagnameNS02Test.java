@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,32 +46,28 @@ import static org.junit.Assert.*;
  * and append it to this document.  Invoke the getElementsByTagNameNS method on a this
  * Document object with the values of namespaceURI=* and localName="elementId".  This
  * should return a nodeList of 6 item.  Check the length of the nodeList returned.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS</a>
  */
-public class documentgetelementsbytagnameNS02Test extends LoboUnitTest {
+public class DocumentgetelementsbytagnameNS02Test extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Element element;
-        HTMLCollection childList;
-        Node appendedChild;
+        final Document doc;
+        final Element docElem;
+        final Element element;
+        final HTMLCollection childList;
         doc = sampleXmlFile("staffNS.xml");
         docElem = doc.getDocumentElement();
         element = doc.createElementNS("test", "employeeId");
-        appendedChild = docElem.appendChild(element);
+        docElem.appendChild(element);
         childList = doc.getElementsByTagNameNS("*", "employeeId");
-        assertEquals("documentgetelementsbytagnameNS02", 6, childList.getLength());
+        assertEquals(6, childList.getLength());
     }
 }
 

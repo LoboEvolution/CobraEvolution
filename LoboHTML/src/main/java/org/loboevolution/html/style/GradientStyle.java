@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@ package org.loboevolution.html.style;
 import org.loboevolution.common.ArrayUtilities;
 import org.loboevolution.common.Strings;
 import org.loboevolution.config.HtmlRendererConfig;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.info.GradientInfo;
 import org.loboevolution.laf.ColorFactory;
@@ -41,6 +41,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,12 +54,12 @@ public class GradientStyle {
 	/**
 	 * <p>gradientToImg.</p>
 	 * @param document a {@link org.loboevolution.html.dom.domimpl.HTMLDocumentImpl} object.
-	 * @param props a {@link org.loboevolution.html.node.css.CSSStyleDeclaration} object.
+	 * @param props a {@link CSSStyleDeclaration} object.
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param backgroundImage a {@link java.lang.String} object.
 	 * @return a {@link java.awt.image.BufferedImage} object.
 	 */
-	public BufferedImage gradientToImg(HTMLDocumentImpl document, CSSStyleDeclaration props, RenderState renderState, String backgroundImage) {
+	public BufferedImage gradientToImg(final HTMLDocumentImpl document, final CSSStyleDeclaration props, final RenderState renderState, final String backgroundImage) {
 		BufferedImage image = null;
 		final int idx = backgroundImage.indexOf("(");
 		final String quote = backgroundImage.substring(0, idx);
@@ -81,20 +82,22 @@ public class GradientStyle {
 		return image;
 	}
 
-	private BufferedImage linearGadient(HTMLDocumentImpl document, CSSStyleDeclaration props, RenderState renderState, String backgroundImage, String start, CycleMethod cMethod) {
-		start = start + "(";
+	private BufferedImage linearGadient(final HTMLDocumentImpl document, final CSSStyleDeclaration props, final RenderState renderState, final String backgroundImage,
+										final String start, final CycleMethod cMethod) {
+		final StringBuilder builder  = new StringBuilder();
+		builder.append(start).append("(");
 		final int startIdx = start.length();
 		final int closingIdx = backgroundImage.lastIndexOf(')');
-		final String quote = backgroundImage.substring(startIdx, closingIdx);
+		final String quote = backgroundImage.substring(startIdx+1, closingIdx);
 		final String values = gradientValues(quote);
 		final String direction = direction(quote);
-		GradientInfo info = parseGradint(values);
+		final GradientInfo info = parseGradint(values);
 		final Color[] colors = info.getColors();
 		final int width = getWidth(document, props, renderState);
 		final int height = getHeight(document, props, renderState);
-		LinearGradientPaint linearGradientPaint = null;
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = image.createGraphics();
+		LinearGradientPaint linearGradientPaint;
+		final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D g2 = image.createGraphics();
 		switch (direction) {
 		case "to right":
 			linearGradientPaint = new LinearGradientPaint(0, 0, width, 0, info.getFractions(), colors, cMethod);
@@ -118,8 +121,8 @@ public class GradientStyle {
 		default:
 			if (direction.contains("deg")) {
 				Collections.reverse(Arrays.asList(colors));
-				double rotation = Double.parseDouble(direction.substring(0, direction.lastIndexOf('d')));
-				AffineTransform tf = AffineTransform.getTranslateInstance(-width / 2, -height / 2);
+				final double rotation = Double.parseDouble(direction.substring(0, direction.lastIndexOf('d')));
+				final AffineTransform tf = AffineTransform.getTranslateInstance(-width / 2, -height / 2);
 		        tf.preConcatenate(AffineTransform.getRotateInstance(Math.toRadians(rotation)));
 		        tf.preConcatenate(AffineTransform.getTranslateInstance(width / 2, height / 2));
 		        g2.setTransform(tf);
@@ -136,9 +139,12 @@ public class GradientStyle {
 		return image;
 	}
 
-	private BufferedImage radialGadient(HTMLDocumentImpl document, CSSStyleDeclaration props, RenderState renderState, String backgroundImage, String start, CycleMethod cMethod) {
-		start = start + "(";
-		final int startIdx = start.length();
+	private BufferedImage radialGadient(final HTMLDocumentImpl document, final CSSStyleDeclaration props, final RenderState renderState, final String backgroundImage,
+										final String start, final CycleMethod cMethod) {
+
+		final StringBuilder builder  = new StringBuilder();
+		builder.append(start).append("(");
+		final int startIdx = builder.length();
 		final int closingIdx = backgroundImage.lastIndexOf(')');
 		final String quote = backgroundImage.substring(startIdx, closingIdx);
 		final String values = gradientValues(quote);
@@ -150,40 +156,36 @@ public class GradientStyle {
 		final float radius = width/2;
 		final GradientInfo info = parseGradint(values);
 		Color[] colors = info.getColors();
-		float[] fractions = ArrayUtilities.removeFloat(info.getFractions(), info.getFractions().length-1);
+		final float[] fractions = ArrayUtilities.removeFloat(info.getFractions(), info.getFractions().length-1);
 		final Color background = colors[colors.length-1];
 		colors = ArrayUtilities.removeColor(colors, colors.length-1);
-		RadialGradientPaint p = new RadialGradientPaint(center, radius, fractions, colors, cMethod);
+		final RadialGradientPaint p = new RadialGradientPaint(center, radius, fractions, colors, cMethod);
 		g2.setColor(background);
 		g2.fillRect(0, 0, width, height);
 		g2.setPaint(p);
 
-
-		switch (info.getShape()) {
-			case "circle":
-				g2.fillOval(0, 0, width - 1, height - 1);
-				break;
-			default:
-				g2.draw(new Ellipse2D.Double(0, 0, width - 1, height - 1));
-				break;
-		}
+        if (info.getShape().equals("circle")) {
+            g2.fillOval(0, 0, width - 1, height - 1);
+        } else {
+            g2.draw(new Ellipse2D.Double(0, 0, width - 1, height - 1));
+        }
 
 		return image;
 	}
 
-	private GradientInfo parseGradint(String quote){
+	private GradientInfo parseGradint(final String quote){
 		String shape = null;
 		String size = null;
-		ArrayList<Float> listFractions = new ArrayList<>();
-		ArrayList<Color> colors = new ArrayList<>();
-		quote = quote.replace(" ", "");
-		char[] charArray = quote.toCharArray();
+		final ArrayList<Float> listFractions = new ArrayList<>();
+		final ArrayList<Color> colors = new ArrayList<>();
+		final String quoteRepalced = quote.replace(" ", "");
+		final char[] charArray = quoteRepalced.toCharArray();
 		boolean isColored = false;
 		String color = "";
 		for (int i = 0; i < charArray.length; i++) {
-			char c = charArray[i];
+			final char c = charArray[i];
 			if (Strings.isNotBlank(color) && !ColorFactory.getInstance().isRgbOrHsl(color)) {
-				Color clr = ColorFactory.getInstance().getColor(color);
+				final Color clr = ColorFactory.getInstance().getColor(color);
 				if (clr != null) {
 					setFractions(listFractions, charArray, i, color);
 					colors.add(ColorFactory.getInstance().getColor(color));
@@ -206,7 +208,7 @@ public class GradientStyle {
 				colors.add(ColorFactory.getInstance().getColor(color));
 				isColored = true;
 			} else if (Strings.isNotBlank(color) &&  !ColorFactory.getInstance().isRgbOrHsl(color) && i == charArray.length - 1) {
-				Color clr = ColorFactory.getInstance().getColor(color);
+				final Color clr = ColorFactory.getInstance().getColor(color);
 				if (clr != null) {
 					setFractions(listFractions, charArray, i, color);
 					colors.add(ColorFactory.getInstance().getColor(color));
@@ -226,16 +228,16 @@ public class GradientStyle {
 			}
 		}
 
-		Color[] colorArray = new Color[colors.size()];
+		final Color[] colorArray = new Color[colors.size()];
 		int a = 0;
-		for (Color c : colors) {
+		for (final Color c : colors) {
 			colorArray[a++] = c;
 		}
 
-		float[] fractions = new float[listFractions.size()];
+		final float[] fractions = new float[listFractions.size()];
 		int i = 0;
 
-		for (Float f : listFractions) {
+		for (final Float f : listFractions) {
 			fractions[i++] = f != null ? f : Float.NaN;
 		}
 		Arrays.sort(fractions);
@@ -248,11 +250,11 @@ public class GradientStyle {
 				build();
 	}
 
-	private static void setFractions(ArrayList<Float> listFractions, char[] charArray, int index, String color) {
+	private static void setFractions(final List<Float> listFractions, final char[] charArray, final int index, final String color) {
 		final boolean isPercent = color.contains("%");
 		final float numberOnly = isPercent ? Float.parseFloat(color.replaceAll("[^0-9]", "")) /100 : 0f;
 		
-		if (listFractions.size() == 0) {
+		if (listFractions.isEmpty()) {
 			listFractions.add(isPercent ? numberOnly : 0F);
 		} else if (index == charArray.length - 1) {
 			listFractions.add(isPercent ? numberOnly : 1F);
@@ -261,7 +263,7 @@ public class GradientStyle {
 		}
 	}
 
-	private int getHeight(HTMLDocumentImpl document, CSSStyleDeclaration props, RenderState renderState) {
+	private int getHeight(final HTMLDocumentImpl document, final CSSStyleDeclaration props, final RenderState renderState) {
 		int heightSize = HtmlValues.getPixelSize(props.getHeight(), renderState, document.getDefaultView(), -1);
 		if (heightSize < 0) {
 			final HtmlRendererConfig config = document.getConfig();
@@ -271,7 +273,7 @@ public class GradientStyle {
 		return heightSize;
 	}
 	
-	private int getWidth(HTMLDocumentImpl document, CSSStyleDeclaration props, RenderState renderState) {
+	private int getWidth(final HTMLDocumentImpl document, final CSSStyleDeclaration props, final RenderState renderState) {
 		int widthSize = HtmlValues.getPixelSize(props.getWidth(), renderState, document.getDefaultView(),-1);
 		if (widthSize < 0) {
 			final HtmlRendererConfig config = document.getConfig();
@@ -281,10 +283,10 @@ public class GradientStyle {
 		return widthSize;
 	}
 	
-	private String direction(String quote) {
+	private String direction(final String quote) {
 		String values = "";
-		String[] split = quote.split(",");
-		for (String val : split) {
+		final String[] split = quote.split(",");
+		for (final String val : split) {
 			if (val.contains("to") || val.contains("deg")) {
 				values = val;
 			}
@@ -292,11 +294,11 @@ public class GradientStyle {
 		return values.trim();
 	}
 
-	private String gradientValues(String quote) {
-		StringBuilder values = new StringBuilder();
-		String[] split = quote.split(",");
+	private String gradientValues(final String quote) {
+		final StringBuilder values = new StringBuilder();
+		final String[] split = quote.split(",");
 		for (int i = 0; i < split.length; i++) {
-			String qut = split[i];
+			final String qut = split[i];
 			if (!qut.contains("to") && !qut.contains("deg")) {
 				if (i == split.length - 1) {
 					values.append(qut);

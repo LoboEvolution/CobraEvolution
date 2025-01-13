@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,9 +43,7 @@ import static org.junit.Assert.*;
  * Retrieve the attribute named "domestic" from the last child of the first employee
  * and examine its nodeValue attribute.  This test uses the "getNamedItem(name)" method
  * from the NamedNodeMap interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549</a>
  */
@@ -53,23 +51,22 @@ public class AttrEffectiveValueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Attr domesticAttr;
-        String value;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Attr domesticAttr;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
         testNode = (Element) addressList.item(0);
         attributes = testNode.getAttributes();
         domesticAttr = (Attr) attributes.getNamedItem("domestic");
         value = domesticAttr.getNodeValue();
-        assertEquals("attrEffectiveValueAssert", "Yes", value);
+        assertEquals("Yes", value, "AttrEffectiveValueAssert1");
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.dom.nodeimpl.AttributeTypeInfo;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,25 +43,23 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Get schemaTypeInfo on a simple type attribute that belongs to a document with an XML schema.
  * Invoke method isDerivedFrom with derivation method list and verify that the value returned is true.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom65Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom65Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        AttributeTypeInfo elemTypeInfo;
-        HTMLCollection elemList;
-        Element strongElem;
-        boolean retValue;
+        final Document doc;
+        final AttributeTypeInfo elemTypeInfo;
+        final HTMLCollection elemList;
+        final Element strongElem;
+        final boolean retValue;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("strong");
         strongElem = (Element) elemList.item(0);
         elemTypeInfo = (AttributeTypeInfo) strongElem.getSchemaTypeInfo();
         retValue = ((TypeInfo) elemTypeInfo).isDerivedFrom("http://www.w3.org/2001/XMLSchema", "string", 8);
-        assertTrue("lisrDerivedFromString", retValue);
+        assertTrue(retValue, "Typeinfoisderivedfrom65Assert2");
     }
 }
 

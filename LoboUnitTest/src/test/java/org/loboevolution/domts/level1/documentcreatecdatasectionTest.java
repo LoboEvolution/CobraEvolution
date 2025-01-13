@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.CDATASection;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,32 +43,29 @@ import static org.junit.Assert.*;
  * new CDATASection node whose "data" is the specified
  * string.  The content, name and type are retrieved and
  * output.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D26C0AF8">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D26C0AF8</a>
  */
-public class documentcreatecdatasectionTest extends LoboUnitTest {
+public class DocumentcreatecdatasectionTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        CDATASection newCDATASectionNode;
-        String newCDATASectionValue;
-        String newCDATASectionName;
-        int newCDATASectionType;
+        final Document doc;
+        final CDATASection newCDATASectionNode;
+        final String newCDATASectionValue;
+        final String newCDATASectionName;
+        final int newCDATASectionType;
         doc = sampleXmlFile("staff.xml");
         newCDATASectionNode = doc.createCDATASection("This is a new CDATASection node");
         newCDATASectionValue = newCDATASectionNode.getNodeValue();
-        assertEquals("nodeValue", "This is a new CDATASection node", newCDATASectionValue);
+        assertEquals("This is a new CDATASection node", newCDATASectionValue, "DocumentcreatecdatasectionAssert1");
         newCDATASectionName = newCDATASectionNode.getNodeName();
-        assertEquals("nodeName", "#cdata-section", newCDATASectionName);
+        assertEquals("#cdata-section", newCDATASectionName, "DocumentcreatecdatasectionAssert2");
         newCDATASectionType = newCDATASectionNode.getNodeType();
-        assertEquals("nodeType", 4, newCDATASectionType);
+        assertEquals(4, newCDATASectionType, "DocumentcreatecdatasectionAssert3");
     }
 }
 

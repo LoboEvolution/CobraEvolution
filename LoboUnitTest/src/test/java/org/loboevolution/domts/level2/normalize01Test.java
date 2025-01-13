@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,27 +46,24 @@ import static org.junit.Assert.*;
  * across multiple lines.   The content of the "name" child
  * should be parsed and treated as a single Text node.
  * This appears to be a duplicate of elementnormalize.xml in DOM L1 Test Suite
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-normalize">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-normalize</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-72AB8359">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-72AB8359</a>
  */
-public class normalize01Test extends LoboUnitTest {
+public class Normalize01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element root;
-        HTMLCollection elementList;
-        Node firstChild;
-        NodeList textList;
-        CharacterData textNode;
-        String data;
+        final Document doc;
+        final Element root;
+        final HTMLCollection elementList;
+        final Node firstChild;
+        final NodeList textList;
+        final CharacterData textNode;
+        final String data;
         doc = sampleXmlFile("staff.xml");
         root = doc.getDocumentElement();
         root.normalize();
@@ -75,7 +72,7 @@ public class normalize01Test extends LoboUnitTest {
         textList = firstChild.getChildNodes();
         textNode = (CharacterData) textList.item(0);
         data = textNode.getData();
-        assertEquals("data", "Roger\n Jones", data);
+        assertEquals("Roger\n Jones", data);
     }
 }
 

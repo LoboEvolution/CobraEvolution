@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using removeChild on this Document node attempt to remove a new ProcessingInstruction node and
  * verify the target of the removed ProcessingInstruction node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild09Test extends LoboUnitTest {
+public class Noderemovechild09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction pi;
-        ProcessingInstruction removedPi;
-        String target;
-        Node appendedChild;
+        final Document doc;
+        final ProcessingInstruction pi;
+        final ProcessingInstruction removedPi;
+        final String target;
         doc = sampleXmlFile("hc_staff.xml");
         pi = doc.createProcessingInstruction("PIT", "PID");
-        appendedChild = doc.appendChild(pi);
+        doc.appendChild(pi);
         removedPi = (ProcessingInstruction) doc.removeChild(pi);
         target = removedPi.getTarget();
-        assertEquals("noderemovechild09", "PIT", target);
+        assertEquals("PIT", target, "Noderemovechild09Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,38 +35,37 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * Call getSchemaTypeInfo on id attribute for the third acronym element.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-schemaTypeInfo</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace</a>
  */
-public class attrgetschematypeinfo04Test extends LoboUnitTest {
+public class Attrgetschematypeinfo04Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        Attr attr;
-        TypeInfo typeInfo;
-        String typeNS;
-        String typeName;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final Attr attr;
+        final TypeInfo typeInfo;
+        final String typeNS;
+        final String typeName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acronymElem = (Element) elemList.item(2);
         attr = acronymElem.getAttributeNode("id");
         typeInfo = attr.getSchemaTypeInfo();
-        assertNotNull("typeInfoNotNull", typeInfo);
+        assertNotNull(typeInfo, "Attrgetschematypeinfo04Assert3");
         typeName = typeInfo.getTypeName();
-        assertEquals("nameIsID", "ID", typeName);
+        assertEquals("ID", typeName, "Attrgetschematypeinfo04Assert4");
         typeNS = typeInfo.getTypeNamespace();
-        assertEquals("nsIsXmlSchema", "http://www.w3.org/2001/XMLSchema", typeNS);
+        assertEquals("http://www.w3.org/2001/XMLSchema", typeNS, "Attrgetschematypeinfo04Assert5");
     }
 }

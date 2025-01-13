@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,11 @@
 
 package org.loboevolution.http;
 
+import lombok.Setter;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.info.GeneralInfo;
 import org.loboevolution.net.Cookie;
 
-import java.net.Proxy;
 import java.net.URL;
 import java.util.List;
 
@@ -43,26 +43,18 @@ public class UserAgentContext {
 
 	private final HtmlRendererConfig config;
 
+	@Setter
 	private boolean userAgentEnabled = false;
 
-	public UserAgentContext(HtmlRendererConfig config){
+	public UserAgentContext(final HtmlRendererConfig config){
 		this.config = config;
 		settings = config.getGeneralInfo();
 	}
 
-	public UserAgentContext(HtmlRendererConfig config, boolean test) {
+	public UserAgentContext(final HtmlRendererConfig config, final boolean test) {
 		this.config = config;
 		settings = !test ? config.getGeneralInfo() : new GeneralInfo();
 		if (settings == null) settings = new GeneralInfo();
-	}
-
-	/**
-	 * <p>createHttpRequest.</p>
-	 *
-	 * @return a {@link org.loboevolution.http.HttpRequest} object.
-	 */
-	public HttpRequest createHttpRequest() {
-		return new HttpRequest(Proxy.NO_PROXY);
 	}
 	
 	/**
@@ -92,11 +84,6 @@ public class UserAgentContext {
 		return userAgentEnabled ||settings.isNavigation();
 	}
 
-
-	public void setUserAgentEnabled(boolean userAgentEnabled) {
-		this.userAgentEnabled = userAgentEnabled;
-	}
-
 	/**
 	 * <p>isImagesEnabled.</p>
 	 *
@@ -112,10 +99,10 @@ public class UserAgentContext {
 	 * @param url a {@link java.net.URL} object.
 	 * @return a {@link java.lang.String} object.
 	 */
-	public String getCookie(URL url) {
-		List<Cookie> cookies = config.getCookies(url.getHost(), url.getPath());
-		StringBuilder cookieText = new StringBuilder();
-		for (Cookie cookie : cookies) {
+	public String getCookie(final URL url) {
+		final List<Cookie> cookies = config.getCookies(url.getHost(), url.getPath());
+		final StringBuilder cookieText = new StringBuilder();
+		for (final Cookie cookie : cookies) {
 			cookieText.append(cookie.getName());
 			cookieText.append('=');
 			cookieText.append(cookie.getValue());
@@ -130,7 +117,7 @@ public class UserAgentContext {
 	 * @param url a {@link java.net.URL} object.
 	 * @param cookieSpec a {@link java.lang.String} object.
 	 */
-	public void setCookie(URL url, String cookieSpec) {
+	public void setCookie(final URL url, final String cookieSpec) {
 		config.saveCookie(url.toString(), cookieSpec);
 	}
 }

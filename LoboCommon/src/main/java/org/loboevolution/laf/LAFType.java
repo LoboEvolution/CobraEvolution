@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@
  */
 package org.loboevolution.laf;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +34,7 @@ import java.util.Map;
 /**
  * <p>LAFType class.</p>
  */
+@Getter
 public enum LAFType {
 
 	ACRYL("Acryl"),
@@ -75,24 +78,15 @@ public enum LAFType {
 	private static final Map<String, LAFType> ENUM_MAP;
 	
 	static {
-		Map<String, LAFType> map = new HashMap<>();
-		for (LAFType instance : LAFType.values()) {
+		final Map<String, LAFType> map = new HashMap<>();
+		for (final LAFType instance : LAFType.values()) {
 			map.put(instance.getValue(), instance);
 		}
 		ENUM_MAP = Collections.unmodifiableMap(map);
 	}
 
-	LAFType(String value) {
+	LAFType(final String value) {
 		this.value = value;
-	}
-
-	/**
-	 * <p>Getter for the field value.</p>
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	public String getValue() {
-		return value;
 	}
 
 	/**
@@ -101,7 +95,7 @@ public enum LAFType {
 	 * @param actionName a {@link java.lang.String} object.
 	 * @return a {@link org.loboevolution.laf.LAFType} object.
 	 */
-	public static LAFType get(String actionName) {
+	public static LAFType get(final String actionName) {
 		return ENUM_MAP.get(actionName);
 	}
 }

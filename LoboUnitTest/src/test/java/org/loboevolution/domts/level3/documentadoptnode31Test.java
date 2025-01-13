@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,55 +27,48 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the adoptNode method on this document using a new Text node from a new Document as the
  * source.  Verify if the node has been adopted correctly by checking the nodeValue of the adopted
  * node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode31Test extends LoboUnitTest {
-
-
+public class Documentadoptnode31Test extends LoboUnitTest {    
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document newDoc;
-        Text newText;
-        Text adoptedText;
-        String nodeValue;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final Text newText;
+        final Text adoptedText;
+        final String nodeValue;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         newText = newDoc.createTextNode("new Document.adoptNode test for a TEXT_NODE");
         adoptedText = (Text) doc.adoptNode(newText);
 
         if ((adoptedText != null)) {
             nodeValue = adoptedText.getNodeValue();
-            assertEquals("documentadoptnode31", "new Document.adoptNode test for a TEXT_NODE", nodeValue);
+            assertEquals("new Document.adoptNode test for a TEXT_NODE", nodeValue, "Documentadoptnode31Assert2");
         }
     }
 }

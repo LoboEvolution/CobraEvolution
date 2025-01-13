@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,12 +33,14 @@ import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * <p>Abstract BaseControl class.</p>
  */
 public abstract class BaseControl extends JComponent implements UIControl {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	protected final HTMLElementImpl controlElement;
 	protected RUIControl ruicontrol;
 
@@ -47,7 +49,7 @@ public abstract class BaseControl extends JComponent implements UIControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	public BaseControl(HTMLElementImpl modelNode) {
+	public BaseControl(final HTMLElementImpl modelNode) {
 		this.controlElement = modelNode;
 	}
 
@@ -77,7 +79,7 @@ public abstract class BaseControl extends JComponent implements UIControl {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setRUIControl(RUIControl ruicontrol) {
+	public void setRUIControl(final RUIControl ruicontrol) {
 		this.ruicontrol = ruicontrol;
 	}
 	

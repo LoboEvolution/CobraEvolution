@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import org.htmlunit.cssparser.util.ThrowCssExceptionErrorHandler;
  * Implementation of CSSPageRule.
  *
  * @author Ronald Brill
- *
  */
 public class CSSPageRuleImpl extends AbstractCSSRuleImpl {
 
@@ -175,11 +174,5 @@ public class CSSPageRuleImpl extends AbstractCSSRuleImpl {
         hash = ParserUtils.hashCode(hash, pseudoPage_);
         hash = ParserUtils.hashCode(hash, style_);
         return hash;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return getCssText();
     }
 }

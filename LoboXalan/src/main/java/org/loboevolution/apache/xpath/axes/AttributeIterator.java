@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,10 +38,10 @@ public class AttributeIterator extends ChildTestIterator {
    * @param compiler A reference to the Compiler that contains the op map.
    * @param opPos The position within the op map, which contains the location path expression for
    *     this itterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  AttributeIterator(Compiler compiler, int opPos, int analysis)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  AttributeIterator(final Compiler compiler, final int opPos, final int analysis)
+      throws javax.xml.transform.TransformerException {
     super(compiler, opPos, analysis);
   }
 

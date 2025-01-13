@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,14 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Urls;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.control.ImgSvgControl;
+import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.dom.HTMLImageElement;
 import org.loboevolution.gui.HtmlPanel;
+import org.loboevolution.html.dom.canvas.CanvasImageSource;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.renderstate.ImageRenderState;
 import org.loboevolution.html.renderstate.RenderState;
@@ -41,14 +44,15 @@ import org.loboevolution.type.Decoding;
 import org.mozilla.javascript.Function;
 
 import java.awt.*;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
 
 /**
  * <p>HTMLImageElementImpl class.</p>
  */
-public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {
+@Slf4j
+public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement, CanvasImageSource {
 
 	/**
 	 * <p>Constructor for HTMLImageElementImpl.</p>
@@ -68,9 +72,9 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void assignAttributeField(String normalName, String value) {
+	public void assignAttributeField(final String normalName, final String value) {
 		if ("onload".equals(normalName)) {
-			final Function onload = getEventFunction(null, normalName);
+			final Function onload = getFunction(this, normalName);
 			if (onload != null) {
 				setOnload(onload);
 			}
@@ -81,7 +85,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new ImageRenderState(prevRenderState, this);
 	}
 
@@ -106,7 +110,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	/** {@inheritDoc} */
 	@Override
 	public double getHeight() {
-		return getAttributeAsInt("height", -1);
+		return getAttributeAsInt("height", 24);
 	}
 
 	/** {@inheritDoc} */
@@ -141,7 +145,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	 */
 	public Function getOnload() {
 		final Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
+		if (document instanceof HTMLDocument) {
 			return ((HTMLDocumentImpl) document).getOnloadHandler();
 		} else {
 			return null;
@@ -169,54 +173,54 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	/** {@inheritDoc} */
 	@Override
 	public double getWidth() {
-		return getAttributeAsInt("width", -1);
+		return getAttributeAsInt("width", 24);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAlign(String align) {
+	public void setAlign(final String align) {
 		setAttribute("align", align);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAlt(String alt) {
+	public void setAlt(final String alt) {
 		setAttribute("alt", alt);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBorder(String border) {
+	public void setBorder(final String border) {
 		setAttribute("border", border);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHeight(double height) {
+	public void setHeight(final double height) {
 		setAttribute("height", String.valueOf(height));
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHspace(double hspace) {
+	public void setHspace(final double hspace) {
 		setAttribute("hspace", "hspace");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setIsMap(boolean isMap) {
+	public void setIsMap(final boolean isMap) {
 		setAttribute("isMap", isMap ? "isMap" : null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLongDesc(String longDesc) {
+	public void setLongDesc(final String longDesc) {
 		setAttribute("longDesc", longDesc);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		setAttribute("name", name);
 	}
 
@@ -225,9 +229,9 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	 *
 	 * <p>setOnload.</p>
 	 */
-	public void setOnload(Function onload) {
+	public void setOnload(final Function onload) {
 		final Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
+		if (document instanceof HTMLDocument) {
 			((HTMLDocumentImpl) document).setOnloadHandler(onload);
 		}
 	}
@@ -240,25 +244,25 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	 * loaded.
 	 */
 	@Override
-	public void setSrc(String src) {
+	public void setSrc(final String src) {
 		setAttribute("src", src);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setUseMap(String useMap) {
+	public void setUseMap(final String useMap) {
 		setAttribute("useMap", useMap);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setVspace(double vspace) {
+	public void setVspace(final double vspace) {
 		setAttribute("vspace", String.valueOf(vspace));
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setWidth(double width) {
+	public void setWidth(final double width) {
 		setAttribute("width", String.valueOf(width));
 	}
 
@@ -278,7 +282,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCrossOrigin(String crossOrigin) {
+	public void setCrossOrigin(final String crossOrigin) {
 		// TODO Auto-generated method stub
 
 	}
@@ -299,7 +303,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setDecoding(Decoding decoding) {
+	public void setDecoding(final Decoding decoding) {
 		// TODO Auto-generated method stub
 
 	}
@@ -313,7 +317,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLowsrc(String lowsrc) {
+	public void setLowsrc(final String lowsrc) {
 		// TODO Auto-generated method stub
 
 	}
@@ -341,7 +345,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setReferrerPolicy(String referrerPolicy) {
+	public void setReferrerPolicy(final String referrerPolicy) {
 		// TODO Auto-generated method stub
 
 	}
@@ -355,7 +359,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSizes(String sizes) {
+	public void setSizes(final String sizes) {
 		// TODO Auto-generated method stub
 
 	}
@@ -369,7 +373,7 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setSrcset(String srcset) {
+	public void setSrcset(final String srcset) {
 		// TODO Auto-generated method stub
 
 	}
@@ -393,42 +397,47 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
 	 *
 	 * @param imgSvgControl a {@link org.loboevolution.html.control.ImgSvgControl} object.
 	 */
-	public void draw(ImgSvgControl imgSvgControl) {
+	public void draw(final ImgSvgControl imgSvgControl) {
 		try {
 			final Object document = this.document;
-			String uri = null;
-			if (document instanceof HTMLDocumentImpl) {
+			URL url = null;
+			if (document instanceof HTMLDocument) {
 				try {
-					HTMLDocumentImpl doc = (HTMLDocumentImpl) document;
-					URL baseURL = new URL(doc.getBaseURI());
-					String src = getSrc();
-					URL scriptURL = Urls.createURL(baseURL, src);
-					uri = scriptURL == null ? src : scriptURL.toExternalForm();
-
-				} catch (Exception e) {
-					logger.log(Level.SEVERE, e.getMessage(), e);
+					final HTMLDocument doc = (HTMLDocument) document;
+					URI uri = Urls.createURI(doc.getBaseURI(), getSrc());
+					if (uri != null) {
+						url = uri.toURL();
+					}
+				} catch (final Exception e) {
+					log.error(e.getMessage(), e);
 				}
 			} else {
-				uri = getSrc();
+				URI uri = Urls.createURI(null, getSrc());
+				if (uri != null) {
+					url = uri.toURL();
+				}
 			}
 
-			final URL url = new URL(uri);
-			URLConnection connection = url.openConnection();
-			connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
-			connection.getHeaderField("Set-Cookie");
-			connection.connect();
+			if (url != null) {
 
-			NodeImpl mode = (NodeImpl) document;
-			HtmlPanel panel = new HtmlPanel();
-			panel.setBrowserPanel(null);
-			HtmlRendererContext htmlRendererContext = mode.getHtmlRendererContext();
-			panel = HtmlPanel.createlocalPanel(connection, panel, mode.getHtmlRendererContext(), mode.getHtmlRendererConfig(), uri);
-			final double height = getHeight() == -1 ? htmlRendererContext.getInnerWidth() : getHeight();
-			final double width = getWidth() == -1 ? htmlRendererContext.getInnerWidth() : getWidth();
-			panel.setPreferredSize(new Dimension((int) width, (int) height));
-			imgSvgControl.add(panel);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+				final URLConnection connection = url.openConnection();
+				connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
+				connection.getHeaderField("Set-Cookie");
+				connection.connect();
+
+				final NodeImpl mode = (NodeImpl) document;
+				HtmlPanel panel = new HtmlPanel();
+				panel.setBrowserPanel(null);
+				final HtmlRendererContext htmlRendererContext = mode.getHtmlRendererContext();
+				panel = HtmlPanel.createlocalPanel(connection, panel, mode.getHtmlRendererContext(), mode.getHtmlRendererConfig(), url.toString());
+				final double height = getHeight() == -1 ? htmlRendererContext.getInnerWidth() : getHeight();
+				final double width = getWidth() == -1 ? htmlRendererContext.getInnerWidth() : getWidth();
+				panel.setPreferredSize(new Dimension((int) width, (int) height));
+
+				imgSvgControl.add(panel);
+			}
+		} catch (final Exception e) {
+			log.error(e.getMessage(), e);
 		}
 	}
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -42,26 +42,23 @@ import static org.junit.Assert.*;
  * Retrieve the documenttype.
  * Apply the "getSystemId()" method.  The string "staffNS.dtd" should be
  * returned.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-systemId">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-Core-DocType-systemId</a>
  */
-public class systemId01Test extends LoboUnitTest {
+public class SystemId01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        String systemId;
+        final Document doc;
+        final DocumentType docType;
+        final String systemId;
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         systemId = docType.getSystemId();
-        assertEquals("systemId", "staffNS.dtd", systemId);
+        assertEquals("staffNS.dtd", systemId);
     }
 }
 

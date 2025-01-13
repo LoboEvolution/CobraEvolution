@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,13 +44,13 @@ public class HTMLMonospacedElementImpl extends HTMLElementImpl {
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
         return new FontStyleRenderState(prevRenderState, this, LAFType.MONOSPACED);
 	}
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 15 : clientHeight;
 	}
 	

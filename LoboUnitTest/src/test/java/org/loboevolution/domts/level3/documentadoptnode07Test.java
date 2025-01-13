@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,41 +28,37 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the adoptNode method on this document with the value of the source parameter as itself.
  * Verify if a NOT_SUPPORTED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode07Test extends LoboUnitTest {
+public class Documentadoptnode07Test extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         doc = sampleXmlFile("hc_staff.xml");
 
         boolean success = false;
         try {
             doc.adoptNode(doc);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("throw_NOT_SUPPORTED_ERR", success);
+        assertTrue(success, "Documentadoptnode07Assert2");
 
     }
 }

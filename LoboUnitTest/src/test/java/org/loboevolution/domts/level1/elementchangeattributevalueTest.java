@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,29 +48,26 @@ import static org.junit.Assert.*;
  * used attribute("street") is already present in this
  * element, then its value should be changed to the new one
  * of the "value" parameter.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68F082">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68F082</a>
  */
-public class elementchangeattributevalueTest extends LoboUnitTest {
+public class ElementchangeattributevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        String attrValue;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final String attrValue;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(3);
         testEmployee.setAttribute("street", "Neither");
         attrValue = testEmployee.getAttribute("street");
-        assertEquals("elementChangeAttributeValueAssert", "Neither", attrValue);
+        assertEquals("Neither", attrValue, "ElementchangeattributevalueAssert1");
     }
 }
 

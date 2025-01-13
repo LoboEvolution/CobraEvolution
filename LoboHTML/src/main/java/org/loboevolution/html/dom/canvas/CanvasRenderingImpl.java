@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,15 +26,18 @@
 
 package org.loboevolution.html.dom.canvas;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.loboevolution.common.Strings;
 import org.loboevolution.config.HtmlRendererConfig;
+import org.loboevolution.gui.HtmlPanel;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.CSSValues;
 import org.loboevolution.html.dom.*;
 import org.loboevolution.html.dom.domimpl.HTMLCanvasElementImpl;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLImageElementImpl;
-import org.loboevolution.gui.HtmlPanel;
+import org.loboevolution.html.node.Element;
 import org.loboevolution.html.style.FontValues;
 import org.loboevolution.html.style.HtmlValues;
 import org.loboevolution.info.TimingInfo;
@@ -49,56 +52,59 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * <p>CanvasRenderingImpl class.</p>
  */
+@Getter
+@Setter
 public class CanvasRenderingImpl implements CanvasRenderingContext2D {
-	
-	/** The canvas. */
-	private final HTMLCanvasElementImpl canvas;
-	
-	/** The image. */
-	private final BufferedImage image;
-	
-    /** The fill style. */
-    private Object fillStyle;
 
-    /** The stroke style. */
-    private Object strokeStyle;
+    /** The canvas. */
+    private final HTMLCanvasElementImpl canvas;
 
-    /** The line width. */
-    private int lineWidth;
+    /** The image. */
+    private final BufferedImage image;
 
-    /** The global alpha. */
+    /** The global alpha.*/
     private final Float globalAlpha;
 
-    /** The translate x. */
-    private int translateX;
+    /** The fill style.*/
+    private Object fillStyle;
+
+    /** The stroke style.*/
+    private Object strokeStyle;
+
+    /** The line width.*/
+    private Integer lineWidth;
+
+    /** The translate x.*/
+    private Integer translateX;
 
     /** The translate y. */
-    private int translateY;
+    private Integer translateY;
 
-    /** The rotate. */
+    /** The rotate.*/
     private Double rotate;
 
-    /** The scale x. */
-    private int scaleX;
+    /** The scale x.*/
+    private Integer scaleX;
 
     /** The scale y. */
-    private int scaleY;
+    private Integer scaleY;
 
     /** The font. */
     private Font font;
 
-    /** The int line cap. */
-    private int intLineCap;
+    /** The Integer line cap. */
+    private Integer intLineCap;
 
-    /** The intline join. */
-    private int intlineJoin;
+    /** The Integerline join. */
+    private Integer intlineJoin;
 
     /** The miter limit. */
-    private int miterLimit;
+    private Integer miterLimit;
 
     /** The path. */
     private GeneralPath path;
@@ -109,94 +115,658 @@ public class CanvasRenderingImpl implements CanvasRenderingContext2D {
     /** The global Composite Operation. */
     private String globalCompositeOperation;
 
-    /** The text align */
+    /** The text align
+     */
     private String textAlign;
 
-    /** The baseline. */
-    private String baseline;
-    
-    /** The shadow blur*/
+    /** The textBaseline. */
+    private String textBaseline;
+
+    /** The shadow blur
+     */
     private Integer shadowBlur;
-    
-    /** The shadow color*/
+
+    /** The shadow color
+     */
     private String shadowColor;
-    
-    /** The shadow offset x*/
+
+    /** The shadow offset x
+     */
     private Integer shadowOffsetX;
-    
-    /** The shadow offset y*/
+
+    /** The shadow offset y
+     */
     private Integer shadowOffsetY;
 
-	/**
-	 * <p>Constructor for CanvasRenderingImpl.</p>
-	 *
-	 * @param canvas a {@link org.loboevolution.html.dom.domimpl.HTMLCanvasElementImpl} object.
-	 */
-	public CanvasRenderingImpl(HTMLCanvasElementImpl canvas) {
-		this.canvas = canvas;
-		image = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		image.coerceData(true);
-		affineTransform = new AffineTransform(1, 0, 0, 1, 0, 0);
-		path = new GeneralPath();
+    private String fillRule;
+
+    /**
+     * <p>Constructor for CanvasRenderingImpl.</p>
+     *
+     * @param canvas a {@link org.loboevolution.html.dom.domimpl.HTMLCanvasElementImpl} object. */
+    public CanvasRenderingImpl(final HTMLCanvasElementImpl canvas) {
+        this.canvas = canvas;
+        image = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        image.coerceData(true);
+        affineTransform = new AffineTransform(1, 0, 0, 1, 0, 0);
+        path = new GeneralPath();
         fillStyle = Color.BLACK;
         strokeStyle = Color.BLACK;
         globalAlpha = 1.0f;
-		intLineCap = BasicStroke.CAP_BUTT;
+        intLineCap = BasicStroke.CAP_BUTT;
         intlineJoin = BasicStroke.JOIN_BEVEL;
         lineWidth = 1;
         translateX = 0;
         translateY = 0;
+        shadowBlur = 0;
         rotate = 0.0;
         scaleX = 1;
         scaleY = 1;
         miterLimit = 1;
         globalCompositeOperation = "source-over";
         textAlign = "left";
-        baseline = "alphabetic";
-	}
+		textBaseline = "alphabetic";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getDirection() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Object getFilter() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Font getFont() {
+        if (this.font == null) {
+            final HtmlRendererConfig config = canvas.getHtmlRendererConfig();
+            final FontFactory fontFactory = FontFactory.getInstance();
+            this.font = fontFactory.getFont(FontValues.getDefaultFontKey(config));
+        }
+        return this.font;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getFontKerning() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getFontStretch() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getFontVariantCaps() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Float getGlobalAlpha() {
+        return globalAlpha;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean getImageSmoothingEnabled() {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getImageSmoothingQuality() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getLetterSpacing() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getLineCap() {
+		return switch (intLineCap) {
+			case BasicStroke.CAP_ROUND -> "round";
+			case BasicStroke.CAP_SQUARE -> "square";
+			default -> "butt";
+		};
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Integer lineDashOffset() {
+        return 0;
+    }
 
 	/** {@inheritDoc} */
 	@Override
-	public HTMLCanvasElement getCanvas() {
-		return this.canvas;
+	public String getLineJoin() {
+		return switch (intlineJoin) {
+			case BasicStroke.JOIN_ROUND -> "round";
+			case BasicStroke.JOIN_MITER -> "miter";
+			default -> "bevel";
+		};
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public Object getFillStyle() {
-		return fillStyle;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public String getShadowColor() {
+		return Strings.isBlank(shadowColor) ? "black" : shadowColor;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void setFillStyle(Object style) {
-		if (style instanceof CanvasGradient) {
-			CanvasGradientImpl cgi = (CanvasGradientImpl) style;
-			fillStyle = cgi.gradient();
-		} else if (style instanceof String) {
-			fillStyle = ColorFactory.getInstance().getColor(style.toString());
-		} else if (style instanceof CanvasPattern) {
-			fillStyle = style;
+    /** {@inheritDoc} */
+    @Override
+    public String getTextRendering() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getWordSpacing() {
+        return "";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CanvasRenderingContext2DSettings getContextAttributes() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void drawImage(CanvasImageSource image, Integer dx, Integer dy) {
+		if (image instanceof HTMLImageElementImpl hImage) {
+			final TimingInfo info = new TimingInfo();
+			final Image img = HttpNetwork.getImage(hImage, info, true);
+			final Graphics2D graphics = createGraphics();
+			final AffineTransform at = new AffineTransform();
+			at.setToTranslation(dx, dy);
+			graphics.drawImage(img, at, null);
+
+			final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
+			final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
+			htmlPanel.getBrowserPanel().getTimingList.add(info);
 		}
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Font getFont() {
-		if (this.font == null) {
-			final HtmlRendererConfig config = canvas.getHtmlRendererConfig();
-			final FontFactory fontFactory = FontFactory.getInstance();
-			final Font font = fontFactory.getFont(FontValues.getDefaultFontKey(config));
-			this.font = font;
+    /** {@inheritDoc} */
+    @Override
+    public void drawImage(CanvasImageSource image, Integer dx, Integer dy, Integer dw, Integer dh) {
+        if (image instanceof HTMLImageElementImpl hImage) {
+            final TimingInfo info = new TimingInfo();
+            final Image img = HttpNetwork.getImage(hImage, info, true);
+            if (img != null) {
+                final Graphics2D graphics = createGraphics();
+                final AffineTransform at = new AffineTransform((float) dw / img.getWidth(null), 0, 0, (float) dh / img.getHeight(null), dx, dy);
+                graphics.drawImage(img, at, null);
+
+                final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
+                final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
+                htmlPanel.getBrowserPanel().getTimingList.add(info);
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void drawImage(CanvasImageSource image, Integer sx, Integer sy, Integer sw, Integer sh, Integer dx, Integer dy, Integer dw, Integer dh) {
+		if (image instanceof HTMLImageElementImpl hImage) {
+			final TimingInfo info = new TimingInfo();
+			final Image img = HttpNetwork.getImage(hImage, info, true);
+			final Graphics2D graphics = createGraphics();
+			graphics.clip(new Rectangle2D.Float(dx.floatValue(), dy.floatValue(), dw.floatValue(), dh.floatValue()));
+			final float scaleX = dw.floatValue() / sw.floatValue();
+			final float scaleY = dh.floatValue() / sh.floatValue();
+			final float x0 = dx.floatValue() - sx.floatValue() * scaleX;
+			final float y0 = dy.floatValue() - sy.floatValue() * scaleY;
+			final AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, x0, y0);
+			graphics.drawImage(img, at, null);
+
+			final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
+			final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
+			htmlPanel.getBrowserPanel().getTimingList.add(info);
 		}
-		return this.font;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fillText(String text, Integer x, Integer y, Integer maxWidth) {
+		final Graphics2D graphics = createGraphics();
+		graphics.setPaint((Paint)getFillStyle());
+		graphics.setFont(getFont());
+		graphics.rotate(rotate);
+		graphics.scale(scaleX, scaleY);
+		graphics.translate(translateX, translateY);
+		final Point2D.Float f = calcTextPos(graphics, text, x, y);
+		graphics.drawString(text, f.x, f.y);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fillText(String text, Integer x, Integer y) {
+		fillText(text, x, y, 0);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextMetrics measureText(String text) {
+		final Graphics2D graphics = createGraphics();
+		final FontMetrics metrics = graphics.getFontMetrics(font);
+		final Rectangle2D rect = metrics.getStringBounds(text, graphics);
+		return new CanvasTextMetricsImpl(rect.getWidth(), rect.getHeight());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void strokeText(String text, Integer x, Integer y, Integer maxWidth) {
+		final Graphics2D graphics = createGraphics();
+		final FontRenderContext frc = new FontRenderContext(null, false, false);
+		final TextLayout tl = new TextLayout(text, font, frc);
+		final Point2D.Float pos = calcTextPos(graphics, text, x, y);
+		final AffineTransform textAt = AffineTransform.getTranslateInstance(pos.x, pos.y);
+		textAt.translate(x, y);
+		final Shape outline = tl.getOutline(textAt);
+		graphics.setPaint((Paint)getStrokeStyle());
+		graphics.rotate(rotate);
+		graphics.setStroke(new BasicStroke(2));
+		graphics.scale(scaleX, scaleY);
+		graphics.translate(translateX, translateY);
+		graphics.draw(outline);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void strokeText(String text, Integer x, Integer y) {
+		strokeText(text, x, y, 0);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CanvasGradient createConicGradient(Integer startAngle, Integer x, Integer y) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CanvasGradient createLinearGradient(Integer x0, Integer y0, Integer x1, Integer y1) {
+		return new CanvasGradientImpl(x0, y0, x1, y1);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CanvasPattern createPattern(CanvasImageSource image, String repetition) {
+		return new CanvasPatternImpl(image, repetition);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CanvasGradient createRadialGradient(Integer x0, Integer y0, Integer r0, Integer x1, Integer y1, Integer r1) {
+		return new CanvasGradientImpl(x0, y0, x1, y1, r0, r1);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void beginPath() {
+		path = new GeneralPath();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clip(String fillRule) {
+        clip(path, fillRule);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clip() {
+        clip(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clip(Path2D path, String fillRule) {
+        setFillRule(fillRule);
+        clip(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clip(Path2D path) {
+        final Graphics2D graphics = createGraphics();
+        final AffineTransform t = graphics.getTransform();
+        graphics.setTransform(new AffineTransform());
+        graphics.setClip(path);
+        graphics.setTransform(t);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fill(String fillRule) {
+		fill(path, fillRule);
 	}
+
+    /** {@inheritDoc} */
+    @Override
+    public void fill() {
+        fill(path);
+	}
+
+    /** {@inheritDoc} */
+    @Override
+    public void fill(Path2D path, String fillRule) {
+        setFillRule(fillRule);
+        fill(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fill(Path2D path) {
+        final Graphics2D graphics = createGraphics();
+
+        if (getShadowBlur() > 0) {
+            shadow(graphics, path.getBounds().x, path.getBounds().y, path.getBounds().width, path.getBounds().height, true);
+        }
+
+        graphics.setPaint((Paint)getFillStyle());
+        graphics.setTransform(affineTransform);
+        graphics.fill(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInPath(Integer x, Integer y, String fillRule) {
+        setFillRule(fillRule);
+        return isPointInPath(x, y);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInPath(Integer x, Integer y) {
+		return isPointInPath(path, x, y);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInPath(Path2D path, Integer x, Integer y, String fillRule) {
+        setFillRule(fillRule);
+        return isPointInPath(path, x, y);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInPath(Path2D path, Integer x, Integer y) {
+        final Point2D p = new Point2D.Float(x.floatValue(), y.floatValue());
+        return path.contains(p);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInStroke(Integer x, Integer y) {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isPointInStroke(Path2D path, Integer x, Integer y) {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void stroke() {
+        stroke(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void stroke(Path2D path) {
+        final Graphics2D graphics = createGraphics();
+
+        if (getShadowBlur() > 0) {
+            shadow(graphics, path.getBounds().x, path.getBounds().y, path.getBounds().width, path.getBounds().height, false);
+        }
+
+        graphics.setStroke(new BasicStroke(lineWidth.floatValue(), intLineCap, intlineJoin, miterLimit.floatValue()));
+        graphics.setPaint((Paint)getStrokeStyle());
+        graphics.draw(path);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageData createImageData(Integer sw, Integer sh, ImageDataSettings settings) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageData createImageData(Integer sw, Integer sh) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageData createImageData(ImageData imagedata) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageData getImageData(Integer sx, Integer sy, Integer sw, Integer sh, ImageDataSettings settings) {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageData getImageData(Integer sx, Integer sy, Integer sw, Integer sh) {
+		return new ImageDataImpl(image, sw, sh);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void putImageData(ImageData imagedata, Integer dx, Integer dy) {
+		putImageData(imagedata, dx, dy, 0, 0, imagedata.getWidth(), imagedata.getHeight());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void putImageData(ImageData imagedata, Integer dx, Integer dy, Integer dirtyX, Integer dirtyY, Integer dirtyWidth, Integer dirtyHeight) {
+		final Graphics2D graphics = createGraphics();
+		final BufferedImage image = (BufferedImage)imagedata.getData();
+		graphics.drawImage(image, dx, dy, null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void arc(Double x, Double y, Double radius, Integer startAngle, Double endAngle, boolean counterclockwise) {
+		path.append(buildArc(x, y, radius, Double.valueOf(startAngle), endAngle, counterclockwise), true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void arc(Double x, Double y, Double radius, Integer startAngle, Double endAngle) {
+		path.append(buildArc(x, y, radius, (double)startAngle, endAngle, false), true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void arcTo(Integer x1, Integer y1, Integer x2, Integer y2, Integer radius) {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void bezierCurveTo(Integer cp1x, Integer cp1y, Integer cp2x, Integer cp2y, Integer x, Integer y) {
+		final Graphics2D graphics = createGraphics();
+		final float[] xy = { cp1x.floatValue(), cp1y.floatValue(), cp2x.floatValue(), cp2y.floatValue(), x.floatValue(), y.floatValue() };
+		graphics.getTransform().transform(xy, 0, xy, 0, 3);
+		path.curveTo(xy[0], xy[1], xy[2], xy[3], xy[4], xy[5]);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void closePath() {
+		path.closePath();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void ellipse(Integer x, Integer y, Integer radiusX, Integer radiusY, Integer rotation, Integer startAngle, Integer endAngle, boolean counterclockwise) {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void ellipse(Integer x, Integer y, Integer radiusX, Integer radiusY, Integer rotation, Integer startAngle, Integer endAngle) {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void lineTo(Integer x, Integer y) {
+		path.lineTo(x, y);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void moveTo(Integer x, Integer y) {
+		final Graphics2D graphics = createGraphics();
+		final Point2D p = new Point2D.Float(x.floatValue(), y.floatValue());
+		graphics.getTransform().transform(p, p);
+		path.moveTo((float) p.getX(), (float) p.getY());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void quadraticCurveTo(Integer cpx, Integer cpy, Integer x, Integer y) {
+		final Graphics2D graphics = createGraphics();
+		final float[] xy = { cpx.floatValue(), cpy.floatValue(), x.floatValue(), y.floatValue() };
+		graphics.getTransform().transform(xy, 0, xy, 0, 2);
+		path.quadTo(xy[0], xy[1], xy[2], xy[3]);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void rect(Integer x, Integer y, Integer w, Integer h) {
+		path.append(new Rectangle2D.Float(x, y, w, h), true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void roundRect(Integer x, Integer y, Integer w, Integer h, Integer radii) {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearRect(Integer x, Integer y, Integer w, Integer h) {
+		final Graphics2D graphics = createGraphics();
+		graphics.clearRect(x, y, w, h);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fillRect(Integer x, Integer y, Integer w, Integer h) {
+		final Graphics2D graphics = createGraphics();
+
+		if (getShadowBlur() > 0) {
+			shadow(graphics, x, y, w, h, true);
+		}
+
+		graphics.setComposite(getComosite());
+		graphics.setPaint((Paint)getFillStyle());
+		graphics.rotate(rotate);
+		graphics.scale(scaleX, scaleY);
+		graphics.translate(translateX, translateY);
+		graphics.transform(affineTransform);
+		graphics.fillRect(x, y, w, h);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void strokeRect(Integer x, Integer y, Integer w, Integer h) {
+		final Graphics2D graphics = createGraphics();
+
+		if (getShadowBlur() > 0) {
+			shadow(graphics, x, y, w, h, false);
+		}
+
+		graphics.setComposite(getComosite());
+		graphics.setPaint((Paint)getStrokeStyle());
+		graphics.rotate(rotate);
+		graphics.setStroke(new BasicStroke(lineWidth.floatValue()));
+		graphics.scale(scaleX, scaleY);
+		graphics.translate(translateX, translateY);
+		graphics.setTransform(affineTransform);
+		graphics.drawRect(x, y, w, h);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isContextLost() {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void reset() {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void restore() {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void save() {
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Integer> getLineDash() {
+        return List.of();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setLineDash(List<Integer> segments) {
+
+    }
+
 
 	/** {@inheritDoc} */
 	@Override
-	public void setFont(String fontSpec) {
+    public void setFillStyle(final Object style) {
+        if (style instanceof CanvasGradient) {
+            final CanvasGradientImpl cgi = (CanvasGradientImpl) style;
+            fillStyle = cgi.gradient();
+        } else if (style instanceof String) {
+            Color clr = ColorFactory.getInstance().getColor(style.toString());
+            fillStyle = clr != null ? clr : fillStyle;
+        } else if (style instanceof CanvasPattern) {
+            fillStyle = style;
+        }
+    }
+
+	/** {@inheritDoc} */
+	@Override
+	public void setFont(final String fontSpec) {
 		final HtmlRendererConfig config = canvas.getHtmlRendererConfig();
-		FontKey key = FontValues.getDefaultFontKey(config);
+		final FontKey key = FontValues.getDefaultFontKey(config);
 		key.setFontStyle(LAFType.ITALIC.getValue());
 		key.setFontVariant(CSSValues.SMALL_CAPS.getValue());
 		key.setFontWeight(LAFType.BOLD.getValue());
@@ -224,8 +794,8 @@ public class CanvasRenderingImpl implements CanvasRenderingContext2D {
 		if (token != null) {
 			final int slashIdx = token.indexOf('/');
 			final String fontSizeText = slashIdx == -1 ? token : token.substring(0, slashIdx);
-			HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.canvas.getDocumentNode();
-			int errorValue = Float.valueOf(doc.getConfig().getFontSize()).intValue();
+			final HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.canvas.getDocumentNode();
+			final int errorValue = Float.valueOf(doc.getConfig().getFontSize()).intValue();
 			key.setFontSize(HtmlValues.getPixelSize(fontSizeText, null, doc.getDefaultView(), errorValue));
 			if (++i < length) {
 				final StringBuilder fontFamilyBuff = new StringBuilder();
@@ -242,603 +812,137 @@ public class CanvasRenderingImpl implements CanvasRenderingContext2D {
 
 	/** {@inheritDoc} */
 	@Override
-	public Double getGlobalAlpha() {
-		return globalAlpha.doubleValue();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setGlobalAlpha(Double globalAlpha) {
-		if (globalAlpha >= 0 && globalAlpha <= 1) {
-			Graphics2D graphics = createGraphics();
-            final AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, globalAlpha.floatValue());
-            graphics.setComposite(composite);
-        }
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getGlobalCompositeOperation() {
-		return globalCompositeOperation;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setGlobalCompositeOperation(String op) {
-		globalCompositeOperation = op;
-
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getLineCap() {
-		switch (intLineCap) {
-		case BasicStroke.CAP_ROUND:
-			 return "round";
-		case BasicStroke.CAP_SQUARE:
-			return "square";
-		default:
-			return "butt";
+	public void setGlobalAlpha(final Float globalAlpha) {
+		if (globalAlpha != null && globalAlpha >= 0 && globalAlpha <= 1) {
+			final Graphics2D graphics = createGraphics();
+			final AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, globalAlpha);
+			graphics.setComposite(composite);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLineCap(String lineCap) {
+	public void setLineCap(final String lineCap) {
 		switch (lineCap) {
-		case "round":
-			intLineCap = BasicStroke.CAP_ROUND;
-			break;
-		case "square":
-			intLineCap = BasicStroke.CAP_SQUARE;
-			break;
-		default:
-			intLineCap = BasicStroke.CAP_BUTT;
-			break;
+			case "round":
+				intLineCap = BasicStroke.CAP_ROUND;
+				break;
+			case "square":
+				intLineCap = BasicStroke.CAP_SQUARE;
+				break;
+			default:
+				intLineCap = BasicStroke.CAP_BUTT;
+				break;
 		}
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public String getLineJoin() {
-		switch (intlineJoin) {
-		case BasicStroke.JOIN_ROUND:
-			 return "round";
-		case BasicStroke.JOIN_MITER:
-			return "miter";
-		default:
-			return "bevel";
-		}
-	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setLineJoin(String lineJoin) {
+	public void setLineJoin(final String lineJoin) {
 		switch (lineJoin) {
-		case "round":
-			intlineJoin = BasicStroke.JOIN_ROUND;
-			break;
-		case "miter":
-			intlineJoin = BasicStroke.JOIN_MITER;
-			break;
-		default:
-			intlineJoin = BasicStroke.JOIN_BEVEL;
-			break;
+			case "round":
+				intlineJoin = BasicStroke.JOIN_ROUND;
+				break;
+			case "miter":
+				intlineJoin = BasicStroke.JOIN_MITER;
+				break;
+			default:
+				intlineJoin = BasicStroke.JOIN_BEVEL;
+				break;
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int getLineWidth() {
-		return lineWidth;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setLineWidth(int lw) {
-		lineWidth = lw;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getMiterLimit() {
-		return miterLimit;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setMiterLimit(int ml) {
-		miterLimit = ml;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getShadowBlur() {
-		return shadowBlur == null ? 0 : shadowBlur;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setShadowBlur(int shadowBlur) {
-		this.shadowBlur = shadowBlur;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getShadowColor() {
-		return Strings.isBlank(shadowColor) ? "black" : shadowColor;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setShadowColor(String shadowColor) {
-		this.shadowColor = shadowColor;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getShadowOffsetX() {
-		return shadowOffsetX == null ? 0 : shadowOffsetX;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setShadowOffsetX(int shadowOffsetX) {
-		this.shadowOffsetX = shadowOffsetX;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getShadowOffsetY() {
-		return shadowOffsetY == null ? 0 : shadowOffsetY;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setShadowOffsetY(int shadowOffsetY) {
-		this.shadowOffsetY = shadowOffsetY;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Object getStrokeStyle() {
-		return strokeStyle;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setStrokeStyle(Object style) {
+	public void setStrokeStyle(final Object style) {
 		if (style instanceof CanvasGradient) {
-			CanvasGradientImpl cgi = (CanvasGradientImpl) style;
+			final CanvasGradientImpl cgi = (CanvasGradientImpl) style;
 			strokeStyle = cgi.gradient();
 		} else if (style instanceof String) {
-			strokeStyle = ColorFactory.getInstance().getColor(style.toString());
+            Color clr = ColorFactory.getInstance().getColor(style.toString());
+            strokeStyle = clr != null ? clr : fillStyle;
 		} else if (style instanceof CanvasPattern) {
 			strokeStyle = style;
 		}
 	}
 
 	/** {@inheritDoc} */
-	@Override
-	public String getTextAlign() {
-		return textAlign;
-	}
+    @Override
+    public void drawFocusIfNeeded(Element element) {
 
-	/** {@inheritDoc} */
-	@Override
-	public void setTextAlign(String textAlign) {
-		this.textAlign = textAlign;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getTextBaseline() {
-		return baseline;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void setTextBaseline(String bs) {
-		baseline = bs;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void arc(int x, int y, int radius, int startAngle, int endAngle) {
-		path.append(buildArc(x, y, radius, startAngle, endAngle, false), true);
-
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void arc(int x, int y, int radius, int startAngle, int endAngle, boolean anticlockwise) {
-		path.append(buildArc(x, y, radius, startAngle, endAngle, anticlockwise), true);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void arcTo(int x1, int y1, int x2, int y2, int radius) {
-		// TODO Auto-generated method stub
-
-	}
-	
-	/** {@inheritDoc} */
-	@Override
-	public void ellipse(int x, int y, int radiusX, int radiusY, int rotation, int startAngle, int endAngle) {
-		// TODO Auto-generated method stub
-	}
-	
-	/** {@inheritDoc} */
-	@Override
-	public void ellipse(int x, int y, int radiusX, int radiusY, int rotation, int startAngle, int endAngle, boolean anticlockwise) {
-		// TODO Auto-generated method stub
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void beginPath() {
-		path = new GeneralPath();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void bezierCurveTo(int cp1x, int cp1y, int cp2x, int cp2y, int x, int y) {
-		Graphics2D graphics = createGraphics();
-		float[] xy = { cp1x, cp1y, cp2x, cp2y, x, y };
-		graphics.getTransform().transform(xy, 0, xy, 0, 3);
-		path.curveTo(xy[0], xy[1], xy[2], xy[3], xy[4], xy[5]);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void clearRect(int x, int y, int width, int height) {
-		Graphics2D graphics = createGraphics();
-		graphics.clearRect(x, y, width, height);
-
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void clearShadow() {
-		setShadowBlur(0);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void clip() {
-		Graphics2D graphics = createGraphics();
-		AffineTransform t = graphics.getTransform();
-		graphics.setTransform(new AffineTransform());
-		graphics.setClip(path);
-		graphics.setTransform(t);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void closePath() {
-		path.closePath();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public CanvasGradient createLinearGradient(Object x0, Object y0, Object x1, Object y1) {
-		return new CanvasGradientImpl(x0, y0, x1, y1);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public CanvasPattern createPattern(HTMLCanvasElement canvas, String repetitionType) {
-		return new CanvasPatternImpl(canvas, repetitionType);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public CanvasPattern createPattern(HTMLImageElement image, String repetitionType) {
-		return new CanvasPatternImpl(image, repetitionType);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public CanvasGradient createRadialGradient(Object x0, Object y0, Object r0, Object x1, Object y1, Object r1) {
-		return new CanvasGradientImpl(x0, y0, x1, y1, r0, r1);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void drawImage(Object oImage, Integer x, Integer y) {
-		if (oImage instanceof HTMLImageElementImpl) {
-			HTMLImageElementImpl hImage = (HTMLImageElementImpl)oImage;
-			TimingInfo info = new TimingInfo();
-			Image image = HttpNetwork.getImage(hImage, info, false);
-			Graphics2D graphics = createGraphics();
-			AffineTransform at = new AffineTransform();
-			at.setToTranslation(x, y);
-			graphics.drawImage(image, at, null);
-
-			final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
-			final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
-			htmlPanel.getBrowserPanel().getTimingList.add(info);
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void drawImage(Object oImage, Integer x, Integer y, Integer width, Integer height) {
-		if (oImage instanceof HTMLImageElementImpl) {
-			HTMLImageElementImpl hImage = (HTMLImageElementImpl)oImage;
-			TimingInfo info = new TimingInfo();
-			Image image = HttpNetwork.getImage(hImage, info, false);
-			Graphics2D graphics = createGraphics();
-			AffineTransform at = new AffineTransform(width / image.getWidth(null), 0, 0, height / image.getHeight(null), x, y);
-			graphics.drawImage(image, at, null);
-
-			final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
-			final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
-			htmlPanel.getBrowserPanel().getTimingList.add(info);
-
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void drawImage(Object oImage, Integer sx, Integer sy, Integer sw, Integer sh, Integer dx, Integer dy, Integer dw, Integer dh) {
-		if (oImage instanceof HTMLImageElementImpl) {
-			HTMLImageElementImpl hImage = (HTMLImageElementImpl)oImage;
-			TimingInfo info = new TimingInfo();
-			Image image = HttpNetwork.getImage(hImage, info, false);
-			Graphics2D graphics = createGraphics();
-			graphics.clip(new Rectangle2D.Float(dx, dy, dw, dh));
-			float scaleX = dw / sw;
-			float scaleY = dh / sh;
-			float x0 = dx - sx * scaleX;
-			float y0 = dy - sy * scaleY;
-			AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, x0, y0);
-			graphics.drawImage(image, at, null);
-
-			final HtmlRendererContext htmlRendererContext = hImage.getHtmlRendererContext();
-			final HtmlPanel htmlPanel = htmlRendererContext.getHtmlPanel();
-			htmlPanel.getBrowserPanel().getTimingList.add(info);
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void fill() {
-		Graphics2D graphics = createGraphics();
-		
-		if (getShadowBlur() > 0) {
-			shadow(graphics, path.getBounds().x, path.getBounds().y, path.getBounds().width, path.getBounds().height, true);
-		}
-
-		graphics.setPaint((Paint)getFillStyle());
-		graphics.setTransform(affineTransform);
-		graphics.fill(path);	
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void fillRect(int x, int y, int width, int height) {
-		Graphics2D graphics = createGraphics();
-		
-		if (getShadowBlur() > 0) {
-			shadow(graphics, x, y, width, height, true);
-		}
-
-		graphics.setComposite(getComosite());
-		graphics.setPaint((Paint)getFillStyle());
-		graphics.rotate(rotate);
-		graphics.scale(scaleX, scaleY);
-		graphics.translate(translateX, translateY);
-		graphics.transform(affineTransform);
-		graphics.fillRect(x, y, width, height);
-	}
-	
-	/** {@inheritDoc} */
-	@Override
-	public void fillText(String text, int x, int y) {
-		fillText(text, x, y, 0);
-
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void fillText(String text, int x, int y, int maxWidth) {
-		Graphics2D graphics = createGraphics();
-		graphics.setPaint((Paint)getFillStyle());
-		graphics.setFont(getFont());
-		graphics.rotate(rotate);
-		graphics.scale(scaleX, scaleY);
-		graphics.translate(translateX, translateY);
-		Point2D.Float f = calcTextPos(graphics, text, x, y);
-		graphics.drawString(text, f.x, f.y);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public ImageData getImageData(int sx, int sy, int sw, int sh) {
-		return new ImageDataImpl(image, sw, sh);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public boolean isPointInPath(int x, int y) {
-		Point2D p = new Point2D.Float(x, y);
-		return path.contains(p);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void lineTo(int x, int y) {
-		path.lineTo(x, y);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public TextMetrics measureText(String text) {
-		Graphics2D graphics = createGraphics();
-		FontMetrics metrics = graphics.getFontMetrics(font);
-		Rectangle2D rect = metrics.getStringBounds(text, graphics);
-		return new CanvasTextMetricsImpl(rect.getWidth(), rect.getHeight());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void moveTo(int x, int y) {
-		Graphics2D graphics = createGraphics();
-		Point2D p = new Point2D.Float(x, y);
-		graphics.getTransform().transform(p, p);
-		path.moveTo((float) p.getX(), (float) p.getY());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void putImageData(ImageData imagedata, int dx, int dy) {
-		putImageData(imagedata, dx, dy, 0, 0, imagedata.getWidth(), imagedata.getHeight());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void putImageData(ImageData imagedata, int dx, int dy, int dirtyX, int dirtyY, int dirtyWidth, int dirtyHeight) {
-		Graphics2D graphics = createGraphics();
-		BufferedImage image = (BufferedImage)imagedata.getData();
-		graphics.drawImage(image, dx, dy, null);
     }
 
-	/** {@inheritDoc} */
-	@Override
-	public void quadraticCurveTo(int cpx, int cpy, int x, int y) {
-		Graphics2D graphics = createGraphics();
-		float[] xy = { cpx, cpy, x, y };
-		graphics.getTransform().transform(xy, 0, xy, 0, 2);
-		path.quadTo(xy[0], xy[1], xy[2], xy[3]);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void drawFocusIfNeeded(Path2D path, Element element) {
 
-	/** {@inheritDoc} */
-	@Override
-	public void rect(int x, int y, int width, int height) {
-		path.append(new Rectangle2D.Double(x, y, width, height), true);
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void restore() {
-		// TODO Auto-generated method stub
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void scrollPathIntoView() {
 
-	/** {@inheritDoc} */
-	@Override
-	public void rotate(double angle) {
-		rotate = angle;
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
+    /** {@inheritDoc} */
+    @Override
+    public void scrollPathIntoView(Path2D path) {
 
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void scale(int sx, int sy) {
-		scaleX = sx;
-		scaleY = sy;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public DOMMatrix getTransform() {
+        return null;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void setTransform(Double m11, Double m12, Double m21, Double m22, Double dx, Double dy) {
-		transform(m11, m12, m21, m22, dx, dy);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void setTransform(DOMMatrix2DInit transform) {
 
-	/** {@inheritDoc} */
-	@Override
-	public void stroke() {
-		Graphics2D graphics = createGraphics();
-		
-		if (getShadowBlur() > 0) {
-			shadow(graphics, path.getBounds().x, path.getBounds().y, path.getBounds().width, path.getBounds().height, false);
-		}
-		
-		graphics.setStroke(new BasicStroke(lineWidth, intLineCap, intlineJoin, miterLimit));
-		graphics.setPaint((Paint)getStrokeStyle());
-		graphics.draw(path);
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void strokeRect(int x, int y, int width, int height) {
-		strokeRect(x, y, width, height, lineWidth);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void resetTransform() {
+        affineTransform = new AffineTransform(1, 0, 0, 1, 0, 0);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void strokeRect(int x, int y, int width, int height, int lineWidth) {
-		Graphics2D graphics = createGraphics();
-		
-		if (getShadowBlur() > 0) {
-			shadow(graphics, x, y, width, height, false);
-		}
+    /** {@inheritDoc} */
+    @Override
+    public void rotate(Double angle) {
+        setRotate(angle);
+    }
 
-		graphics.setComposite(getComosite());
-		graphics.setPaint((Paint)getStrokeStyle());
-		graphics.rotate(rotate);
-		graphics.setStroke(new BasicStroke(lineWidth));
-		graphics.scale(scaleX, scaleY);
-		graphics.translate(translateX, translateY);
-		graphics.setTransform(affineTransform);
-		graphics.drawRect(x, y, width, height);
+    /** {@inheritDoc} */
+    @Override
+    public void scale(Integer x, Integer y) {
+		scaleX = x;
+		scaleY = y;
+    }
 
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void setTransform(Integer a, Integer b, Integer c, Integer d, Integer e, Integer f) {
+		transform(a, b, c, d, e, f);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void strokeText(String text, int x, int y) {
-		strokeText(text, x, y, 0);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void transform(Integer a, Integer b, Integer c, Integer d, Integer e, Integer f) {
+		affineTransform = new AffineTransform(a, b, c, d, e, f);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void strokeText(String text, int x, int y, int maxWidth) {
-		Graphics2D graphics = createGraphics();
-		FontRenderContext frc = new FontRenderContext(null, false, false);
-		TextLayout tl = new TextLayout(text, font, frc);
-		Point2D.Float pos = calcTextPos(graphics, text, x, y);
-		AffineTransform textAt = AffineTransform.getTranslateInstance(pos.x, pos.y);
-		textAt.translate(x, y);
-		Shape outline = tl.getOutline(textAt);
-		graphics.setPaint((Paint)getStrokeStyle());
-		graphics.rotate(rotate);
-		graphics.setStroke(new BasicStroke(2));
-		graphics.scale(scaleX, scaleY);
-		graphics.translate(translateX, translateY);
-		graphics.draw(outline);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void transform(Double m11, Double m12, Double m21, Double m22, Double dx, Double dy) {
-		affineTransform = new AffineTransform(m11, m12, m21, m22, dx, dy);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void translate(int tx, int ty) {
+    /** {@inheritDoc} */
+    @Override
+	public void translate(final Integer tx, final Integer ty) {
 		translateX = tx;
 		translateY = ty;
 	}
-	
-	/**
-	 * <p>Getter for the field image.</p>
-	 *
-	 * @return the image
-	 */
-	public BufferedImage getImage() {
-		return image;
-	}
-	
+
 	private Graphics2D createGraphics() {
-		Graphics2D createGraphics = image.createGraphics();
+		final Graphics2D createGraphics = image.createGraphics();
 		createGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 		createGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		createGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -849,104 +953,77 @@ public class CanvasRenderingImpl implements CanvasRenderingContext2D {
 		createGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		return createGraphics;
 	}
-	
+
 	private AlphaComposite getComosite() {
-		int alphaInt;
-		switch (globalCompositeOperation) {
-		case "source-atop":
-			alphaInt = AlphaComposite.SRC_ATOP;
-			break;
-		case "source-in":
-			alphaInt = AlphaComposite.SRC_IN;
-			break;
-		case "source-out":
-			alphaInt = AlphaComposite.SRC_OUT;
-			break;
-		case "destination-atop":
-			alphaInt = AlphaComposite.DST_ATOP;
-			break;
-		case "destination-in":
-			alphaInt = AlphaComposite.DST_IN;
-			break;
-		case "destination-out":
-			alphaInt = AlphaComposite.DST_OUT;
-			break;
-		case "destination-over":
-			alphaInt = AlphaComposite.DST_OVER;
-			break;
-		case "xor":
-			alphaInt = AlphaComposite.XOR;
-			break;
-		case "over":
-			alphaInt = AlphaComposite.CLEAR;
-			break;
-		default:
-			alphaInt = AlphaComposite.SRC_OVER;
-			break;
-		}
-		return AlphaComposite.getInstance(alphaInt, globalAlpha);
+		final Integer alphaInteger = switch (globalCompositeOperation) {
+			case "source-atop" -> AlphaComposite.SRC_ATOP;
+			case "source-in" -> AlphaComposite.SRC_IN;
+			case "source-out" -> AlphaComposite.SRC_OUT;
+			case "destination-atop" -> AlphaComposite.DST_ATOP;
+			case "destination-in" -> AlphaComposite.DST_IN;
+			case "destination-out" -> AlphaComposite.DST_OUT;
+			case "destination-over" -> AlphaComposite.DST_OVER;
+			case "xor" -> AlphaComposite.XOR;
+			case "over" -> AlphaComposite.CLEAR;
+			default -> AlphaComposite.SRC_OVER;
+		};
+		return AlphaComposite.getInstance(alphaInteger, globalAlpha);
 	}
-	
-	private Point2D.Float calcTextPos(Graphics2D graphics, String text, int x, int y) {
-		FontMetrics metrics = graphics.getFontMetrics();
-		
+
+	private Point2D.Float calcTextPos(final Graphics2D graphics, final String text, final Integer xTextPos, final Integer yTextPos) {
+		final FontMetrics metrics = graphics.getFontMetrics();
+		Integer x = xTextPos;
+		Integer y = yTextPos;
+
 		if ("center".equals(textAlign)) {
 			x = x - metrics.stringWidth(text) / 2;
 		} else if ("right".equals(textAlign)) {
 			x = x - metrics.stringWidth(text);
 		}
-		
-		switch (baseline) {
-		case "baseline":
-			y = y - metrics.getLeading() + metrics.getAscent();
-			break;
-		case "top":
-			y = y - metrics.getLeading();
-			break;
-		case "middle":
-			y = y - metrics.getLeading() - metrics.getAscent() / 2;
-			break;
-		case "bottom":
-		case "text-bottom":
-			y = y - metrics.getHeight();
-			break;
-		default:
-			y = y + metrics.getLeading() + metrics.getAscent();
-			break;
-		}		
+
+		y = switch (textBaseline) {
+			case "baseline" -> y - metrics.getLeading() + metrics.getAscent();
+			case "top" -> y - metrics.getLeading();
+			case "middle" -> y - metrics.getLeading() - metrics.getAscent() / 2;
+			case "bottom", "text-bottom" -> y - metrics.getHeight();
+			default -> y + metrics.getLeading() + metrics.getAscent();
+		};
 		return new Point2D.Float(x, y);
 	}
-	
-	private Arc2D.Double buildArc(int x, int y, int radius, int startAngle, int endAngle, boolean anticlockwise) {
-		boolean clockwise = !anticlockwise;
-		double twopi = 2 * Math.PI;
+
+	private Arc2D.Double buildArc(final Double x, final Double y, final Double radius, final Double startAngleArc, final Double endAngleArc, final boolean anticlockwise) {
+		final boolean clockwise = !anticlockwise;
+		final Double twopi = 2 * Math.PI;
+
+        Double startAngle = startAngleArc;
+        Double endAngle = endAngleArc;
 
 		while (startAngle < 0) {
-			startAngle = (int) (startAngle + twopi);
+			startAngle = startAngle + twopi;
 		}
 		while (startAngle > twopi) {
-			startAngle = (int) (startAngle - twopi);
+			startAngle = startAngle - twopi;
 		}
 
 		while (endAngle < 0) {
-			endAngle = (int) (endAngle + twopi);
+			endAngle = endAngle + twopi;
 		}
 		while (endAngle > twopi) {
-			endAngle = (int) (endAngle - twopi);
+			endAngle = endAngle - twopi;
 		}
 
 		if (clockwise) {
 			if (startAngle > endAngle) {
-				endAngle = (int) (endAngle + twopi);
+				endAngle = endAngle + twopi;
 			}
 
 		} else {
 			if (startAngle < endAngle) {
-				endAngle = (int) (endAngle - twopi);
+				endAngle = endAngle - twopi;
 			}
 		}
 
-		double ang = startAngle - endAngle;
+        double ang = startAngle - endAngle;
 		if (ang == 0.0) {
 			ang = Math.PI * 2;
 		}
@@ -955,14 +1032,14 @@ public class CanvasRenderingImpl implements CanvasRenderingContext2D {
 		return new Arc2D.Double(x - radius, y - radius, 2 * radius, 2 * radius, Math.toDegrees(startAngle), Math.toDegrees(ang), Arc2D.OPEN);
 	}
 
-	private void shadow(Graphics2D graphics, int x1, int y1, int width1, int height1, boolean isFill) {
-		Color shadowColor = ColorFactory.getInstance().getColor(getShadowColor());
-		Color shadowColorA = new Color(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), 150);
-		int x = x1 + getShadowOffsetX();
-		int y = y1 + getShadowOffsetY();
-		int strokeSize = getShadowBlur();
-		int width = width1 + strokeSize;
-		int height = height1 + strokeSize;
+	private void shadow(final Graphics2D graphics, final Integer x1, final Integer y1, final Integer width1, final Integer height1, final boolean isFill) {
+		final Color shadowColor = ColorFactory.getInstance().getColor(getShadowColor());
+		final Color shadowColorA = new Color(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), 150);
+		final int x = x1 + getShadowOffsetX();
+		final int y = y1 + getShadowOffsetY();
+		final int strokeSize = getShadowBlur();
+		final int width = width1 + strokeSize;
+		final int height = height1 + strokeSize;
 		graphics.setColor(shadowColorA);
 		if (isFill) {
 			graphics.fillRoundRect(x, y, width, height, 0, 0);

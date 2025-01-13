@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,12 @@
 
 package org.loboevolution.net;
 
+import lombok.Getter;
+
+/**
+ * The Class ReadyStateType.
+ */
+@Getter
 public enum ReadyStateType {
 
     UNSENT(0),
@@ -40,15 +46,7 @@ public enum ReadyStateType {
 
     private final Integer value;
 
-    ReadyStateType(Integer value) {
+    ReadyStateType(final Integer value) {
         this.value = value;
-    }
-
-    /**
-     * <p> Getter for the field value </p>
-     * @return a {@link java.lang.Integer} object.
-     */
-    public Integer getValue() {
-        return value;
     }
 }

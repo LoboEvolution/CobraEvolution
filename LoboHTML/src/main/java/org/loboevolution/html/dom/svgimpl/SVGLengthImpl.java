@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,7 @@ public class SVGLengthImpl implements SVGLength {
 	 *
 	 * @param unitType a short.
 	 */
-	public SVGLengthImpl(short unitType) {
+	public SVGLengthImpl(final short unitType) {
 		this.unitType = unitType;
 		this.valueInSpecifiedUnits = 0.0f;
 	}
@@ -65,7 +65,7 @@ public class SVGLengthImpl implements SVGLength {
 	 * @param unitType a short.
 	 * @param valueInSpecifiedUnits a float.
 	 */
-	public SVGLengthImpl(short unitType, float valueInSpecifiedUnits) {
+	public SVGLengthImpl(final short unitType, final float valueInSpecifiedUnits) {
 		this.unitType = unitType;
 		this.valueInSpecifiedUnits = valueInSpecifiedUnits;
 	}
@@ -75,7 +75,7 @@ public class SVGLengthImpl implements SVGLength {
 	 *
 	 * @param valueAsString a {@link java.lang.String} object.
 	 */
-	public SVGLengthImpl(String valueAsString) {
+	public SVGLengthImpl(final String valueAsString) {
 		setValueAsString(valueAsString);
 	}
 
@@ -84,7 +84,7 @@ public class SVGLengthImpl implements SVGLength {
 	 *
 	 * @param valueInSpecifiedUnits a float.
 	 */
-	public SVGLengthImpl(float valueInSpecifiedUnits) {
+	public SVGLengthImpl(final float valueInSpecifiedUnits) {
 		this.unitType = SVGLength.SVG_LENGTHTYPE_NUMBER;
 		this.valueInSpecifiedUnits = valueInSpecifiedUnits;
 	}
@@ -104,7 +104,7 @@ public class SVGLengthImpl implements SVGLength {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setValue(float value) {
+	public void setValue(final float value) {
 		this.valueInSpecifiedUnits = value;
 		this.unitType = SVGLength.SVG_LENGTHTYPE_NUMBER;
 	}
@@ -112,7 +112,7 @@ public class SVGLengthImpl implements SVGLength {
 	/** {@inheritDoc} */
 	@Override
 	public String getValueAsString() {
-		String suffix = getUnitTypeAsString(this.unitType);
+		final String suffix = getUnitTypeAsString(this.unitType);
 		if ("unkown".equals(suffix)) {
 			throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Unknow unit type");
 		}
@@ -125,13 +125,13 @@ public class SVGLengthImpl implements SVGLength {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setValueAsString(String valueAsString) {
-
+	public void setValueAsString(final String valueAsStr) {
+		String valueAsString = valueAsStr;
 		if (valueAsString == null) {
 			valueAsString = "0";
 		}
 
-		String valueString;
+		final String valueString;
 		if (valueAsString.endsWith("cm")) {
 			valueString = valueAsString.substring(0, valueAsString.length() - 2);
 			this.unitType = SVGLength.SVG_LENGTHTYPE_CM;
@@ -166,14 +166,14 @@ public class SVGLengthImpl implements SVGLength {
 
 		try {
 			this.valueInSpecifiedUnits = Float.parseFloat(valueString);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			throw new DOMException(DOMException.SYNTAX_ERR, "Invalid value: '" + valueString + "'!");
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void newValueSpecifiedUnits(short unitType, float valueInSpecifiedUnits) {
+	public void newValueSpecifiedUnits(final short unitType, final float valueInSpecifiedUnits) {
 
 		switch (unitType) {
 		case SVGLength.SVG_LENGTHTYPE_CM:
@@ -196,7 +196,7 @@ public class SVGLengthImpl implements SVGLength {
 
 	/** {@inheritDoc} */
 	@Override
-	public void convertToSpecifiedUnits(short unitType) {
+	public void convertToSpecifiedUnits(final short unitType) {
 
 		if (this.unitType == unitType) {
 			return;
@@ -204,9 +204,7 @@ public class SVGLengthImpl implements SVGLength {
 
 		float inchValue = this.valueInSpecifiedUnits;
 		switch (this.unitType) {
-		case SVGLength.SVG_LENGTHTYPE_IN:
-			break;
-		case SVGLength.SVG_LENGTHTYPE_CM:
+            case SVGLength.SVG_LENGTHTYPE_CM:
 			inchValue = this.valueInSpecifiedUnits / 2.54f;
 			break;
 		case SVGLength.SVG_LENGTHTYPE_MM:
@@ -229,10 +227,7 @@ public class SVGLengthImpl implements SVGLength {
 		}
 
 		switch (unitType) {
-		case SVGLength.SVG_LENGTHTYPE_IN:
-			this.valueInSpecifiedUnits = inchValue;
-			break;
-		case SVGLength.SVG_LENGTHTYPE_MM:
+            case SVGLength.SVG_LENGTHTYPE_MM:
 			this.valueInSpecifiedUnits = inchValue * 25.40013f;
 			break;
 		case SVGLength.SVG_LENGTHTYPE_CM:
@@ -265,50 +260,26 @@ public class SVGLengthImpl implements SVGLength {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setValueInSpecifiedUnits(float valueInSpecifiedUnits) {
+	public void setValueInSpecifiedUnits(final float valueInSpecifiedUnits) {
 		this.valueInSpecifiedUnits = valueInSpecifiedUnits;
 	}
 
-	private String getUnitTypeAsString(short unitType) {
-		String suffix = "";
-		switch (unitType) {
-		case SVGLength.SVG_LENGTHTYPE_CM:
-			suffix = "cm";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_EMS:
-			suffix = "ems";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_EXS:
-			suffix = "exs";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_IN:
-			suffix = "in";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_MM:
-			suffix = "mm";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_PC:
-			suffix = "pc";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_PERCENTAGE:
-			suffix = "%";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_PT:
-			suffix = "pt";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_PX:
-			suffix = "px";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_NUMBER:
-			suffix = "";
-			break;
-		case SVGLength.SVG_LENGTHTYPE_UNKNOWN:
-			suffix = "unknown";
-			break;
-		default:
-			throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Invalid unit type");
-		}
-		return suffix;
+	private String getUnitTypeAsString(final short unitType) {
+		String suffix = switch (unitType) {
+            case SVGLength.SVG_LENGTHTYPE_CM -> "cm";
+            case SVGLength.SVG_LENGTHTYPE_EMS -> "ems";
+            case SVGLength.SVG_LENGTHTYPE_EXS -> "exs";
+            case SVGLength.SVG_LENGTHTYPE_IN -> "in";
+            case SVGLength.SVG_LENGTHTYPE_MM -> "mm";
+            case SVGLength.SVG_LENGTHTYPE_PC -> "pc";
+            case SVGLength.SVG_LENGTHTYPE_PERCENTAGE -> "%";
+            case SVGLength.SVG_LENGTHTYPE_PT -> "pt";
+            case SVGLength.SVG_LENGTHTYPE_PX -> "px";
+            case SVGLength.SVG_LENGTHTYPE_NUMBER -> "";
+            case SVGLength.SVG_LENGTHTYPE_UNKNOWN -> "unknown";
+            default -> throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Invalid unit type");
+        };
+        return suffix;
 	}
 	
 	
@@ -318,26 +289,26 @@ public class SVGLengthImpl implements SVGLength {
 	 * @param transform a {@link java.awt.geom.AffineTransform} object.
 	 * @return a float.
 	 */
-	protected float getTransformedLength(AffineTransform transform) {
+	protected float getTransformedLength(final AffineTransform transform) {
 
 		if (unitType == SVG_LENGTHTYPE_NUMBER || transform == null || transform != null && transform.isIdentity()) {
 			return getValue();
 		}
 
-		Point2D q1 = new Point2D.Double(0, 0);
-		float val = getValue();
-		Point2D q2 = new Point2D.Double(0.7071068 * val, 0.7071068 * val);
+		final Point2D q1 = new Point2D.Double(0, 0);
+		final float val = getValue();
+		final Point2D q2 = new Point2D.Double(0.7071068 * val, 0.7071068 * val);
 
-		Point2D transQ1 = new Point2D.Double();
-		Point2D transQ2 = new Point2D.Double();
+		final Point2D transQ1 = new Point2D.Double();
+		final Point2D transQ2 = new Point2D.Double();
 
 		transform.transform(q1, transQ1);
 		transform.transform(q2, transQ2);
 
-		double diffX = transQ2.getX() - transQ1.getX();
-		double diffY = transQ2.getY() - transQ1.getY();
+		final double diffX = transQ2.getX() - transQ1.getX();
+		final double diffY = transQ2.getY() - transQ1.getY();
 
-		float dist = (float) Math.sqrt(diffX * diffX + diffY * diffY);
+		final float dist = (float) Math.sqrt(diffX * diffX + diffY * diffY);
 		return dist;
 
 	}

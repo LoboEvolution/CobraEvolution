@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,57 +28,55 @@
 package org.loboevolution.domts.level1;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * An notation is accessed, setNodeValue is called with a non-null argument, but getNodeValue
  * should still return null.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-5431D1B9">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-5431D1B9</a>
  */
-public class nodevalue08Test extends LoboUnitTest {
+public class Nodevalue08Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        Node newNode;
+        final Document doc;
+        final DocumentType docType;
+        final Node newNode;
         String newValue;
-        NamedNodeMap nodeMap;
+        final NamedNodeMap nodeMap;
         doc = sampleXmlFile("staff.xml");
         docType = doc.getDoctype();
-        assertNotNull("docTypeNotNull", docType);
+        assertNotNull(docType, "Nodevalue08Assert1");
         nodeMap = docType.getNotations();
-        assertNotNull("notationsNotNull", nodeMap);
+        assertNotNull(nodeMap, "Nodevalue08Assert2");
         newNode = nodeMap.getNamedItem("notation1");
-        assertNotNull("notationNotNull", newNode);
+        assertNotNull(newNode, "Nodevalue08Assert3");
         newValue = newNode.getNodeValue();
-        assertNull("initiallyNull", newValue);
+        assertNull(newValue, "Nodevalue08Assert4");
 
         boolean success = false;
         try {
             newNode.setNodeValue("This should have no effect");
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.INVALID_MODIFICATION_ERR);
         }
 
         newValue = newNode.getNodeValue();
-        assertTrue("throw_INVALID_MODIFICATION_ERR", success);
-        assertNull("nullAfterAttemptedChange", newValue);
+        assertTrue(success, "Nodevalue08Assert5");
+        assertNull(newValue, "Nodevalue08Assert6");
     }
 }
 

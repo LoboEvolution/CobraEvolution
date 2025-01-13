@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,35 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * The method hasAttribute returns true when an attribute with a given name is specified
  * on this element or has a default value, false otherwise
  * Invoke the hasAttribute method to check if the documentElement has attributres.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs</a>
  */
-public class elementhasattribute01Test extends LoboUnitTest {
+public class Elementhasattribute01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        boolean state;
+        final Document doc;
+        final Element element;
+        final boolean state;
         doc = sampleXmlFile("staff.xml");
         element = doc.getDocumentElement();
         state = element.hasAttribute("");
-        assertFalse("elementhasattribute01", state);
+        assertFalse(state);
     }
 }
 

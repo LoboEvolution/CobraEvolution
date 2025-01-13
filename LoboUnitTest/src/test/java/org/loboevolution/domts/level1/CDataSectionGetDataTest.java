@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,33 +44,30 @@ import static org.junit.Assert.*;
  * from the CharacterData interface(via the Text node),
  * the "getData()" method can be used to access the
  * CDATA content.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359</a>
  */
 public class CDataSectionGetDataTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection nameList;
-        Node child;
-        Node lastChild;
-        String data;
-        int nodeType;
+        final Document doc;
+        final HTMLCollection nameList;
+        final Node child;
+        final Node lastChild;
+        final String data;
+        final int nodeType;
         doc = sampleXmlFile("staff.xml");
         nameList = doc.getElementsByTagName("name");
         child = nameList.item(1);
         lastChild = child.getLastChild();
         nodeType = lastChild.getNodeType();
-        assertEquals("isCDATA", 4, nodeType);
+        assertEquals(4, nodeType, "CDataSectionGetDataAssert1");
         data = ((CharacterData) lastChild).getData();
-        assertEquals("data", "This is an adjacent CDATASection with a reference to a tab &tab;", data);
+        assertEquals("This is an adjacent CDATASection with a reference to a tab &tab;", data, "CDataSectionGetDataAssert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,25 @@
 
 package org.loboevolution.html.dom.domimpl;
 
+import lombok.Getter;
 import org.loboevolution.common.Strings;
-import org.loboevolution.html.dom.CanvasRenderingContext2D;
+import org.loboevolution.html.dom.canvas.CanvasRenderingContext2D;
 import org.loboevolution.html.dom.FileCallback;
 import org.loboevolution.html.dom.HTMLCanvasElement;
 import org.loboevolution.html.dom.canvas.CanvasRenderingImpl;
 import org.loboevolution.html.style.HtmlValues;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 
 /**
  * The Class HTMLCanvasElementImpl.
  */
+@Getter
 public class HTMLCanvasElementImpl extends HTMLElementImpl implements HTMLCanvasElement {
 	
 	private BufferedImage image;
@@ -55,11 +61,11 @@ public class HTMLCanvasElementImpl extends HTMLElementImpl implements HTMLCanvas
 	/** {@inheritDoc} */
 	@Override
 	public int getWidth() {
-		String widthText = this.getAttribute("width");
+		final String widthText = this.getAttribute("width");
 		if (Strings.isBlank(widthText)) {
 			return getClientWidth();
 		}
-		HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
+		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		return HtmlValues.getPixelSize(widthText, null, doc.getDefaultView(), 1);
 	}
 
@@ -72,65 +78,63 @@ public class HTMLCanvasElementImpl extends HTMLElementImpl implements HTMLCanvas
 	/** {@inheritDoc} */
 	@Override
 	public int getHeight() {
-		String heightText = this.getAttribute("height");
+		final String heightText = this.getAttribute("height");
 		if (Strings.isBlank(heightText)) {
 			return getClientHeight();
 		}
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)this.document;
+		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		return HtmlValues.getPixelSize(heightText, null, doc.getDefaultView(), 1);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.setAttribute("height", String.valueOf(height));
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String toDataURL() {
+		return "data:image/png;base64," + Base64.getEncoder().encodeToString(toBytesCompressed(image));
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String toDataURL(final String type, final Object... args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String toDataURL(String type, Object... args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void toBlob(FileCallback callback) {
+	public void toBlob(final FileCallback callback) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void toBlob(FileCallback callback, String type, Object... args) {
+	public void toBlob(final FileCallback callback, final String type, final Object... args) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public CanvasRenderingContext2D getContext(String contextId) {
-		CanvasRenderingImpl canvas = new CanvasRenderingImpl(this);
+	public CanvasRenderingContext2D getContext(final String contextId) {
+		final CanvasRenderingImpl canvas = new CanvasRenderingImpl(this);
 		image = canvas.getImage();
 		return canvas;
 	}
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 150 : clientHeight;
 	}
 
 	@Override
 	public Integer getClientWidth() {
-		int clientWidth = super.getClientWidth();
+		final int clientWidth = super.getClientWidth();
 		return clientWidth == 0 ? 300 : clientWidth;
 	}
 
@@ -139,14 +143,16 @@ public class HTMLCanvasElementImpl extends HTMLElementImpl implements HTMLCanvas
 		return getClientWidth();
 	}
 
-	/**
-	 * <p>Getter for the field image.</p>
-	 *
-	 * @return the image
-	 */
-	public BufferedImage getImage() {
-		return image;
+	private byte[] toBytesCompressed(BufferedImage image) {
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", out);
+			return out.toByteArray();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
 	
 	/** {@inheritDoc} */
 	@Override

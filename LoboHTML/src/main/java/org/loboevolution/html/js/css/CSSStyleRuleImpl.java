@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,22 +27,26 @@
 package org.loboevolution.html.js.css;
 
 import org.htmlunit.cssparser.dom.AbstractCSSRuleImpl;
+import org.htmlunit.cssparser.dom.CSSPageRuleImpl;
 import org.htmlunit.cssparser.util.CSSProperties;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
-import org.loboevolution.html.node.css.CSSStyleRule;
-import org.loboevolution.html.style.setter.BorderStyleSetter;
-import org.loboevolution.html.style.setter.FourCornersSetter;
+import org.loboevolution.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleRule;
+import org.loboevolution.css.CSSStyleSheet;
+import org.loboevolution.html.style.setter.*;
 import org.loboevolution.net.NameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class CSSStyleRuleImpl extends CSSRuleImpl implements CSSStyleRule {
+/**
+ * <p>CSSStyleRuleImpl class.</p>
+ */
+public class CSSStyleRuleImpl extends AbstractCSSStyleRule implements CSSProperties, CSSStyleRule {
 
     private final AbstractCSSRuleImpl abstractCSSRule;
 
-    public CSSStyleRuleImpl(AbstractCSSRuleImpl abstractCSSRule) {
+    public CSSStyleRuleImpl(final AbstractCSSRuleImpl abstractCSSRule) {
         super(abstractCSSRule);
         this.abstractCSSRule = abstractCSSRule;
     }
@@ -50,24 +54,68 @@ public class CSSStyleRuleImpl extends CSSRuleImpl implements CSSStyleRule {
     /** {@inheritDoc} */
     @Override
     public String getSelectorText() {
-        if (abstractCSSRule instanceof org.htmlunit.cssparser.dom.CSSStyleRuleImpl) {
-            final org.htmlunit.cssparser.dom.CSSStyleRuleImpl styleRule = (org.htmlunit.cssparser.dom.CSSStyleRuleImpl) abstractCSSRule;
+        if (abstractCSSRule instanceof org.htmlunit.cssparser.dom.CSSStyleRuleImpl styleRule) {
+            return styleRule.getSelectorText();
+        }
+
+        if (abstractCSSRule instanceof CSSPageRuleImpl styleRule) {
             return styleRule.getSelectorText();
         }
         return null;
     }
 
+    public void setSelectorText(final String selectorText) {
+        if (abstractCSSRule instanceof CSSPageRuleImpl styleRule) {
+            styleRule.setSelectorText(selectorText);
+        }
+    }
+
+    @Override
+    public CSSStyleSheet getParentStyleSheet() {
+        return abstractCSSRule != null ? new CSSStyleSheetImpl(abstractCSSRule.getParentStyleSheet()) : null;
+    }
+
     /** {@inheritDoc} */
     @Override
     public CSSStyleDeclaration getStyle() {
-        AtomicReference<CSSStyleDeclarationImpl> atomicReference = new AtomicReference<>();
-        if (abstractCSSRule instanceof org.htmlunit.cssparser.dom.CSSStyleRuleImpl) {
-            final org.htmlunit.cssparser.dom.CSSStyleRuleImpl styleRule = (org.htmlunit.cssparser.dom.CSSStyleRuleImpl) abstractCSSRule;
-            List<NameValuePair> list = new ArrayList<>();
+        final AtomicReference<CSSStyleDeclarationImpl> atomicReference = new AtomicReference<>();
+        if (abstractCSSRule instanceof org.htmlunit.cssparser.dom.CSSStyleRuleImpl styleRule) {
+            final List<NameValuePair> list = new ArrayList<>();
 
-            styleRule.getStyle().getProperties().forEach(p -> {
-                list.add(new NameValuePair(p.getName(), p.getValue().toString()));
+            styleRule.getStyle().getProperties().forEach(p -> list.add(new NameValuePair(p.getName(), p.getValue().toString())));
+
+            atomicReference.set(new CSSStyleDeclarationImpl(styleRule.getStyle()));
+
+            list.forEach(p -> {
+                switch (p.getName()) {
+                    case MARGIN:
+                    case BORDER_COLOR:
+                    case BORDER_WIDTH:
+                    case PADDING:
+                        new FourCornersSetter(p.getName(), p.getName() + "-", "").changeValue(atomicReference.get(), p.getValue());
+                        break;
+                    case BORDER_STYLE:
+                        new BorderStyleSetter(p.getName(), p.getName() + "-", "-style").changeValue(atomicReference.get(), p.getValue());
+                        break;
+                    case BORDER:
+                        new BorderSetter2(p.getName()).changeValue(atomicReference.get(), p.getValue());
+                        break;
+                    case BACKGROUND:
+                        new BackgroundSetter().changeValue(atomicReference.get(), p.getValue());
+                        break;
+                    case FONT:
+                        new FontSetter().changeValue(atomicReference.get(), p.getValue());
+                        break;
+                    default:
+                        break;
+                }
             });
+        }
+
+        if (abstractCSSRule instanceof CSSPageRuleImpl styleRule) {
+            final List<NameValuePair> list = new ArrayList<>();
+
+            styleRule.getStyle().getProperties().forEach(p -> list.add(new NameValuePair(p.getName(), p.getValue().toString())));
 
             atomicReference.set(new CSSStyleDeclarationImpl(styleRule.getStyle()));
 
@@ -82,6 +130,7 @@ public class CSSStyleRuleImpl extends CSSRuleImpl implements CSSStyleRule {
                         break;
                     case CSSProperties.BORDER_STYLE:
                         new BorderStyleSetter(p.getName(), p.getName() + "-", "-style").changeValue(atomicReference.get(), p.getValue());
+                        break;
                     default:
                         break;
                 }

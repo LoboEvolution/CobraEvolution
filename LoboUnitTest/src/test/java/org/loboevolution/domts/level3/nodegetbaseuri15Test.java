@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Node.getBaseURI for an Attr is null.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Attr">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Attr</a>
  */
-public class nodegetbaseuri15Test extends LoboUnitTest {
+public class Nodegetbaseuri15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String baseURI;
-        Attr attrNode;
-        HTMLCollection bodyList;
-        Element bodyElem;
+        final Document doc;
+        final String baseURI;
+        final Attr attrNode;
+        final HTMLCollection bodyList;
+        final Element bodyElem;
         doc = sampleXmlFile("barfoo_base.xml");
         bodyList = doc.getElementsByTagName("body");
         bodyElem = (Element) bodyList.item(0);
         attrNode = bodyElem.getAttributeNode("id");
         baseURI = attrNode.getBaseURI();
-        assertNull("baseURI", baseURI);
+        assertNull(baseURI, "Nodegetbaseuri15Assert2");
     }
 }
 

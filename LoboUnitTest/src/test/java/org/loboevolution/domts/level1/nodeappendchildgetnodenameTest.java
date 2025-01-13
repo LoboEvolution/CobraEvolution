@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,35 +43,31 @@ import static org.junit.Assert.*;
  * Append a newly created node to the child list of the
  * second employee and check the NodeName returned.   The
  * "getNodeName()" method should return "newChild".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107</a>
  */
-public class nodeappendchildgetnodenameTest extends LoboUnitTest {
+public class NodeappendchildgetnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node newChild;
-        Node appendNode;
-        String childName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node newChild;
+        final Node appendNode;
+        final String childName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
-        childList = employeeNode.getChildNodes();
+        employeeNode.getChildNodes();
         newChild = doc.createElement("newChild");
         appendNode = employeeNode.appendChild(newChild);
         childName = appendNode.getNodeName();
-        assertEquals("nodeAppendChildGetNodeNameAssert1", "newChild", childName);
+        assertEquals("NEWCHILD", childName, "NodeappendchildgetnodenameAssert1");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -46,37 +46,34 @@ import static org.junit.Assert.assertTrue;
  * on the retrieved DOMImplementation with qualifiedName being the literal
  * string "prefix::local", publicId as "STAFF", and systemId as "staff".
  * Method should raise NAMESPACE_ERR DOMException.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NAMESPACE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NAMESPACE_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('Level-2-Core-DOM-createDocType')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('Level-2-Core-DOM-createDocType')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])</a>
  */
-public class createDocumentType01Test extends LoboUnitTest {
+public class CreateDocumentType01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String publicId = "STAFF";
-        String systemId = "staff.xml";
-        String malformedName = "prefix::local";
-        Document doc;
-        DOMImplementation domImpl;
+        final String publicId = "STAFF";
+        final String systemId = "staff.xml";
+        final String malformedName = "prefix::local";
+        final Document doc;
+        final DOMImplementation domImpl;
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
 
         boolean success = false;
         try {
             domImpl.createDocumentType(malformedName, publicId, systemId);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("throw_NAMESPACE_ERR", success);
+        assertTrue(success);
 
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,42 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check the document position of the text node of the fist and second elements
  * whose localName is name.  The first text node should return FOLLOWING and the second text node should
  * return PRECEDING when compareDocumentPosition is invoked with the other node as a parameter.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition21Test extends LoboUnitTest {
-
+public class Nodecomparedocumentposition21Test extends LoboUnitTest {
+    
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elemName1;
-        Element elemName2;
-        Text txt1;
-        Text txt2;
-        int txt1Position;
-        int txt2Position;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elemName1;
+        final Element elemName2;
+        final Text txt1;
+        final Text txt2;
+        final int txt1Position;
+        final int txt2Position;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("strong");
         elemName1 = (Element) elemList.item(0);
@@ -70,9 +66,9 @@ public class nodecomparedocumentposition21Test extends LoboUnitTest {
         txt1 = (Text) elemName1.getFirstChild();
         txt2 = (Text) elemName2.getFirstChild();
         txt1Position = txt1.compareDocumentPosition(txt2);
-        assertEquals("nodecomparedocumentpositionFollowing21", 4, txt1Position);
+        assertEquals(4, txt1Position, "Nodecomparedocumentposition21Assert2");
         txt2Position = txt2.compareDocumentPosition(txt1);
-        assertEquals("nodecomparedocumentpositionPRECEDING21", 2, txt2Position);
+        assertEquals(2, txt2Position, "Nodecomparedocumentposition21Assert3");
     }
 }
 

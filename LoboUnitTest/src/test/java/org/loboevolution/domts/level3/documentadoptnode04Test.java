@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,48 +27,45 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Invoke adoptNode on a new document to adopt a new namespace aware attribute node created by
  * this document.  Check if this attribute has been adopted successfully by verifying the nodeName,
  * namespaceURI, prefix, specified and ownerElement attributes of the adopted node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode04Test extends LoboUnitTest {
+public class Documentadoptnode04Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Attr newAttr;
-        Attr adoptedAttr;
-        String nodeName;
-        String nodeNamespaceURI;
-        String nodePrefix;
-        Node attrOwnerElem;
-        boolean isSpecified;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
-        String xmlNS = "http://www.w3.org/XML/1998/namespace";
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Attr newAttr;
+        final Attr adoptedAttr;
+        final String nodeName;
+        final String nodeNamespaceURI;
+        final String nodePrefix;
+        final Node attrOwnerElem;
+        final boolean isSpecified;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
+        final String xmlNS = "http://www.w3.org/XML/1998/namespace";
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         newAttr = doc.createAttributeNS(xmlNS, "xml:lang");
         adoptedAttr = (Attr) newDoc.adoptNode(newAttr);
 
@@ -78,11 +75,11 @@ public class documentadoptnode04Test extends LoboUnitTest {
             nodePrefix = adoptedAttr.getPrefix();
             attrOwnerElem = adoptedAttr.getOwnerElement();
             isSpecified = adoptedAttr.isSpecified();
-            assertEquals("documentadoptnode04_nodeName", "xml:lang", nodeName);
-            assertEquals("documentadoptnode04_namespaceURI", xmlNS, nodeNamespaceURI);
-            assertEquals("documentadoptnode04_prefix", "xml", nodePrefix);
-            assertNull("documentadoptnode04_ownerDoc", attrOwnerElem);
-            assertTrue("documentadoptnode04_specified", isSpecified);
+            assertEquals("xml:lang", nodeName, "Documentadoptnode04Assert1");
+            assertEquals(xmlNS, nodeNamespaceURI, "Documentadoptnode04Assert2");
+            assertEquals("xml", nodePrefix, "Documentadoptnode04Assert3");
+            assertNull(attrOwnerElem, "Documentadoptnode04Assert4");
+            assertTrue(isSpecified, "Documentadoptnode04Assert5");
         }
     }
 }

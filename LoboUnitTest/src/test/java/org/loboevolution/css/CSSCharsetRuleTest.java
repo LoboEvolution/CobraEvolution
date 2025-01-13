@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,43 +25,47 @@
  */
 package org.loboevolution.css;
 
-import org.junit.Test;
+import org.htmlunit.cssparser.dom.CSSCharsetRuleImpl;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.loboevolution.annotation.Alerts;
+import org.loboevolution.annotation.AlertsExtension;
 import org.loboevolution.driver.LoboUnitTest;
 
-
 /**
- * Tests for {@link org.htmlunit.cssparser.dom.CSSCharsetRuleImpl}.
+ * Tests for {@link CSSCharsetRuleImpl}.
  */
-public class CSSCharsetRuleTest  extends LoboUnitTest {
+@ExtendWith(AlertsExtension.class)
+public class CSSCharsetRuleTest extends LoboUnitTest {
 
 
     @Test
+    @Alerts("0")
     public void inStyle() {
         final String html
-            = "<html><body>\n"
-            + "<style>@charset \"UTF-8\";</style>\n"
-            + "<script>\n"
-            + "  var rules = document.styleSheets[0].cssRules;\n"
-            + "  alert(rules.length);\n"
-            + "</script>\n"
-            + "</body></html>";
+                = "<html><body>\n"
+                + "<style>@charset \"UTF-8\";</style>\n"
+                + "<script>\n"
+                + "  var rules = document.styleSheets[0].cssRules;\n"
+                + " alert(rules.length);\n"
+                + "</script>\n"
+                + "</body></html>";
 
-        final String[] messages = {"0"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("0")
     public void inLink() {
         final String html
-            = "<html><body>\n"
-            + "<link rel='stylesheet' href='../css/imp.css'>\n"
-            + "<script>\n"
-            + "  var rules = document.styleSheets[0].cssRules;\n"
-            + "  alert(rules.length);\n"
-            + "</script>\n"
-            + "</body></html>";
+                = "<html><body>\n"
+                + "<link rel='stylesheet' href='" + URL_CSS + "imp.css'>\n"
+                + "<script>\n"
+                + "  var rules = document.styleSheets[0].cssRules;\n"
+                + " alert(rules.length);\n"
+                + "</script>\n"
+                + "</body></html>";
 
-        final String[] messages = {"0"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 }

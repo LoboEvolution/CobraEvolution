@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ package org.loboevolution.html.renderstate;
 import org.loboevolution.common.Strings;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.style.FontValues;
 import org.loboevolution.info.WordInfo;
 import org.loboevolution.laf.FontFactory;
@@ -65,7 +65,7 @@ public class FontStyleRenderState extends RenderStateDelegator {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param type a {@link org.loboevolution.laf.LAFType} object.
 	 */
-	public FontStyleRenderState(RenderState prevRenderState, HTMLElementImpl element, LAFType type) {
+	public FontStyleRenderState(final RenderState prevRenderState, final HTMLElementImpl element, final LAFType type) {
 		super(prevRenderState);
 		this.type = type;
 		this.iFont = null;
@@ -79,7 +79,7 @@ public class FontStyleRenderState extends RenderStateDelegator {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param superscript a {@link java.lang.Integer} object.
 	 */
-	public FontStyleRenderState(RenderState prevRenderState, HTMLElementImpl element, Integer superscript) {
+	public FontStyleRenderState(final RenderState prevRenderState, final HTMLElementImpl element, final Integer superscript) {
 		super(prevRenderState);
 		this.iFont = prevRenderState.getFont();
 		this.superscript = superscript;
@@ -92,7 +92,7 @@ public class FontStyleRenderState extends RenderStateDelegator {
 	@Override
 	public Font getFont() {
 		final HtmlRendererConfig config = element.getHtmlRendererConfig();
-		FontKey fontkey = FontValues.getDefaultFontKey(config);
+		final FontKey fontkey = FontValues.getDefaultFontKey(config);
 
 		if (iFont != null) {
 			fontkey.setSuperscript(this.superscript);
@@ -132,7 +132,7 @@ public class FontStyleRenderState extends RenderStateDelegator {
 
 	/** {@inheritDoc} */
 	@Override
-	public final WordInfo getWordInfo(String word) {
+	public final WordInfo getWordInfo(final String word) {
 		// Expected to be called only in the GUI (rendering) thread.
 		// No synchronization necessary.
 		Map<String, WordInfo> map = this.iWordInfoMap;

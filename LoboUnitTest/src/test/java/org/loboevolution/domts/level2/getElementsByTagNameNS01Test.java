@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,26 +43,23 @@ import static org.junit.Assert.*;
  * Invoke method getElementsByTagNameNS(namespaceURI,localName) on this document
  * with namespaceURI and localName as " ".
  * Method should return a new NodeList of 36 elements.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS</a>
  */
-public class getElementsByTagNameNS01Test extends LoboUnitTest {
+public class GetElementsByTagNameNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "*";
-        String localName = "*";
-        Document doc;
-        HTMLCollection newList;
+        final String namespaceURI = "*";
+        final String localName = "*";
+        final Document doc;
+        final HTMLCollection newList;
         doc = sampleXmlFile("staffNS.xml");
         newList = doc.getElementsByTagNameNS(namespaceURI, localName);
-        assertEquals( "throw_Size", 36, newList.getLength());
+        assertEquals(36, newList.getLength());
     }
 }
 

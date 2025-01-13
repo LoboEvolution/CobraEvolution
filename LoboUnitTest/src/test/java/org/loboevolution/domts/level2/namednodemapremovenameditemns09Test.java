@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,25 +45,22 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Retreive an attribute node.  Remove the attribute node from the node map.
  * Check the element object to ensure that the attribute node has been removed from it.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-D58B193">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-D58B193</a>
  */
-public class namednodemapremovenameditemns09Test extends LoboUnitTest {
+public class Namednodemapremovenameditemns09Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        NamedNodeMap newAttributes;
-        Element element;
-        Attr attribute;
-        HTMLCollection elementList;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final NamedNodeMap newAttributes;
+        final Element element;
+        final Attr attribute;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("http://www.nist.gov", "address");
         element = (Element) elementList.item(1);
@@ -71,7 +68,7 @@ public class namednodemapremovenameditemns09Test extends LoboUnitTest {
         attributes.removeNamedItemNS("http://www.nist.gov", "domestic");
         newAttributes = element.getAttributes();
         attribute = (Attr) newAttributes.getNamedItemNS("http://www.nist.gov", "domestic");
-        assertNull("namednodemapremovenameditemns09", attribute);
+        assertNull(attribute);
     }
 }
 

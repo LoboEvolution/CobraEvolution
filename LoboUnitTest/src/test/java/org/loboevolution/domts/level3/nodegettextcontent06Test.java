@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the method getTextContent on a default Attr node and check if the value returned
  * is the attributes Value.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodegettextcontent06Test extends LoboUnitTest {
+public class Nodegettextcontent06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        Attr attr;
-        String textContent;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final Attr attr;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("p");
         elem = (Element) elemList.item(3);
         attr = elem.getAttributeNodeNS("*", "dir");
         textContent = attr.getTextContent();
-        assertEquals("nodegettextcontent06", "rtl", textContent);
+        assertEquals("rtl", textContent, "Nodegettextcontent06Assert2");
     }
 }
 

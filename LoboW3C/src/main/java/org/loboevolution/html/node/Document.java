@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,12 @@ package org.loboevolution.html.node;
 
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.*;
-import org.loboevolution.html.node.events.Event;
-import org.loboevolution.html.node.js.Location;
-import org.loboevolution.html.node.js.Window;
-import org.loboevolution.html.node.traversal.DocumentTraversal;
+import org.loboevolution.events.Event;
+import org.loboevolution.html.node.ranges.DocumentRange;
+import org.loboevolution.html.node.ranges.Range;
+import org.loboevolution.js.Location;
+import org.loboevolution.js.Window;
+import org.loboevolution.traversal.DocumentTraversal;
 import org.loboevolution.html.xpath.XPathExpression;
 import org.loboevolution.html.xpath.XPathNSResolver;
 import org.loboevolution.html.xpath.XPathResult;
@@ -42,18 +44,18 @@ import org.loboevolution.type.VisibilityState;
  * Any web page loaded in the browser and serves as an entry point into the web
  * page's content, which is the DOM tree.
  */
-public interface Document extends Node, NonElementParentNode, ParentNode, DocumentTraversal {
+public interface Document extends Node, NonElementParentNode, ParentNode, DocumentTraversal, DocumentRange {
 
-	/** Constant <code>XMLNS_NAMESPACE_URI="http://www.w3.org/2000/xmlns/"</code> */
+	/** Constant <code>XMLNS_NAMESPACE_URI="<a href="http://www.w3.org/2000/xmlns/">...</a>"</code> */
 	String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
-	/** Constant <code>XML_NAMESPACE_URI="http://www.w3.org/XML/1998/namespace"</code> */
+	/** Constant <code>XML_NAMESPACE_URI="<a href="http://www.w3.org/XML/1998/namespace">...</a>"</code> */
 	String XML_NAMESPACE_URI = "http://www.w3.org/XML/1998/namespace";
 
-	/** Constant <code>HTML_NAMESPACE_URI="http://www.w3.org/1999/xhtml"</code> */
+	/** Constant <code>HTML_NAMESPACE_URI="<a href="http://www.w3.org/1999/xhtml">...</a>"</code> */
 	String HTML_NAMESPACE_URI = "http://www.w3.org/1999/xhtml";
 
-	/** Constant <code>NAMESPACE_SVG="http://www.w3.org/2000/svg"</code> */
+	/** Constant <code>NAMESPACE_SVG="<a href="http://www.w3.org/2000/svg">...</a>"</code> */
 	String NAMESPACE_SVG = "http://www.w3.org/2000/svg";
 
 	/**
@@ -71,28 +73,12 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	Element getActiveElement();
 
 	/**
-	 * Sets or gets the color of all active links in the document.
-	 *
-	 * @return a {@link java.lang.String} object.
-	 */
-	@Deprecated
-	String getAlinkColor();
-
-	/**
-	 * <p>setAlinkColor.</p>
-	 *
-	 * @param alinkColor a {@link java.lang.String} object.
-	 */
-	@Deprecated
-	void setAlinkColor(String alinkColor);
-
-	/**
 	 * Returns a reference to the collection of elements contained by the object.
 	 *
 	 * @return a {@link org.loboevolution.html.dom.HTMLAllCollection} object.
 	 */
 	@Deprecated
-	HTMLAllCollection getAll();
+	HTMLAllCollection getall();
 
 	/**
 	 * Retrieves a collection of all a objects that have a name and/or id property.
@@ -218,7 +204,7 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	/**
 	 * <p>getDefaultView.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.js.Window} object.
+	 * @return a {@link Window} object.
 	 */
 	Window getDefaultView();
 
@@ -355,7 +341,7 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	/**
 	 * Gets the implementation object of the current document.
 	 *
-	 * @return a {@link org.loboevolution.html.node.DOMImplementation} object.
+	 * @return a {@link DOMImplementation} object.
 	 */
 	DOMImplementation getImplementation();
 
@@ -386,14 +372,14 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	/**
 	 * Contains information about the current URL.
 	 *
-	 * @return a {@link org.loboevolution.html.node.js.Location} object.
+	 * @return a {@link Location} object.
 	 */
 	Location getLocation();
 
 	/**
 	 * <p>setLocation.</p>
 	 *
-	 * @param location a {@link org.loboevolution.html.node.js.Location} object.
+	 * @param location a {@link Location} object.
 	 */
 	void setLocation(Location location);
 
@@ -473,17 +459,11 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	Node adoptNode(Node source);
 
 	/**
-	 * <p>captureEvents.</p>
-	 */
-	@Deprecated
-	void captureEvents();
-
-	/**
 	 * <p>caretRangeFromPoint.</p>
 	 *
 	 * @param x a double.
 	 * @param y a double.
-	 * @return a {@link org.loboevolution.html.node.Range} object.
+	 * @return a {@link org.loboevolution.html.node.ranges.Range} object.
 	 */
 	@Deprecated
 	Range caretRangeFromPoint(double x, double y);
@@ -548,7 +528,7 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	Element createElement(String tagName);
 
 	/**
-	 * Returns an element with namespace namespace. Its namespace prefix will be
+	 * Returns an element with namespace. Its namespace prefix will be
 	 * everything before ":" (U+003E) in qualifiedName or null. Its local name will
 	 * be everything after ":" (U+003E) in qualifiedName or qualifiedName.
 	 * <p>
@@ -587,7 +567,7 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	 * <p>createEvent.</p>
 	 *
 	 * @param eventInterface a {@link java.lang.String} object.
-	 * @return a {@link org.loboevolution.html.node.events.Event} object.
+	 * @return a {@link Event} object.
 	 */
 	Event createEvent(String eventInterface);
 
@@ -602,14 +582,6 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	 * @return a {@link org.loboevolution.html.node.ProcessingInstruction} object.
 	 */
 	ProcessingInstruction createProcessingInstruction(String target, String data);
-
-	/**
-	 * Returns an empty range object that has both of its boundary points positioned
-	 * at the beginning of the document.
-	 *
-	 * @return a {@link org.loboevolution.html.node.Range} object.
-	 */
-	Range createRange();
 
 	/**
 	 * Creates a text string from the specified value.
@@ -753,7 +725,7 @@ public interface Document extends Node, NonElementParentNode, ParentNode, Docume
 	/**
 	 * <p>getDomConfig.</p>
 	 *
-	 * @return a {@link org.loboevolution.html.node.DOMConfiguration} object.
+	 * @return a {@link DOMConfiguration} object.
 	 */
 	DOMConfiguration getDomConfig();
 

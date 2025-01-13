@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,13 +39,13 @@ public class HTMLDirectoryElementImpl extends HTMLElementImpl implements HTMLDir
      *
      * @param name a {@link String} object.
      */
-    public HTMLDirectoryElementImpl(String name) {
+    public HTMLDirectoryElementImpl(final String name) {
         super(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new BlockRenderState(prevRenderState, this);
     }
 
@@ -55,7 +55,7 @@ public class HTMLDirectoryElementImpl extends HTMLElementImpl implements HTMLDir
     }
 
     @Override
-    public void setCompact(boolean compact) {
+    public void setCompact(final boolean compact) {
 
     }
 }

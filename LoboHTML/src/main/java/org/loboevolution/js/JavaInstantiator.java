@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,7 @@ public interface JavaInstantiator {
 	 * <p>newInstance.</p>
 	 *
 	 * @return a {@link java.lang.Object} object.
-	 * @throws java.lang.InstantiationException if any.
-	 * @throws java.lang.IllegalAccessException if any.
+	 * @throws java.lang.Exception if any.
 	 */
-	Object newInstance() throws InstantiationException, IllegalAccessException;
+	Object newInstance(Object[] args) throws Exception;
 }

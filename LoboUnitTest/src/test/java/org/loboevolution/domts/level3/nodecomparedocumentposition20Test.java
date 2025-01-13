@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CDATASection;
@@ -35,39 +35,37 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of the first Text node
  * of the second element whose localName is name compared with the next CDATASection node
  * is PRECEDING and FOLLOWING vice versa.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition20Test extends LoboUnitTest {
+public class Nodecomparedocumentposition20Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elemName;
-        CDATASection cdata;
-        Text txt;
-        int txtPosition;
-        int cdataPosition;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elemName;
+        final CDATASection cdata;
+        final Text txt;
+        final int txtPosition;
+        final int cdataPosition;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("strong");
         elemName = (Element) elemList.item(1);
         txt = (Text) elemName.getFirstChild();
         cdata = (CDATASection) elemName.getLastChild();
         txtPosition = txt.compareDocumentPosition(cdata);
-        assertEquals("nodecomparedocumentpositionFollowingg20", 4, txtPosition);
+        assertEquals(4, txtPosition, "Nodecomparedocumentposition20Assert2");
         cdataPosition = cdata.compareDocumentPosition(txt);
-        assertEquals("nodecomparedocumentpositionPRECEDING20", 2, cdataPosition);
+        assertEquals(2, cdataPosition, "Nodecomparedocumentposition20Assert3");
     }
 }
 

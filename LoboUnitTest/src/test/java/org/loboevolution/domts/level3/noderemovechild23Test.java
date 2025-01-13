@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,52 +28,47 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on a new Element node attempt to remove a new ProcessingInstruction child
  * and verify the name of the returned node that was removed.  Now to remove the child
  * using removeChild on the parent and verify if a NOT_FOUND_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild23Test extends LoboUnitTest {
+public class Noderemovechild23Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element parent;
-        ProcessingInstruction child;
-        ProcessingInstruction removed;
-        String removedName;
-        Node removedNode;
-        Node appendedChild;
+        final Document doc;
+        final Element parent;
+        final ProcessingInstruction child;
+        final ProcessingInstruction removed;
+        final String removedName;
         doc = sampleXmlFile("hc_staff.xml");
         parent = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         child = doc.createProcessingInstruction("TARGET", "DATA");
-        appendedChild = parent.appendChild(child);
+        parent.appendChild(child);
         removed = (ProcessingInstruction) parent.removeChild(child);
         removedName = removed.getTarget();
-        assertEquals("noderemovechild23", "TARGET", removedName);
+        assertEquals("TARGET", removedName, "Noderemovechild23Assert3");
 
         {
             boolean success = false;
             try {
-                removedNode = parent.removeChild(child);
-            } catch (DOMException ex) {
+                parent.removeChild(child);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR", success);
+            assertTrue(success, "Noderemovechild23Assert4");
         }
     }
 }

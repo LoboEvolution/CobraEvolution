@@ -6,9 +6,12 @@
 
 package org.mozilla.javascript;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -20,6 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @see NativeJavaPackage
  * @see NativeJavaClass
  */
+@Slf4j
 public class NativeJavaMethod extends BaseFunction {
 
     private static final long serialVersionUID = -3440381785576412928L;
@@ -86,9 +90,9 @@ public class NativeJavaMethod extends BaseFunction {
     }
 
     @Override
-    String decompile(int indent, int flags) {
+    String decompile(int indent, EnumSet<DecompilerFlag> flags) {
         StringBuilder sb = new StringBuilder();
-        boolean justbody = (0 != (flags & Decompiler.ONLY_BODY_FLAG));
+        boolean justbody = flags.contains(DecompilerFlag.ONLY_BODY);
         if (!justbody) {
             sb.append("function ");
             sb.append(getFunctionName());
@@ -322,9 +326,9 @@ public class NativeJavaMethod extends BaseFunction {
                 // The loop starts from -1 denoting firstBestFit and proceed
                 // until extraBestFitsCount to avoid extraBestFits allocation
                 // in the most common case of no ambiguity
-                int betterCount = 0; // number of times member was prefered over
+                int betterCount = 0; // number of times member was preferred over
                 // best fits
-                int worseCount = 0; // number of times best fits were prefered
+                int worseCount = 0; // number of times best fits were preferred
                 // over member
                 for (int j = -1; j != extraBestFitsCount; ++j) {
                     int bestFitIndex;
@@ -385,12 +389,12 @@ public class NativeJavaMethod extends BaseFunction {
                     }
                 }
                 if (betterCount == 1 + extraBestFitsCount) {
-                    // member was prefered over all best fits
+                    // member was preferred over all best fits
                     if (debug) printDebug("New first applicable ", member, args);
                     firstBestFit = i;
                     extraBestFitsCount = 0;
                 } else if (worseCount == 1 + extraBestFitsCount) {
-                    // all best fits were prefered over member, ignore it
+                    // all best fits were preferred over member, ignore it
                     if (debug) printDebug("Rejecting (all current bests better) ", member, args);
                 } else {
                     // some ambiguity was present, add member to best fit set
@@ -447,6 +451,7 @@ public class NativeJavaMethod extends BaseFunction {
 
     private static final int PREFERENCE_FIRST_ARG = 1;
     private static final int PREFERENCE_SECOND_ARG = 2;
+
     /** No clear "easy" conversion */
     private static final int PREFERENCE_AMBIGUOUS = 3;
 
@@ -515,7 +520,7 @@ public class NativeJavaMethod extends BaseFunction {
             sb.append(" for arguments (");
             sb.append(scriptSignature(args));
             sb.append(')');
-            System.out.println(sb);
+           log.info(sb.toString());
         }
     }
 

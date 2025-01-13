@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public class XMLCharacterRecognizer {
    * @param ch Character to check as XML whitespace.
    * @return =true if <var>ch</var> is XML whitespace; otherwise =false.
    */
-  public static boolean isWhiteSpace(char ch) {
+  public static boolean isWhiteSpace(final char ch) {
     return (ch == 0x20) || (ch == 0x09) || (ch == 0xD) || (ch == 0xA);
   }
 
@@ -49,7 +49,7 @@ public class XMLCharacterRecognizer {
    * @param chars CharSequence to check as XML whitespace.
    * @return True if characters in buffer are XML whitespace, false otherwise
    */
-  public static boolean isWhiteSpace(CharSequence chars) {
+  public static boolean isWhiteSpace(final CharSequence chars) {
     return chars.chars().allMatch(i -> XMLCharacterRecognizer.isWhiteSpace((char) i));
   }
 }

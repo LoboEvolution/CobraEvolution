@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.CharacterData;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,31 +48,28 @@ import static org.junit.Assert.*;
  * method is then called with offset=5 and count=5 and
  * arg="South".  The method should replace characters five
  * thru 9 of the character data with "South".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-72AB8359</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-E5CBA7FB">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-E5CBA7FB</a>
  */
-public class characterdatareplacedatamiddleTest extends LoboUnitTest {
+public class CharacterdatareplacedatamiddleTest extends LoboUnitTest {
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node nameNode;
-        CharacterData child;
-        String childData;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node nameNode;
+        final CharacterData child;
+        final String childData;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         nameNode = elementList.item(0);
         child = (CharacterData) nameNode.getFirstChild();
         child.replaceData(5, 5, "South");
         childData = child.getData();
-        assertEquals("characterdataReplaceDataMiddleAssert", "1230 South Ave. Dallas, Texas 98551", childData);
+        assertEquals("1230 South Ave. Dallas, Texas 98551", childData, "CharacterdatareplacedatamiddleAssert1");
     }
 }
 

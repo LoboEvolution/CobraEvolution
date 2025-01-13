@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ import org.loboevolution.apache.xpath.res.XPATHErrorResources;
 import org.loboevolution.apache.xpath.res.XPATHMessages;
 import org.loboevolution.apache.xml.dtm.DTMIterator;
 import org.loboevolution.html.node.NodeList;
-import org.loboevolution.html.node.traversal.NodeIterator;
-import org.loboevolution.javax.xml.transform.TransformerException;
+import org.loboevolution.traversal.NodeIterator;
+import javax.xml.transform.TransformerException;
 
 /**
  * This class represents an XPath object, and is capable of converting the object to various types,
@@ -59,17 +59,17 @@ public class XObject extends Expression {
    *
    * @param obj Can be any object, should be a specific type for derived classes, or null.
    */
-  public XObject(Object obj) {
+  public XObject(final Object obj) {
     setObject(obj);
   }
 
-  protected void setObject(Object obj) {
+  protected void setObject(final Object obj) {
     m_obj = obj;
   }
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
     return this;
   }
 
@@ -80,7 +80,7 @@ public class XObject extends Expression {
    *
    * @param allowRelease true if it is OK for detach to release this iterator for pooling.
    */
-  public void allowDetachToRelease(boolean allowRelease) {}
+  public void allowDetachToRelease(final boolean allowRelease) {}
 
   /**
    * Detaches the <code>DTMIterator</code> from the set which it iterated over, releasing any
@@ -133,9 +133,9 @@ public class XObject extends Expression {
    * Cast result object to a number. Always issues an error.
    *
    * @return 0.0
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public double num() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public double num() throws javax.xml.transform.TransformerException {
 
     error(XPATHErrorResources.ER_CANT_CONVERT_TO_NUMBER, new Object[] {getTypeString()});
 
@@ -149,7 +149,7 @@ public class XObject extends Expression {
    * @return numeric value of the string conversion from the next node in the NodeSetDTM, or NAN if
    *     no node was found
    */
-  public double numWithSideEffects() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public double numWithSideEffects() throws javax.xml.transform.TransformerException {
     return num();
   }
 
@@ -157,9 +157,9 @@ public class XObject extends Expression {
    * Cast result object to a boolean. Always issues an error.
    *
    * @return false
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public boolean bool() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean bool() throws javax.xml.transform.TransformerException {
 
     error(XPATHErrorResources.ER_CANT_CONVERT_TO_NUMBER, new Object[] {getTypeString()});
 
@@ -172,7 +172,7 @@ public class XObject extends Expression {
    *
    * @return True if there is a next node in the nodeset
    */
-  public boolean boolWithSideEffects() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean boolWithSideEffects() throws javax.xml.transform.TransformerException {
     return bool();
   }
 
@@ -214,9 +214,9 @@ public class XObject extends Expression {
    * Cast result object to a nodelist. Always issues an error.
    *
    * @return null
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public DTMIterator iter() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public DTMIterator iter() throws javax.xml.transform.TransformerException {
 
     error(XPATHErrorResources.ER_CANT_CONVERT_TO_NODELIST, new Object[] {getTypeString()});
 
@@ -238,9 +238,9 @@ public class XObject extends Expression {
    * Cast result object to a nodelist. Always issues an error.
    *
    * @return null
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public NodeList nodelist() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public NodeList nodelist() throws javax.xml.transform.TransformerException {
 
     error(XPATHErrorResources.ER_CANT_CONVERT_TO_NODELIST, new Object[] {getTypeString()});
 
@@ -251,9 +251,9 @@ public class XObject extends Expression {
    * Cast result object to a nodelist. Always issues an error.
    *
    * @return The object as a NodeSetDTM.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public NodeSetDTM mutableNodeset() throws org.loboevolution.javax.xml.transform.TransformerException {
+  public NodeSetDTM mutableNodeset() throws javax.xml.transform.TransformerException {
 
     error(XPATHErrorResources.ER_CANT_CONVERT_TO_MUTABLENODELIST, new Object[] {getTypeString()});
 
@@ -265,9 +265,9 @@ public class XObject extends Expression {
    *
    * @param obj2 Object to compare this to
    * @return True if this object is less than the given object
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error in case of error
+   * @throws javax.xml.transform.TransformerException in case of error in case of error
    */
-  public boolean lessThan(XObject obj2) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean lessThan(final XObject obj2) throws javax.xml.transform.TransformerException {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -284,9 +284,9 @@ public class XObject extends Expression {
    *
    * @param obj2 Object to compare this to
    * @return True if this object is less than or equal to the given object
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  public boolean lessThanOrEqual(XObject obj2) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean lessThanOrEqual(final XObject obj2) throws javax.xml.transform.TransformerException {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -303,9 +303,9 @@ public class XObject extends Expression {
    *
    * @param obj2 Object to compare this to
    * @return True if this object is greater than the given object
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  public boolean greaterThan(XObject obj2) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean greaterThan(final XObject obj2) throws javax.xml.transform.TransformerException {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -322,9 +322,9 @@ public class XObject extends Expression {
    *
    * @param obj2 Object to compare this to
    * @return True if this object is greater than or equal to the given object
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  public boolean greaterThanOrEqual(XObject obj2) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean greaterThanOrEqual(final XObject obj2) throws javax.xml.transform.TransformerException {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -342,7 +342,7 @@ public class XObject extends Expression {
    * @param obj2 Object to compare this to
    * @return True if this object is equal to the given object
    */
-  public boolean equals(XObject obj2) {
+  public boolean equals(final XObject obj2) {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -360,9 +360,9 @@ public class XObject extends Expression {
    *
    * @param obj2 Object to compare this to
    * @return True if this object is not equal to the given object
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  public boolean notEquals(XObject obj2) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean notEquals(final XObject obj2) throws javax.xml.transform.TransformerException {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -376,9 +376,9 @@ public class XObject extends Expression {
    * Tell the user of an error, and probably throw an exception.
    *
    * @param msg Error message to issue
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  protected void error(String msg) throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected void error(final String msg) throws javax.xml.transform.TransformerException {
     error(msg, null);
   }
 
@@ -387,23 +387,23 @@ public class XObject extends Expression {
    *
    * @param msg Error message to issue
    * @param args Arguments to use in the message
-   * @throws org.loboevolution.javax.xml.transform.TransformerException in case of error
+   * @throws javax.xml.transform.TransformerException in case of error
    */
-  protected void error(String msg, Object[] args) throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected void error(final String msg, final Object[] args) throws javax.xml.transform.TransformerException {
 
-    String fmsg = XPATHMessages.createXPATHMessage(msg, args);
+    final String fmsg = XPATHMessages.createXPATHMessage(msg, args);
     throw new XPathException(fmsg, this);
   }
 
   /** {@inheritDoc} */
   @Override
-  public void callVisitors(XPathVisitor visitor) {
+  public void callVisitors(final XPathVisitor visitor) {
     assertion(false, "callVisitors should not be called for this object!!!");
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!isSameClass(expr)) return false;
 
     // If equals at the expression level calls deepEquals, I think we're

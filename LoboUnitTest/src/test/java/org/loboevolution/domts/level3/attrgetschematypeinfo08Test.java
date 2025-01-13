@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,23 +44,21 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an attribute having [type definition] property.  Expose {name} and {target namespace}
  * properties of the [type definition] property.  Verity that the typeName and typeNamespace of the 'title' attribute's (of first 'acronym' element)
  * schemaTypeInfo are correct.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-schemaTypeInfo</a>
  */
-public class attrgetschematypeinfo08Test extends LoboUnitTest {
+public class Attrgetschematypeinfo08Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acElem;
-        Attr attr;
-        TypeInfo attrTypeInfo;
-        String typeName;
-        String typeNamespace;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acElem;
+        final Attr attr;
+        final TypeInfo attrTypeInfo;
+        final String typeName;
+        final String typeNamespace;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acElem = (Element) elemList.item(0);
@@ -68,8 +66,8 @@ public class attrgetschematypeinfo08Test extends LoboUnitTest {
         attrTypeInfo = attr.getSchemaTypeInfo();
         typeName = attrTypeInfo.getTypeName();
         typeNamespace = attrTypeInfo.getTypeNamespace();
-        assertEquals("attrgetschematypeinfo08_typeName", "string", typeName);
-        assertEquals("attrgetschematypeinfo08_typeNamespace", "http://www.w3.org/2001/XMLSchema", typeNamespace);
+        assertEquals("string", typeName, "Attrgetschematypeinfo08Assert2");
+        assertEquals("http://www.w3.org/2001/XMLSchema", typeNamespace, "Attrgetschematypeinfo08Assert3");
     }
 }
 

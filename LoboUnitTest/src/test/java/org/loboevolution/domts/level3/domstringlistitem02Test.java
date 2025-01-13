@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMStringList;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMStringList;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,26 +43,23 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Invoke the first item on the list of parameters returned by the DOMConfiguration object and
  * make sure it is not null.  Then invoke the 100th item and verify that null is returned.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-item">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMStringList-item</a>
  */
-public class domstringlistitem02Test extends LoboUnitTest {
+public class Domstringlistitem02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMStringList paramList;
-        DOMConfiguration domConfig;
-        int listSize;
+        final Document doc;
+        final DOMStringList paramList;
+        final DOMConfiguration domConfig;
         String retStr;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         paramList = domConfig.getParameterNames();
         retStr = paramList.item(0);
-        assertNotNull("domstringlistitem02_notNull", retStr);
+        assertNotNull(retStr, "Domstringlistitem02Assert3");
         retStr = paramList.item(100);
-        assertNull("domstringlistitem02_null", retStr);
+        assertNull(retStr, "Domstringlistitem02Assert4");
     }
 }
 

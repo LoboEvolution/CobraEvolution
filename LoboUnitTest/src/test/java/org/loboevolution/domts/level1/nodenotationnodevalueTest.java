@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,33 +45,30 @@ import static org.junit.Assert.assertNull;
  * DocumentType node and check the string returned
  * by the "getNodeValue()" method.   It should be equal to
  * null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  */
-public class nodenotationnodevalueTest extends LoboUnitTest {
+public class NodenotationnodevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notations;
-        Node notationNode;
-        String notationValue;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notations;
+        final Node notationNode;
+        final String notationValue;
         doc = sampleXmlFile("staff.xml");
         docType = doc.getDoctype();
-        assertNotNull("docTypeNotNull", docType);
+        assertNotNull(docType, "NodenotationnodevalueAssert3");
         notations = docType.getNotations();
-        assertNotNull("notationsNotNull", notations);
+        assertNotNull(notations, "NodenotationnodevalueAssert4");
         notationNode = notations.getNamedItem("notation1");
-        assertNotNull("notationNotNull", notationNode);
+        assertNotNull(notationNode, "NodenotationnodevalueAssert5");
         notationValue = notationNode.getNodeValue();
-        assertNull("nodeValue", notationValue);
+        assertNull(notationValue, "NodenotationnodevalueAssert6");
     }
 
 }

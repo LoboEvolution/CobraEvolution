@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,52 +26,47 @@
 
 package org.loboevolution.domts.level3;
 
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Get the first "em" node, construct an equivalent in a new document and see if isEqualNode
  * returns true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode09Test extends LoboUnitTest {
+public class Nodeisequalnode09Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document newDoc;
-        Element elem1;
-        Element elem2;
-        HTMLCollection employeeList;
-        Text text;
-        boolean isEqual;
-        DocumentType nullDocType = null;
-
-        Node appendedChild;
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final Element elem1;
+        final Element elem2;
+        final HTMLCollection employeeList;
+        final Text text;
+        final boolean isEqual;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getLocalName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         employeeList = doc.getElementsByTagName("em");
         elem1 = (Element) employeeList.item(0);
         elem2 = newDoc.createElementNS("http://www.w3.org/1999/xhtml", "em");
         text = newDoc.createTextNode("EMP0001");
-        appendedChild = elem2.appendChild(text);
+        elem2.appendChild(text);
         isEqual = elem1.isEqualNode(elem2);
-        assertTrue("nodesAreEqual", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode09Assert2");
     }
 }
 

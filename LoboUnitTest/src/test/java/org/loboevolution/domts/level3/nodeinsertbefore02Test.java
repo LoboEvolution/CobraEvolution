@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,12 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -39,46 +40,41 @@ import static org.junit.Assert.assertEquals;
  * this DocumentType node and verify the name of the inserted Comment node.  Now
  * attempt to insert a new Processing Instruction node before the new Comment and
  * verify the target of the inserted ProcessingInstruction.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore02Test extends LoboUnitTest {
+public class Nodeinsertbefore02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        DocumentType newDocType;
-        Comment newComment;
-        Comment insertedComment;
-        String data;
-        ProcessingInstruction newPI;
-        ProcessingInstruction insertedPI;
-        String target;
-        String nullPubId = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final DocumentType newDocType;
+        final Comment newComment;
+        final Comment insertedComment;
+        final String data;
+        final ProcessingInstruction newPI;
+        final ProcessingInstruction insertedPI;
+        final String target;
 
-        String nullSysId = null;
-
-        String rootNS;
-        String rootName;
-        Element docElem;
+        final String rootNS;
+        final String rootName;
+        final Element docElem;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDocType = domImpl.createDocumentType(rootName, nullPubId, nullSysId);
+        newDocType = domImpl.createDocumentType(rootName, null, null);
         newDoc = domImpl.createDocument(rootNS, rootName, newDocType);
         newComment = newDoc.createComment("Comment");
         newPI = newDoc.createProcessingInstruction("PITarget", "PIData");
         insertedComment = (Comment) newDoc.insertBefore(newComment, newDocType);
         data = insertedComment.getData();
-        assertEquals("nodeinsertbefore02_1", "Comment", data);
+        assertEquals("Comment", data, "Nodeinsertbefore02Assert2");
         insertedPI = (ProcessingInstruction) newDoc.insertBefore(newPI, newComment);
         target = insertedPI.getTarget();
-        assertEquals("nodeinsertbefore02_2", "PITarget", target);
+        assertEquals("PITarget", target, "Nodeinsertbefore02Assert3");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -52,37 +52,33 @@ import static org.junit.Assert.*;
  * This node is then retrieved using the "getNamedItem(name)"
  * method.  This test uses the "createAttribute(name)"
  * method from the document interface
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1025163788">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1025163788</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-349467F9">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-349467F9</a>
  */
-public class namednodemapsetnameditemthatexistsTest extends LoboUnitTest {
+public class NamednodemapsetnameditemthatexistsTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Attr newAttribute;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Attr districtNode;
-        String attrValue;
-        Node setNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Attr newAttribute;
+        final Element testAddress;
+        final NamedNodeMap attributes;
+        final Attr districtNode;
+        final String attrValue;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testAddress = (Element) elementList.item(1);
         newAttribute = doc.createAttribute("street");
         attributes = testAddress.getAttributes();
-        setNode = attributes.setNamedItem(newAttribute);
+        attributes.setNamedItem(newAttribute);
         districtNode = (Attr) attributes.getNamedItem("street");
         attrValue = districtNode.getNodeValue();
-        assertEquals("streetValue", null, attrValue);
+        assertNull(attrValue, "NamednodemapsetnameditemthatexistsAssert1");
     }
 }
 

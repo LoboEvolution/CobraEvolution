@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@
  */
 package org.loboevolution.laf;
 
+import lombok.Getter;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.CSSValues;
 
@@ -48,16 +49,8 @@ public final class FontFactory {
 	private final Map<FontKey, Font> fontMap = new HashMap<>();
 
 	/** The Constant instance. */
+	@Getter
 	private static final FontFactory instance = new FontFactory();
-
-	/**
-	 * Gets the Constant instance.
-	 *
-	 * @return the Constant instance
-	 */
-	public static FontFactory getInstance() {
-		return instance;
-	}
 
 	/**
 	 * Instantiates a new font factory.
@@ -78,7 +71,7 @@ public final class FontFactory {
 	 * @param key the key
 	 * @return a {@link java.awt.Font} object.
 	 */
-	public Font getFont(FontKey key) {
+	public Font getFont(final FontKey key) {
 		synchronized (this) {
 			Font font = this.fontMap.get(key);
 			if (font == null) {
@@ -96,7 +89,7 @@ public final class FontFactory {
 	 * @return the font
 	 * @param key a {@link org.loboevolution.laf.FontKey} object.
 	 */
-	public Font scriptFont(Font baseFont, FontKey key) {
+	public Font scriptFont(final Font baseFont, final FontKey key) {
 
 		final Map<TextAttribute, Object> additionalAttributes = new HashMap<>();
 
@@ -127,7 +120,7 @@ public final class FontFactory {
 	 * @param key the key
 	 * @return the font
 	 */
-	private Font createFont(FontKey key) {
+	private Font createFont(final FontKey key) {
 		final Font font = createFontImpl(key);
 		return scriptFont(font, key);
 	}
@@ -140,7 +133,7 @@ public final class FontFactory {
 	 * @param size  the size
 	 * @return the font
 	 */
-	private Font createFont(String name, int style, int size) {
+	private Font createFont(final String name, final int style, final int size) {
 		return StyleContext.getDefaultStyleContext().getFont(name, style, size);
 	}
 
@@ -150,7 +143,7 @@ public final class FontFactory {
 	 * @param key the key
 	 * @return the font
 	 */
-	private Font createFontImpl(FontKey key) {
+	private Font createFontImpl(final FontKey key) {
 		final String fontNames = key.getFontFamily();
 		final int letterSpacing = key.getLetterSpacing();
 		String matchingFace = null;
@@ -170,7 +163,7 @@ public final class FontFactory {
 			}
 		}
 
-		Map<TextAttribute, Object> attributes;
+		final Map<TextAttribute, Object> attributes;
 
 		if (Strings.isNotBlank(key.getFontWeight())) {
 			attributes = getBoldAttributes(key.getFontWeight());
@@ -198,7 +191,7 @@ public final class FontFactory {
 				}
 			} else {
 				boolean allMatch = true;
-				for (Locale locale : locales) {
+				for (final Locale locale : locales) {
 					if (font.canDisplayUpTo(locale.getDisplayLanguage(locale)) != -1) {
 						allMatch = false;
 						break;
@@ -212,9 +205,9 @@ public final class FontFactory {
 		return createFont(key.getFont(), fontStyle, Math.round(key.getFontSize())).deriveFont(attributes);
 	}
 
-	private Map<TextAttribute, Object> getBoldAttributes(String fontWeight){
+	private Map<TextAttribute, Object> getBoldAttributes(final String fontWeight){
 
-		Map<TextAttribute, Object> attributes = new HashMap<>();
+		final Map<TextAttribute, Object> attributes = new HashMap<>();
 
 		switch (CSSValues.get(fontWeight)) {
 			case BOLD100:
@@ -226,11 +219,6 @@ public final class FontFactory {
 				break;
 			case BOLD300:
 				attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_DEMILIGHT);
-				break;
-			case NORMAL:
-			case BOLD400:
-			default:
-				attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR);
 				break;
 			case BOLD500:
 				attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_MEDIUM);
@@ -248,6 +236,11 @@ public final class FontFactory {
 				break;
 			case BOLD900:
 				attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRABOLD);
+				break;
+			case NORMAL:
+			case BOLD400:
+			default:
+				attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_REGULAR);
 				break;
 		}
 		return attributes;

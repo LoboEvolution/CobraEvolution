@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,29 +35,27 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the renameNode method to rename the default attribute "dir" to xsi:schemaLocation.
  * Check if this attribute has been renamed successfully by verifying the
  * nodeName, namespaceURI, nodeType attributes of the renamed node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode06Test extends LoboUnitTest {
+public class Documentrenamenode06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Attr attr;
-        HTMLCollection childList;
-        Node renamedclass;
-        String nodeName;
-        int nodeType;
-        String namespaceURI;
+        final Document doc;
+        final Element element;
+        final Attr attr;
+        final HTMLCollection childList;
+        final Node renamedclass;
+        final String nodeName;
+        final int nodeType;
+        final String namespaceURI;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("p");
         element = (Element) childList.item(3);
@@ -66,9 +64,9 @@ public class documentrenamenode06Test extends LoboUnitTest {
         nodeName = renamedclass.getNodeName();
         namespaceURI = renamedclass.getNamespaceURI();
         nodeType = renamedclass.getNodeType();
-        assertEquals("documentrenameode01_nodeName", "xsi:schemaLocation", nodeName);
-        assertEquals("documentrenameNode01_nodeType", 2, nodeType);
-        assertEquals("documentrenamenode01_nodeValue", "http://www.w3.org/2001/XMLSchema-instance", namespaceURI);
+        assertEquals("xsi:schemaLocation", nodeName, "Documentrenamenode06Assert2");
+        assertEquals(2, nodeType, "Documentrenamenode06Assert3");
+        assertEquals("http://www.w3.org/2001/XMLSchema-instance", namespaceURI, "Documentrenamenode06Assert4");
     }
 }
 

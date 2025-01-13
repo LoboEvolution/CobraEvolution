@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,31 @@
 package org.loboevolution.common;
 
 import java.awt.BasicStroke;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
 /**
  * <p>GUITasks class.</p>
- *
- *
- *
  */
 public class GUITasks {
 	/**
 	 * <p>drawDashed.</p>
 	 *
 	 * @param g a {@link java.awt.Graphics} object.
-	 * @param x1 a int.
-	 * @param y1 a int.
-	 * @param x2 a int.
-	 * @param y2 a int.
-	 * @param dashSize a int.
-	 * @param gapSize a int.
+	 * @param xDashed1 a {@link java.lang.Integer} object.
+	 * @param yDashed1 a {@link java.lang.Integer} object.
+	 * @param xDashed2 a {@link java.lang.Integer} object.
+	 * @param yDashed2 a {@link java.lang.Integer} object.
+	 * @param dashSize a {@link java.lang.Integer} object.
+	 * @param gapSize a {@link java.lang.Integer} object.
 	 */
-	public static void drawDashed(Graphics g, int x1, int y1, int x2, int y2, int dashSize, int gapSize) {
+	public static void drawDashed(final Graphics g, final int xDashed1, final int yDashed1, final int xDashed2, final int yDashed2, final int dashSize, final int gapSize) {
+		int x1 = xDashed1;
+		int y1 = yDashed1;
+		int x2 = xDashed2;
+		int y2 = yDashed2;
+
 		if (x2 < x1) {
 			final int temp = x1;
 			x1 = x2;
@@ -101,10 +102,10 @@ public class GUITasks {
 	 * <p>drawDotted.</p>
 	 *
 	 * @param g a {@link java.awt.Graphics} object.
-	 * @param x1 a int.
-	 * @param y1 a int.
-	 * @param x2 a int.
-	 * @param y2 a int.
+	 * @param x1 a {@link java.lang.Integer} object.
+	 * @param y1 a {@link java.lang.Integer} object.
+	 * @param x2 a {@link java.lang.Integer} object.
+	 * @param y2 a {@link java.lang.Integer} object.
 	 * @param width a float.
 	 */
 	public static void drawDotted(final Graphics g, final int x1, final int y1, final int x2, final int y2, final float width) {
@@ -120,23 +121,5 @@ public class GUITasks {
 		} finally {
 			ng.dispose();
 		}
-	}
-
-	/**
-	 * <p>getTopFrame.</p>
-	 *
-	 * @return a {@link java.awt.Frame} object.
-	 */
-	public static Frame getTopFrame() {
-		final Frame[] frames = Frame.getFrames();
-		for (final Frame frame : frames) {
-			if (frame.getFocusOwner() != null) {
-				return frame;
-			}
-		}
-		if (frames.length > 0) {
-			return frames[0];
-		}
-		return null;
 	}
 }

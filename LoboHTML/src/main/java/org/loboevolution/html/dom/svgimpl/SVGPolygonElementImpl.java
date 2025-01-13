@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.svg.*;
 
 import java.awt.*;
@@ -37,6 +38,7 @@ import java.util.StringTokenizer;
 /**
  * <p>SVGPolygonElementImpl class.</p>
  */
+@Slf4j
 public class SVGPolygonElementImpl extends SVGGraphic implements SVGPolygonElement {
 
 	/**
@@ -50,7 +52,7 @@ public class SVGPolygonElementImpl extends SVGGraphic implements SVGPolygonEleme
 
 	@Override
 	public SVGRect getBBox() {
-		Shape shape = createShape(null);
+		final Shape shape = createShape(null);
 		return new SVGRectImpl(shape.getBounds2D());
 	}
 
@@ -77,14 +79,14 @@ public class SVGPolygonElementImpl extends SVGGraphic implements SVGPolygonEleme
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
-		GeneralPath path = new GeneralPath();
-		SVGPointList points = getAnimatedPoints();
-		int numPoints = points.getNumberOfItems();
+	public Shape createShape(final AffineTransform transform) {
+		final GeneralPath path = new GeneralPath();
+		final SVGPointList points = getAnimatedPoints();
+		final int numPoints = points.getNumberOfItems();
 		for (int i = 0; i < numPoints; i++) {
-			SVGPoint point = points.getItem(i);
-			float x = point.getX();
-			float y = point.getY();
+			final SVGPoint point = points.getItem(i);
+			final float x = point.getX();
+			final float y = point.getY();
 			if (i == 0) {
 				path.moveTo(x, y);
 			} else {
@@ -95,16 +97,17 @@ public class SVGPolygonElementImpl extends SVGGraphic implements SVGPolygonEleme
 		return path;
 	}
 
-	private SVGPointList constructPointList(String pointString) {
-		SVGPointListImpl points = new SVGPointListImpl();
-		StringTokenizer st = new StringTokenizer(pointString, " ,", false);
+	private SVGPointList constructPointList(final String pointString) {
+		final SVGPointListImpl points = new SVGPointListImpl();
+		final StringTokenizer st = new StringTokenizer(pointString, " ,", false);
 		while (st.hasMoreTokens()) {
 			try {
-				float x = Float.parseFloat(st.nextToken());
-				float y = Float.parseFloat(st.nextToken());
-				SVGPoint point = new SVGPointImpl(x, y);
+				final float x = Float.parseFloat(st.nextToken());
+				final float y = Float.parseFloat(st.nextToken());
+				final SVGPoint point = new SVGPointImpl(x, y);
 				points.appendItem(point);
-			} catch (NoSuchElementException e) {
+			} catch (final NoSuchElementException e) {
+				log.info(e.getMessage());
 			}
 		}
 		return points;

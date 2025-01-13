@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import org.htmlunit.cssparser.util.ParserUtils;
  * Implementation of CSSRuleList.
  *
  * @author Ronald Brill
- *
  */
 public class CSSRuleListImpl implements Serializable {
 
@@ -57,7 +56,6 @@ public class CSSRuleListImpl implements Serializable {
 
     /**
      * Add a rule.
-     *
      * @param rule the rule to be added
      */
     public void add(final AbstractCSSRuleImpl rule) {
@@ -66,7 +64,6 @@ public class CSSRuleListImpl implements Serializable {
 
     /**
      * Insert a rule at the given pos.
-     *
      * @param rule the rule to be inserted
      * @param index the insert pos
      */
@@ -76,7 +73,6 @@ public class CSSRuleListImpl implements Serializable {
 
     /**
      * Delete the rule at the given pos.
-     *
      * @param index the delete pos
      */
     public void delete(final int index) {

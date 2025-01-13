@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,50 +43,43 @@ import static org.junit.Assert.*;
  * is created.
  * <p>
  * Using the method importNode with deep=true, import the default Attribute attribute,
- * "defaultAttr" of the second element node whose namespaceURI="http://www.nist.gov" and
+ * "defaultAttr" of the second element node whose namespaceURI="<a href="http://www.nist.gov">...</a>" and
  * localName="defaultAttr", into a new document.
  * Check the parentNode, nodeName, nodeType and nodeValue of the imported node to
  * verify if it has been imported correctly.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode04Test extends LoboUnitTest {
+public class Documentimportnode04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DocumentType docType = null;
-
-        DOMImplementation domImpl;
-        Element element;
-        Attr attr;
-        HTMLCollection childList;
-        Node importedAttr;
-        String nodeName;
-        int nodeType;
-        String nodeValue;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Element element;
+        final Attr attr;
+        final HTMLCollection childList;
+        final Node importedAttr;
+        final String nodeName;
+        final int nodeType;
+        final String nodeValue;
         doc = sampleXmlFile("staffNS.xml");
-        
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "l2:root", docType);
-        childList = doc.getElementsByTagName( "employee");
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "l2:root", null);
+        childList = doc.getElementsByTagName("employee");
         element = (Element) childList.item(1);
         attr = element.getAttributeNode("defaultAttr");
         importedAttr = newDoc.importNode(attr, true);
         nodeName = importedAttr.getNodeName();
         nodeValue = importedAttr.getNodeValue();
         nodeType = importedAttr.getNodeType();
-        assertEquals("documentimportnode04_nodeName", "defaultAttr", nodeName);
-        assertEquals("documentimportnode04_nodeType", 2, nodeType);
-        assertEquals("documentimportnode04_nodeValue", "defaultVal", nodeValue);
+        assertEquals("defaultAttr", nodeName);
+        assertEquals(2, nodeType);
+        assertEquals("defaultVal", nodeValue);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,8 @@ import lombok.Setter;
 import org.loboevolution.html.node.AbstractList;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.traversal.NodeFilter;
-import org.loboevolution.html.node.traversal.NodeIterator;
+import org.loboevolution.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeIterator;
 
 /**
  * <p>TreeWalkerImpl class.</p>
@@ -42,21 +42,21 @@ import org.loboevolution.html.node.traversal.NodeIterator;
 @Setter
 public class NodeIteratorImpl extends AbstractList<Node> implements NodeIterator {
 
-    private Node root;
+    private final Node root;
 
     private Node currentNode;
 
     private Document document;
 
-    private NodeFilter filter;
+    private final NodeFilter filter;
 
     private boolean fForward = true;
 
     private boolean fDetach = false;
 
-    private int whatToShow;
+    private final int whatToShow;
 
-    public NodeIteratorImpl(Node root, int whatToShow, NodeFilter filter) {
+    public NodeIteratorImpl(final Node root, final int whatToShow, final NodeFilter filter) {
         this.root = root;
         this.whatToShow = whatToShow;
         this.filter = filter;
@@ -136,7 +136,7 @@ public class NodeIteratorImpl extends AbstractList<Node> implements NodeIterator
         return null;
     }
 
-    private Node nextNode(Node node, boolean visitChildren) {
+    private Node nextNode(final Node node, final boolean visitChildren) {
 
         if (node == null) return root;
 
@@ -169,7 +169,7 @@ public class NodeIteratorImpl extends AbstractList<Node> implements NodeIterator
         return null;
     }
 
-    private Node previousNode(Node node) {
+    private Node previousNode(final Node node) {
         Node result;
         if (node == root) return null;
 
@@ -189,7 +189,7 @@ public class NodeIteratorImpl extends AbstractList<Node> implements NodeIterator
         return result;
     }
 
-    boolean acceptNode(Node node) {
+    boolean acceptNode(final Node node) {
 
         if (filter == null) {
             return ( whatToShow & (1 << node.getNodeType()-1)) != 0 ;

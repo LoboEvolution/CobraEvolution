@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,46 +26,60 @@
 
 package org.loboevolution.common;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <p>Urls class.</p>
- *
- *
- *
  */
+@Slf4j
 public class Urls {
-	
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(Urls.class.getName());
 	
 	/** The Constant PATTERN_RFC1123. */
 	public static final DateFormat PATTERN_RFC1123 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
 	/**
-	 * <p>createURL.</p>
+	 * <p>createURI.</p>
 	 *
-	 * @param baseUrl a {@link java.net.URL} object.
-	 * @param relativeUrl a {@link java.lang.String} object.
-	 * @return a {@link java.net.URL} object.
-	 * @throws java.lang.Exception if any.
+	 * @param baseUri a {@link URL} object.
+	 * @param relativeUrl a {@link String} object.
+	 * @return a {@link URI} object.
+	 * @throws Exception if any.
 	 */
-	public static URL createURL(URL baseUrl, String relativeUrl) throws Exception {
+	public static URI createURI(final String baseUri, final String relativeUrl) throws Exception {
 		if (relativeUrl.contains("javascript:void")) {
 			return null;
 		}
-		
-		return new URL(baseUrl, encodeIllegalCharacters(relativeUrl));
+
+		String relUrl = relativeUrl;
+
+		if (baseUri == null) {
+			final int idx = relUrl.indexOf(':');
+			if (idx == -1 || idx == 1) {
+				return new URI("file:" + relUrl);
+			} else if (relUrl.startsWith("//")) {
+				relUrl = "http:" + relUrl;
+				return new URI(relUrl);
+			}
+		} else {
+			if (baseUri.contains("file:") && !relativeUrl.contains("..")) {
+				return new URI(baseUri + relativeUrl);
+			} else
+				return new URI(baseUri).resolve(encodeIllegalCharacters(relativeUrl));
+		}
+		return null;
 	}
 
 	/**
@@ -74,7 +88,7 @@ public class Urls {
 	 * (Firefox 3 also encodes other non-ASCII and some ASCII characters).
 	 *
 	 * @return the encoded URL
-	 * @param url a {@link java.lang.String} object.
+	 * @param url a {@link String} object.
 	 */
 	public static String encodeIllegalCharacters(final String url) {
 		return url.replace(" ", "%20");
@@ -83,10 +97,10 @@ public class Urls {
 	/**
 	 * <p>getCharset.</p>
 	 *
-	 * @param connection a {@link java.net.URLConnection} object.
-	 * @return a {@link java.lang.String} object.
+	 * @param connection a {@link URLConnection} object.
+	 * @return a {@link String} object.
 	 */
-	public static String getCharset(URLConnection connection) {
+	public static String getCharset(final URLConnection connection) {
 		final String contentType = connection.getContentType();
 		if (contentType == null) {
 			return getDefaultCharset(connection);
@@ -109,10 +123,10 @@ public class Urls {
 		return getDefaultCharset(connection);
 	}
 
-	private static String getDefaultCharset(URLConnection connection) {
+	private static String getDefaultCharset(final URLConnection connection) {
 		final URL url = connection.getURL();
 		if (Urls.isLocalFile(url)) {
-			final String charset = System.getProperty("file.encoding");
+			final String charset = Charset.defaultCharset().displayName();
 			return charset == null ? "UTF-8" : charset;
 		} else {
 			return "UTF-8";
@@ -120,23 +134,12 @@ public class Urls {
 	}
 
 	/**
-	 * <p>hasHost.</p>
-	 *
-	 * @param url a {@link java.net.URL} object.
-	 * @return a boolean.
-	 */
-	public static boolean hasHost(URL url) {
-		final String host = url.getHost();
-		return Strings.isNotBlank(host);
-	}
-
-	/**
 	 * <p>isAbsolute.</p>
 	 *
-	 * @param url a {@link java.lang.String} object.
+	 * @param url a {@link String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isAbsolute(String url) {
+	public static boolean isAbsolute(final String url) {
 		boolean result = false;
 
 		if (url.startsWith("//")) {
@@ -151,7 +154,7 @@ public class Urls {
 			final URI uri = new URI(url);
 			result = uri.isAbsolute();
 		} catch (final Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		}
 		return result;
 	}
@@ -159,57 +162,66 @@ public class Urls {
 	/**
 	 * <p>isLocalFile.</p>
 	 *
-	 * @param url a {@link java.net.URL} object.
+	 * @param url a {@link URL} object.
 	 * @return a boolean.
 	 */
-	public static boolean isLocalFile(URL url) {
+	public static boolean isLocalFile(final URL url) {
 		final String scheme = url.getProtocol();
-		return "file".equalsIgnoreCase(scheme) && !hasHost(url);
+		return "file".equalsIgnoreCase(scheme);
 	}
 
 	/**
 	 * <p>getExpiration.</p>
 	 *
-	 * @param connection a {@link java.net.URLConnection} object.
+	 * @param connection a {@link URLConnection} object.
 	 * @param baseTime a long.
-	 * @return a {@link java.lang.Long} object.
+	 * @return a {@link Long} object.
 	 */
-	public static Long getExpiration(URLConnection connection, long baseTime) {
-		String cacheControl = connection.getHeaderField("Cache-Control");
+	public static Long getExpiration(final URLConnection connection, final long baseTime) {
+		final String cacheControl = connection.getHeaderField("Cache-Control");
 		if (cacheControl != null) {
-			StringTokenizer tok = new StringTokenizer(cacheControl, ",");
+			final StringTokenizer tok = new StringTokenizer(cacheControl, ",");
 			while (tok.hasMoreTokens()) {
-				String token = tok.nextToken().trim().toLowerCase();
+				final String token = tok.nextToken().trim().toLowerCase();
 				if ("must-revalidate".equals(token)) {
 					return 0L;
 				} else if (token.startsWith("max-age")) {
-					int eqIdx = token.indexOf('=');
+					final int eqIdx = token.indexOf('=');
 					if (eqIdx != -1) {
-						String value = token.substring(eqIdx + 1).trim();
+						final String value = token.substring(eqIdx + 1).trim();
 						try {
 							return baseTime + Integer.parseInt(value);
-						} catch (NumberFormatException e) {
-							logger.log(Level.SEVERE, e.getMessage(), e);
+						} catch (final NumberFormatException e) {
+							log.error(e.getMessage(), e);
 						}
 					}
 				}
 			}
 		}
-		String expires = connection.getHeaderField("Expires");
+		final String expires = connection.getHeaderField("Expires");
 		if (expires != null) {
 			try {
 				synchronized (PATTERN_RFC1123) {
-					Date expDate = PATTERN_RFC1123.parse(expires);
+					final Date expDate = PATTERN_RFC1123.parse(expires);
 					return expDate.getTime();
 				}
-			} catch (ParseException pe) {
+			} catch (final ParseException pe) {
 				try {
 					return baseTime + Integer.parseInt(expires);
-				} catch (NumberFormatException e) {
-					logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (final NumberFormatException e) {
+					log.error(e.getMessage(), e);
 				}
 			}
 		}
 		return 0L;
+	}
+
+	public static boolean exists(URL url) {
+		try {
+			url.openConnection();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

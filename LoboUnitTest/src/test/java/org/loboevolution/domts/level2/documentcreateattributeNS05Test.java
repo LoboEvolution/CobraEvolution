@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,12 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,40 +42,35 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Invoke the createAttributeNS method on a new Document object with a null value for
  * namespaceURI, and a valid qualifiedName.  Check if a NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrAttrNS</a>
  */
-public class documentcreateattributeNS05Test extends LoboUnitTest {
+public class DocumentcreateattributeNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DocumentType docType = null;
+        final Document doc;
+        final Document newDoc;
 
-        DOMImplementation domImpl;
-        String namespaceURI = null;
+        final DOMImplementation domImpl;
 
-        String qualifiedName = "abc:def";
+        final String qualifiedName = "abc:def";
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:doc", docType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:doc", null);
 
         boolean success = false;
         try {
-            newDoc.createAttributeNS(namespaceURI, qualifiedName);
-        } catch (DOMException ex) {
+            newDoc.createAttributeNS(null, qualifiedName);
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("documentcreateattributeNS05", success);
+        assertTrue(success);
     }
 }
 

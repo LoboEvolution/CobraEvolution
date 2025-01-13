@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,36 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Create a list of all the children elements of the third
  * employee and access its first child by using an index
  * of 0.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136</a>
  */
-public class nodelistindexequalzeroTest extends LoboUnitTest {
+public class NodelistindexequalzeroTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList employeeList;
-        Node child;
-        String childName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList employeeList;
+        final Node child;
+        final String childName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(2);
@@ -68,7 +65,7 @@ public class nodelistindexequalzeroTest extends LoboUnitTest {
         childName = child.getNodeName();
 
         if (!"#text".equals(childName)) {
-            assertEquals("childName", "EMPLOYEEID", childName);
+            assertEquals("EMPLOYEEID", childName, "NodelistindexequalzeroAssert1");
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.HTMLStyleElement;
 import org.loboevolution.html.dom.svg.SVGSVGElement;
 import org.loboevolution.html.js.css.CSSStyleSheetImpl;
-import org.loboevolution.html.node.css.CSSStyleSheet;
+import org.loboevolution.css.CSSStyleSheet;
 import org.loboevolution.html.parser.XHtmlParser;
 import org.loboevolution.html.style.CSSUtilities;
 import org.loboevolution.html.dom.UserDataHandler;
@@ -67,7 +67,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleEl
 
 	/** {@inheritDoc} */
 	@Override
-	protected void appendInnerTextImpl(StringBuilder buffer) {
+	protected void appendInnerTextImpl(final StringBuilder buffer) {
 		// nop
 	}
 
@@ -97,29 +97,32 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(final boolean disabled) {
 		this.disabled = disabled;
 		final CSSStyleSheetImpl sheet = this.styleSheet;
 		if (sheet != null) {
 			sheet.setDisabled(disabled);
+			if(disabled) {
+				((HTMLDocumentImpl)this.document).allInvalidated(true);
+			}
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setMedia(String media) {
+	public void setMedia(final String media) {
 		setAttribute("media", media);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setType(String type) {
+	public void setType(final String type) {
 		setAttribute("type", type);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		if (XHtmlParser.MODIFYING_KEY.equals(key) && data != Boolean.TRUE) {
 			processStyle();
 		}
@@ -134,16 +137,15 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleEl
 		final HTMLDocumentImpl doc = (HTMLDocumentImpl) getOwnerDocument();
 		if (CSSUtilities.matchesMedia(getMedia(), doc.getDefaultView())) {
 			final String text = getRawInnerText(true);
-			if (Strings.isNotBlank(text)) {
+			if (Strings.isNotBlank(text) && !isDisabled()) {
 				final String processedText = CSSUtilities.preProcessCss(text);
 				final CSSOMParser parser = new CSSOMParser(new CSS3Parser());
 				final String baseURI = doc.getBaseURI();
 				final InputSource is = CSSUtilities.getCssInputSourceForStyleSheet(processedText, baseURI);
 				try {
 					final org.htmlunit.cssparser.dom.CSSStyleSheetImpl sheet = parser.parseStyleSheet(is, null);
-					sheet.setHref(baseURI);
 					sheet.setDisabled(this.disabled);
-					CSSStyleSheetImpl cssStyleSheet = new CSSStyleSheetImpl(sheet);
+					final CSSStyleSheetImpl cssStyleSheet = new CSSStyleSheetImpl(sheet);
 					cssStyleSheet.setOwnerNode(this);
 
 					if(! (this.getParentNode() instanceof SVGSVGElement))

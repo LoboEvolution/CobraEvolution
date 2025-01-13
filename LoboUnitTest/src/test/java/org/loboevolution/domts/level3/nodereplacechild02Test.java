@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,31 +27,27 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
-import org.loboevolution.html.node.Node;
 
 /**
  * The method replaceChild replaces the child node oldChild with newChild in the list of
  * children, and returns the oldChild node.
  * Using replaceChild on this Document node attempt to replace this DocumentType node with
  * its DocumentType (replacing node with itself -- implementation dependent)
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild02Test extends LoboUnitTest {
+public class Nodereplacechild02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        Node replaced;
+        final Document doc;
+        final DocumentType docType;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
-        replaced = doc.replaceChild(docType, docType);
+        doc.replaceChild(docType, docType);
     }
 }
 

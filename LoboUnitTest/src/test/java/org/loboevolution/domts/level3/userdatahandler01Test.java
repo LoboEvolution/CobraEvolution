@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,9 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.UserDataHandler;
 import org.loboevolution.html.dom.nodeimpl.UserDataHandlerImpl;
 import org.loboevolution.html.dom.nodeimpl.UserDataNotification;
 import org.loboevolution.html.node.Document;
@@ -38,30 +37,27 @@ import org.loboevolution.html.node.Node;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 
 /**
  * Call setUserData on a node providing a UserDataHandler and rename the node.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-handleUserDataEvent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-handleUserDataEvent</a>
  */
-public class userdatahandler01Test extends LoboUnitTest {
+public class Userdatahandler01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Node node;
-        HTMLCollection pList;
-        UserDataHandlerImpl userDataHandlerImpl = new UserDataHandlerImpl();
+        final Document doc;
+        final Node node;
+        final HTMLCollection pList;
+        final UserDataHandlerImpl userDataHandlerImpl = new UserDataHandlerImpl();
 
-        Object oldUserData;
-        String elementNS;
-        Node newNode;
-        List<UserDataNotification> notifications;
+        final String elementNS;
+        final Node newNode;
+        final List<UserDataNotification> notifications;
 
-        UserDataNotification notification;
         short operation;
         String key;
         String data;
@@ -69,45 +65,49 @@ public class userdatahandler01Test extends LoboUnitTest {
         Node dst;
         int greetingCount = 0;
         int salutationCount = 0;
-        String hello = "Hello";
-        String mister = "Mr.";
+        final String hello = "Hello";
+        final String mister = "Mr.";
         doc = sampleXmlFile("barfoo.xml");
         pList = doc.getElementsByTagName("p");
         node = pList.item(0);
-        oldUserData = node.setUserData("greeting", ((Object) /*DOMString */hello), ((UserDataHandler) /*UserDataHandlerImpl */userDataHandlerImpl));
-        oldUserData = node.setUserData("salutation", ((Object) /*DOMString */mister), ((UserDataHandler) /*UserDataHandlerImpl */userDataHandlerImpl));
+        /*UserDataHandlerImpl */
+        /*DOMString */
+        node.setUserData("greeting", hello, userDataHandlerImpl);
+        /*UserDataHandlerImpl */
+        /*DOMString */
+        node.setUserData("salutation", mister, userDataHandlerImpl);
         elementNS = node.getNamespaceURI();
         newNode = doc.renameNode(node, elementNS, "div");
         notifications = userDataHandlerImpl.getAllNotifications();
-        assertEquals("twoNotifications", 2, notifications.size());
-        for (UserDataNotification userDataNotification : notifications) {
+        assertEquals(2, notifications.size(), "Userdatahandler01Assert3");
+        for (final UserDataNotification userDataNotification : notifications) {
             operation = userDataNotification.getOperation();
-            assertEquals("operationIsRename", 4, operation);
+            assertEquals(4, operation, "Userdatahandler01Assert4");
             key = userDataNotification.getKey();
             data = (String) userDataNotification.getData();
 
             if ("greeting".equals(key)) {
-                assertEquals("greetingDataHello", hello, data);
+                assertEquals(hello, data, "Userdatahandler01Assert5");
                 greetingCount += 1;
             } else {
-                assertEquals("saluationKey", "salutation", key);
-                assertEquals("salutationDataMr", mister, data);
+                assertEquals("salutation", key, "Userdatahandler01Assert6");
+                assertEquals(mister, data, "Userdatahandler01Assert7");
                 salutationCount += 1;
             }
 
             src = userDataNotification.getSrc();
-            assertSame("srcIsNode", node, src);
+            assertSame(node, src, "Userdatahandler01Assert8");
             dst = userDataNotification.getDst();
 
             if ((dst == null)) {
-                assertSame("ifDstNullRenameMustReuseNode", node, newNode);
+                assertSame(node, newNode, "Userdatahandler01Assert9");
             } else {
-                assertSame("dstIsNewNode", newNode, dst);
+                assertSame(newNode, dst, "Userdatahandler01Assert10");
             }
 
         }
-        assertEquals("greetingCountIs1", 1, greetingCount);
-        assertEquals("salutationCountIs1", 1, salutationCount);
+        assertEquals(1, greetingCount, "Userdatahandler01Assert11");
+        assertEquals(1, salutationCount, "Userdatahandler01Assert12");
     }
 }
 

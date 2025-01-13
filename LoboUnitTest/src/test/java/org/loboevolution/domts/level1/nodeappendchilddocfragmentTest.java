@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -38,7 +38,7 @@ import org.loboevolution.html.node.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,32 +47,29 @@ import static org.junit.Assert.*;
  * "appendChild(newChild)" method is invoked retrieve the
  * new nodes at the end of the list, they should be the
  * two Element nodes from the DocumentFragment.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107</a>
  */
-public class nodeappendchilddocfragmentTest extends LoboUnitTest {
+public class NodeappendchilddocfragmentTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        DocumentFragment newdocFragment;
-        Node newChild1;
-        Node newChild2;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final DocumentFragment newdocFragment;
+        final Node newChild1;
+        final Node newChild2;
         Node child;
         String childName;
-        List<String> result = new java.util.ArrayList<String>();
+        final List<String> result = new java.util.ArrayList<>();
 
         int nodeType;
-        List<String> expected = new ArrayList<String>();
+        final List<String> expected = new ArrayList<>();
         expected.add("EMPLOYEEID");
         expected.add("NAME");
         expected.add("POSITION");
@@ -101,7 +98,7 @@ public class nodeappendchilddocfragmentTest extends LoboUnitTest {
                 result.add(childName);
             }
         }
-        assertEquals("elementNames", expected, result);
+        assertEquals(expected, result, "NodeappendchilddocfragmentAssert1");
     }
 }
 

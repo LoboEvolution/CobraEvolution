@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,31 +43,28 @@ import static org.junit.Assert.*;
  * Retrieve the first "address" element.
  * The value returned by the "getAttributeNS()" method should be the
  * value "DISTRICT" since the attribute has a default value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAttrNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=238">http://www.w3.org/Bugs/Public/show_bug.cgi?id=238</a>
  */
-public class getAttributeNS01Test extends LoboUnitTest {
+public class GetAttributeNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.nist.gov";
-        String localName = "domestic";
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        String attrValue;
+        final String namespaceURI = "http://www.nist.gov";
+        final String localName = "domestic";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final String attrValue;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = (Element) elementList.item(0);
         attrValue = testAddr.getAttributeNS(namespaceURI, localName);
-        assertEquals("attrValue", "Yes", attrValue);
+        assertEquals("Yes", attrValue);
     }
 }
 

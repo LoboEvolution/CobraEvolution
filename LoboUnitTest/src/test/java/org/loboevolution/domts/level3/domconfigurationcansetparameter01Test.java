@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,45 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The parameter commments is turned on by default.  Check to see if this feature can be set
  * to false by invoking canSetParameter method.  Also check that this method does not change the
  * value of parameter.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-canSetParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-canSetParameter</a>
  */
-public class domconfigurationcansetparameter01Test extends LoboUnitTest {
+public class Domconfigurationcansetparameter01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
-        boolean canSet;
-        Comment newCommentNode;
-        Element docElem;
-        Node appendedChild;
-        Node lastChild;
-        String commentValue;
+        final Document doc;
+        final DOMConfiguration domConfig;
+        final boolean canSet;
+        final Comment newCommentNode;
+        final Element docElem;
+        final Node lastChild;
+        final String commentValue;
         doc = sampleXmlFile("hc_staff.xml");
         newCommentNode = doc.createComment("This is a new Comment node");
         docElem = doc.getDocumentElement();
-        appendedChild = docElem.appendChild(newCommentNode);
+        docElem.appendChild(newCommentNode);
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("comments", Boolean.FALSE);
-        assertTrue("domconfigurationcansetparameter01", canSet);
+        assertTrue(canSet, "Domconfigurationcansetparameter01Assert3");
         doc.normalizeDocument();
         lastChild = docElem.getLastChild();
         commentValue = lastChild.getNodeValue();
-        assertEquals("domconfigurationsetparameter02_2", "This is a new Comment node", commentValue);
+        assertEquals("This is a new Comment node", commentValue, "Domconfigurationcansetparameter01Assert4");
     }
 }
 

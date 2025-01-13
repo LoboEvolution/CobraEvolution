@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,31 +44,28 @@ import static org.junit.Assert.assertTrue;
  * Retrieve the first "address" element.
  * The boolean value returned by the "hasAttributeNS()" should be true
  * since the attribute has a default value.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElHasAttrNS</a>
  */
-public class hasAttributeNS04Test extends LoboUnitTest {
+public class HasAttributeNS04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String localName = "district";
-        String namespaceURI = "http://www.nist.gov";
-        Document doc;
-        HTMLCollection elementList;
-        Element testNode;
-        boolean state;
+        final String localName = "district";
+        final String namespaceURI = "http://www.nist.gov";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testNode;
+        final boolean state;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testNode = (Element) elementList.item(0);
-        assertNotNull("empAddressNotNull", testNode);
+        assertNotNull(testNode);
         state = testNode.hasAttributeNS(namespaceURI, localName);
-        assertTrue("hasAttribute", state);
+        assertTrue(state);
     }
 }
 

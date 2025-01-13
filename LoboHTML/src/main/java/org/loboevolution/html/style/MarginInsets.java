@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,9 @@
 
 package org.loboevolution.html.style;
 
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.CSSValues;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderstate.RenderState;
 
 /**
@@ -39,12 +39,12 @@ public class MarginInsets {
 	/**
 	 * <p>getMarginInsets.</p>
 	 *
-	 * @param cssProperties a {@link org.loboevolution.html.node.css.CSSStyleDeclaration} object.
+	 * @param cssProperties a {@link CSSStyleDeclaration} object.
 	 * @param element a {@link  org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @return a {@link org.loboevolution.html.style.HtmlInsets} object.
 	 */
-	public static HtmlInsets getMarginInsets(CSSStyleDeclaration cssProperties, HTMLElementImpl element, RenderState renderState) {
+	public static HtmlInsets getMarginInsets(final CSSStyleDeclaration cssProperties, final HTMLElementImpl element, final RenderState renderState) {
 		final CSSStyleDeclaration props = element.getParentStyle();
 		if (props == null) {
 			return HtmlInsets.getInsets("0px", "0px", "0px", "0px", element, renderState);
@@ -59,12 +59,12 @@ public class MarginInsets {
 	/**
 	 * <p>getPaddingInsets.</p>
 	 *
-	 * @param cssProperties a {@link org.loboevolution.html.node.css.CSSStyleDeclaration} object.
+	 * @param cssProperties a {@link CSSStyleDeclaration} object.
 	 * @param element a {@link  org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @return a {@link org.loboevolution.html.style.HtmlInsets} object.
 	 */
-	public static HtmlInsets getPaddingInsets(CSSStyleDeclaration cssProperties, HTMLElementImpl element, RenderState renderState) {
+	public static HtmlInsets getPaddingInsets(final CSSStyleDeclaration cssProperties, final HTMLElementImpl element, final RenderState renderState) {
 		final CSSStyleDeclaration props = element.getParentStyle();
 		if (props == null) {
 			return HtmlInsets.getInsets("0px", "0px", "0px", "0px", element, renderState);
@@ -76,7 +76,7 @@ public class MarginInsets {
 		return HtmlInsets.getInsets(topText, leftText, bottomText, rightText, element, renderState);
 	}
 
-	private static boolean isInherit(String value) {
+	private static boolean isInherit(final String value) {
 		return CSSValues.INHERIT.equals(CSSValues.get(value));
 	}
 }

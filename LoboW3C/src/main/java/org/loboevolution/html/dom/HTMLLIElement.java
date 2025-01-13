@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public interface HTMLLIElement extends HTMLElement {
     /**
      * Sets or retrieves the value of a list item.
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getValue();
 
@@ -65,7 +65,7 @@ public interface HTMLLIElement extends HTMLElement {
     /**
      * <p>setValue.</p>
      *
-     * @param value a int.
+     * @param value a {@link java.lang.Integer} object.
      */
     void setValue(int value);
 

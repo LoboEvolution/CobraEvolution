@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public abstract class BasicTestIterator extends LocPathIterator {
    *
    * @param nscontext The namespace context for this iterator, should be OK if null.
    */
-  protected BasicTestIterator(PrefixResolver nscontext) {
+  protected BasicTestIterator(final PrefixResolver nscontext) {
 
     super(nscontext);
   }
@@ -54,14 +54,14 @@ public abstract class BasicTestIterator extends LocPathIterator {
    *
    * @param compiler The Compiler which is creating this expression.
    * @param opPos The position of this iterator in the opcode list from the compiler.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  protected BasicTestIterator(Compiler compiler, int opPos, int analysis)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected BasicTestIterator(final Compiler compiler, final int opPos, final int analysis)
+      throws javax.xml.transform.TransformerException {
     super(analysis);
 
-    int firstStepPos = OpMap.getFirstChildPos(opPos);
-    int whatToShow = compiler.getWhatToShow(firstStepPos);
+    final int firstStepPos = OpMap.getFirstChildPos(opPos);
+    final int whatToShow = compiler.getWhatToShow(firstStepPos);
 
     if ((0
             == (whatToShow
@@ -97,32 +97,28 @@ public abstract class BasicTestIterator extends LocPathIterator {
     }
 
     int next;
-
-    try {
-      do {
-        next = getNextNode();
-
-        if (DTM.NULL != next) {
-          if (DTMIterator.FILTER_ACCEPT == acceptNode(next)) break;
-          else continue;
-        } else break;
-      } while (next != DTM.NULL);
+    do {
+      next = getNextNode();
 
       if (DTM.NULL != next) {
-        m_pos++;
-        return next;
-      }
-      m_foundLast = true;
-      return DTM.NULL;
-    } finally {
+        if (DTMIterator.FILTER_ACCEPT == acceptNode(next)) break;
+        else continue;
+      } else break;
+    } while (next != DTM.NULL);
+
+    if (DTM.NULL != next) {
+      m_pos++;
+      return next;
     }
+    m_foundLast = true;
+    return DTM.NULL;
   }
 
   /** {@inheritDoc} */
   @Override
   public DTMIterator cloneWithReset() throws CloneNotSupportedException {
 
-    ChildTestIterator clone = (ChildTestIterator) super.cloneWithReset();
+    final ChildTestIterator clone = (ChildTestIterator) super.cloneWithReset();
 
     clone.resetProximityPositions();
 

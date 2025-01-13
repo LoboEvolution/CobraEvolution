@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,17 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,45 +47,38 @@ import static org.junit.Assert.assertNull;
  * Invoke createDocument on this DOMImplementation with a valid qualifiedName and different
  * publicIds and systemIds. Check if the DocumentType node was created with its
  * ownerDocument attribute set to null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument</a>
  */
-public class domimplementationcreatedocumenttype01Test extends LoboUnitTest {
+public class Domimplementationcreatedocumenttype01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
+        final Document doc;
+        final DOMImplementation domImpl;
         DocumentType newDocType;
         Document ownerDocument;
-        String qualifiedName = "test:root";
-        String publicId;
-        String systemId;
-        java.util.List publicIds = new java.util.ArrayList();
+        final String qualifiedName = "test:root";
+        List<String> publicIds = new ArrayList<>();
         publicIds.add("1234");
         publicIds.add("test");
 
-        java.util.List systemIds = new java.util.ArrayList();
+        List<String> systemIds = new ArrayList<>();
         systemIds.add("");
         systemIds.add("test");
 
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
-        for (int indexN1005D = 0; indexN1005D < publicIds.size(); indexN1005D++) {
-            publicId = (String) publicIds.get(indexN1005D);
-            for (int indexN10061 = 0; indexN10061 < systemIds.size(); indexN10061++) {
-                systemId = (String) systemIds.get(indexN10061);
+        for (String publicId : publicIds) {
+            for (String systemId : systemIds) {
                 newDocType = domImpl.createDocumentType(qualifiedName, publicId, systemId);
-                assertNotNull("domimplementationcreatedocumenttype01_newDocType", newDocType);
+                assertNotNull(newDocType);
                 ownerDocument = newDocType.getOwnerDocument();
-                assertNull("domimplementationcreatedocumenttype01_ownerDocument", ownerDocument);
+                assertNull(ownerDocument);
             }
         }
     }

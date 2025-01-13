@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,11 @@
 package org.loboevolution.html.js.geom;
 
 import org.loboevolution.html.node.AbstractList;
-import org.loboevolution.html.node.js.geom.DOMRect;
-import org.loboevolution.html.node.js.geom.DOMRectList;
+import org.loboevolution.js.geom.DOMRect;
+import org.loboevolution.js.geom.DOMRectList;
 
 public class DOMRectListImpl extends AbstractList<DOMRect>  implements DOMRectList {
+
     /**
      * <p>getLength.</p>
      *
@@ -48,7 +49,7 @@ public class DOMRectListImpl extends AbstractList<DOMRect>  implements DOMRectLi
      * @return a {@link DOMRect} object.
      */
     @Override
-    public DOMRect item(int index) {
+    public DOMRect item(final int index) {
         return this.get(index);
     }
 

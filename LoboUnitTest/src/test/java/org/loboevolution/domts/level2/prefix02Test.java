@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -47,31 +47,28 @@ import static org.junit.Assert.assertNull;
  * Retrieve the first employeeId node and get the first child of this node.
  * Since the first child is Text node invoking the "getPrefix()"
  * method will cause "null" to be returned.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class prefix02Test extends LoboUnitTest {
+public class Prefix02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        Node textNode;
-        String prefix;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final Node textNode;
+        final String prefix;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("employeeId");
-        testEmployee = (Element)elementList.item(0);
-        assertNotNull("empEmployeeNotNull", testEmployee);
+        testEmployee = (Element) elementList.item(0);
+        assertNotNull(testEmployee);
         textNode = testEmployee.getFirstChild();
         prefix = textNode.getPrefix();
-        assertNull("textNodePrefix", prefix);
+        assertNull(prefix);
     }
 }
 

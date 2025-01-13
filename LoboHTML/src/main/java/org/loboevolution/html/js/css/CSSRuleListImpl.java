@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,27 +27,29 @@
 package org.loboevolution.html.js.css;
 
 import org.htmlunit.cssparser.dom.AbstractCSSRuleImpl;
-import org.htmlunit.cssparser.dom.CSSUnknownRuleImpl;
 import org.loboevolution.html.node.AbstractList;
-import org.loboevolution.html.node.css.CSSRuleList;
-import org.loboevolution.html.node.css.CSSStyleRule;
+import org.loboevolution.css.CSSRuleList;
+import org.loboevolution.css.CSSStyleRule;
 
 import java.util.List;
 
-public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSRuleList {
+/**
+ * <p>CSSRuleListImpl class.</p>
+ */
+public class CSSRuleListImpl extends AbstractList<CSSStyleRule> implements CSSRuleList {
 
     private final org.htmlunit.cssparser.dom.CSSRuleListImpl cssRuleList;
 
-    public CSSRuleListImpl(org.htmlunit.cssparser.dom.CSSRuleListImpl cssRuleList) {
+    public CSSRuleListImpl(final org.htmlunit.cssparser.dom.CSSRuleListImpl cssRuleList) {
         this.cssRuleList = cssRuleList;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CSSStyleRule item(int index) {
+    public CSSStyleRule item(final int index) {
         try{
             return this.get(index);
-        } catch (Exception e){
+        } catch (final Exception e){
             return null;
         }
     }
@@ -62,8 +64,8 @@ public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSR
      * <p> addStyleRule. </p>
      * @param newList a {@link org.htmlunit.cssparser.dom.CSSRuleListImpl} object.
      */
-    public void addStyleRule(org.htmlunit.cssparser.dom.CSSRuleListImpl newList){
-        List<AbstractCSSRuleImpl> ruls =  null;
+    public void addStyleRule(final org.htmlunit.cssparser.dom.CSSRuleListImpl newList) {
+        List<AbstractCSSRuleImpl> ruls;
         if (newList != null) {
             clear();
             ruls = newList.getRules();
@@ -71,9 +73,37 @@ public class CSSRuleListImpl extends AbstractList<CSSStyleRule>  implements CSSR
             ruls = cssRuleList.getRules();
         }
 
-        ruls.forEach(abstractCSSRule -> {
-            if (!(abstractCSSRule instanceof CSSUnknownRuleImpl))
-                add(new CSSStyleRuleImpl(abstractCSSRule));
+        ruls.forEach(rule -> {
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSStyleRuleImpl) {
+                add(new CSSStyleRuleImpl(rule));
+            }
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSImportRuleImpl) {
+                add(new CSSImportRuleImpl((org.htmlunit.cssparser.dom.CSSImportRuleImpl) rule));
+            }
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSFontFaceRuleImpl) {
+                add(new CSSFontFaceRuleImpl((org.htmlunit.cssparser.dom.CSSFontFaceRuleImpl) rule));
+            }
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSPageRuleImpl) {
+                add(new CSSPageRuleImpl((org.htmlunit.cssparser.dom.CSSPageRuleImpl) rule));
+            }
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSCharsetRuleImpl) {
+                add(new CSSCharsetRuleImpl(rule));
+            }
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSUnknownRuleImpl unknownRule) {
+                if (unknownRule.getCssText().startsWith("@keyframes")) {
+                    add(new CSSKeyFramesRuleImpl(this, rule));
+                }
+            }
+
+            if (rule instanceof org.htmlunit.cssparser.dom.CSSMediaRuleImpl) {
+                add(new CSSMediaRuleImpl( rule));
+            }
+
         });
     }
 

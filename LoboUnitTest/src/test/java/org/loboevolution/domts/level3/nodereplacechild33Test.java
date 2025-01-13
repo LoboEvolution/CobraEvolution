@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,33 +27,31 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a default Attr node to replace its Text Child with a
  * new EntityReference Node and verify the value of the replaced child.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild33Test extends LoboUnitTest {
+public class Nodereplacechild33Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Element elem;
-        Attr parent;
-        Node oldChild;
-        EntityReference newChild;
-        Node replaced;
-        String nodeValue;
+        final Document doc;
+        final HTMLCollection childList;
+        final Element elem;
+        final Attr parent;
+        final Node oldChild;
+        final EntityReference newChild;
+        final Node replaced;
+        final String nodeValue;
         doc = sampleXmlFile("hc_staff.xml");
         newChild = doc.createEntityReference("delta");
         childList = doc.getElementsByTagName("p");
@@ -62,7 +60,7 @@ public class nodereplacechild33Test extends LoboUnitTest {
         oldChild = parent.getLastChild();
         replaced = parent.replaceChild(newChild, oldChild);
         nodeValue = replaced.getNodeValue();
-        assertEquals("nodereplacechild33", "rtl", nodeValue);
+        assertEquals("rtl", nodeValue, "Nodereplacechild33Assert2");
     }
 }
 

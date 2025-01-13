@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,36 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * baseURI for an element from an entity reference should be the URI of the
  * external entity if there is now xml:base attribute.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2EntityReference">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2EntityReference</a>
  */
-public class nodegetbaseuri20Test extends LoboUnitTest {
+public class Nodegetbaseuri20Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String baseURI;
-        HTMLCollection pList;
-        Element pElem;
+        final Document doc;
+        final String baseURI;
+        final HTMLCollection pList;
+        final Element pElem;
         doc = sampleXmlFile("external_barfoo.xml");
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(2);
-        assertNotNull("pElemNotNull", pElem);
+        assertNotNull(pElem, "Nodegetbaseuri20Assert2");
         baseURI = pElem.getBaseURI();
-        assertURIEquals("equalsExternalBarFoo", null, null, null, null, "external_widget", null, null, Boolean.TRUE, baseURI);
+        assertURIEquals(new URIEquals(null, null, null, null, "externalWidget", null, null, true, baseURI));
     }
 }
 

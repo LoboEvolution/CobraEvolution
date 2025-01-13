@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public interface TimeList {
      * The number of times in the list. The range of valid child time indices is
      * 0 to length-1 inclusive.
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getLength();
 

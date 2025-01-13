@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a DocumentFragment node attempt to replace an Element node with
  * another Element and verify the name of the replaced Element node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild16Test extends LoboUnitTest {
+public class Nodereplacechild16Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Element elem;
-        Text txt;
-        Text replaced;
-        String nodeName;
-        Node appendedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Element elem;
+        final Text txt;
+        final Text replaced;
+        final String nodeName;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         docFrag = doc.createDocumentFragment();
         txt = doc.createTextNode("Comment");
-        appendedChild = docFrag.appendChild(txt);
-        appendedChild = docFrag.appendChild(elem);
+        docFrag.appendChild(txt);
+        docFrag.appendChild(elem);
         replaced = (Text) docFrag.replaceChild(txt, elem);
         nodeName = replaced.getNodeName();
-        assertEquals("nodereplacechild16", "dom3:p", nodeName);
+        assertEquals("dom3:p", nodeName, "Nodereplacechild16Assert2");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,11 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -42,32 +42,28 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Using the method importNode with deep=false, try to import this document object to itself.
  * Since Document nodes cannot be imported, a NOT_SUPPORTED_ERR should be raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode06Test extends LoboUnitTest {
+public class Documentimportnode06Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docImported;
+        final Document doc;
         doc = sampleXmlFile("staffNS.xml");
 
         {
             boolean success = false;
             try {
-                docImported = (Document) doc.importNode(doc, false);
-            } catch (DOMException ex) {
+                doc.importNode(doc, false);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
             }
-            assertTrue("throw_NOT_SUPPORTED_ERR", success);
+            assertTrue(success);
         }
     }
 }

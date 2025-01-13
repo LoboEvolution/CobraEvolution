@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,46 +45,42 @@ import static org.junit.Assert.*;
  * the "appendChild(newChild)" method is invoked the first
  * child should be the one that was second and the last
  * child should be the one that was first.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-184E7107</a>
  */
-public class nodeappendchildchildexistsTest extends LoboUnitTest {
+public class NodeappendchildchildexistsTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node childNode;
-        Node newChild;
-        Node lchild;
-        Node fchild;
-        String lchildName;
-        String fchildName;
-        Node appendedChild;
-        String initialName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node childNode;
+        final Node newChild;
+        final Node lchild;
+        final Node fchild;
+        final String lchildName;
+        final String fchildName;
+        final String initialName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         childNode = elementList.item(1);
         newChild = childNode.getFirstChild();
         initialName = newChild.getNodeName();
-        appendedChild = childNode.appendChild(newChild);
+        childNode.appendChild(newChild);
         fchild = childNode.getFirstChild();
         fchildName = fchild.getNodeName();
         lchild = childNode.getLastChild();
         lchildName = lchild.getNodeName();
 
         if ("employeeId".equals(initialName)) {
-            assertEquals("assert1_nowhitespace", "name", fchildName);
-            assertEquals("assert2_nowhitespace", "EMPLOYEEID",lchildName);
+            assertEquals("name", fchildName, "NodeappendchildchildexistsAssert1");
+            assertEquals("EMPLOYEEID", lchildName, "NodeappendchildchildexistsAssert2");
         } else {
-            assertEquals("assert1", "EMPLOYEEID", fchildName);
-            assertEquals("assert2", "#text", lchildName);
+            assertEquals("EMPLOYEEID", fchildName, "NodeappendchildchildexistsAssert3");
+            assertEquals("#text", lchildName, "NodeappendchildchildexistsAssert4");
         }
 
     }

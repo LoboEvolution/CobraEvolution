@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,10 @@
 package org.loboevolution.html.dom;
 
 
-import org.loboevolution.html.node.DOMTokenList;
-
 /**
- * Hyperlink elements and provides special properties and methods (beyond those of the regular HTMLElement object interface that they inherit from) for manipulating the layout and presentation of such elements.
- *
- *
- *
+ * Hyperlink elements and provides special properties
+ * and methods (beyond those of the regular HTMLElement object interface that they inherit from)
+ * for manipulating the layout and presentation of such elements.
  */
 public interface HTMLAnchorElement extends HTMLElement, HTMLHyperlinkElementUtils {
 
@@ -168,7 +165,7 @@ public interface HTMLAnchorElement extends HTMLElement, HTMLHyperlinkElementUtil
     /**
      * <p>getRelList.</p>
      *
-     * @return a {@link org.loboevolution.html.node.DOMTokenList} object.
+     * @return a {@link DOMTokenList} object.
      */
     DOMTokenList getRelList();
 

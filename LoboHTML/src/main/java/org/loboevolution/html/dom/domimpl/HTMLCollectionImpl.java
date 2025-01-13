@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,18 +27,15 @@
 package org.loboevolution.html.dom.domimpl;
 
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.HTMLOptionElement;
-import org.loboevolution.html.dom.filter.ClassNameFilter;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.node.AbstractList;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -55,9 +52,9 @@ public class HTMLCollectionImpl extends AbstractList<Node> implements HTMLCollec
 	 * Constructor for HTMLCollectionImpl.
 	 * </p>
 	 * @param rootNode a {@link org.loboevolution.html.dom.nodeimpl.NodeImpl} object.
-	 * @param filter a {@link org.loboevolution.html.node.traversal.NodeFilter} object.
+	 * @param filter a {@link NodeFilter} object.
 	 */
-	public HTMLCollectionImpl(NodeImpl rootNode, NodeFilter filter) {
+	public HTMLCollectionImpl(final NodeImpl rootNode, final NodeFilter filter) {
 		setList((NodeListImpl) rootNode.getNodeList(filter));
 		this.rootNode = rootNode;
 		this.filter = filter;
@@ -72,18 +69,18 @@ public class HTMLCollectionImpl extends AbstractList<Node> implements HTMLCollec
 
 	/** {@inheritDoc} */
 	@Override
-	public Node item(Object index) {
+	public Node item(final Object index) {
 		try {
-			double idx = Double.parseDouble(index.toString());
+			final double idx = Double.parseDouble(index.toString());
 			if (idx >= getLength() || idx == -1) return null;
 			return this.get((int) idx);
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return this.get(0);
 		}
 	}
 
 	@Override
-	public void setItem(Integer index, Node node) {
+	public void setItem(final Integer index, final Node node) {
 		if (index > -1) {
 			if (getLength() == 0 || getLength() == index || getLength() < index) {
 				add(index, node);
@@ -95,16 +92,16 @@ public class HTMLCollectionImpl extends AbstractList<Node> implements HTMLCollec
 
 	/** {@inheritDoc} */
 	@Override
-	public Element namedItem(String name) {
+	public Element namedItem(final String name) {
 		final Document doc = this.rootNode.getOwnerDocument();
 		if (doc == null) {
 			return null;
 		}
 		final HTMLCollectionImpl nodeList = (HTMLCollectionImpl) doc.getElementsByName(name);
 		if (nodeList.size() > 0) {
-			Optional<Node> node = nodeList.stream().findFirst();
+			final Optional<Node> node = nodeList.stream().findFirst();
 			return (Element) node.orElse(null);
-		} else{
+		} else {
 			return doc.getElementById(name);
 		}
 	}

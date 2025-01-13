@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,10 @@ public class FunctionDef1Arg extends FunctionOneArg {
    * @param xctxt Runtime XPath context.
    * @return The first node of the executed nodeset, or the current context node if the first
    *     argument is null.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if an error occurs while executing the
+   * @throws javax.xml.transform.TransformerException if an error occurs while executing the
    *     argument expression.
    */
-  protected int getArg0AsNode(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected int getArg0AsNode(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
     return (null == m_arg0) ? xctxt.getCurrentNode() : m_arg0.asNode(xctxt);
   }
@@ -56,17 +56,17 @@ public class FunctionDef1Arg extends FunctionOneArg {
    * @param xctxt Runtime XPath context.
    * @return The string value of the first argument, or the string value of the current context node
    *     if the first argument is null.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if an error occurs while executing the
+   * @throws javax.xml.transform.TransformerException if an error occurs while executing the
    *     argument expression.
    */
-  protected XString getArg0AsString(XPathContext xctxt)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected XString getArg0AsString(final XPathContext xctxt)
+      throws javax.xml.transform.TransformerException {
     if (null == m_arg0) {
-      int currentNode = xctxt.getCurrentNode();
+      final int currentNode = xctxt.getCurrentNode();
       if (DTM.NULL == currentNode) {
         return XString.EMPTYSTRING;
       }
-      DTM dtm = xctxt.getDTM(currentNode);
+      final DTM dtm = xctxt.getDTM(currentNode);
       return dtm.getStringValue(currentNode);
     }
 
@@ -80,19 +80,19 @@ public class FunctionDef1Arg extends FunctionOneArg {
    * @param xctxt Runtime XPath context.
    * @return The number value of the first argument, or the number value of the current context node
    *     if the first argument is null.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if an error occurs while executing the
+   * @throws javax.xml.transform.TransformerException if an error occurs while executing the
    *     argument expression.
    */
-  protected double getArg0AsNumber(XPathContext xctxt)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  protected double getArg0AsNumber(final XPathContext xctxt)
+      throws javax.xml.transform.TransformerException {
 
     if (null == m_arg0) {
-      int currentNode = xctxt.getCurrentNode();
+      final int currentNode = xctxt.getCurrentNode();
       if (DTM.NULL == currentNode) {
         return 0;
       }
-      DTM dtm = xctxt.getDTM(currentNode);
-      XString str = dtm.getStringValue(currentNode);
+      final DTM dtm = xctxt.getDTM(currentNode);
+      final XString str = dtm.getStringValue(currentNode);
 
       return str.toDouble();
     }
@@ -101,7 +101,7 @@ public class FunctionDef1Arg extends FunctionOneArg {
 
   /** {@inheritDoc} */
   @Override
-  public void checkNumberArgs(int argNum) throws WrongNumberArgsException {
+  public void checkNumberArgs(final int argNum) throws WrongNumberArgsException {
     if (argNum > 1) reportWrongNumberArgs();
   }
 

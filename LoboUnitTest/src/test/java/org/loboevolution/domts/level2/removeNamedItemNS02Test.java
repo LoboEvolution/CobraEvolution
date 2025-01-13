@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,14 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,31 +46,26 @@ import static org.junit.Assert.assertTrue;
  * Retrieve a list of elements with tag name "address".
  * Access the second element from the list and get its attributes.
  * Try to remove an attribute node with local name "domest"
- * and namespace uri "http://www.usa.com" with
+ * and namespace uri "<a href="http://www.usa.com">...</a>" with
  * method removeNamedItemNS(namespaceURI,localName).
  * This should raise NOT_FOUND_ERR DOMException.
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NOT_FOUND_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='NOT_FOUND_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-removeNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-removeNamedItemNS</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-removeNamedItemNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NOT_FOUND_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-removeNamedItemNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NOT_FOUND_ERR'])</a>
  */
-public class removeNamedItemNS02Test extends LoboUnitTest {
+public class RemoveNamedItemNS02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.usa.com";
-        String localName = "domest";
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Node removedNode;
+        final String namespaceURI = "http://www.usa.com";
+        final String localName = "domest";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddress;
+        final NamedNodeMap attributes;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddress = (Element) elementList.item(1);
@@ -80,11 +74,11 @@ public class removeNamedItemNS02Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                removedNode = attributes.removeNamedItemNS(namespaceURI, localName);
-            } catch (DOMException ex) {
+                attributes.removeNamedItemNS(namespaceURI, localName);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR", success);
+            assertTrue(success);
         }
     }
 }

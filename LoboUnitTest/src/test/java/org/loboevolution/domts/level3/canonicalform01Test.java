@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Normalize document with 'canonical-form' set to true, check that
  * entity references are expanded and unused entity declaration are maintained.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form</a>
  */
-public class canonicalform01Test extends LoboUnitTest {
+public class Canonicalform01Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         HTMLCollection pList;
         Element pElem;
-        DOMConfiguration domConfig;
-        boolean canSet;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final DOMConfiguration domConfig;
+        final boolean canSet;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
-        Node child;
-        String childName;
-        EntityReference entRef;
-        String childValue;
+        final Node child;
+        final String childName;
+        final EntityReference entRef;
+        final String childValue;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("canonical-form", Boolean.TRUE);
@@ -72,15 +72,15 @@ public class canonicalform01Test extends LoboUnitTest {
             entRef = doc.createEntityReference("ent1");
             pElem.appendChild(entRef);
             doc.normalizeDocument();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Canonicalform01Assert1");
             pList = doc.getElementsByTagName("p");
             pElem = (Element) pList.item(0);
             child = pElem.getLastChild();
-            assertNotNull("lastChildNotNull", child);
+            assertNotNull(child, "Canonicalform01Assert2");
             childName = child.getNodeName();
-            assertEquals("firstChildName", "#text", childName);
+            assertEquals("#text", childName, "Canonicalform01Assert3");
             childValue = child.getNodeValue();
-            assertEquals("firstChildValue", "barfoo", childValue);
+            assertEquals("barfoo", childValue, "Canonicalform01Assert4");
         }
     }
 }

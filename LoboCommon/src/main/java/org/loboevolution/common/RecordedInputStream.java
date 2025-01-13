@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +38,7 @@ import java.io.InputStream;
  * <p>
  * Note: Buffered streams should wrap this class as opposed to the other way
  * around.
- *
  * Author J. H. S.
- *
  */
 public class RecordedInputStream extends InputStream {
 	private final InputStream delegate;
@@ -55,10 +53,9 @@ public class RecordedInputStream extends InputStream {
 	 * <p>Constructor for RecordedInputStream.</p>
 	 *
 	 * @param delegate a {@link java.io.InputStream} object.
-	 * @param maxBufferSize a int.
+	 * @param maxBufferSize a {@link java.lang.Integer} object.
 	 */
-	public RecordedInputStream(InputStream delegate, int maxBufferSize) {
-		super();
+	public RecordedInputStream(final InputStream delegate, final int maxBufferSize) {
 		this.delegate = delegate;
 		this.maxBufferSize = maxBufferSize;
 	}
@@ -83,7 +80,7 @@ public class RecordedInputStream extends InputStream {
 	 * @throws java.io.UnsupportedEncodingException if any.
 	 * @throws org.loboevolution.common.BufferExceededException if any.
 	 */
-	public String getString(String encoding) throws java.io.UnsupportedEncodingException, BufferExceededException {
+	public String getString(final String encoding) throws java.io.UnsupportedEncodingException, BufferExceededException {
 		if (this.hasReachedMaxBufferSize) {
 			throw new BufferExceededException();
 		}
@@ -92,9 +89,9 @@ public class RecordedInputStream extends InputStream {
 
 	/** {@inheritDoc} */
 	@Override
-	public synchronized void mark(int readlimit) {
+	public synchronized void mark(final int readlimit) {
 		if (this.hasReachedMaxBufferSize) {
-			throw new java.lang.IllegalStateException("Maximum buffer size was already reached.");
+			throw new IllegalStateException("Maximum buffer size was already reached.");
 		}
 		this.markPosition = this.store.size();
 	}
@@ -109,12 +106,12 @@ public class RecordedInputStream extends InputStream {
 	/** {@inheritDoc} */
 	@Override
 	public int read() throws IOException {
-		if (this.readPosition != -1 && this.readPosition < this.resetBuffer.length) {
-			final int b = this.resetBuffer[this.readPosition];
+        final int b;
+        if (this.readPosition != -1 && this.readPosition < this.resetBuffer.length) {
+            b = this.resetBuffer[this.readPosition];
 			this.readPosition++;
-			return b;
-		} else {
-			final int b = this.delegate.read();
+        } else {
+            b = this.delegate.read();
 			if (b != -1) {
 				if (!this.hasReachedMaxBufferSize) {
 					this.store.write(b);
@@ -123,13 +120,13 @@ public class RecordedInputStream extends InputStream {
 					}
 				}
 			}
-			return b;
-		}
-	}
+        }
+        return b;
+    }
 
 	/** {@inheritDoc} */
 	@Override
-	public int read(byte[] buffer, int offset, int length) throws IOException {
+	public int read(final byte[] buffer, final int offset, final int length) throws IOException {
 		if (this.readPosition != -1 && this.readPosition < this.resetBuffer.length) {
 			final int minLength = Math.min(this.resetBuffer.length - this.readPosition, length);
 			System.arraycopy(this.resetBuffer, this.readPosition, buffer, offset, minLength);

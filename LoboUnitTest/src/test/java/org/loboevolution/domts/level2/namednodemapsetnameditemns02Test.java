@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -45,25 +45,22 @@ import static org.junit.Assert.*;
  * Create a new element and attribute Node and add the newly created attribute node to the elements
  * NamedNodeMap.  Verify if the new attr node has been successfully added to the map by checking
  * the nodeName of the retreived atttribute from the list of attribute nodes in this map.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  */
-public class namednodemapsetnameditemns02Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NamedNodeMap attributes;
-        Element element;
-        Attr attribute;
-        Attr attribute1;
-        String attrName;
+        final Document doc;
+        final NamedNodeMap attributes;
+        final Element element;
+        final Attr attribute;
+        final Attr attribute1;
+        final String attrName;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test", "root");
         attribute1 = doc.createAttributeNS("http://www.w3.org/DOM/L1", "L1:att");
@@ -71,7 +68,7 @@ public class namednodemapsetnameditemns02Test extends LoboUnitTest {
         attributes.setNamedItemNS(attribute1);
         attribute = (Attr) attributes.getNamedItemNS("http://www.w3.org/DOM/L1", "att");
         attrName = attribute.getNodeName();
-        assertEquals("namednodemapsetnameditemns02", "L1:att", attrName);
+        assertEquals("L1:att", attrName);
     }
 }
 

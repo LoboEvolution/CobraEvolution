@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.*;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.node.Document;
+import org.loboevolution.html.node.Element;
+import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -42,22 +45,20 @@ import static org.junit.Assert.assertTrue;
  * this Document.  If supported, invoke the setParameter method on this domconfiguration object to set the
  * "element-content-whitespace"  feature to false.  Invoke the normalizeDocument method and verify if
  * the text node has been discarded.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-element-content-whitespace</a>
  */
-public class documentnormalizedocument10Test extends LoboUnitTest {
+public class DocumentnormalizeDocument10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        Text newText;
+        final Document doc;
+        final Element elem;
+        final Text newText;
         Text text;
         String nodeValue;
         boolean canSet;
-        DOMConfiguration domConfig;
+        final DOMConfiguration domConfig;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElement("newElem");
         newText = doc.createTextNode("Text          Node");
@@ -65,15 +66,15 @@ public class documentnormalizedocument10Test extends LoboUnitTest {
         doc.appendChild(elem);
         text = (Text) elem.getFirstChild();
         nodeValue = text.getNodeValue();
-        assertEquals("documentnormalizedocument10", "Text          Node", nodeValue);
+        assertEquals("Text          Node", nodeValue, "DocumentnormalizeDocument10Assert3");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("element-content-whitespace", Boolean.TRUE);
-        assertTrue("canSetElementContentWhitespaceTrue", canSet);
+        assertTrue(canSet, "DocumentnormalizeDocument10Assert4");
         domConfig.setParameter("element-content-whitespace", Boolean.TRUE);
         doc.normalizeDocument();
         text = (Text) elem.getFirstChild();
         nodeValue = text.getNodeValue();
-        assertEquals("documentnormalizedocument10_true1", "Text          Node", nodeValue);
+        assertEquals("Text          Node", nodeValue, "DocumentnormalizeDocument10Assert5");
         canSet = domConfig.canSetParameter("element-content-whitespace", Boolean.FALSE);
 
         if (canSet) {
@@ -81,7 +82,7 @@ public class documentnormalizedocument10Test extends LoboUnitTest {
             doc.normalizeDocument();
             text = (Text) elem.getFirstChild();
             nodeValue = text.getNodeValue();
-            assertEquals("documentnormalizedocument10_true2", "Text Node", nodeValue);
+            assertEquals("Text Node", nodeValue, "DocumentnormalizeDocument10Assert6");
         }
     }
 }

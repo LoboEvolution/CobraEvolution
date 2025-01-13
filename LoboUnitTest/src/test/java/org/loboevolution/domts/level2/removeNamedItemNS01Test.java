@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,36 +43,32 @@ import static org.junit.Assert.assertNull;
  * Retrieve a list of elements with tag name "address".
  * Access the second element from the list and get its attributes.
  * Try to remove the attribute node with local name "domestic"
- * and namespace uri "http://www.usa.com" with
+ * and namespace uri "<a href="http://www.usa.com">...</a>" with
  * method removeNamedItemNS(namespaceURI,localName).
  * Check to see if the node has been removed.
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1074577549">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-1074577549</a>
  */
-public class removeNamedItemNS01Test extends LoboUnitTest {
+public class RemoveNamedItemNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Attr newAttr;
-        Node removedNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddress;
+        final NamedNodeMap attributes;
+        final Attr newAttr;
+        final Node removedNode;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddress = (Element) elementList.item(1);
         attributes = testAddress.getAttributes();
         removedNode = attributes.removeNamedItemNS("http://www.usa.com", "domestic");
-        assertNotNull("retval", removedNode);
+        assertNotNull(removedNode);
         newAttr = (Attr) attributes.getNamedItem("dmstc:domestic");
-        assertNull("nodeRemoved", newAttr);
+        assertNull(newAttr);
     }
 }
 

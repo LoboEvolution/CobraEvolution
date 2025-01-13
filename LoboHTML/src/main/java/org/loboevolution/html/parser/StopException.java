@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,31 +28,13 @@
  */
 package org.loboevolution.html.parser;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.loboevolution.html.node.Element;
 
+@AllArgsConstructor
+@Getter
 class StopException extends Exception {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	private final Element element;
-
-	/**
-	 * <p>Constructor for StopException.</p>
-	 *
-	 * @param element a {@link org.loboevolution.html.node.Element} object.
-	 */
-	public StopException(Element element) {
-		super();
-		this.element = element;
-	}
-
-	/**
-	 * <p>Getter for the field element.</p>
-	 *
-	 * @return a {@link org.loboevolution.html.node.Element} object.
-	 */
-	public Element getElement() {
-		return this.element;
-	}
 }

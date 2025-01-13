@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +30,6 @@ import org.loboevolution.html.dom.TextMetrics;
 
 /**
  * <p>CanvasTextMetricsImpl class.</p>
- *
- *
- *
  */
 public class CanvasTextMetricsImpl implements TextMetrics {
 	
@@ -46,7 +43,7 @@ public class CanvasTextMetricsImpl implements TextMetrics {
 	 * @param width a double.
 	 * @param height a double.
 	 */
-	public CanvasTextMetricsImpl(double width, double height) {
+	public CanvasTextMetricsImpl(final double width, final double height) {
 		this.width = width;
 		this.height = height;
 	}

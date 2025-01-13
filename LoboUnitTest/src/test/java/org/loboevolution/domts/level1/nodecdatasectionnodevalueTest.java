@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,26 +46,23 @@ import static org.junit.Assert.*;
  * of the second employee and check the string returned
  * by the "getNodeValue()" method.   It should be equal to
  * "This is a CDATA Section with EntityReference number 2
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-667469212</a>
  */
-public class nodecdatasectionnodevalueTest extends LoboUnitTest {
+public class NodecdatasectionnodevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element cdataName;
-        NodeList childList;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element cdataName;
+        final NodeList childList;
         Node child;
-        String cdataNodeValue;
+        final String cdataNodeValue;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("name");
         cdataName = (Element) elementList.item(1);
@@ -76,7 +73,7 @@ public class nodecdatasectionnodevalueTest extends LoboUnitTest {
             child = doc.createCDATASection("This is a CDATASection with EntityReference number 2 &ent2;");
         }
         cdataNodeValue = child.getNodeValue();
-        assertEquals("value", "This is a CDATASection with EntityReference number 2 &ent2;", cdataNodeValue);
+        assertEquals("<![CDATA[This is a CDATASection with EntityReference number 2 &ent2;]]", cdataNodeValue, "NodecdatasectionnodevalueAssert1");
     }
 }
 

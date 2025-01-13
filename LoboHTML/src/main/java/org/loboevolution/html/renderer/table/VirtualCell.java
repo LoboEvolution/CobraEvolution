@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,19 @@
  */
 package org.loboevolution.html.renderer.table;
 
+import lombok.Data;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.style.HtmlLength;
 
 /**
  * <p>VirtualCell class.</p>
- *
- *
- *
  */
+@Data
 public class VirtualCell {
 	private final RTableCell actualCell;
 	private int column;
-	private final boolean isTopLeft;
+	private boolean topLeft;
 	private int row;
 
 	/**
@@ -47,27 +46,9 @@ public class VirtualCell {
 	 * @param cell a {@link org.loboevolution.html.renderer.table.RTableCell} object.
 	 * @param isTopLeft a boolean.
 	 */
-	public VirtualCell(RTableCell cell, boolean isTopLeft) {
+	public VirtualCell(final RTableCell cell, final boolean isTopLeft) {
 		this.actualCell = cell;
-		this.isTopLeft = isTopLeft;
-	}
-
-	/**
-	 * <p>Getter for the field actualCell.</p>
-	 *
-	 * @return Returns the actualCell.
-	 */
-	public RTableCell getActualCell() {
-		return this.actualCell;
-	}
-
-	/**
-	 * <p>Getter for the field column.</p>
-	 *
-	 * @return Returns the column.
-	 */
-	public int getColumn() {
-		return this.column;
+		this.topLeft = isTopLeft;
 	}
 
 	/**
@@ -78,22 +59,13 @@ public class VirtualCell {
 	public HtmlLength getHeightLength() {
 		final RTableCell cell = this.actualCell;
 		final String heightText = cell.getHeightText();
-		HTMLElementImpl elem = cell.getCellElement();
+		final HTMLElementImpl elem = cell.getCellElement();
 		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getOwnerDocument();
-		HtmlLength length = heightText == null ? null : new HtmlLength(heightText, doc);
+		final HtmlLength length = heightText == null ? null : new HtmlLength(heightText, doc);
 		if (length != null) {
 			length.divideBy(cell.getRowSpan());
 		}
 		return length;
-	}
-
-	/**
-	 * <p>Getter for the field row.</p>
-	 *
-	 * @return Returns the row.
-	 */
-	public int getRow() {
-		return this.row;
 	}
 
 	/**
@@ -104,39 +76,12 @@ public class VirtualCell {
 	public HtmlLength getWidthLength() {
 		final RTableCell cell = this.actualCell;
 		final String widthText = cell.getWidthText();
-		HTMLElementImpl elem = cell.getCellElement();
+		final HTMLElementImpl elem = cell.getCellElement();
 		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)elem.getOwnerDocument();
-		HtmlLength length = widthText == null ? null : new HtmlLength(widthText, doc);
+		final HtmlLength length = widthText == null ? null : new HtmlLength(widthText, doc);
 		if (length != null) {
 			length.divideBy(cell.getColSpan());
 		}
 		return length;
-	}
-
-	/**
-	 * <p>isTopLeft.</p>
-	 *
-	 * @return a boolean.
-	 */
-	public boolean isTopLeft() {
-		return this.isTopLeft;
-	}
-
-	/**
-	 * <p>Setter for the field column.</p>
-	 *
-	 * @param column The column to set.
-	 */
-	public void setColumn(int column) {
-		this.column = column;
-	}
-
-	/**
-	 * <p>Setter for the field row.</p>
-	 *
-	 * @param row The row to set.
-	 */
-	public void setRow(int row) {
-		this.row = row;
 	}
 }

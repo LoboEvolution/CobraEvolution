@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The getSchemaTypeInfo method retrieves the type information associated with this element.
@@ -42,29 +42,26 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an element having [type definition] property.  Expose {name} and {target namespace}
  * properties of the [type definition] property.  Verity that the typeName and typeNamespace of the strong element's
  * schemaTypeInfo are correct.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo</a>
  */
-public class elementgetschematypeinfo06Test extends LoboUnitTest {
+public class Elementgetschematypeinfo06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element strongElem;
-        TypeInfo elemTypeInfo;
-        String typeName;
-        String typeNamespace;
-        HTMLCollection elemList;
-        String docElemNodeName;
+        final Document doc;
+        final Element strongElem;
+        final TypeInfo elemTypeInfo;
+        final String typeName;
+        final String typeNamespace;
+        final HTMLCollection elemList;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("strong");
         strongElem = (Element) elemList.item(1);
         elemTypeInfo = strongElem.getSchemaTypeInfo();
         typeName = elemTypeInfo.getTypeName();
         typeNamespace = elemTypeInfo.getTypeNamespace();
-        assertEquals("elementgetschematypeinfo06_typeName", "strongType", typeName);
-        assertEquals("elementgetschematypeinfo06_typeNamespace", "http://www.w3.org/1999/xhtml", typeNamespace);
+        assertEquals("strongType", typeName, "Elementgetschematypeinfo06Assert2");
+        assertEquals("http://www.w3.org/1999/xhtml", typeNamespace, "Elementgetschematypeinfo06Assert3");
     }
 }
 

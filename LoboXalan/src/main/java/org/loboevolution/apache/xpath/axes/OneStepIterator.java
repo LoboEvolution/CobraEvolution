@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,19 +51,19 @@ public class OneStepIterator extends ChildTestIterator {
    * @param compiler A reference to the Compiler that contains the op map.
    * @param opPos The position within the op map, which contains the location path expression for
    *     this itterator.
-   * @throws org.loboevolution.javax.xml.transform.TransformerException if any
+   * @throws javax.xml.transform.TransformerException if any
    */
-  OneStepIterator(Compiler compiler, int opPos, int analysis)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  OneStepIterator(final Compiler compiler, final int opPos, final int analysis)
+      throws javax.xml.transform.TransformerException {
     super(compiler, opPos, analysis);
-    int firstStepPos = OpMap.getFirstChildPos(opPos);
+    final int firstStepPos = OpMap.getFirstChildPos(opPos);
 
     m_axis = WalkerFactory.getAxisFromStep(compiler, firstStepPos);
   }
 
   /** {@inheritDoc} */
   @Override
-  public void setRoot(int context, Object environment) {
+  public void setRoot(final int context, final Object environment) {
     super.setRoot(context, environment);
     if (m_axis > -1) m_iterator = m_cdtm.getAxisIterator(m_axis);
     m_iterator.setStartNode(m_context);
@@ -91,7 +91,7 @@ public class OneStepIterator extends ChildTestIterator {
   public Object clone() throws CloneNotSupportedException {
     // Do not access the location path itterator during this operation!
 
-    OneStepIterator clone = (OneStepIterator) super.clone();
+    final OneStepIterator clone = (OneStepIterator) super.clone();
 
     if (m_iterator != null) {
       clone.m_iterator = m_iterator.cloneIterator();
@@ -103,7 +103,7 @@ public class OneStepIterator extends ChildTestIterator {
   @Override
   public DTMIterator cloneWithReset() throws CloneNotSupportedException {
 
-    OneStepIterator clone = (OneStepIterator) super.cloneWithReset();
+    final OneStepIterator clone = (OneStepIterator) super.cloneWithReset();
     clone.m_iterator = m_iterator;
 
     return clone;
@@ -117,7 +117,7 @@ public class OneStepIterator extends ChildTestIterator {
 
   /** {@inheritDoc} */
   @Override
-  protected int getProximityPosition(int predicateIndex) {
+  protected int getProximityPosition(final int predicateIndex) {
     if (!isReverseAxes()) return super.getProximityPosition(predicateIndex);
 
     // A negative predicate index seems to occur with
@@ -126,11 +126,11 @@ public class OneStepIterator extends ChildTestIterator {
     if (predicateIndex < 0) return -1;
 
     if (m_proximityPositions[predicateIndex] <= 0) {
-      XPathContext xctxt = getXPathContext();
+      final XPathContext xctxt = getXPathContext();
       try {
-        OneStepIterator clone = (OneStepIterator) this.clone();
+        final OneStepIterator clone = (OneStepIterator) this.clone();
 
-        int root = getRoot();
+        final int root = getRoot();
         xctxt.pushCurrentNode(root);
         clone.setRoot(root, xctxt);
 
@@ -145,7 +145,7 @@ public class OneStepIterator extends ChildTestIterator {
         }
 
         m_proximityPositions[predicateIndex] += count;
-      } catch (CloneNotSupportedException cnse) {
+      } catch (final CloneNotSupportedException cnse) {
 
         // can't happen
       } finally {
@@ -162,7 +162,7 @@ public class OneStepIterator extends ChildTestIterator {
     if (!isReverseAxes()) return super.getLength();
 
     // Tell if this is being called from within a predicate.
-    boolean isPredicateTest = this == m_execContext.getSubContextList();
+    final boolean isPredicateTest = this == m_execContext.getSubContextList();
 
     // If we have already calculated the length, and the current predicate
     // is the first predicate, then return the length. We don't cache
@@ -171,11 +171,11 @@ public class OneStepIterator extends ChildTestIterator {
 
     int count = 0;
 
-    XPathContext xctxt = getXPathContext();
+    final XPathContext xctxt = getXPathContext();
     try {
-      OneStepIterator clone = (OneStepIterator) this.cloneWithReset();
+      final OneStepIterator clone = (OneStepIterator) this.cloneWithReset();
 
-      int root = getRoot();
+      final int root = getRoot();
       xctxt.pushCurrentNode(root);
       clone.setRoot(root, xctxt);
 
@@ -184,7 +184,7 @@ public class OneStepIterator extends ChildTestIterator {
       while (DTM.NULL != (clone.nextNode())) {
         count++;
       }
-    } catch (CloneNotSupportedException cnse) {
+    } catch (final CloneNotSupportedException cnse) {
       // can't happen
     } finally {
       xctxt.popCurrentNode();
@@ -196,7 +196,7 @@ public class OneStepIterator extends ChildTestIterator {
 
   /** {@inheritDoc} */
   @Override
-  protected void countProximityPosition(int i) {
+  protected void countProximityPosition(final int i) {
     if (!isReverseAxes()) super.countProximityPosition(i);
     else if (i < m_proximityPositions.length) m_proximityPositions[i]--;
   }
@@ -217,7 +217,7 @@ public class OneStepIterator extends ChildTestIterator {
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!super.deepEquals(expr)) return false;
 
     if (m_axis != ((OneStepIterator) expr).m_axis) return false;

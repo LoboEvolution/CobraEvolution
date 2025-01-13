@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@
  */
 package org.loboevolution.html.parser;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Urls;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.gui.HtmlRendererContext;
@@ -38,20 +39,16 @@ import org.loboevolution.http.UserAgentContext;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
+import java.io.*;
+import java.net.URI;
 import java.net.URLConnection;
-import java.util.logging.Logger;
 
 /**
  * The DocumentBuilderImpl class is an HTML DOM parser that
  * implements the standard W3C DocumentBuilder interface.
  */
+@Slf4j
 public class DocumentBuilderImpl {
-	private static final Logger logger = Logger.getLogger(DocumentBuilderImpl.class.getName());
 	private final UserAgentContext bcontext;
 	private final HtmlRendererContext rcontext;
 	private final HtmlRendererConfig config;
@@ -64,7 +61,7 @@ public class DocumentBuilderImpl {
 	 * @param rcontext An instance of {@link HtmlRendererContext}
 	 * @param config a {@link HtmlRendererConfig} object.
 	 */
-	public DocumentBuilderImpl(UserAgentContext ucontext, HtmlRendererContext rcontext, HtmlRendererConfig config) {
+	public DocumentBuilderImpl(final UserAgentContext ucontext, final HtmlRendererContext rcontext, final HtmlRendererConfig config) {
 		this.rcontext = rcontext;
 		this.bcontext = ucontext;
 		this.config = config;
@@ -79,20 +76,45 @@ public class DocumentBuilderImpl {
 	 *           source must provide either an input stream or a reader.
 	 * @see HTMLDocumentImpl#load()
 	 * @return a {@link org.loboevolution.html.node.Document} object.
-	 * @throws org.xml.sax.SAXException if any.
 	 * @throws java.io.IOException if any.
 	 */
-	public Document createDocument(InputSource is) throws SAXException, IOException {
+	public Document createDocument(final InputSource is) throws Exception {
+		final String uri = is.getSystemId();
+		if (uri == null) {
+			log.warn("parse(): InputSource has no SystemId (URI); document item URLs will not be resolvable.");
+		}
+
+		try (final WritableLineReader wis = writableLineReader(is, uri)) {
+			final HTMLDocumentImpl document = new HTMLDocumentImpl(this.bcontext, this.rcontext, this.config, wis, uri);
+			document.load();
+			return document;
+		} catch (SAXException e) {
+			throw new RuntimeException(e);
+		}
+    }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * Parses an HTML document. Note that this method will read the entire input
+	 * source before returning a Document instance.
+	 *
+	 * @param is a {@link org.xml.sax.InputSource} object.
+	 * @return a {@link org.loboevolution.html.node.Document} object.
+	 * @throws java.lang.Exception if any.
+	 */
+	public Document parse(final InputSource is) throws Exception {
+		return createDocument(is);
+	}
+
+	private WritableLineReader writableLineReader(final InputSource is, final String uri) throws Exception {
 		final String encoding = is.getEncoding();
 		String charset = encoding;
 		if (charset == null) {
 			charset = "US-ASCII";
 		}
-		final String uri = is.getSystemId();
-		if (uri == null) {
-			logger.warning("parse(): InputSource has no SystemId (URI); document item URLs will not be resolvable.");
-		}
-		WritableLineReader wis;
+
+		final WritableLineReader wis;
 		final Reader reader = is.getCharacterStream();
 		if (reader != null) {
 			wis = new WritableLineReader(reader);
@@ -101,7 +123,7 @@ public class DocumentBuilderImpl {
 			if (in != null) {
 				wis = new WritableLineReader(new InputStreamReader(in, charset));
 			} else if (uri != null) {
-				final URLConnection connection = new URL(uri).openConnection();
+				final URLConnection connection = new URI(uri).toURL().openConnection();
 				in = connection.getInputStream();
 				if (encoding == null) {
 					charset = Urls.getCharset(connection);
@@ -112,23 +134,7 @@ public class DocumentBuilderImpl {
 						"The InputSource must have either a reader, an input stream or a URI.");
 			}
 		}
-		return new HTMLDocumentImpl(this.bcontext, this.rcontext, this.config,  wis, uri);
-	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * Parses an HTML document. Note that this method will read the entire input
-	 * source before returning a Document instance.
-	 *
-	 * @param is a {@link org.xml.sax.InputSource} object.
-	 * @return a {@link org.loboevolution.html.node.Document} object.
-	 * @throws org.xml.sax.SAXException if any.
-	 * @throws java.io.IOException if any.
-	 */
-	public Document parse(InputSource is) throws SAXException, IOException {
-		final HTMLDocumentImpl document = (HTMLDocumentImpl) createDocument(is);
-		document.load();
-		return document;
+		return wis;
 	}
 }

@@ -66,7 +66,7 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
             if (id == constructorId) {
                 if (!(value instanceof IdFunctionObject)) {
                     throw new IllegalArgumentException(
-                            "consructor should be initialized with IdFunctionObject");
+                            "constructor should be initialized with IdFunctionObject");
                 }
                 constructor = (IdFunctionObject) value;
                 constructorAttrs = (short) attributes;
@@ -86,7 +86,7 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
             if (id == constructorId) {
                 if (!(value instanceof IdFunctionObject)) {
                     throw new IllegalArgumentException(
-                            "consructor should be initialized with IdFunctionObject");
+                            "constructor should be initialized with IdFunctionObject");
                 }
                 constructor = (IdFunctionObject) value;
                 constructorAttrs = (short) attributes;
@@ -270,8 +270,8 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
 
         private Object ensureId(int id) {
             Object[] array = valueArray;
-            if (array == null) {
-                synchronized (this) {
+            synchronized (this) {
+                if (array == null) {
                     array = valueArray;
                     if (array == null) {
                         array = new Object[maxId * SLOT_SPAN];
@@ -820,18 +820,22 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
      * @return obj casted to the target type
      * @throws EcmaError if the cast failed.
      */
-    @SuppressWarnings("unchecked")
     protected static <T> T ensureType(Object obj, Class<T> clazz, IdFunctionObject f) {
+        return ensureType(obj, clazz, f.getFunctionName());
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <T> T ensureType(Object obj, Class<T> clazz, String functionName) {
         if (clazz.isInstance(obj)) {
             return (T) obj;
         }
         if (obj == null) {
             throw ScriptRuntime.typeErrorById(
-                    "msg.incompat.call.details", f.getFunctionName(), "null", clazz.getName());
+                    "msg.incompat.call.details", functionName, "null", clazz.getName());
         }
         throw ScriptRuntime.typeErrorById(
                 "msg.incompat.call.details",
-                f.getFunctionName(),
+                functionName,
                 obj.getClass().getName(),
                 clazz.getName());
     }
@@ -854,8 +858,8 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
     @Override
     protected void defineOwnProperty(
             Context cx, Object key, ScriptableObject desc, boolean checkValid) {
-        if (key instanceof String) {
-            String name = (String) key;
+        if (key instanceof CharSequence) {
+            String name = key.toString();
             int info = findInstanceIdInfo(name);
             if (info != 0) {
                 int id = (info & 0xFFFF);
@@ -867,13 +871,14 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
                     checkPropertyChange(name, current, desc);
                     int attr = (info >>> 16);
                     Object value = getProperty(desc, "value");
-                    if (value != NOT_FOUND && (attr & READONLY) == 0) {
+                    if (value != NOT_FOUND && ((attr & READONLY) == 0 || (attr & PERMANENT) == 0)) {
                         Object currentValue = getInstanceIdValue(id);
                         if (!sameValue(value, currentValue)) {
                             setInstanceIdValue(id, value);
                         }
                     }
-                    setAttributes(name, applyDescriptorToAttributeBitset(attr, desc));
+                    attr = applyDescriptorToAttributeBitset(attr, desc);
+                    setAttributes(name, attr);
                     return;
                 }
             }
@@ -917,9 +922,15 @@ public abstract class IdScriptableObject extends ScriptableObject implements IdF
         ScriptableObject desc = super.getOwnPropertyDescriptor(cx, id);
         if (desc == null) {
             if (id instanceof String) {
-                desc = getBuiltInDescriptor((String) id);
-            } else if (ScriptRuntime.isSymbol(id)) {
-                desc = getBuiltInDescriptor(((NativeSymbol) id).getKey());
+                return getBuiltInDescriptor((String) id);
+            }
+
+            if (ScriptRuntime.isSymbol(id)) {
+                if (id instanceof SymbolKey) {
+                    return getBuiltInDescriptor((SymbolKey) id);
+                }
+
+                return getBuiltInDescriptor(((NativeSymbol) id).getKey());
             }
         }
         return desc;

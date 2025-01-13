@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -193,7 +193,7 @@ public interface XPathResult {
      * snapshotItem indices are 0 to
      * snapshotLength-1 inclusive.
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      * @throws XPathException                              TYPE_ERR: raised if resultType is not
      *                                                     UNORDERED_NODE_SNAPSHOT_TYPE or
      *                                                     ORDERED_NODE_SNAPSHOT_TYPE.

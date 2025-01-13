@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,13 @@
 package org.loboevolution.domts.level1;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,27 +47,25 @@ import static org.junit.Assert.assertTrue;
  * child that was created from a different document than the
  * one that created the second employee.   An attempt to
  * insert such a child should raise the desired exception.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-258A00AF')/constant[@name='WRONG_DOCUMENT_ERR'])">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-258A00AF')/constant[@name='WRONG_DOCUMENT_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-952280727')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='WRONG_DOCUMENT_ERR'])">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-952280727')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='WRONG_DOCUMENT_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  */
-public class nodeinsertbeforenewchilddiffdocumentTest extends LoboUnitTest {
+public class NodeinsertbeforenewchilddiffdocumentTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc1;
-        Document doc2;
-        Node refChild;
-        Node newChild;
-        HTMLCollection elementList;
-        Node elementNode;
+        final Document doc1;
+        final Document doc2;
+        final Node refChild;
+        final Node newChild;
+        final HTMLCollection elementList;
+        final Node elementNode;
         doc1 = sampleXmlFile("staff.xml");
         doc2 = sampleXmlFile("staff.xml");
         newChild = doc1.createElement("newChild");
@@ -77,10 +75,10 @@ public class nodeinsertbeforenewchilddiffdocumentTest extends LoboUnitTest {
         boolean success = false;
         try {
             elementNode.insertBefore(newChild, refChild);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
         }
-        assertTrue("throw_WRONG_DOCUMENT_ERR", success);
+        assertTrue(success, "NodeinsertbeforenewchilddiffdocumentAssert2");
     }
 }
 

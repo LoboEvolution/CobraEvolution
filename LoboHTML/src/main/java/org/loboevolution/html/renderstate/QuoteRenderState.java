@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class QuoteRenderState extends AbstractMarginRenderState {
      * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
      * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
      */
-    public QuoteRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public QuoteRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element);
         this.element = element;
     }
@@ -52,7 +52,7 @@ public class QuoteRenderState extends AbstractMarginRenderState {
     @Override
     protected HtmlInsets getDefaultMarginInsets() {
         final HtmlInsets insets = new HtmlInsets();
-        final int topBottom = HtmlValues.getPixelSize("1em", null, element.getDocumentNode().getDefaultView(), -1);
+        final int topBottom = HtmlValues.getPixelSize("1.12em", null, element.getDocumentNode().getDefaultView(), -1);
         final int leftRight = HtmlValues.getPixelSize("40px", null, element.getDocumentNode().getDefaultView(), -1);
         insets.setTop(topBottom);
         insets.setBottom(topBottom);
@@ -64,5 +64,4 @@ public class QuoteRenderState extends AbstractMarginRenderState {
         insets.setRightType(HtmlInsets.TYPE_PIXELS);
         return insets;
     }
-
 }

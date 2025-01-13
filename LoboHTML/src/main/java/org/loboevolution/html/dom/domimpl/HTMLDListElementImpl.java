@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,13 +40,13 @@ public class HTMLDListElementImpl extends HTMLElementImpl implements HTMLDListEl
      *
      * @param name a {@link String} object.
      */
-    public HTMLDListElementImpl(String name) {
+    public HTMLDListElementImpl(final String name) {
         super(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new DListRenderState(prevRenderState, this);
     }
 
@@ -66,7 +66,6 @@ public class HTMLDListElementImpl extends HTMLElementImpl implements HTMLDListEl
      * @param compact a boolean.
      */
     @Override
-    public void setCompact(boolean compact) {
-
+    public void setCompact(final boolean compact) {
     }
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
@@ -36,30 +36,27 @@ import org.loboevolution.html.node.Element;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The method setPrefix raises a NAMESPACE_ERR if the specified prefix is malformed.
  * Create a new namespace aware element node and call the setPrefix method on it with several malformed
  * prefix values.  Check if a NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodesetprefix05Test extends LoboUnitTest {
+public class Nodesetprefix05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
+        final Document doc;
+        final Element element;
         String prefixValue;
-        List<String> prefixValues = new ArrayList<>();
+        final List<String> prefixValues = new ArrayList<>();
         prefixValues.add("_:");
         prefixValues.add(":0");
         prefixValues.add(":");
@@ -68,16 +65,16 @@ public class nodesetprefix05Test extends LoboUnitTest {
 
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test/L2", "dom:elem");
-        for (String value : prefixValues) {
+        for (final String value : prefixValues) {
             prefixValue = value;
 
             boolean success = false;
             try {
                 element.setPrefix(prefixValue);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("throw_NAMESPACE_ERR", success);
+            assertTrue(success);
 
         }
     }

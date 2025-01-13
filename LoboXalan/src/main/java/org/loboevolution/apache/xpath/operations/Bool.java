@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ public class Bool extends UnaryOperation {
 
   /** {@inheritDoc} */
   @Override
-  public XObject operate(XObject right) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject operate(final XObject right) throws javax.xml.transform.TransformerException {
 
     if (XObject.CLASS_BOOLEAN == right.getType()) {
       return right;
@@ -44,7 +44,7 @@ public class Bool extends UnaryOperation {
 
   /** {@inheritDoc} */
   @Override
-  public boolean bool(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public boolean bool(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
     return m_right.bool(xctxt);
   }
 }

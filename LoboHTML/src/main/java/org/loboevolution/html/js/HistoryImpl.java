@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 package org.loboevolution.html.js;
 
 import org.loboevolution.gui.HtmlRendererContext;
-import org.loboevolution.html.node.history.History;
+import org.loboevolution.html.dom.History;
 import org.loboevolution.js.AbstractScriptableDelegate;
 import org.loboevolution.type.ScrollRestoration;
 
@@ -36,7 +36,7 @@ import org.loboevolution.type.ScrollRestoration;
 public class HistoryImpl extends AbstractScriptableDelegate implements History {
 	private final WindowImpl window;
 
-	public HistoryImpl(WindowImpl window) {
+	public HistoryImpl(final WindowImpl window) {
 		this.window = window;
 	}
 
@@ -67,7 +67,7 @@ public class HistoryImpl extends AbstractScriptableDelegate implements History {
 
 	/** {@inheritDoc} */
 	@Override
-	public void go(int offset) {
+	public void go(final int offset) {
 		final HtmlRendererContext ctx = this.window.getHtmlRendererContext();
 		if (ctx != null) {
 			ctx.moveInHistory(offset);
@@ -83,7 +83,7 @@ public class HistoryImpl extends AbstractScriptableDelegate implements History {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setScrollRestoration(ScrollRestoration scrollRestoration) {
+	public void setScrollRestoration(final ScrollRestoration scrollRestoration) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -97,28 +97,28 @@ public class HistoryImpl extends AbstractScriptableDelegate implements History {
 
 	/** {@inheritDoc} */
 	@Override
-	public void pushState(Object data, String title, String url) {
+	public void pushState(final Object data, final String title, final String url) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void pushState(Object data, String title) {
+	public void pushState(final Object data, final String title) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void replaceState(Object data, String title, String url) {
+	public void replaceState(final Object data, final String title, final String url) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void replaceState(Object data, String title) {
+	public void replaceState(final Object data, final String title) {
 		// TODO Auto-generated method stub
 		
 	}

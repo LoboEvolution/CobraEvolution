@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,38 +26,34 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The method replaceChild replaces the child node oldChild with newChild in the list of
  * children, and returns the oldChild node.
  * Using replaceChild on an Attr node to replace its EntityReference Child with a
  * new Text Node and verify the name of the replaced child.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild32Test extends LoboUnitTest {
+public class Nodereplacechild32Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Element elem;
-        Attr parent;
-        Node oldChild;
-        Text newChild;
-        Node replaced;
-        String nodeName;
-        int nodeType;
-        EntityReference enRef;
-        EntityReference enRefChild;
-        String reference = "entity1";
+        final Document doc;
+        final HTMLCollection childList;
+        final Element elem;
+        final Attr parent;
+        final Text newChild;
+        final Node replaced;
+        final String nodeName;
+        final EntityReference enRef;
+        final EntityReference enRefChild;
+        final String reference = "entity1";
         doc = sampleXmlFile("hc_staff.xml");
         newChild = doc.createTextNode("Text");
         childList = doc.getElementsByTagNameNS("*", "acronym");
@@ -67,7 +63,7 @@ public class nodereplacechild32Test extends LoboUnitTest {
         enRefChild = (EntityReference) parent.appendChild(enRef);
         replaced = parent.replaceChild(newChild, enRefChild);
         nodeName = replaced.getNodeName();
-        assertEquals("nodereplacechild32", "entity1", nodeName);
+        assertEquals("entity1", nodeName, "Nodereplacechild32Assert2");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,11 @@
 package org.loboevolution.html.renderer;
 
 import java.awt.*;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * A RenderableContainer is either usually a parent block or the root GUI
- * component. It's is a Renderable or GUI component whose layout may be
+ * component. It is a Renderable or GUI component whose layout may be
  * invalidated.
  */
 public interface RenderableContainer {
@@ -63,9 +63,9 @@ public interface RenderableContainer {
 	/**
 	 * <p>getDelayedPairs.</p>
 	 *
-	 * @return a {@link java.util.Collection} object.
+	 * @return a {@link java.util.List} object.
 	 */
-	Collection<DelayedPair> getDelayedPairs();
+	List<DelayedPair> getDelayedPairs();
 
 	/**
 	 * <p>getPaintedBackgroundColor.</p>
@@ -94,12 +94,12 @@ public interface RenderableContainer {
 	/**
 	 * <p>repaint.</p>
 	 *
-	 * @param x a int.
-	 * @param y a int.
-	 * @param width a int.
-	 * @param height a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @param width a {@link java.lang.Integer} object.
+	 * @param height a {@link java.lang.Integer} object.
 	 */
-	void repaint(int x, int y, int width, int height);
+	void repaint(int x, final int y, final int width, final int height);
 
 	/**
 	 * <p>updateAllWidgetBounds.</p>
@@ -127,21 +127,21 @@ public interface RenderableContainer {
     /**
      * <p>getY.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getY();
     
     /**
      * <p>getInnerWidth.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     default int getInnerWidth() {return 0;}
 
     /**
      * <p>getInnerHeight.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     default int getInnerHeight() {return 0;}
 
@@ -155,35 +155,35 @@ public interface RenderableContainer {
     /**
      * <p>getVisualWidth.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getVisualWidth();
     
     /**
      * <p>getVisualHeight.</p>
      *
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getVisualHeight();
     
     /**
      * <p>getGUIPoint.</p>
      *
-     * @param x a int.
-     * @param y a int.
+     * @param x a {@link java.lang.Integer} object.
+     * @param y a {@link java.lang.Integer} object.
      * @return a {@link java.awt.Point} object.
      */
-    Point getGUIPoint(int x, int y);
+    Point getGUIPoint(int x, final int y);
     
     /**
      * <p>translateDescendentPoint.</p>
      *
      * @param descendent a {@link org.loboevolution.html.renderer.BoundableRenderable} object.
-     * @param x a int.
-     * @param y a int.
+     * @param x a {@link java.lang.Integer} object.
+     * @param y a {@link java.lang.Integer} object.
      * @return a {@link java.awt.Point} object.
      */
-    Point translateDescendentPoint(BoundableRenderable descendent, int x, int y);
+    Point translateDescendentPoint(BoundableRenderable descendent, final int x, final int y);
 
 	/**
 	 * <p>getOriginRelativeToAbs.</p>
@@ -191,5 +191,5 @@ public interface RenderableContainer {
 	 * @param bodyLayout a {@link org.loboevolution.html.renderer.RCollection} object.
 	 * @return a {@link java.awt.Point} object.
 	 */
-	public Point getOriginRelativeToAbs(RCollection bodyLayout);
+	Point getOriginRelativeToAbs(RCollection bodyLayout);
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,45 +27,42 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a DocumentFragment node attempt to replace a CDATASection node with
  * a EntityReference and vice versa verify the data of the replaced nodes.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild18Test extends LoboUnitTest {
+public class Nodereplacechild18Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        EntityReference entRef;
-        CDATASection cdata;
-        CDATASection replacedCData;
-        EntityReference replacedEref;
-        String cdataName;
-        String erefName;
-        Node appendedChild;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final EntityReference entRef;
+        final CDATASection cdata;
+        final CDATASection replacedCData;
+        final EntityReference replacedEref;
+        final String cdataName;
+        final String erefName;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         cdata = doc.createCDATASection("CDATASection");
         entRef = doc.createEntityReference("alpha");
-        appendedChild = docFrag.appendChild(entRef);
-        appendedChild = docFrag.appendChild(cdata);
+        docFrag.appendChild(entRef);
+        docFrag.appendChild(cdata);
         replacedCData = (CDATASection) docFrag.replaceChild(entRef, cdata);
         cdataName = replacedCData.getNodeValue();
-        assertEquals("nodereplacechild18_1", "CDATASection", cdataName);
+        assertEquals("CDATASection", cdataName, "Nodereplacechild18Assert2");
         replacedEref = (EntityReference) docFrag.replaceChild(cdata, entRef);
         erefName = replacedEref.getNodeName();
-        assertEquals("nodereplacechild18_2", "alpha", erefName);
+        assertEquals("alpha", erefName, "Nodereplacechild18Assert3");
     }
 }
 

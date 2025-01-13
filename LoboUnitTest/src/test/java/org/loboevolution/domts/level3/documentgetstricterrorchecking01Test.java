@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,28 +27,26 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Verify if the (default) value of the strictErrorChecking attribute of this document object is true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking</a>
  */
-public class documentgetstricterrorchecking01Test extends LoboUnitTest {
+public class Documentgetstricterrorchecking01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        boolean strictErrorCheckingValue;
+        final Document doc;
+        final boolean strictErrorCheckingValue;
         doc = sampleXmlFile("hc_staff.xml");
         strictErrorCheckingValue = doc.getStrictErrorChecking();
-        assertTrue("documentgetstricterrorchecking01", strictErrorCheckingValue);
+        assertTrue(strictErrorCheckingValue, "Documentgetstricterrorchecking01Assert2");
     }
 }
 

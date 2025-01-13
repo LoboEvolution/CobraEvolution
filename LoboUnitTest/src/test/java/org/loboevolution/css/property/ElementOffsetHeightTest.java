@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,22 @@
  */
 package org.loboevolution.css.property;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.loboevolution.annotation.Alerts;
+import org.loboevolution.annotation.AlertsExtension;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.HTMLDocument;
+import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Unit tests for {@code offsetHeight} of an element.
+ * Tests for ComputedHeight.
  */
+@ExtendWith(AlertsExtension.class)
 public class ElementOffsetHeightTest extends LoboUnitTest {
-
 
     @Test
     public void offsetHeight() {
@@ -48,15 +56,16 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "  array.push(e.offsetHeight);\n"
                 + "}\n"
                 + "document.getElementById('myTextarea').value = array.join(', ');\n"
-                + "  var area = document.getElementById('myTextarea');\n"
-                + "  alert(area.value);\n"
+                + "alert(document.getElementById('myTextarea').value);\n"
                 + "</script></body></html>";
 
-        final String[] messages = {""};
-        checkHtmlAlert(html, messages);
+        final HTMLDocument document = loadHtml(html);
+        HTMLElementImpl elem = (HTMLElementImpl) document.getElementById("myTextarea");
+        assertNull(elem.getNodeValue());
     }
 
     @Test
+    @Alerts("12, 27, 44, 60, 80, 108, 126, 161, 208, 216, 270, 288, 340, 407")
     public void offsetHeightLineBreaks() {
         final String html
                 = "<html><head><body>\n"
@@ -74,16 +83,15 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "    array.push(div.offsetHeight);\n"
                 + "  }\n"
                 + "  document.getElementById('myTextarea').value = array.join(', ');\n"
-                + "  var area = document.getElementById('myTextarea');\n"
-                + "  alert(area.value);\n"
+                + "alert(document.getElementById('myTextarea').value);\n"
                 + "</script>\n"
                 + "</body></html>";
 
-        final String[] messages = {"12, 27, 44, 60, 80, 108, 126, 161, 208, 216, 270, 288, 340, 407"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts("true, true, true, true, true, true, true, true, true, true, true, true, true, true")
     public void offsetHeightLineBreaks2() {
         final String html
                 = "<html><head><body>\n"
@@ -98,7 +106,6 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "  var div = document.getElementById('myDiv');\n"
                 + "  var array = [];\n"
                 + "  var lastHeight = 0;\n"
-
                 + "  for (var i = 6; i <= 32; i+=2) {\n"
                 + "    div.style.fontSize = i + 'px';\n"
                 + "    var height = div.offsetHeight;"
@@ -106,16 +113,16 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "    lastHeight = height;\n"
                 + "  }\n"
                 + "  document.getElementById('myTextarea').value = array.join(', ');\n"
-                + "  var area = document.getElementById('myTextarea');\n"
-                + "  alert(area.value);\n"
+                + "alert(document.getElementById('myTextarea').value);\n"
                 + "</script>\n"
                 + "</body></html>";
 
-        final String[] messages = {"true, true, true, true, true, true, true, true, true, true, true, true, true, true"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
+
     @Test
+    @Alerts("true")
     public void offsetHeightManualLineBreaks() {
         final String html
                 = "<html><head><body>\n"
@@ -136,19 +143,18 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "  var div = document.getElementById('myDiv');\n"
                 + "  var divBr = document.getElementById('myDivBr');\n"
                 + "  document.getElementById('myTextarea').value = div.offsetHeight < divBr.offsetHeight;\n"
-                + "  var area = document.getElementById('myTextarea');\n"
-                + "  alert(area.value);\n"
+                + "alert(document.getElementById('myTextarea').value);\n"
                 + "</script>\n"
                 + "</body></html>";
 
-        final String[] messages = {"true"};
-        checkHtmlAlert(html, messages);
+        checkHtmlAlert(html);
     }
 
     @Test
+    @Alerts({"549", "273"})
     public void issue124() {
         final String html
-                = "<!DOCTYPE html>\n"
+                = "<html>\n"
                 + "<html>\n"
                 + "  <head>\n"
                 + "    <style>\n"
@@ -180,16 +186,16 @@ public class ElementOffsetHeightTest extends LoboUnitTest {
                 + "    var titleHeight = titleSizer.offsetHeight;\n"
                 + "    var titleFontSize = getAttributeValue(titleSizer, 'fontSize');\n"
                 + "    var titleHeightGoal = getAttributeValue(titleSizer, 'height');\n"
-                + "    alert(titleHeight);\r\n"
+                + "   alert(titleHeight);\r\n"
                 + "    while (titleHeight > titleHeightGoal) {\n"
                 + "      titleFontSize -= 1;\n"
                 + "      title.style.fontSize = titleFontSize + 'px';\n"
                 + "      titleHeight = titleSizer.offsetHeight;\n"
                 + "    }\n"
-                + "    alert(titleHeight);\n"
+                + "   alert(titleHeight);\n"
                 + "  </script>\n"
                 + "</html>";
-        final String[] messages = {"552", "276"};
-        checkHtmlAlert(html, messages);
+
+        checkHtmlAlert(html);
     }
 }

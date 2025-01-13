@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public class HeadingRenderState extends AbstractMarginRenderState {
 	 * @param prevRenderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 * @param element a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	public HeadingRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+	public HeadingRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
 		super(prevRenderState, element);
 		this.element = element;
 		this.prevRenderState = prevRenderState;
@@ -117,8 +117,8 @@ public class HeadingRenderState extends AbstractMarginRenderState {
 	@Override
 	public Font getFont() {
 		final HtmlRendererConfig config = element.getHtmlRendererConfig();
-		FontKey key = FontValues.getDefaultFontKey(config);
-		key.setFontWeight(CSSValues.BOLD.getValue());
+		final FontKey key = FontValues.getDefaultFontKey(config);
+		key.setFontWeight(CSSValues.BOLDER.getValue());
 		key.setFontSize(FontValues.getFontSize(getHeadingFontSize(), element.getDocumentNode().getDefaultView(), prevRenderState));
 		return FontFactory.getInstance().getFont(FontValues.getFontKey(key, element, this.getCssProperties(), prevRenderState));
 	}
@@ -127,22 +127,15 @@ public class HeadingRenderState extends AbstractMarginRenderState {
 		final String tagName = element.getTagName();
 		try {
 			final int lastCharValue = tagName.charAt(1) - '0';
-			switch (lastCharValue) {
-				case 1:
-					return "2rem";
-				case 2:
-					return "1.5rem";
-				case 3:
-					return "1.2rem";
-				case 4:
-					return "1rem";
-				case 5:
-					return "0.83rem";
-				case 6:
-					return "0.67rem";
-				default:
-					return "";
-			}
+            return switch (lastCharValue) {
+                case 1 -> "2em";
+                case 2 -> "1.5em";
+                case 3 -> "1.17em";
+                case 4 -> "1.12em";
+                case 5 -> "0.83em";
+                case 6 -> "0.75em";
+                default -> "";
+            };
 		} catch (final Exception thrown) {
 			return "";
 		}

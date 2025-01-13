@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -124,25 +124,22 @@ public class SVGUseElementImpl extends SVGGraphic implements SVGUseElement {
 
 	/** {@inheritDoc} */
 	@Override
-	public Shape createShape(AffineTransform transform) {
-		String href = getHref().getBaseVal();
-		if (href.toLowerCase().indexOf("#") != -1) {
-			int hashIndex = href.indexOf('#');
+	public Shape createShape(final AffineTransform transform) {
+		final String href = getHref().getBaseVal();
+		if (href.toLowerCase().contains("#")) {
+			final int hashIndex = href.indexOf('#');
 			if (hashIndex != -1) {
-				String idElement = href.substring(hashIndex + 1);
-				Element elementById = (Element) child(idElement);
-				if (elementById instanceof SVGSymbolElementImpl) {
-					SVGSymbolElementImpl symbol = (SVGSymbolElementImpl) elementById;
-					NodeListImpl children = (NodeListImpl) symbol.getChildNodes();
+				final String idElement = href.substring(hashIndex + 1);
+				final Element elementById = (Element) child(idElement);
+				if (elementById instanceof SVGSymbolElementImpl symbol) {
+                    final NodeListImpl children = (NodeListImpl) symbol.getChildNodes();
 					children.forEach(child -> {
-						if (child instanceof Drawable) {
-							Drawable drawable = (Drawable) child;
-							drawable.draw(graphics);
+						if (child instanceof Drawable drawable) {
+                            drawable.draw(graphics);
 						}
 					});
-				} else if (elementById instanceof Drawable) {
-					Drawable drawable = (Drawable) elementById;
-					drawable.draw(graphics);
+				} else if (elementById instanceof Drawable drawable) {
+                    drawable.draw(graphics);
 				}
 			}
 		}

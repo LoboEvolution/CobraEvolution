@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,32 +44,28 @@ import static org.junit.Assert.*;
  * Retrieve the first "address" node which has an attribute of "domestic"
  * that is specified in the DTD.
  * Invoke the "getNamespaceURI()" method on the attribute.
- * The method should return "http://www.nist.gov".
- *
- * @author NIST
- * @author Mary Brady
+ * The method should return "<a href="http://www.nist.gov">...</a>".
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSname">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSname</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=238">http://www.w3.org/Bugs/Public/show_bug.cgi?id=238</a>
  */
-public class namespaceURI01Test extends LoboUnitTest {
+public class NamespaceURI01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddr;
-        Attr addrAttr;
-        String attrNamespaceURI;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddr;
+        final Attr addrAttr;
+        final String attrNamespaceURI;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("emp:address");
         testAddr = (Element) elementList.item(0);
         addrAttr = testAddr.getAttributeNodeNS("http://www.nist.gov", "domestic");
         attrNamespaceURI = addrAttr.getNamespaceURI();
-        assertEquals("namespaceURI", "http://www.nist.gov", attrNamespaceURI);
+        assertEquals("http://www.nist.gov", attrNamespaceURI);
     }
 }
 

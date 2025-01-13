@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,32 +41,29 @@ import static org.junit.Assert.*;
  * the "cloneNode(deep)" method with deep=true.   The
  * duplicate node returned by the method should copy
  * any text data contained in this node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4</a>
  */
 public class NodeCloneTrueCopyTextTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node childNode;
-        Node clonedNode;
-        Node lastChildNode;
-        String childValue;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node childNode;
+        final Node clonedNode;
+        final Node lastChildNode;
+        final String childValue;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("salary");
         childNode = elementList.item(1);
         clonedNode = childNode.cloneNode(true);
         lastChildNode = clonedNode.getLastChild();
         childValue = lastChildNode.getNodeValue();
-        assertEquals("nodeCloneTrueCopyTextAssert1", "35,000", childValue);
+        assertEquals("35,000", childValue, "NodeCloneTrueCopyTextAssert1");
     }
 }
 

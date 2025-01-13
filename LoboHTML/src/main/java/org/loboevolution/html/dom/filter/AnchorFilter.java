@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@
 package org.loboevolution.html.dom.filter;
 
 import org.loboevolution.common.Nodes;
-import org.loboevolution.common.Strings;
+import org.loboevolution.html.dom.HTMLAnchorElement;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.NamedNodeMap;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 import org.loboevolution.html.node.Node;
 
 /**
@@ -39,13 +39,14 @@ public class AnchorFilter implements NodeFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public short acceptNode(Node node) {
-		String nodeName = node.getNodeName();
-		if ("a".equalsIgnoreCase(nodeName)) {
-			NamedNodeMap attributes = node.getAttributes();
-			for (Node attribute : Nodes.iterable(attributes)) {
-				if ("name".equals(((Attr)attribute).getName())) {
-					return NodeFilter.FILTER_ACCEPT;
+	public short acceptNode(final Node node) {
+		if (node instanceof HTMLAnchorElement) {
+			final NamedNodeMap attributes = node.getAttributes();
+			if (attributes != null) {
+				for (final Node attribute : Nodes.iterable(attributes)) {
+					if ("name".equals(((Attr) attribute).getName())) {
+						return NodeFilter.FILTER_ACCEPT;
+					}
 				}
 			}
 		}

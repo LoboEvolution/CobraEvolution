@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -41,29 +41,27 @@ import static org.junit.Assert.assertNull;
  * <p>
  * Get the DOMConfiguration object of a document and verify that the default required features are set
  * to true.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter</a>
  */
-public class domconfigurationgetparameter01Test extends LoboUnitTest {
+public class Domconfigurationgetparameter01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
+        final Document doc;
+        final DOMConfiguration domConfig;
         Object param;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         param = domConfig.getParameter("comments");
-        assertNotNull("domconfigurationgetparameter01_1", param);
+        assertNotNull(param, "Domconfigurationgetparameter01Assert3");
         param = domConfig.getParameter("cdata-sections");
-        assertNotNull("domconfigurationgetparameter01_2", param);
+        assertNotNull(param, "Domconfigurationgetparameter01Assert4");
         param = domConfig.getParameter("entities");
-        assertNotNull("domconfigurationgetparameter01_3", param);
+        assertNotNull(param, "Domconfigurationgetparameter01Assert5");
         param = domConfig.getParameter("namespace-declarations");
-        assertNotNull("domconfigurationgetparameter01_4", param);
+        assertNotNull(param, "Domconfigurationgetparameter01Assert6");
         param = domConfig.getParameter("infoset");
-        assertNull("domconfigurationgetparameter01_5", param);
+        assertNull(param, "Domconfigurationgetparameter01Assert7");
     }
 }
 

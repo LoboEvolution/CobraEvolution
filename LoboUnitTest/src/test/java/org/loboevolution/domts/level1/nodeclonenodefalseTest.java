@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,35 +47,32 @@ import static org.junit.Assert.*;
  * length of the NodeList are checked.   The "getNodeName()"
  * method should return "employee" and the "getLength()"
  * method should return 0.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4</a>
  */
-public class nodeclonenodefalseTest extends LoboUnitTest {
+public class NodeclonenodefalseTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        Node clonedNode;
-        String cloneName;
-        NodeList cloneChildren;
-        int length;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node clonedNode;
+        final String cloneName;
+        final NodeList cloneChildren;
+        final int length;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
         clonedNode = employeeNode.cloneNode(false);
         cloneName = clonedNode.getNodeName();
-        assertEquals("name", "EMPLOYEE", cloneName);
+        assertEquals("EMPLOYEE", cloneName, "NodeclonenodefalseAssert1");
         cloneChildren = clonedNode.getChildNodes();
         length = cloneChildren.getLength();
-        assertEquals("length", 0, length);
+        assertEquals(0, length, "NodeclonenodefalseAssert2");
     }
 }
 

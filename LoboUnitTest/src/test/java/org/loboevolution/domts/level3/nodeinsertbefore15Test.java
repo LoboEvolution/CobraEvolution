@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,11 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,23 +41,20 @@ import static org.junit.Assert.assertTrue;
  * Using insertBefore on a new EntityReference node attempt to insert Element, Text,
  * Comment, ProcessingInstruction and CDATASection nodes before an element child
  * and verify if a NO_MODIFICATION_ALLOWED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore15Test extends LoboUnitTest {
+public class Nodeinsertbefore15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        EntityReference entRef;
-        Node elemChild;
-        Text txt;
-        Element elem;
-        Comment comment;
-        ProcessingInstruction pi;
-        CDATASection cdata;
-        Node inserted;
+        final Document doc;
+        final EntityReference entRef;
+        final Node elemChild;
+        final Text txt;
+        final Element elem;
+        final Comment comment;
+        final ProcessingInstruction pi;
+        final CDATASection cdata;
         doc = sampleXmlFile("hc_staff.xml");
         entRef = doc.createEntityReference("delta");
         elemChild = entRef.getFirstChild();
@@ -66,55 +63,55 @@ public class nodeinsertbefore15Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                inserted = entRef.insertBefore(cdata, elemChild);
-            } catch (DOMException ex) {
+                entRef.insertBefore(cdata, elemChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_1", success);
+            assertTrue(success, "Nodeinsertbefore15Assert2");
         }
         pi = doc.createProcessingInstruction("target", "data");
 
         {
             boolean success = false;
             try {
-                inserted = entRef.insertBefore(pi, elemChild);
-            } catch (DOMException ex) {
+                entRef.insertBefore(pi, elemChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_2", success);
+            assertTrue(success, "Nodeinsertbefore15Assert3");
         }
         comment = doc.createComment("Comment");
 
         {
             boolean success = false;
             try {
-                inserted = entRef.insertBefore(comment, elemChild);
-            } catch (DOMException ex) {
+                entRef.insertBefore(comment, elemChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_3", success);
+            assertTrue(success, "Nodeinsertbefore15Assert4");
         }
         txt = doc.createTextNode("Text");
 
         {
             boolean success = false;
             try {
-                inserted = entRef.insertBefore(txt, elemChild);
-            } catch (DOMException ex) {
+                entRef.insertBefore(txt, elemChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_4", success);
+            assertTrue(success, "Nodeinsertbefore15Assert5");
         }
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "body");
 
         {
             boolean success = false;
             try {
-                inserted = entRef.insertBefore(elem, elemChild);
-            } catch (DOMException ex) {
+                entRef.insertBefore(elem, elemChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR_5", success);
+            assertTrue(success, "Nodeinsertbefore15Assert6");
         }
     }
 }

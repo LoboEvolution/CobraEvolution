@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -34,8 +34,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The adoptNode method changes the ownerDocument of a node, its children, as well as the
@@ -45,25 +45,23 @@ import static org.junit.Assert.assertNull;
  * that is a part of this Document.   Verify that the returned adopted node's nodeName, nodeValue
  * and nodeType are as expected and that the ownerElement attribute of the returned attribute node
  * was set to null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode21Test extends LoboUnitTest {
+public class Documentadoptnode21Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Element attrOwnerElem;
-        Element element;
-        Attr attr;
-        HTMLCollection childList;
-        Node adoptedTitle;
-        String nodeName;
-        int nodeType;
-        String nodeValue;
+        final Document doc;
+        final Element attrOwnerElem;
+        final Element element;
+        final Attr attr;
+        final HTMLCollection childList;
+        final Node adoptedTitle;
+        final String nodeName;
+        final int nodeType;
+        final String nodeValue;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("acronym");
         element = (Element) childList.item(0);
@@ -73,10 +71,10 @@ public class documentadoptnode21Test extends LoboUnitTest {
         nodeValue = adoptedTitle.getNodeValue();
         nodeType = adoptedTitle.getNodeType();
         attrOwnerElem = (Element) ((Attr) adoptedTitle).getOwnerElement();
-        assertEquals("documentadoptnode21_nodeName", "title", nodeName);
-        assertEquals("documentadoptnode21_nodeType", 2, nodeType);
-        assertEquals("documentadoptnode21_nodeValue", "Yes", nodeValue);
-        assertNull("documentadoptnode21_ownerDoc", attrOwnerElem);
+        assertEquals("title", nodeName, "Documentadoptnode21Assert3");
+        assertEquals(2, nodeType, "Documentadoptnode21Assert4");
+        assertEquals("Yes", nodeValue, "Documentadoptnode21Assert5");
+        assertNull(attrOwnerElem, "Documentadoptnode21Assert6");
     }
 }
 

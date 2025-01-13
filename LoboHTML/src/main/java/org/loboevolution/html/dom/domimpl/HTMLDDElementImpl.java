@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,37 +38,31 @@ public class HTMLDDElementImpl extends HTMLElementImpl {
      *
      * @param name a {@link String} object.
      */
-    public HTMLDDElementImpl(String name) {
+    public HTMLDDElementImpl(final String name) {
         super(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new DDRenderState(prevRenderState, this);
     }
 
     @Override
     public int getClientHeight() {
-        int clientHeight = super.getClientHeight();
+        final int clientHeight = super.getClientHeight();
         return clientHeight == 0 ? 17 : clientHeight;
     }
 
     /** {@inheritDoc} */
     @Override
     public Integer getClientWidth() {
-        int clientWidth = super.getClientWidth();
-        if (clientWidth == 0) {
-            int clientWidthDoc = getParentElement().getClientWidth();
-
-            if (getRenderState() != null && getRenderState().getPaddingInsets() != null) {
-                clientWidthDoc -= getRenderState().getPaddingInsets().getRight();
-                clientWidthDoc -= getRenderState().getPaddingInsets().getLeft();
-                clientWidth = clientWidthDoc;
-            }
+        int clientWidth = getParentElement().getClientWidth();
+        if (getRenderState() != null && getRenderState().getPaddingInsets() != null) {
+            clientWidth -= getRenderState().getPaddingInsets().getRight();
+            clientWidth -= getRenderState().getPaddingInsets().getLeft();
         }
-
-        return clientWidth;
+        return clientWidth +1;
     }
 
     /** {@inheritDoc} */

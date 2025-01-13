@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,31 +45,28 @@ import static org.junit.Assert.assertTrue;
  * arg is an Attr that is already an attribute of another Element object.
  * <p>
  * Retrieve an attr node from the third "address" element whose local name
- * is "domestic" and namespaceURI is "http://www.netzero.com".
+ * is "domestic" and namespaceURI is "<a href="http://www.netzero.com">...</a>".
  * Invoke method setNamedItemNS((Attr)arg) on the map of the first "address" element with
  * arg being the attr node from above.  Method should raise
  * INUSE_ATTRIBUTE_ERR DOMException.
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='INUSE_ATTRIBUTE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-258A00AF')/constant[@name='INUSE_ATTRIBUTE_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-setNamedItemNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='INUSE_ATTRIBUTE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-setNamedItemNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='INUSE_ATTRIBUTE_ERR'])</a>
  */
-public class setNamedItemNS01Test extends LoboUnitTest {
+public class SetNamedItemNS01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element anotherElement;
-        NamedNodeMap anotherMap;
-        Node arg;
-        Element testAddress;
-        NamedNodeMap map;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element anotherElement;
+        final NamedNodeMap anotherMap;
+        final Node arg;
+        final Element testAddress;
+        final NamedNodeMap map;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         anotherElement = (Element) elementList.item(2);
@@ -80,9 +77,9 @@ public class setNamedItemNS01Test extends LoboUnitTest {
         boolean success = false;
         try {
             map.setNamedItemNS(arg);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.INUSE_ATTRIBUTE_ERR);
         }
-        assertTrue("throw_INUSE_ATTRIBUTE_ERR", success);
+        assertTrue(success);
     }
 }

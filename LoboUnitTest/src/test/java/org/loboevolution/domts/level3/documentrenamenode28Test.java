@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -36,28 +36,24 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the renameNode method to attempt to rename a Entity and Notation nodes of this Document.
  * Check if a NOT_SUPPORTED_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode28Test extends LoboUnitTest {
+public class Documentrenamenode28Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entityNodeMap;
-        NamedNodeMap notationNodeMap;
-        Node entity;
-        Notation notation;
-        Node renamedEntityNode;
-        Node renamedNotationNode;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entityNodeMap;
+        final NamedNodeMap notationNodeMap;
+        final Node entity;
+        final Notation notation;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entityNodeMap = docType.getEntities();
@@ -67,19 +63,19 @@ public class documentrenamenode28Test extends LoboUnitTest {
 
         boolean success = false;
         try {
-            renamedEntityNode = doc.renameNode(entity, "http://www.w3.org/DOM/Test", "beta");
-        } catch (DOMException ex) {
+            doc.renameNode(entity, "http://www.w3.org/DOM/Test", "beta");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("documentrenamenode28_ENTITY_NOT_SUPPORTED_ERR", success);
+        assertTrue(success, "Documentrenamenode28Assert2");
 
 
         success = false;
         try {
-            renamedNotationNode = doc.renameNode(notation, "http://www.w3.org/DOM/Test", "notation2");
-        } catch (DOMException ex) {
+            doc.renameNode(notation, "http://www.w3.org/DOM/Test", "notation2");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("documentrenamenode28_NOTATION_NOT_SUPPORTED_ERR", success);
+        assertTrue(success, "Documentrenamenode28Assert3");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,28 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition to check that no flags are set in return when the document position of a
  * Document node is compared with itself
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition04Test extends LoboUnitTest {
+public class Nodecomparedocumentposition04Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        int documentPosition;
+        final Document doc;
+        final int documentPosition;
         doc = sampleXmlFile("hc_staff.xml");
         documentPosition = doc.compareDocumentPosition(doc);
-        assertEquals("nodecomparedocumentpositionNoFlags04", 0, documentPosition);
+        assertEquals(0, documentPosition, "Nodecomparedocumentposition04Assert2");
     }
 
 }

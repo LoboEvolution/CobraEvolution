@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,30 +28,26 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using replaceChild on a new Attr node, replace its new EntityRefernece node with a
  * new Text Node and verify if a NOT_FOUND_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild36Test extends LoboUnitTest {
+public class Nodereplacechild36Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Attr parent;
-        EntityReference oldChild;
-        Text newChild;
-        String nodeValue;
-        Node replaced;
+        final Document doc;
+        final Attr parent;
+        final EntityReference oldChild;
+        final Text newChild;
         doc = sampleXmlFile("hc_staff.xml");
         parent = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang");
         oldChild = doc.createEntityReference("delta");
@@ -60,11 +56,11 @@ public class nodereplacechild36Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                replaced = parent.replaceChild(newChild, oldChild);
-            } catch (DOMException ex) {
+                parent.replaceChild(newChild, oldChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR", success);
+            assertTrue(success, "Nodereplacechild36Assert2");
         }
     }
 }

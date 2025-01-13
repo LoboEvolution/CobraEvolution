@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -46,39 +46,35 @@ import static org.junit.Assert.assertNotNull;
  * method with name="street".  This should result
  * in the removal of the specified attribute and
  * the "isSpecified()" method should return false.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D58B193">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-D58B193</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-349467F9">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-349467F9</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
  */
-public class namednodemapremovenameditemTest extends LoboUnitTest {
+public class NamednodemapremovenameditemTest extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Attr streetAttr;
-        boolean specified;
-        Node removedNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testAddress;
+        final NamedNodeMap attributes;
+        final Attr streetAttr;
+        final boolean specified;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testAddress = (Element) elementList.item(2);
         attributes = testAddress.getAttributes();
-        assertNotNull("attributesNotNull", attributes);
-        removedNode = attributes.removeNamedItem("street");
+        assertNotNull(attributes, "NamednodemapremovenameditemAssert3");
+        attributes.removeNamedItem("street");
         streetAttr = (Attr) attributes.getNamedItem("street");
-        assertNotNull("streetAttrNotNull", streetAttr);
+        assertNotNull(streetAttr, "NamednodemapremovenameditemAssert4");
         specified = streetAttr.isSpecified();
-        assertFalse("attrNotSpecified", specified);
+        assertFalse(specified, "NamednodemapremovenameditemAssert5");
     }
 }
 

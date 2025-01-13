@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,41 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Using lookupNamespaceURI on the DocumentElement node of a new document with a
  * namespaceURI and prefix and check if the namespaceURI value returned is valid.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI</a>
  */
-public class nodelookupnamespaceuri05Test extends LoboUnitTest {
+public class Nodelookupnamespaceuri05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        DOMImplementation domImpl;
-        Document newDoc;
-        String namespaceURI;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
-        String qname;
+        final Document doc;
+        final Element elem;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final String namespaceURI;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
+        final String qname;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         qname = "dom3:" + rootName;
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, qname, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, qname, null);
         elem = newDoc.getDocumentElement();
         namespaceURI = elem.lookupNamespaceURI("dom3");
-        assertEquals("nodelookupnamespaceuri05", rootNS, namespaceURI);
+        assertEquals(rootNS, namespaceURI, "Nodelookupnamespaceuri05Assert2");
     }
 }

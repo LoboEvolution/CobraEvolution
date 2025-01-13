@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
  */
 package org.loboevolution.html.dom.canvas;
 
-import org.loboevolution.html.dom.CanvasGradient;
+import lombok.Data;
 import org.loboevolution.laf.ColorFactory;
 
 import java.awt.*;
@@ -36,29 +36,27 @@ import java.util.List;
 
 /**
  * The Class CanvasGradientImpl.
- *
- *
- *
  */
+@Data
 public class CanvasGradientImpl implements CanvasGradient {
 
 	/** The fractions. */
-	private List<Float> fractions;
+	private final List<Float> fractions;
 
 	/** The colors. */
-	private List<Color> colors;
+	private final List<Color> colors;
 
 	/** The linear x. */
-	private Double linearX;
+	private final Double linearX;
 
 	/** The linear x1. */
-	private Double linearX1;
+	private final Double linearX1;
 
 	/** The linear y. */
-	private Double linearY;
+	private final Double linearY;
 
 	/** The linear y1. */
-	private Double linearY1;
+	private final Double linearY1;
 
 	/** The r1. */
 	private Double r1;
@@ -74,7 +72,7 @@ public class CanvasGradientImpl implements CanvasGradient {
 	 * @param x1 a {@link java.lang.Object} object.
 	 * @param y1 a {@link java.lang.Object} object.
 	 */
-	public CanvasGradientImpl(Object x0, Object y0, Object x1, Object y1) {
+	public CanvasGradientImpl(final Object x0, final Object y0, final Object x1, final Object y1) {
 		fractions = new ArrayList<>();
 		colors = new ArrayList<>();
 		this.linearX = Double.valueOf(x0.toString());
@@ -93,7 +91,7 @@ public class CanvasGradientImpl implements CanvasGradient {
 	 * @param r1 a {@link java.lang.Object} object.
 	 * @param r2 a {@link java.lang.Object} object.
 	 */
-	public CanvasGradientImpl(Object x0, Object y0, Object x1, Object y1, Object r1, Object r2) {
+	public CanvasGradientImpl(final Object x0, final Object y0, final Object x1, final Object y1, final Object r1, final Object r2) {
 		fractions = new ArrayList<>();
 		colors = new ArrayList<>();
 		this.linearX = Double.valueOf(x0.toString());
@@ -106,7 +104,7 @@ public class CanvasGradientImpl implements CanvasGradient {
 
 	/** {@inheritDoc} */
 	@Override
-	public void addColorStop(String offset, String color) {
+	public void addColorStop(final String offset, final String color) {
 		fractions.add(Float.valueOf(offset));
 		colors.add(ColorFactory.getInstance().getColor(color));
 	}
@@ -119,17 +117,17 @@ public class CanvasGradientImpl implements CanvasGradient {
 	 */
 	protected Paint gradient() {
 
-        float[] floatArray = new float[fractions.size()];
+        final float[] floatArray = new float[fractions.size()];
 		int i = 0;
 
-		for (Float f : fractions) {
+		for (final Float f : fractions) {
 			floatArray[i++] = f != null ? f : Float.NaN;
 		}
 
-		Color[] colorArray = new Color[colors.size()];
+		final Color[] colorArray = new Color[colors.size()];
 		int a = 0;
 
-		for (Color c : colors) {
+		for (final Color c : colors) {
 			colorArray[a++] = c;
 		}
 
@@ -146,155 +144,9 @@ public class CanvasGradientImpl implements CanvasGradient {
 		}
 	}
 
-	/**
-	 * Gets the fractions.
-	 *
-	 * @return the fractions
-	 */
-	public List<Float> getFractions() {
-		return fractions;
-	}
-
-	/**
-	 * Sets the fractions.
-	 *
-	 * @param fractions
-	 *            the new fractions
-	 */
-	public void setFractions(List<Float> fractions) {
-		this.fractions = fractions;
-	}
-
-	/**
-	 * Gets the colors.
-	 *
-	 * @return the colors
-	 */
-	public List<Color> getColors() {
-		return colors;
-	}
-
-	/**
-	 * Sets the colors.
-	 *
-	 * @param colors
-	 *            the new colors
-	 */
-	public void setColors(List<Color> colors) {
-		this.colors = colors;
-	}
-
-	/**
-	 * Gets the linear x.
-	 *
-	 * @return the linear x
-	 */
-	public Double getLinearX() {
-		return linearX;
-	}
-
-	/**
-	 * Sets the linear x.
-	 *
-	 * @param linearX
-	 *            the new linear x
-	 */
-	public void setLinearX(Double linearX) {
-		this.linearX = linearX;
-	}
-
-	/**
-	 * Gets the linear x1.
-	 *
-	 * @return the linear x1
-	 */
-	public Double getLinearX1() {
-		return linearX1;
-	}
-
-	/**
-	 * Sets the linear x1.
-	 *
-	 * @param linearX1
-	 *            the new linear x1
-	 */
-	public void setLinearX1(Double linearX1) {
-		this.linearX1 = linearX1;
-	}
-
-	/**
-	 * Gets the linear y.
-	 *
-	 * @return the linear y
-	 */
-	public Double getLinearY() {
-		return linearY;
-	}
-
-	/**
-	 * Sets the linear y.
-	 *
-	 * @param linearY
-	 *            the new linear y
-	 */
-	public void setLinearY(Double linearY) {
-		this.linearY = linearY;
-	}
-
-	/**
-	 * Gets the linear y1.
-	 *
-	 * @return the linear y1
-	 */
-	public Double getLinearY1() {
-		return linearY1;
-	}
-
-	/**
-	 * Sets the linear y1.
-	 *
-	 * @param linearY1
-	 *            the new linear y1
-	 */
-	public void setLinearY1(Double linearY1) {
-		this.linearY1 = linearY1;
-	}
-
-	/**
-	 * <p>Getter for the field r1.</p>
-	 *
-	 * @return the r1
-	 */
-	public Double getR1() {
-		return r1;
-	}
-
-	/**
-	 * <p>Setter for the field r1.</p>
-	 *
-	 * @param r1
-	 *            the r1 to set
-	 */
-	public void setR1(Double r1) {
-		this.r1 = r1;
-	}
-
-	/**
-	 * <p>Getter for the field r2.</p>
-	 *
-	 * @return the r2
-	 */
-	public Double getR2() {
-		return r2;
-	}
-
-	/**
-	 * <p>Setter for the field r2.</p>
-	 *
-	 * @param r2
-	 *            the r2 to set
-	 */
-	public void setR2(Double r2) {
-		this.r2 = r2;
+	/** {@inheritDoc} */
+	@Override
+	public String toString() {
+		return "[object CanvasGradient]";
 	}
 }

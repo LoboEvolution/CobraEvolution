@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,30 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Invoke isId on a new Attr node.  Check if the value returned is false.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId</a>
  */
-public class attrisid06Test extends LoboUnitTest {
+public class Attrisid06Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr;
-        boolean id = false;
+        final Document doc;
+        final Attr attr;
+        boolean id;
         doc = sampleXmlFile("hc_staff.xml");
         attr = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang");
         id = attr.isId();
-        assertFalse("AttrIsIDFalse06", id);
+        assertFalse(id, "Attrisid06Assert2");
     }
 }
 

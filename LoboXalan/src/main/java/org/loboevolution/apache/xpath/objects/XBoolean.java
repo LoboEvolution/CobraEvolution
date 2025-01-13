@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public class XBoolean extends XObject {
    *
    * @param b Value of the boolean object
    */
-  public XBoolean(boolean b) {
+  public XBoolean(final boolean b) {
 
     super();
 
@@ -97,7 +97,7 @@ public class XBoolean extends XObject {
 
   /** {@inheritDoc} */
   @Override
-  public boolean equals(XObject obj2) {
+  public boolean equals(final XObject obj2) {
 
     // In order to handle the 'all' semantics of
     // nodeset comparisons, we always call the
@@ -106,7 +106,7 @@ public class XBoolean extends XObject {
 
     try {
       return m_val == obj2.bool();
-    } catch (org.loboevolution.javax.xml.transform.TransformerException te) {
+    } catch (final javax.xml.transform.TransformerException te) {
       throw new WrappedRuntimeException(te);
     }
   }

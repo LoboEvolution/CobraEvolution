@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,36 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementationList;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * DOMImplementationRegistry.getDOMImplementationList("cOrE 3.0 xMl 3.0 eVeNts 2.0 lS")
  * should return an empty list or a list of DOMImplementation that implements the specified features.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom/2004JanMar/0111.html">http://lists.w3.org/Archives/Public/www-dom/2004JanMar/0111.html</a>
  */
-public class domimplementationregistry25Test extends LoboUnitTest {
+public class Domimplementationregistry25Test extends LoboUnitTest {
     @Test
     @SneakyThrows
     public void runTest() {
-       
-        DOMImplementationList domImplList;
-        int length;
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+
+        final DOMImplementationList domImplList;
+        final int length;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry25Assert3");
         domImplList = domImplRegistry.getDOMImplementationList("");
-        length = (int) domImplList.getLength();
-        assertTrue("atLeastOne", (length > 0));
+        length = domImplList.getLength();
+        assertTrue((length > 0), "Domimplementationregistry25Assert4");
     }
 }
 

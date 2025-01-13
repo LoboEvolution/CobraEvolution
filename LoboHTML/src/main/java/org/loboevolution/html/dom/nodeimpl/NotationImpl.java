@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,19 +28,39 @@ package org.loboevolution.html.dom.nodeimpl;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.Notation;
-import org.loboevolution.html.dom.nodeimpl.event.EventTargetImpl;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class NotationImpl extends EventTargetImpl implements Notation {
+public class NotationImpl extends NodeImpl implements Notation {
 
     private String publicId;
     private String systemId;
     private String nodeName;
 
     @Override
+    public String getLocalName() {
+        return this.nodeName;
+    }
+
+    @Override
     public int getNodeType() {
         return NOTATION_NODE;
+    }
+
+    @Override
+    public String getNodeValue() throws DOMException {
+        return null;
+    }
+
+    @Override
+    public void setNodeValue(String nodeValue) throws DOMException {
+        throw new DOMException(DOMException.INVALID_MODIFICATION_ERR, "readonly node");
+    }
+
+    @Override
+    public boolean hasAttributes() {
+        return false;
     }
 }

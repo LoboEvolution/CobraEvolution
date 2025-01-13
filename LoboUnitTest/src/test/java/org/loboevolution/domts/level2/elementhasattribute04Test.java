@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,29 +41,26 @@ import static org.junit.Assert.assertTrue;
  * on this element or has a default value, false otherwise.
  * Create an element Node and an attribute Node and add the attribute node to the element.
  * Invoke the hasAttribute method on the element and verify if the method returns true.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeHasAttrs</a>
  */
-public class elementhasattribute04Test extends LoboUnitTest {
+public class Elementhasattribute04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        boolean state;
-        Attr attribute;
+        final Document doc;
+        final Element element;
+        final boolean state;
+        final Attr attribute;
         doc = sampleXmlFile("staff.xml");
         element = doc.createElement("address");
         attribute = doc.createAttribute("domestic");
         element.setAttributeNode(attribute);
         state = element.hasAttribute("domestic");
-        assertTrue("elementhasattribute04", state);
+        assertTrue(state);
     }
 }
 

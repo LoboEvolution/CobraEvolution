@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,71 +28,61 @@
  */
 package org.loboevolution.html.js;
 
+import lombok.Getter;
 import org.htmlunit.cssparser.dom.CSSRuleListImpl;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.common.Nodes;
+import org.loboevolution.common.Strings;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.gui.HtmlRendererContext;
 import org.loboevolution.html.dom.HTMLCollection;
+import org.loboevolution.html.dom.canvas.ImageDataImpl;
 import org.loboevolution.html.dom.domimpl.*;
 import org.loboevolution.html.dom.filter.BodyFilter;
-import org.loboevolution.html.dom.nodeimpl.CommentImpl;
-import org.loboevolution.html.dom.nodeimpl.NodeImpl;
-import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
-import org.loboevolution.html.dom.nodeimpl.TextImpl;
+import org.loboevolution.html.dom.nodeimpl.*;
+import org.loboevolution.html.dom.nodeimpl.RangeImpl;
 import org.loboevolution.html.dom.nodeimpl.traversal.NodeFilterImpl;
 import org.loboevolution.html.dom.xpath.XPathResultImpl;
+import org.loboevolution.html.js.audio.AudioContextImpl;
 import org.loboevolution.html.js.css.MediaQueryListImpl;
-import org.loboevolution.html.js.events.EventImpl;
-import org.loboevolution.html.js.events.MouseEventImpl;
-import org.loboevolution.html.js.events.UIEventImpl;
+import org.loboevolution.html.js.events.*;
 import org.loboevolution.html.js.storage.LocalStorage;
 import org.loboevolution.html.js.storage.SessionStorage;
-import org.loboevolution.html.js.xml.XMLHttpRequest;
-import org.loboevolution.html.js.xml.XMLSerializerImpl;
+import org.loboevolution.html.js.xml.*;
 import org.loboevolution.html.node.*;
-import org.loboevolution.html.node.css.ComputedCSSStyleDeclaration;
-import org.loboevolution.html.node.events.Event;
-import org.loboevolution.html.node.history.History;
-import org.loboevolution.html.node.js.Location;
-import org.loboevolution.html.node.js.Navigator;
-import org.loboevolution.html.node.js.Screen;
-import org.loboevolution.html.node.js.Window;
-import org.loboevolution.html.node.js.console.Console;
-import org.loboevolution.html.node.js.webstorage.Storage;
-import org.loboevolution.html.node.traversal.NodeFilter;
-import org.loboevolution.html.node.views.DocumentView;
+import org.loboevolution.css.ComputedCSSStyleDeclaration;
+import org.loboevolution.events.Event;
+import org.loboevolution.html.dom.History;
+import org.loboevolution.html.node.Node;
+import org.loboevolution.js.*;
+import org.loboevolution.js.console.Console;
+import org.loboevolution.js.webstorage.Storage;
+import org.loboevolution.traversal.NodeFilter;
+import org.loboevolution.views.DocumentView;
 import org.loboevolution.http.UserAgentContext;
-import org.loboevolution.js.JavaInstantiator;
-import org.loboevolution.js.JavaScript;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.*;
 import org.w3c.dom.events.EventException;
 
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 /**
  * <p>WindowImpl class.</p>
  */
 public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
-	private static final Logger logger = Logger.getLogger(WindowImpl.class.getName());
-
 	private static final Map<HtmlRendererContext, WeakReference<WindowImpl>> CONTEXT_WINDOWS = new WeakHashMap<>();
 
 	private Map<Integer, TaskWrapper> taskMap;
 
+	@Getter
 	private List<String> msg;
 
 	private static int timerIdCounter = 0;
@@ -125,9 +115,14 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
 	private Scriptable windowScope;
 
+	@Getter
 	private final UserAgentContext uaContext;
 
+	@Getter
 	private final HtmlRendererConfig config;
+
+	@Getter
+	private LoboContextFactory contextFactory;
 
     
 	/**
@@ -141,6 +136,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		this.rcontext = rcontext;
 		this.uaContext = uaContext;
 		this.config = config;
+		this.contextFactory = new LoboContextFactory();
 	}
 
 	/**
@@ -149,7 +145,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	 * @param rcontext a {@link HtmlRendererContext} object.
 	 * @return a {@link org.loboevolution.html.js.WindowImpl} object.
 	 */
-	public static WindowImpl getWindow(HtmlRendererContext rcontext, final HtmlRendererConfig config) {
+	public static WindowImpl getWindow(final HtmlRendererContext rcontext, final HtmlRendererConfig config) {
 		if (rcontext == null) {
 			return null;
 		}
@@ -175,19 +171,21 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	public void setDocument(final HTMLDocumentImpl document) {
 		final HTMLDocumentImpl prevDocument = this.document;
 		if (prevDocument != document) {
-			final Function onunload = getOnunload();
-			if (onunload != null) {
-				Executor.executeFunction(this.getWindowScope(), onunload, prevDocument.getDocumentURL(), this.getUaContext());
-				setOnunload(null);
-			}
+			try (Context ctx = contextFactory.enterContext()) {
+				final Function onunload = getOnunload();
+				if (onunload != null) {
+					Executor.executeFunction(this.getWindowScope(ctx), onunload, contextFactory);
+					setOnunload(null);
+				}
 
-			if (prevDocument != null) {
-				this.clearState();
+				if (prevDocument != null) {
+					this.clearState();
+				}
+				this.forgetAllTasks();
+				this.initWindowScope(document);
+				document.setUserData(Executor.SCOPE_KEY, getWindowScope(ctx), null);
+				this.document = document;
 			}
-			this.forgetAllTasks();
-			this.initWindowScope(document);
-			document.setUserData(Executor.SCOPE_KEY, getWindowScope(), null);
-			this.document = document;
 		}
 	}
 
@@ -228,14 +226,16 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 			return null;
 		}
 
-		HTMLAllCollectionImpl all = (HTMLAllCollectionImpl) doc.getAll();
-		AtomicReference<Node> find = new AtomicReference<>();
+		final HTMLAllCollectionImpl all = (HTMLAllCollectionImpl) doc.getall();
+		final AtomicReference<Node> find = new AtomicReference<>();
 		all.forEach(node -> {
 			if (node.hasAttributes()) {
-				NamedNodeMap attributes = node.getAttributes();
-				for (Node attribute : Nodes.iterable(attributes)) {
-					if (name.equals(attribute.getNodeValue())) {
-						find.set(node);
+				final NamedNodeMap attributes = node.getAttributes();
+				if (attributes != null) {
+					for (final Node attribute : Nodes.iterable(attributes)) {
+						if (name.equals(attribute.getNodeValue())) {
+							find.set(node);
+						}
 					}
 				}
 			}
@@ -247,12 +247,12 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		return find.get();
 	}
 
-	private void findChild(Node node, AtomicReference<Node> find) {
-		NodeListImpl childNodes = (NodeListImpl) node.getChildNodes();
+	private void findChild(final Node node, final AtomicReference<Node> find) {
+		final NodeListImpl childNodes = (NodeListImpl) node.getChildNodes();
 		childNodes.forEach(nde -> {
 			if (nde.hasAttributes()) {
-				NamedNodeMap attributes = nde.getAttributes();
-				for (Node attribute : Nodes.iterable(attributes)) {
+				final NamedNodeMap attributes = nde.getAttributes();
+				for (final Node attribute : Nodes.iterable(attributes)) {
 					if (name.equals(attribute.getNodeValue())) {
 						find.set(nde);
 					}
@@ -268,43 +268,20 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	/**
 	 * <p>Getter for the field windowScope.</p>
 	 *
+	 * @param context a {@link Context} object.
 	 * @return a {@link org.mozilla.javascript.Scriptable} object.
 	 */
-	public Scriptable getWindowScope() {
+	public Scriptable getWindowScope(Context context) {
 		synchronized (this) {
 			Scriptable windowScope = this.windowScope;
 			if (windowScope != null) {
 				return windowScope;
 			}
-
-			try(Context ctx = Context.enter()) {
-				windowScope = (Scriptable) JavaScript.getInstance().getJavascriptObject(this, null);
-				windowScope = ctx.initSafeStandardObjects((ScriptableObject)windowScope);
-				this.windowScope = windowScope;
-				return windowScope;
-			}
+			windowScope = (Scriptable) JavaScript.getInstance().getJavascriptObject(this, null);
+			windowScope = context.initSafeStandardObjects((ScriptableObject) windowScope);
+			this.windowScope = windowScope;
+			return windowScope;
 		}
-	}
-
-	/**
-	 * <p>Getter for the field <code>uaContext</code>.</p>
-	 *
-	 * @return the uaContext
-	 */
-	public UserAgentContext getUaContext() {
-		return uaContext;
-	}
-
-	@Override
-	public HtmlRendererConfig getConfig() { return this.config; }
-
-	/**
-	 * <p>Getter for the field <code>msg</code>.</p>
-	 *
-	 * @return a {@link java.util.List} object.
-	 */
-	public List<String> getMsg() {
-		return msg;
 	}
 
 	/**
@@ -315,7 +292,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		if (this.rcontext != null) {
 			if (this.rcontext.isTestEnabled()) {
 				if (msg == null) msg = new ArrayList<>();
-				msg.add(message);
+				msg.add(message == null ? "null" : message);
 			} else {
 				this.rcontext.alert(message);
 			}
@@ -387,7 +364,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	@Override
 	public ComputedCSSStyleDeclaration getComputedStyle(final Element element, final String pseudoElement) {
 		if (element instanceof HTMLElementImpl) {
-			return ((HTMLElementImpl) element).getComputedStyle(pseudoElement);
+			return ((HTMLElementImpl) element).getComputedStyle(Strings.isNotBlank(pseudoElement) ? pseudoElement : element.getNodeName());
 		} else {
 			throw new IllegalArgumentException("Element implementation unknown: " + element);
 		}
@@ -416,8 +393,6 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		return this.document;
 	}
 
-	/** {@inheritDoc} */
-	@Override
 	public Document getDocumentNode() {
 		return this.document;
 	}
@@ -443,9 +418,10 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
 	/** {@inheritDoc} */
 	@Override
-    public Storage getSessionStorage() {
-    	 return new SessionStorage(this.getHtmlRendererConfig());
-    }
+	public Storage getSessionStorage() {
+		final HTMLDocumentImpl doc = this.document;
+		return new SessionStorage(doc.getHtmlRendererConfig());
+	}
 
 	/** {@inheritDoc} */
 	@Override
@@ -454,7 +430,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 			return this.length;
 		} else {
 			final HTMLDocumentImpl doc = this.document;
-			HTMLCollection collection = new HTMLCollectionImpl(doc, new BodyFilter());
+			final HTMLCollection collection = new HTMLCollectionImpl(doc, new BodyFilter());
 			return collection.getLength();
 		}
 	}
@@ -598,15 +574,15 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	@Override
 	public WindowImpl open(final String relativeUrl, final String windowName, final String windowFeatures, final boolean replace) {
 		final HtmlRendererContext rcontext = this.rcontext;
-		URL url;
+		final URL url;
 		final HTMLDocumentImpl document = this.document;
 		if (document != null) {
 			url = document.getFullURL(relativeUrl);
 		} else {
 			try {
-				url = new URL(relativeUrl);
-			} catch (final MalformedURLException mfu) {
-				throw new IllegalArgumentException("Malformed URI: " + relativeUrl);
+				url = new URI(relativeUrl).toURL();
+			} catch (Exception mfu) {
+				throw new IllegalArgumentException("Error URI: " + relativeUrl);
 			}
 		}
 
@@ -637,7 +613,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
 	/** {@inheritDoc} */
 	@Override
-	public void resizeBy(double byWidth, final double byHeight) {
+	public void resizeBy(final double byWidth, final double byHeight) {
 		final HtmlRendererContext rcontext = this.rcontext;
 		if (rcontext != null) {
 			rcontext.resizeBy(byWidth, byHeight);
@@ -687,14 +663,12 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		final Integer timeIDInt = timeID;
 		ActionListener task = null;
 
-		if(aFunction instanceof Function){
-			Function function = (Function) aFunction;
-			task = new FunctionTimerTask(this, timeIDInt, function, false);
+		if(aFunction instanceof Function function){
+            task = new FunctionTimerTask(this, timeIDInt, function, false);
 		}
 
-		if(aFunction instanceof String){
-			String aExpression = (String) aFunction;
-			task = new ExpressionTimerTask(this, timeIDInt, aExpression, false);
+		if(aFunction instanceof String aExpression){
+            task = new ExpressionTimerTask(this, timeIDInt, aExpression, false);
 		}
 
 		int t = (int) aTimeInMs;
@@ -708,15 +682,13 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	}
 
 	private static int generateTimerID() {
-		synchronized (logger) {
-			return timerIdCounter++;
-		}
+		return timerIdCounter++;
 	}
 
 	/**
 	 * <p>Setter for the field length.</p>
 	 *
-	 * @param length a int.
+	 * @param length a {@link java.lang.Integer} object.
 	 */
 	public void setLength(final int length) {
 		this.lengthSet = true;
@@ -783,14 +755,12 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		final Integer timeIDInt = timeID;
 		ActionListener task = null;
 
-		if(function instanceof Function) {
-			Function fun = (Function) function;
-			task = new FunctionTimerTask(this, timeIDInt, fun, true);
+		if(function instanceof Function fun) {
+            task = new FunctionTimerTask(this, timeIDInt, fun, true);
 		}
 
-		if(function instanceof String){
-			String expr = (String)function;
-			task = new ExpressionTimerTask(this, timeIDInt, expr, true);
+		if(function instanceof String expr){
+            task = new ExpressionTimerTask(this, timeIDInt, expr, true);
 		}
 
 		int t = (int) millis;
@@ -843,6 +813,15 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		}
 	}
 
+	@Override
+	public boolean dispatchEvent(final Node element, final Event evt) {
+		final HTMLDocumentImpl doc = (HTMLDocumentImpl) this.getDocument();
+		if (doc != null) {
+			return doc.dispatchEvent(element, evt);
+		}
+		return false;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public double getInnerHeight() {
@@ -862,7 +841,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	 * @param innerHeight a boolean.
 	 */
 	@Override
-	public void setInnerHeight(double innerHeight) {
+	public void setInnerHeight(final double innerHeight) {
 		this.innerHeight = Double.valueOf(innerHeight).intValue();
 	}
 
@@ -886,7 +865,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	 * @param innerWidth a boolean.
 	 */
 	@Override
-	public void setInnerWidth(double innerWidth) {
+	public void setInnerWidth(final double innerWidth) {
 		this.innerWidth = Double.valueOf(innerWidth).intValue();
 	}
 
@@ -910,7 +889,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	 * @param outerHeight a boolean.
 	 */
 	@Override
-	public void setOuterHeight(double outerHeight) {
+	public void setOuterHeight(final double outerHeight) {
 		this.outerHeight = Double.valueOf(outerHeight).intValue();
 	}
 
@@ -933,7 +912,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	 * @param outerWidth a boolean.
 	 */
 	@Override
-	public void setOuterWidth(double outerWidth) {
+	public void setOuterWidth(final double outerWidth) {
 		this.outerWidth = Double.valueOf(outerWidth).intValue();
 	}
 
@@ -945,7 +924,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
 	/** {@inheritDoc} */
 	@Override
-	public String atob(String encodedString) throws DOMException {
+	public String atob(final String encodedString) throws DOMException {
 		final int l = encodedString.length();
 		for (int i = 0; i < l; i++) {
 			if (encodedString.charAt(i) > 255) {
@@ -959,7 +938,8 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 
 	/** {@inheritDoc} */
 	@Override
-	public String btoa(String rawString) {
+	public String btoa(final String rString) {
+		String rawString = rString;
 		if(rawString == null) {
 			rawString = "null";
 		}
@@ -971,7 +951,8 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	/** {@inheritDoc} */
 	@Override
 	public Console getConsole() {
-		return new ConsoleImpl(this.getHtmlRendererConfig());
+		final HTMLDocumentImpl doc = this.document;
+		return new ConsoleImpl(doc.getHtmlRendererConfig());
 	}
 
 	/** {@inheritDoc} */
@@ -1136,8 +1117,7 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	/** {@inheritDoc} */
 	@Override
 	public Selection getSelection() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SelectionImpl();
 	}
 
 	/** {@inheritDoc} */
@@ -1223,28 +1203,111 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	}
 
 	private void initWindowScope(final Document doc) {
-		final Scriptable ws = this.getWindowScope();
+		try (Context cx = contextFactory.enterContext()) {
+			final Scriptable ws = this.getWindowScope(cx);
+			setScope(doc, ws);
+		}
+	}
+
+	private void setScope(final Document doc, Scriptable ws) {
 		final JavaScript js = JavaScript.getInstance();
-		JavaInstantiator jiXhttp = () -> {
-			HTMLDocumentImpl hd = (HTMLDocumentImpl) doc;
-			return new XMLHttpRequest(getUaContext(), hd.getDocumentURL(), ws);
-		};
+		final JavaInstantiator jiInputEvent = InputEventImpl::new;
+		final JavaInstantiator jiUIEvent = UIEventImpl::new;
+		final JavaInstantiator jiEvent = EventImpl::new;
+		final JavaInstantiator jiSubmitEvent = SubmitEventImpl::new;
+		final JavaInstantiator jiMouseEvent = MouseEventImpl::new;
+		final JavaInstantiator jiWheelEvent = WheelEventImpl::new;
+		final JavaInstantiator jiKeyboardEvent = KeyboardEventImpl::new;
+		final JavaInstantiator jiAnimationEvent = AnimationEventImpl::new;
+		final JavaInstantiator jiMessageEvent = MessageEventImpl::new;
+		final JavaInstantiator jiMutationEvent = MutationEventImpl::new;
+		final JavaInstantiator jiCustomEvent = CustomEventImpl::new;
+		final JavaInstantiator jiCloseEvent = CloseEventImpl::new;
+		final JavaInstantiator jiCompositionEvent = CompositionEventImpl::new;
+		final JavaInstantiator jiPointerEvent = PointerEventImpl::new;
+		final JavaInstantiator jiPopStateEvent = PopStateEventImpl::new;
+		final JavaInstantiator jiProgressEvent = ProgressEventImpl::new;
+		final JavaInstantiator jiFocusEvent = FocusEventImpl::new;
+		final JavaInstantiator jiBeforeInstallPromptEvent = BeforeInstallPromptEventImpl::new;
+		final JavaInstantiator jiBeforeUnloadEvent = BeforeUnloadEventImpl::new;
+		final JavaInstantiator jiBlobEvent = BlobEventImpl::new;
+		final JavaInstantiator jiTransitionEvent = TransitionEventImpl::new;
+		final JavaInstantiator jiDragEvent = DragEventImpl::new;
+		final JavaInstantiator jiGamepadEvent = GamepadEventimpl::new;
+		final JavaInstantiator jiAudioProcessingEvent = AudioProcessingEventImpl::new;
+		final JavaInstantiator jiTouchEvent = TouchEventImpl::new;
+		final JavaInstantiator jiDeviceMotionEvent = DeviceMotionEventImpl::new;
+		final JavaInstantiator jiDeviceOrientationEvent = DeviceOrientationEventImpl::new;
+		final JavaInstantiator jiHashChangeEvent = HashChangeEventImpl::new;
+		final JavaInstantiator jiPageTransitionEvent = PageTransitionEventImpl::new;
+		final JavaInstantiator jiStorageEvent = StorageEventImpl::new;
+		final JavaInstantiator jiTrackEvent = TrackEventImpl::new;
+		final JavaInstantiator jiErrorEvent = ErrorEventImpl::new;
 
-		JavaInstantiator jidomp = () -> new DOMParserImpl(document);
-		JavaInstantiator jiloc = () -> new LocalStorage(this);
+		final JavaInstantiator jiXTarget = (args) -> new XMLHttpRequestEventTargetImpl(document);
+		final JavaInstantiator jiXUpload = (args) -> new XMLHttpRequestUploadImpl(document);
+		final JavaInstantiator jiXhttp = (args) -> new XMLHttpRequestImpl(document, ws, this);
+		final JavaInstantiator jiDomp = (args) -> new DOMParserImpl(document);
+		final JavaInstantiator jiform = (args) -> new FormDataImpl(document);
+		final JavaInstantiator jiloc = (args) -> new LocalStorage(this);
+		final JavaInstantiator jiElement = (args) -> new ElementImpl("");
+		final JavaInstantiator jiXSeralizer = (args) -> new XMLSerializerImpl();
+		final JavaInstantiator jiXPath = (args) -> new XPathResultImpl();
+		final JavaInstantiator jiXMLDocument = (args) -> new XMLDocument();
+		final JavaInstantiator jiText = (args) -> new TextImpl();
+		final JavaInstantiator jiAudioContext = (args) -> new AudioContextImpl();
+		final JavaInstantiator jiBlob = (args) -> new BlobImpl();
+		final JavaInstantiator jiImageData = (args) -> new ImageDataImpl();
 
-		js.defineJsObject(ws, "XMLHttpRequest", XMLHttpRequest.class, jiXhttp);
-		js.defineJsObject(ws, "DOMParser",  DOMParserImpl.class, jidomp);
 
-		js.defineJsObject(ws, "XMLSerializer",  XMLSerializerImpl.class, XMLSerializerImpl::new);
-		js.defineJsObject(ws, "XPathResult", XPathResultImpl.class, XPathResultImpl::new);
-		js.defineJsObject(ws, "MouseEvent", MouseEventImpl.class, MouseEventImpl::new);
-		js.defineJsObject(ws, "UIEvent",  UIEventImpl.class, MouseEventImpl::new);
-		js.defineJsObject(ws, "Element", Element.class, MouseEventImpl::new);
-		js.defineJsObject(ws, "Event", EventImpl.class, EventImpl::new);
-		js.defineJsObject(ws, "Text", TextImpl.class, TextImpl::new);
-		js.defineJsObject(ws, "Storage", LocalStorage.class, jiloc);
+		js.defineJsObject(ws, "Event", EventImpl.class, jiEvent);
+		js.defineJsObject(ws, "UIEvent", UIEventImpl.class, jiUIEvent);
+		js.defineJsObject(ws, "InputEvent", InputEventImpl.class, jiInputEvent);
+		js.defineJsObject(ws, "MouseEvent", MouseEventImpl.class, jiMouseEvent);
+		js.defineJsObject(ws, "WheelEvent", WheelEventImpl.class, jiWheelEvent);
+		js.defineJsObject(ws, "SubmitEvent", SubmitEventImpl.class, jiSubmitEvent);
+		js.defineJsObject(ws, "KeyboardEvent", KeyboardEventImpl.class, jiKeyboardEvent);
+		js.defineJsObject(ws, "AnimationEvent", AnimationEventImpl.class, jiAnimationEvent);
+		js.defineJsObject(ws, "MessageEvent", MessageEventImpl.class, jiMessageEvent);
+		js.defineJsObject(ws, "MutationEvent", MutationEventImpl.class, jiMutationEvent);
+		js.defineJsObject(ws, "CustomEvent", CustomEventImpl.class, jiCustomEvent);
+		js.defineJsObject(ws, "CloseEvent", CloseEventImpl.class, jiCloseEvent);
+		js.defineJsObject(ws, "CompositionEvent", CompositionEventImpl.class, jiCompositionEvent);
+		js.defineJsObject(ws, "PointerEvent", PointerEventImpl.class, jiPointerEvent);
+		js.defineJsObject(ws, "PopStateEvent", PopStateEventImpl.class, jiPopStateEvent);
+		js.defineJsObject(ws, "ProgressEvent", ProgressEventImpl.class, jiProgressEvent);
+		js.defineJsObject(ws, "FocusEvent", FocusEventImpl.class, jiFocusEvent);
+		js.defineJsObject(ws, "BeforeInstallPromptEvent", BeforeInstallPromptEventImpl.class, jiBeforeInstallPromptEvent);
+		js.defineJsObject(ws, "BeforeUnloadEvent", BeforeUnloadEventImpl.class, jiBeforeUnloadEvent);
+		js.defineJsObject(ws, "BlobEvent", BlobEventImpl.class, jiBlobEvent);
+		js.defineJsObject(ws, "TransitionEvent", TransitionEventImpl.class, jiTransitionEvent);
+		js.defineJsObject(ws, "DragEvent", DragEventImpl.class, jiDragEvent);
+		js.defineJsObject(ws, "GamepadEvent", GamepadEventimpl.class, jiGamepadEvent);
+		js.defineJsObject(ws, "AudioProcessingEvent", AudioProcessingEventImpl.class, jiAudioProcessingEvent);
+		js.defineJsObject(ws, "TouchEvent", TouchEventImpl.class, jiTouchEvent);
+		js.defineJsObject(ws, "DeviceMotionEvent", DeviceMotionEventImpl.class, jiDeviceMotionEvent);
+		js.defineJsObject(ws, "DeviceOrientationEvent", DeviceOrientationEventImpl.class, jiDeviceOrientationEvent);
+		js.defineJsObject(ws, "HashChangeEvent", HashChangeEventImpl.class, jiHashChangeEvent);
+		js.defineJsObject(ws, "PageTransitionEvent", PageTransitionEventImpl.class, jiPageTransitionEvent);
+		js.defineJsObject(ws, "StorageEvent", StorageEventImpl.class, jiStorageEvent);
+		js.defineJsObject(ws, "TrackEvent", TrackEventImpl.class, jiTrackEvent);
+		js.defineJsObject(ws, "ErrorEvent", ErrorEventImpl.class, jiErrorEvent);
 
+		js.defineJsObject(ws, "XMLHttpRequestEventTarget", XMLHttpRequestEventTargetImpl.class, jiXTarget);
+		js.defineJsObject(ws, "XMLHttpRequestUpload", XMLHttpRequestUploadImpl.class, jiXUpload);
+		js.defineJsObject(ws, "XMLHttpRequest", XMLHttpRequestImpl.class, jiXhttp);
+		js.defineJsObject(ws, "DOMParser", DOMParserImpl.class, jiDomp);
+		js.defineJsObject(ws, "InputEvent", InputEventImpl.class, jiInputEvent);
+		js.defineJsObject(ws, "FormData", FormDataImpl.class, jiform);
+		js.defineJsObject(ws, "LocalStorage", LocalStorage.class, jiloc);
+		js.defineJsObject(ws, "XMLSerializer", XMLSerializerImpl.class, jiXSeralizer);
+		js.defineJsObject(ws, "XPathResult", XPathResultImpl.class, jiXPath);
+		js.defineJsObject(ws, "XMLDocument", XMLDocument.class, jiXMLDocument);
+		js.defineJsObject(ws, "Element", ElementImpl.class, jiElement);
+		js.defineJsObject(ws, "Text", TextImpl.class, jiText);
+		js.defineJsObject(ws, "AudioContext", AudioContextImpl.class, jiAudioContext);
+		js.defineJsObject(ws, "Blob", BlobImpl.class, jiBlob);
+		js.defineJsObject(ws, "ImageData", ImageDataImpl.class, jiImageData);
 
 		js.defineElementClass(ws, doc, "Comment", "comment", CommentImpl.class);
 		js.defineElementClass(ws, doc, "Image", "img", HTMLImageElementImpl.class);
@@ -1252,14 +1315,14 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 		js.defineElementClass(ws, doc, "IFrame", "iframe", HTMLIFrameElementImpl.class);
 		js.defineElementClass(ws, doc, "Option", "option", HTMLOptionElementImpl.class);
 		js.defineElementClass(ws, doc, "Select", "select", HTMLSelectElementImpl.class);
-		js.defineElementClass(ws, doc, "Console", "console", ConsoleImpl.class);
 		js.defineElementClass(ws, doc, "HTMLDivElement", "div", HTMLDivElementImpl.class);
 		js.defineElementClass(ws, doc, "HTMLElement", "html", HTMLElementImpl.class);
-		js.defineElementClass(ws, doc, "HTMLDocument", "document", HTMLDocumentImpl.class);
-		js.defineElementClass(ws, doc, "Window", "window", WindowImpl.class);
-
 		js.defineElementClass(ws, doc, "NodeFilter", "NodeFilter", NodeFilterImpl.class);
+		js.defineElementClass(ws, doc, "HTMLDialogElement", "HTMLDialogElement", HTMLDialogElementImpl.class);
 		js.defineElementClass(ws, doc, "Node", "Node", NodeImpl.class);
+		js.defineElementClass(ws, doc, "Range", "Range", RangeImpl.class);
+
+
 
 	}
 
@@ -1280,14 +1343,13 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	}
 
 	private void clearState() {
-
-		try(Context cx = Context.enter()) {
-			Scriptable s = this.getWindowScope();
+		try (final Context cx = contextFactory.enterContext()) {
+			final Scriptable s = this.getWindowScope(cx);
 			if (s != null) {
-				Object[] ids = s.getIds();
-				for (Object id : ids) {
+				final Object[] ids = s.getIds();
+				for (final Object id : ids) {
 					if (id instanceof String) {
-						s.delete((String)id);
+						s.delete((String) id);
 					} else if (id instanceof Integer) {
 						s.delete((Integer) id);
 					}
@@ -1331,11 +1393,6 @@ public class WindowImpl extends WindowEventHandlersImpl implements Window {
 	public NodeFilter getNodeFilter() {
 		return new NodeFilterImpl();
 	}
-
-	public Node getNode() {
-		return this;
-	}
-
 
 	@Override
 	public String toString() {

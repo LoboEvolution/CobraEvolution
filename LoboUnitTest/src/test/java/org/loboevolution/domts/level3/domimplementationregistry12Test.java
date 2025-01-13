@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,41 +28,38 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * DOMImplementationRegistry.getDOMImplementation("cOrE 3.0 xMl 3.0 eVeNts 2.0 lS") should return null
  * or a DOMImplementation that implements the specified features.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpl">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpl</a>
  */
-public class domimplementationregistry12Test extends LoboUnitTest {
+public class Domimplementationregistry12Test extends LoboUnitTest {
     @Test
     @SneakyThrows
     public void runTest() {
-       
-        DOMImplementation domImpl;
-        boolean hasCore;
-        boolean hasXML;
-        boolean hasEvents;
-        boolean hasLS;
-        DOMImplementation baseImpl;
-        String nullVersion = null;
 
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        final DOMImplementation domImpl;
+        final boolean hasCore;
+        final boolean hasXML;
+        final boolean hasEvents;
+        final boolean hasLS;
+        final DOMImplementation baseImpl;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry12Assert1");
         domImpl = domImplRegistry.getDOMImplementation("cOrE 3.0 xMl 3.0 eVeNts 2.0 lS");
 
         if ((domImpl == null)) {
@@ -70,19 +67,17 @@ public class domimplementationregistry12Test extends LoboUnitTest {
             hasCore = baseImpl.hasFeature("Core", "3.0");
             hasXML = baseImpl.hasFeature("XML", "3.0");
             hasEvents = baseImpl.hasFeature("Events", "2.0");
-            hasLS = baseImpl.hasFeature("LS", nullVersion);
-            assertFalse("baseImplFeatures",
-                    (hasCore & hasXML & hasEvents & hasLS)
-            );
+            hasLS = baseImpl.hasFeature("LS", null);
+            assertFalse((hasCore && hasXML && hasEvents && hasLS), "Domimplementationregistry12Assert2");
         } else {
             hasCore = domImpl.hasFeature("Core", "3.0");
-            assertTrue("hasCore", hasCore);
+            assertTrue(hasCore, "Domimplementationregistry12Assert3");
             hasXML = domImpl.hasFeature("XML", "3.0");
-            assertTrue("hasXML", hasXML);
+            assertTrue(hasXML, "Domimplementationregistry12Assert4");
             hasEvents = domImpl.hasFeature("Events", "2.0");
-            assertTrue("hasEvents", hasEvents);
-            hasLS = domImpl.hasFeature("LS", nullVersion);
-            assertTrue("hasLS", hasLS);
+            assertTrue(hasEvents, "Domimplementationregistry12Assert5");
+            hasLS = domImpl.hasFeature("LS", null);
+            assertTrue(hasLS, "Domimplementationregistry12Assert6");
         }
 
     }

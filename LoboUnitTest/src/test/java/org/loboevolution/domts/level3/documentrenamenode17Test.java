@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,53 +27,50 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke the renameNode method to rename a new element node of a new document so that
- * its namespaceURI is http://www.w3.org/2000/xmlns/ and qualifiedName is xmlns:xmlns.
+ * its namespaceURI is <a href="http://www.w3.org/2000/xmlns/">...</a> and qualifiedName is xmlns:xmlns.
  * Check if this element has been renamed successfully by verifying the
  * nodeName, attributes of the renamed node.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode17Test extends LoboUnitTest {
+public class Documentrenamenode17Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Element element;
-        Node renamedNode;
-        String nodeName;
-        int nodeType;
-        String namespaceURI;
-        Element docElem;
-        String rootNS;
-        String rootTagname;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Element element;
+        final Node renamedNode;
+        final String nodeName;
+        final int nodeType;
+        final String namespaceURI;
+        final Element docElem;
+        final String rootNS;
+        final String rootTagname;
 
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootTagname = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootTagname, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootTagname, null);
         element = newDoc.createElementNS("http://www.w3.org/1999/xhtml", "body");
         renamedNode = newDoc.renameNode(element, "http://www.w3.org/1999/xhtml", "xhtml:head");
         nodeName = renamedNode.getNodeName();
         namespaceURI = renamedNode.getNamespaceURI();
         nodeType = renamedNode.getNodeType();
-        assertEquals("documentrenamenode16_nodeName", "xhtml:head", nodeName);
-        assertEquals("documentrenamenode16_nodeType", 1, nodeType);
-        assertEquals("documentrenamenode16_nodeValue", "http://www.w3.org/1999/xhtml", namespaceURI);
+        assertEquals("xhtml:head", nodeName, "Documentrenamenode17Assert2");
+        assertEquals(1, nodeType, "Documentrenamenode17Assert3");
+        assertEquals("http://www.w3.org/1999/xhtml", namespaceURI, "Documentrenamenode17Assert4");
     }
 }
 

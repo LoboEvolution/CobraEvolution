@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,9 +37,6 @@ import java.util.StringTokenizer;
 
 /**
  * <p>TimeImpl class.</p>
- *
- *
- *
  */
 public class TimeImpl implements Time {
 	
@@ -51,10 +48,10 @@ public class TimeImpl implements Time {
 
 	/**
 	 * <p>Constructor for TimeImpl.</p>
-	 *
-	 * @param timeValue a {@link java.lang.String} object.
+	 * @param time a {@link java.lang.String} object.
 	 */
-	public TimeImpl(String timeValue) {
+	public TimeImpl(final String time) {
+		String timeValue = time;
 		if (timeValue == null) {
 			mTimeType = SMIL_TIME_INDEFINITE;
 			mResolved = true;
@@ -63,9 +60,9 @@ public class TimeImpl implements Time {
 			mResolved = true;
 		} else if (timeValue.startsWith("wallclock(")) {
 			timeValue = timeValue.replace("wallclock(", "").replace(")", "").trim();
-			DateUtil du = new DateUtil();
-			Date d = du.determineDateFormat(timeValue, Locale.US);
-			long now = Calendar.getInstance().getTime().getTime();
+			final DateUtil du = new DateUtil();
+			final Date d = du.determineDateFormat(timeValue, Locale.US);
+			final long now = Calendar.getInstance().getTime().getTime();
 			mResolvedOffset = d.getTime() - now;
 			mTimeType = SMIL_TIME_WALLCLOCK;
 			mResolved = true;
@@ -113,7 +110,7 @@ public class TimeImpl implements Time {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setOffset(double offset) {
+	public void setOffset(final double offset) {
 		this.mResolvedOffset = offset;
 
 	}
@@ -127,7 +124,7 @@ public class TimeImpl implements Time {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBaseElement(Element baseElement) {
+	public void setBaseElement(final Element baseElement) {
 		// TODO Auto-generated method stub
 
 	}
@@ -141,7 +138,7 @@ public class TimeImpl implements Time {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setBaseBegin(boolean baseBegin) {
+	public void setBaseBegin(final boolean baseBegin) {
 		// TODO Auto-generated method stub
 
 	}
@@ -155,7 +152,7 @@ public class TimeImpl implements Time {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setEvent(String event) {
+	public void setEvent(final String event) {
 		// TODO Auto-generated method stub
 
 	}
@@ -169,7 +166,7 @@ public class TimeImpl implements Time {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setMarker(String marker) {
+	public void setMarker(final String marker) {
 		// TODO Auto-generated method stub
 
 	}
@@ -180,41 +177,41 @@ public class TimeImpl implements Time {
 	 * @param clockVal a {@link java.lang.String} object.
 	 * @return a float.
 	 */
-	protected static float getClockMilliSecs(String clockVal) {
+	protected static float getClockMilliSecs(final String clockVal) {
 		try {
 			if (clockVal.indexOf(':') != -1) {
-				StringTokenizer st = new StringTokenizer(clockVal, ":");
-				int numTokens = st.countTokens();
+				final StringTokenizer st = new StringTokenizer(clockVal, ":");
+				final int numTokens = st.countTokens();
 				if (numTokens == 3) { // is a full clock value
-					int hours = Integer.parseInt(st.nextToken());
-					int minutes = Integer.parseInt(st.nextToken());
-					float seconds = Float.parseFloat(st.nextToken());
+					final int hours = Integer.parseInt(st.nextToken());
+					final int minutes = Integer.parseInt(st.nextToken());
+					final float seconds = Float.parseFloat(st.nextToken());
 					return (hours * 3600 + minutes * 60 + seconds) * 1000;
 				} else if (numTokens == 2) { // is a partial clock value
-					int minutes = Integer.parseInt(st.nextToken());
-					float seconds = Float.parseFloat(st.nextToken());
+					final int minutes = Integer.parseInt(st.nextToken());
+					final float seconds = Float.parseFloat(st.nextToken());
 					return (minutes * 60 + seconds) * 1000;
 				} else {
 					return 0;
 				}
 			} else {
 				if (clockVal.indexOf('h') != -1) {
-					float hour = Float.parseFloat(clockVal.substring(0, clockVal.indexOf('h')));
+					final float hour = Float.parseFloat(clockVal.substring(0, clockVal.indexOf('h')));
 					return (hour * 3600) * 1000;
-				} else if (clockVal.indexOf("min") != -1) {
-					float min = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("min")));
+				} else if (clockVal.contains("min")) {
+					final float min = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("min")));
 					return (min * 60) * 1000;
-				} else if (clockVal.indexOf("ms") != -1) {
+				} else if (clockVal.contains("ms")) {
 					return Float.parseFloat(clockVal.substring(0, clockVal.indexOf("ms")));
 				} else if (clockVal.indexOf('s') != -1) {
-					float secs = Float.parseFloat(clockVal.substring(0, clockVal.indexOf('s')));
+					final float secs = Float.parseFloat(clockVal.substring(0, clockVal.indexOf('s')));
 					return secs * 1000;
 				} else {
-					float secs = Float.parseFloat(clockVal);
+					final float secs = Float.parseFloat(clockVal);
 					return secs * 1000;
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return 0;
 		}
 	}

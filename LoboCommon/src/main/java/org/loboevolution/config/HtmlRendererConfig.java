@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import org.loboevolution.info.TabInfo;
 import org.loboevolution.net.Cookie;
 
 import java.awt.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -233,40 +234,40 @@ public interface HtmlRendererConfig {
         return "TimesNewRoman";
     }
 
-    void deleteInput(String text, String baseUrl);
-    void insertLogin(String type, String value, String baseUrl, boolean navigationEnabled);
+    void deleteInput(final String text, final String baseUrl);
+    void insertLogin(final String type, final String value, final String baseUrl, boolean navigationEnabled);
 
-    String getSourceCache(String baseUrl, String type, boolean test);
+    String getSourceCache(final URI baseUrl, final String type, String integrity, boolean test) throws Exception;
 
-    List<String> getStyles(String href, String baseUrl);
+    List<String> getStyles(final String href, final String baseUrl);
 
-    void insertStyle(String title, String href, String baseUrl, int enable);
+    void insertStyle(final String title, final String href, final String baseUrl, final int enable);
 
     Rectangle getInitialWindowBounds();
 
     int countStorage(int index);
 
-    Map<String, String> getMapStorage(int index, int i);
+    Map<String, String> getMapStorage(int index, final int i);
 
-    Object getValue(String key, int i, int index);
+    Object getValue(final String key, final int i, final int index);
 
-    void deleteStorage(String keyName, int i, int index);
+    void deleteStorage(final String keyName, final int i, final int index);
 
-    void deleteStorage(int session, int index);
+    void deleteStorage(int session, final int index);
 
-    void insertStorage(String keyName, String keyValue, int i, int index);
+    void insertStorage(final String keyName, final String keyValue, final int i, final int index);
 
     List<TabInfo> getTabs();
 
-    List<String> autocomplete(String type, String text, String baseUrl);
+    List<String> autocomplete(final String type, final String text, final String baseUrl);
 
-    URL getResourceFile(String fileName);
+    URL getResourceFile(final String fileName);
 
-    boolean isVisited(String href);
+    boolean isVisited(final String href);
 
-    void saveCookie(String toString, String cookieSpec);
+    void saveCookie(final String toString, final String cookieSpec);
 
-    List<Cookie> getCookies(String host, String path);
+    List<Cookie> getCookies(final String host, final String path);
 
     GeneralInfo getGeneralInfo();
 }

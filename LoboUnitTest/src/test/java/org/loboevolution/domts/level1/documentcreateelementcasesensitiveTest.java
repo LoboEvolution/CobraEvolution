@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,25 +44,22 @@ import static org.junit.Assert.*;
  * Each call should create a distinct Element node.  The
  * newly created Elements are then assigned attributes
  * that are retrieved.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-2141741547</a>
  */
-public class documentcreateelementcasesensitiveTest extends LoboUnitTest {
+public class DocumentcreateelementcasesensitiveTest extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element newElement1;
-        Element newElement2;
-        String attribute1;
-        String attribute2;
+        final Document doc;
+        final Element newElement1;
+        final Element newElement2;
+        final String attribute1;
+        final String attribute2;
         doc = sampleXmlFile("staff.xml");
         newElement1 = doc.createElement("ADDRESS");
         newElement2 = doc.createElement("address");
@@ -70,8 +67,8 @@ public class documentcreateelementcasesensitiveTest extends LoboUnitTest {
         newElement2.setAttribute("county", "Dallas");
         attribute1 = newElement1.getAttribute("district");
         attribute2 = newElement2.getAttribute("county");
-        assertEquals("attrib1", "Fort Worth", attribute1);
-        assertEquals("attrib2", "Dallas", attribute2);
+        assertEquals("Fort Worth", attribute1, "DocumentcreateelementcasesensitiveAssert1");
+        assertEquals("Dallas", attribute2, "DocumentcreateelementcasesensitiveAssert2");
     }
 
 }

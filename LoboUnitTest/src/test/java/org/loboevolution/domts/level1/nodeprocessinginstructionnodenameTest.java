@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,28 +43,25 @@ import static org.junit.Assert.*;
  * Retrieve the Processing Instruction Node in the XML file
  * and check the string returned by the "getNodeName()"
  * method.   It should be equal to "XML-STYLE".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  */
-public class nodeprocessinginstructionnodenameTest extends LoboUnitTest {
+public class NodeprocessinginstructionnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        NodeList testList;
-        Node piNode;
-        String piName;
+        final Document doc;
+        final NodeList testList;
+        final Node piNode;
+        final String piName;
         doc = sampleXmlFile("staff.xml");
         testList = doc.getChildNodes();
         piNode = testList.item(0);
         piName = piNode.getNodeName();
-        assertEquals("nodeProcessingInstructionNodeNameAssert1", "TEST-STYLE", piName);
+        assertEquals("TEST-STYLE", piName, "NodeprocessinginstructionnodenameAssert1");
     }
 
 }

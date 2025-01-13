@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,42 +42,37 @@ import static org.junit.Assert.*;
  * Retreive the street attribute from the second address element node.
  * Clone it and add it to the first address node.  The INUSE_ATTRIBUTE_ERR exception
  * should not be thrown. Check the name and value of the newly added node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAtNodeNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class elementsetattributenodens02Test extends LoboUnitTest {
+public class Elementsetattributenodens02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Element element2;
-        Attr attribute;
-        Attr attributeCloned;
-        Attr newAttr;
-        HTMLCollection elementList;
-        String attrName;
-        String attrValue;
-        String nullNS = null;
-
+        final Document doc;
+        final Element element;
+        final Element element2;
+        final Attr attribute;
+        final Attr attributeCloned;
+        final Attr newAttr;
+        final HTMLCollection elementList;
+        final String attrName;
+        final String attrValue;
         doc = sampleXmlFile("staffNS.xml");
-        elementList = doc.getElementsByTagName( "address");
+        elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(1);
-        attribute = element.getAttributeNodeNS(nullNS, "street");
+        attribute = element.getAttributeNodeNS(null, "street");
         attributeCloned = (Attr) attribute.cloneNode(true);
         element2 = (Element) elementList.item(2);
         newAttr = element2.setAttributeNodeNS(attributeCloned);
         attrName = newAttr.getNodeName();
         attrValue = newAttr.getNodeValue();
-        assertEquals("elementsetattributenodens02_attrName", "street", attrName);
-        assertEquals("elementsetattributenodens02_attrValue", "Yes", attrValue);
+        assertEquals("street", attrName);
+        assertEquals("Yes", attrValue);
     }
 }
 

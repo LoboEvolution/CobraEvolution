@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,28 +46,25 @@ import static org.junit.Assert.*;
  * Using the method importNode with deep=true, import the first address element node of this
  * Document.  Verify if the node has been imported correctly by checking the length of the
  * this elements childNode list before and after the import.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode12Test extends LoboUnitTest {
+public class Documentimportnode12Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Node imported;
-        Node addressElem;
-        NodeList addressElemChildren;
-        NodeList importedChildren;
-        int addressElemLen;
-        int importedLen;
+        final Document doc;
+        final HTMLCollection childList;
+        final Node imported;
+        final Node addressElem;
+        final NodeList addressElemChildren;
+        final NodeList importedChildren;
+        final int addressElemLen;
+        final int importedLen;
         doc = sampleXmlFile("staffNS.xml");
         childList = doc.getElementsByTagNameNS("*", "address");
         addressElem = childList.item(0);
@@ -76,7 +73,7 @@ public class documentimportnode12Test extends LoboUnitTest {
         importedChildren = imported.getChildNodes();
         addressElemLen = addressElemChildren.getLength();
         importedLen = importedChildren.getLength();
-        assertEquals("documentimportnode12", importedLen, addressElemLen);
+        assertEquals(importedLen, addressElemLen);
     }
 }
 

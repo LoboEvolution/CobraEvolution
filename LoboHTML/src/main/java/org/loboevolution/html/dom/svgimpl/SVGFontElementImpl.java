@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,20 +44,20 @@ public class SVGFontElementImpl extends SVGStylableImpl implements SVGFontElemen
 		super(name);
 	}
 
-	public Rectangle2D getBounds(String text, float x, float y, float fontSize) {
-		float fontAscent = getFontAscent();
+	public Rectangle2D getBounds(final String text, final float x, final float y, final float fontSize) {
+		final float fontAscent = getFontAscent();
 		float fontDescent = getFontDescent();
 		if (fontDescent < 0) {
 			fontDescent = -fontDescent;
 		}
-		float horizAdvX = getHorizAdvX();
-		float scaleFactor = fontSize / getFontUnitsPerEm();
+		final float horizAdvX = getHorizAdvX();
+		final float scaleFactor = fontSize / getFontUnitsPerEm();
 
-		Rectangle2D bounds = new Rectangle2D.Float();
-		float bottom = y + fontDescent * scaleFactor;
-		float width = horizAdvX * scaleFactor;
-		float top = y - fontAscent * scaleFactor;
-		float left = x;
+		final Rectangle2D bounds = new Rectangle2D.Float();
+		final float bottom = y + fontDescent * scaleFactor;
+		final float width = horizAdvX * scaleFactor;
+		final float top = y - fontAscent * scaleFactor;
+		final float left = x;
 		bounds.setRect(left, top, width, bottom - top);
 		return bounds;
 	}

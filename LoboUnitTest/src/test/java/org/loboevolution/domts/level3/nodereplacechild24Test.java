@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,30 +28,28 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Using replaceChild on an EntityReference node attempt to replace an Element node with
  * an EntityReference node verify if a NO_MODIFICATION_ALLOWED_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild24Test extends LoboUnitTest {
+public class Nodereplacechild24Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        EntityReference entRef;
-        Element elem;
+        final Document doc;
+        final HTMLCollection childList;
+        final EntityReference entRef;
+        final Element elem;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("acronym");
         elem = (Element) childList.item(1);
@@ -59,10 +57,10 @@ public class nodereplacechild24Test extends LoboUnitTest {
         boolean success = false;
         try {
             entRef.replaceChild(entRef, elem);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
         }
-        assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+        assertTrue(success, "Nodereplacechild24Assert2");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,31 +43,28 @@ import static org.junit.Assert.*;
  * Invoke the "getElementsByTagName()" method and create
  * a NodeList of "position" elements.  Retrieve the second
  * "position" element in the list and return the NodeName.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-104682815">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-104682815</a>
  */
-public class elementretrievetagnameTest extends LoboUnitTest {
+public class ElementretrievetagnameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
         String name;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("position");
-        testEmployee = (Element)elementList.item(1);
+        testEmployee = (Element) elementList.item(1);
         name = testEmployee.getNodeName();
-        assertEquals("nodename", "POSITION", name);
+        assertEquals("POSITION", name, "ElementretrievetagnameAssert1");
         name = testEmployee.getTagName();
-        assertEquals("tagname", "POSITION", name);
+        assertEquals("POSITION", name, "ElementretrievetagnameAssert2");
     }
 }
 

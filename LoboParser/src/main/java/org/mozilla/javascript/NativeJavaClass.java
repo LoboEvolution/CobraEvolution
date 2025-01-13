@@ -167,10 +167,9 @@ public class NativeJavaClass extends NativeJavaObject implements Function {
             // implements/extends this interface/abstract class.
             Object v = topLevel.get("JavaAdapter", topLevel);
             if (v != NOT_FOUND) {
-                Function f = (Function) v;
                 // Args are (interface, js object)
                 Object[] adapterArgs = {this, args[0]};
-                return f.construct(cx, topLevel, adapterArgs);
+                return ((Constructable) v).construct(cx, topLevel, adapterArgs);
             }
         } catch (Exception ex) {
             // fall through to error
@@ -278,4 +277,14 @@ public class NativeJavaClass extends NativeJavaObject implements Function {
     }
 
     private Map<String, FieldAndMethods> staticFieldAndMethods;
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

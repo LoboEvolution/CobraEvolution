@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,46 +28,41 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * Retreive the doctype node, create a new Doctype node, call replaceChild and try replacing the
  * docType node with a new docType node.  Check if the docType node was correctly replaced with
  * the new one.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-B63ED1A31">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-B63ED1A31</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class documentgetdoctype01Test extends LoboUnitTest {
+public class Documentgetdoctype01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        DocumentType newDocType;
-        DocumentType replacedDocType;
-        DOMImplementation domImpl;
-        String newSysID;
-        String nullPubID = null;
-        String nullSysID = null;
-        String rootName;
+        final Document doc;
+        final DocumentType docType;
+        final DocumentType newDocType;
+        final DocumentType replacedDocType;
+        final DOMImplementation domImpl;
+        final String newSysID;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         rootName = docType.getName();
         domImpl = doc.getImplementation();
-        newDocType = domImpl.createDocumentType(rootName, nullPubID, nullSysID);
+        newDocType = domImpl.createDocumentType(rootName, null, null);
         try {
-             doc.replaceChild(newDocType, docType);
-        } catch (DOMException ex) {
+            doc.replaceChild(newDocType, docType);
+        } catch (final DOMException ex) {
             if (ex.getCode() == 9) {
                 return;
             }
@@ -75,7 +70,7 @@ public class documentgetdoctype01Test extends LoboUnitTest {
         }
         replacedDocType = doc.getDoctype();
         newSysID = replacedDocType.getSystemId();
-        assertNull("newSysIdNull", newSysID);
+        assertNull(newSysID, "Documentgetdoctype01Assert3");
     }
 }
 

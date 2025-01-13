@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,36 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Check elimination of unnecessary namespace prefixes when
  * normalized with canonical-form = true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form</a>
  */
-public class canonicalform10Test extends LoboUnitTest {
+public class Canonicalform10Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection divList;
-        Element div;
-        DOMConfiguration domConfig;
-        boolean canSet;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final HTMLCollection divList;
+        final Element div;
+        final DOMConfiguration domConfig;
+        final boolean canSet;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         Node node;
         doc = sampleXmlFile("canonicalform03.xml");
@@ -68,13 +67,13 @@ public class canonicalform10Test extends LoboUnitTest {
             domConfig.setParameter("error-handler", errorMonitor);
             domConfig.setParameter("canonical-form", Boolean.TRUE);
             doc.normalizeDocument();
-            assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+            assertTrue(errorMonitor.assertLowerSeverity(2), "Canonicalform10Assert1");
             divList = doc.getElementsByTagName("div");
             div = (Element) divList.item(5);
             node = div.getAttributeNode("xmlns");
-            assertNotNull("xmlnsPresent", node);
+            assertNotNull(node, "Canonicalform10Assert2");
             node = div.getAttributeNode("xmlns:a");
-            assertNull("xmlnsANotPresent", node);
+            assertNull(node, "Canonicalform10Assert3");
         }
     }
 }

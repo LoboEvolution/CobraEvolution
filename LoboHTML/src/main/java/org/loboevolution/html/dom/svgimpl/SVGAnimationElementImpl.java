@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,23 +26,25 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.svg.SVGAnimationElement;
 import org.loboevolution.html.dom.svg.SVGElement;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
-
+import java.util.List;
 
 /**
  * <p>SVGAnimationElementImpl class.</p>
  */
+@Slf4j
 public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implements SVGAnimationElement {
 
-	public Vector times = null;
-	public Vector vals = null;
-	public Vector splines = null;
+	public List<Float> times = null;
+	public List<String> vals = null;
+	public List<SVGPathSegCurvetoCubicAbsImpl> splines = null;
 
 	private boolean active = false;
 	protected boolean finished = false;
@@ -58,7 +60,7 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 		super(name);
 	}
 
-	public abstract Object getCurrentValue(short animtype);
+	public abstract Object getCurrentValue(final short animtype);
 
 	/** {@inheritDoc} */
 	@Override
@@ -94,7 +96,7 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 	/** {@inheritDoc} */
 	@Override
 	public float getSimpleDuration() {
-		float duration = getDuration();
+		final float duration = getDuration();
 		if (duration < 0) {
 			throw new DOMException(DOMException.NOT_SUPPORTED_ERR,
 					"Simple duration is not defined for this animation element");
@@ -105,8 +107,8 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 
 	// returns begin time in seconds
 	float getBeginTime() {
-		String beginTime = getAttribute("begin");
-		if (!beginTime.equalsIgnoreCase("indefinite") && beginTime.length() > 0) {
+		final String beginTime = getAttribute("begin");
+		if (!beginTime.equalsIgnoreCase("indefinite") && !beginTime.isEmpty()) {
 			return getClockSecs(beginTime);
 		} else {
 			return 0;
@@ -115,11 +117,11 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 
 	// returns the duration time in secs, will be -1 if indefinite
 	float getDuration() {
-		String duration = getAttribute("dur");
-		if (duration.equalsIgnoreCase("indefinite") || duration.length() == 0) {
+		final String duration = getAttribute("dur");
+		if (duration.equalsIgnoreCase("indefinite") || duration.isEmpty()) {
 			return -1;
 		} else {
-			float clockSecs = getClockSecs(duration);
+			final float clockSecs = getClockSecs(duration);
 			if (clockSecs == 0) { // there was a syntax error
 				return -1;
 			} else {
@@ -130,11 +132,11 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 
 	// returns the end time in secs, will be -1 if indefinite
 	float getEndTime() {
-		String endTime = getAttribute("end");
-		if (endTime.equalsIgnoreCase("indefinite") || endTime.length() == 0) {
+		final String endTime = getAttribute("end");
+		if (endTime.equalsIgnoreCase("indefinite") || endTime.isEmpty()) {
 			return -1;
 		} else {
-			float clockSecs = getClockSecs(endTime);
+			final float clockSecs = getClockSecs(endTime);
 			if (clockSecs == 0) { // there was a syntax error
 				return -1;
 			} else {
@@ -143,16 +145,16 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 		}
 	}
 
-	protected float getNumRepeats(float duration) {
-		String repeatCount = getAttribute("repeatCount");
-		String repeatDur = getAttribute("repeatDur");
-		if (repeatCount.length() > 0 || repeatDur.length() > 0) { // should
+	protected float getNumRepeats(final float duration) {
+		final String repeatCount = getAttribute("repeatCount");
+		final String repeatDur = getAttribute("repeatDur");
+		if (!repeatCount.isEmpty() || !repeatDur.isEmpty()) { // should
 			// maybe
 			// repeat
 			if (!(repeatCount.equalsIgnoreCase("indefinite") || repeatDur.equalsIgnoreCase("indefinite"))) {
-				if (repeatCount.length() > 0 && repeatDur.length() == 0) {
+				if (!repeatCount.isEmpty() && repeatDur.isEmpty()) {
 					return Float.parseFloat(repeatCount);
-				} else if (repeatCount.length() == 0 && repeatDur.length() > 0) {
+				} else if (repeatCount.isEmpty() && !repeatDur.isEmpty()) {
 					return getClockSecs(repeatDur) / duration;
 				} else { // take the min of both
 					return Math.min(Float.parseFloat(repeatCount), getClockSecs(repeatDur) / duration);
@@ -167,9 +169,10 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 				|| getAttribute("repeatDur").equalsIgnoreCase("indefinite");
 	}
 
-	protected float checkStatus(float currentTime, float startTime, float duration, float numRepeats,
-								boolean repeatForever) {
+	protected float checkStatus(final float inTime, final float startTime, final float duration, final float numRepeats,
+                                final boolean repeatForever) {
 
+		float currentTime = inTime;
 		if (currentTime < startTime) { // animation has not started yet
 			active = false;
 			return -1;
@@ -178,7 +181,7 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 
 			// animation is running
 			active = true;
-			int currentRepeat = (int) Math.floor((currentTime - startTime) / duration);
+			final int currentRepeat = (int) Math.floor((currentTime - startTime) / duration);
 			return (currentTime - startTime - currentRepeat * duration) / duration;
 
 		} else { // animation has finished
@@ -202,29 +205,29 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 		}
 	}
 
-	protected float getClockSecs(String clockVal) {
+	protected float getClockSecs(final String clockVal) {
 
 		try {
 			if (clockVal.contains(":")) { // is either a full/partial clock
 				// value
 
-				StringTokenizer st = new StringTokenizer(clockVal, ":");
-				int numTokens = st.countTokens();
+				final StringTokenizer st = new StringTokenizer(clockVal, ":");
+				final int numTokens = st.countTokens();
 
 				if (numTokens == 3) { // is a full clock value
-					int hours = Integer.parseInt(st.nextToken());
-					int minutes = Integer.parseInt(st.nextToken());
-					float seconds = Float.parseFloat(st.nextToken());
+					final int hours = Integer.parseInt(st.nextToken());
+					final int minutes = Integer.parseInt(st.nextToken());
+					final float seconds = Float.parseFloat(st.nextToken());
 					return hours * 3600 + minutes * 60 + seconds;
 
 				} else if (numTokens == 2) { // is a partial clock value
-					int minutes = Integer.parseInt(st.nextToken());
-					float seconds = Float.parseFloat(st.nextToken());
+					final int minutes = Integer.parseInt(st.nextToken());
+					final float seconds = Float.parseFloat(st.nextToken());
 					return minutes * 60 + seconds;
 
 				} else {
 					// something wrong
-					System.out.println("Invalid clock value: " + clockVal + ", will use the default value 0");
+					log.info("Invalid clock value: {}, will use the default value 0", clockVal);
 					return 0; // shouldn't get here
 				}
 
@@ -232,15 +235,15 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 
 				if (clockVal.contains("h")) {
 					// is an hour value
-					float hour = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("h")));
+					final float hour = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("h")));
 					return hour * 3600;
 
 				} else if (clockVal.contains("min")) {
-					float min = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("min")));
+					final float min = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("min")));
 					return min * 60;
 
 				} else if (clockVal.contains("ms")) {
-					float ms = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("ms")));
+					final float ms = Float.parseFloat(clockVal.substring(0, clockVal.indexOf("ms")));
 					return (float) (ms / 1000.0);
 
 				} else if (clockVal.contains("s")) {
@@ -250,76 +253,76 @@ public abstract class SVGAnimationElementImpl extends SVGAnimationImpl implement
 					return Float.parseFloat(clockVal);
 				}
 			}
-		} catch (NumberFormatException e) {
-			System.out.println("cannot decode time: " + clockVal);
+		} catch (final NumberFormatException e) {
+			log.info("cannot decode time: {} ", clockVal);
 			return 0;
 		}
 	}
 
-	protected void setupTimeValueVectors(String calcMode, String values) {
-		times = new Vector();
-		vals = new Vector();
-		String keyTimes = getAttribute("keyTimes");
+	protected void setupTimeValueVectors(final String calcMode, final String values) {
+		times = new ArrayList<>();
+		vals = new ArrayList();
+		final String keyTimes = getAttribute("keyTimes");
 
 		if (Strings.isCssBlank(keyTimes)) {
 
 			if (calcMode.equalsIgnoreCase("paced")) {
-				StringTokenizer stVals = new StringTokenizer(values, ";");
-				int numVals = stVals.countTokens();
+				final StringTokenizer stVals = new StringTokenizer(values, ";");
+				final int numVals = stVals.countTokens();
 				float currTime = 0;
 				int currentTokenCount = 0;
 				while (stVals.hasMoreTokens()) {
 					if (currentTokenCount == 0 || currentTokenCount == numVals - 1) {
-						times.addElement(currTime);
+						times.add(currTime);
 						currTime = 1;
-						vals.addElement(stVals.nextToken());
+						vals.add(stVals.nextToken());
 					} else {
 						stVals.nextToken();
 					}
 					currentTokenCount++;
 				}
 			} else {
-				StringTokenizer stVals = new StringTokenizer(values, ";");
-				int numVals = stVals.countTokens();
-				float timeInc = (float) (1.0 / (numVals - 1));
+				final StringTokenizer stVals = new StringTokenizer(values, ";");
+				final int numVals = stVals.countTokens();
+				final float timeInc = (float) (1.0 / (numVals - 1));
 				float currTime = 0;
 				while (stVals.hasMoreTokens()) {
-					times.addElement(currTime);
+					times.add(currTime);
 					currTime += timeInc;
-					vals.addElement(stVals.nextToken());
+					vals.add(stVals.nextToken());
 				}
 			}
 
 		} else { // use the keyTimes attribute
-			StringTokenizer stTimes = new StringTokenizer(keyTimes, ";");
-			StringTokenizer stVals = new StringTokenizer(values, ";");
+			final StringTokenizer stTimes = new StringTokenizer(keyTimes, ";");
+			final StringTokenizer stVals = new StringTokenizer(values, ";");
 			while (stTimes.hasMoreTokens() && stVals.hasMoreTokens()) {
-				times.addElement(Float.parseFloat(stTimes.nextToken()));
-				vals.addElement(stVals.nextToken());
+				times.add(Float.parseFloat(stTimes.nextToken()));
+				vals.add(stVals.nextToken());
 			}
 		}
 
-		if (calcMode.equals("spline") && getAttribute("keySplines").length() > 0) {
-			splines = new Vector();
-			String keySplines = getAttribute("keySplines");
-			StringTokenizer st = new StringTokenizer(keySplines, ";");
+		if (calcMode.equals("spline") && !getAttribute("keySplines").isEmpty()) {
+			splines = new ArrayList<>();
+			final String keySplines = getAttribute("keySplines");
+			final StringTokenizer st = new StringTokenizer(keySplines, ";");
 			while (st.hasMoreTokens()) {
-				String spline = st.nextToken();
-				StringTokenizer st2 = new StringTokenizer(spline, ", ");
+				final String spline = st.nextToken();
+				final StringTokenizer st2 = new StringTokenizer(spline, ", ");
 				if (st2.countTokens() == 4) {
-					float x1 = Float.parseFloat(st2.nextToken());
-					float y1 = Float.parseFloat(st2.nextToken());
-					float x2 = Float.parseFloat(st2.nextToken());
-					float y2 = Float.parseFloat(st2.nextToken());
-					SVGPathSegCurvetoCubicAbsImpl bezierSeg = new SVGPathSegCurvetoCubicAbsImpl(1, 1, x1, y1, x2, y2);
-					splines.addElement(bezierSeg);
+					final float x1 = Float.parseFloat(st2.nextToken());
+					final float y1 = Float.parseFloat(st2.nextToken());
+					final float x2 = Float.parseFloat(st2.nextToken());
+					final float y2 = Float.parseFloat(st2.nextToken());
+					final SVGPathSegCurvetoCubicAbsImpl bezierSeg = new SVGPathSegCurvetoCubicAbsImpl(1, 1, x1, y1, x2, y2);
+					splines.add(bezierSeg);
 				}
 			}
 		}
 	}
 
-	protected float getSplineValueAt(int splineIndex, float percent) {
-		SVGPathSegCurvetoCubicAbsImpl bezierSeg = (SVGPathSegCurvetoCubicAbsImpl) splines.elementAt(splineIndex);
+	protected float getSplineValueAt(final int splineIndex, final float percent) {
+		final SVGPathSegCurvetoCubicAbsImpl bezierSeg = splines.get(splineIndex);
 		return bezierSeg.getYAt(percent, new SVGPointImpl(0, 0));
 	}
 }

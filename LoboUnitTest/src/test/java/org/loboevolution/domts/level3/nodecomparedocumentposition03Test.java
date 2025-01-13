@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of two Document nodes obtained from the
  * same xml document is disconnected, implementation specific, and that the order of these two documents
  * is reserved.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition03Test extends LoboUnitTest {
+public class Nodecomparedocumentposition03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document docComp;
-        int documentPosition1;
-        int documentPosition2;
-        int documentPosition3;
+        final Document doc;
+        final Document docComp;
+        final int documentPosition1;
+        final int documentPosition2;
+        final int documentPosition3;
         doc = sampleXmlFile("hc_staff.xml");
         docComp = sampleXmlFile("hc_staff.xml");
         documentPosition1 = doc.compareDocumentPosition(docComp);
-        assertEquals("isImplSpecificDisconnected1", 33 & 57, documentPosition1 & 57);
+        assertEquals(33 & 57, documentPosition1 & 57, "Nodecomparedocumentposition03Assert3");
         documentPosition2 = docComp.compareDocumentPosition(doc);
-        assertNotEquals("notBothPreceding", documentPosition1 & 2, documentPosition2 & 2);
-        assertNotEquals("notBothFollowing", documentPosition1 & 4, documentPosition2 & 4);
-        assertEquals("isImplSpecificDisconnected2", 33 & 57, documentPosition2 & 57);
+        assertNotEquals(documentPosition1 & 2, documentPosition2 & 2, "Nodecomparedocumentposition03Assert4");
+        assertNotEquals(documentPosition1 & 4, documentPosition2 & 4, "Nodecomparedocumentposition03Assert5");
+        assertEquals(33 & 57, documentPosition2 & 57, "Nodecomparedocumentposition03Assert6");
         documentPosition3 = doc.compareDocumentPosition(docComp);
-        assertEquals("isConsistent", documentPosition1, documentPosition3);
+        assertEquals(documentPosition1, documentPosition3, "Nodecomparedocumentposition03Assert7");
     }
 }
 

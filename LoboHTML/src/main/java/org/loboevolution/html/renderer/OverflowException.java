@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,21 @@
  */
 package org.loboevolution.html.renderer;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serial;
 import java.util.Collection;
 
 /**
- * Author J. H. S.
+ * <p>OverflowException class.</p>
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 class OverflowException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	private final Collection<Renderable> renderables;
 
@@ -44,16 +51,7 @@ class OverflowException extends Exception {
 	 *
 	 * @param renderables a {@link java.util.Collection} object.
 	 */
-	public OverflowException(Collection<Renderable> renderables) {
+	public OverflowException(final Collection<Renderable> renderables) {
 		this.renderables = renderables;
-	}
-
-	/**
-	 * <p>Getter for the field renderables.</p>
-	 *
-	 * @return a {@link java.util.Collection} object.
-	 */
-	public Collection<Renderable> getRenderables() {
-		return this.renderables;
 	}
 }

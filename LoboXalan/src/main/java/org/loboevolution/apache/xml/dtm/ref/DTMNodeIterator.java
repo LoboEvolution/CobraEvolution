@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,8 @@ import org.loboevolution.apache.xml.dtm.DTMDOMException;
 import org.loboevolution.apache.xml.dtm.DTMIterator;
 import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.node.Node;
-import org.loboevolution.html.node.traversal.NodeFilter;
-import org.loboevolution.html.node.traversal.NodeIterator;
+import org.loboevolution.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeIterator;
 
 /**
  * <code>DTMNodeIterator</code> gives us an implementation of the DTMNodeIterator which returns DOM
@@ -67,10 +67,10 @@ public class DTMNodeIterator implements NodeIterator {
    *
    * @param dtmIterator the iterator to be cloned
    */
-  public DTMNodeIterator(DTMIterator dtmIterator) {
+  public DTMNodeIterator(final DTMIterator dtmIterator) {
     try {
       dtm_iter = (DTMIterator) dtmIterator.clone();
-    } catch (CloneNotSupportedException cnse) {
+    } catch (final CloneNotSupportedException cnse) {
       throw new WrappedRuntimeException(cnse);
     }
   }
@@ -93,7 +93,7 @@ public class DTMNodeIterator implements NodeIterator {
   /** {@inheritDoc} */
   @Override
   public Node getRoot() {
-    int handle = dtm_iter.getRoot();
+    final int handle = dtm_iter.getRoot();
     return dtm_iter.getDTM(handle).getNode(handle);
   }
 
@@ -108,7 +108,7 @@ public class DTMNodeIterator implements NodeIterator {
   public Node nextNode() throws DOMException {
     if (!valid) throw new DTMDOMException(DOMException.INVALID_STATE_ERR);
 
-    int handle = dtm_iter.nextNode();
+    final int handle = dtm_iter.nextNode();
     if (handle == DTM.NULL) return null;
     return dtm_iter.getDTM(handle).getNode(handle);
   }
@@ -118,7 +118,7 @@ public class DTMNodeIterator implements NodeIterator {
   public Node previousNode() {
     if (!valid) throw new DTMDOMException(DOMException.INVALID_STATE_ERR);
 
-    int handle = dtm_iter.previousNode();
+    final int handle = dtm_iter.previousNode();
     if (handle == DTM.NULL) return null;
     return dtm_iter.getDTM(handle).getNode(handle);
   }

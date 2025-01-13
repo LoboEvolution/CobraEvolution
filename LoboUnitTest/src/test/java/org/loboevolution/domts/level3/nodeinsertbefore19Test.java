@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,27 +35,25 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using insertBefore on an Element node attempt to insert an EntityReference node, before
  * another new EntityReference node and verify the name of the new first child node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore19Test extends LoboUnitTest {
+public class Nodeinsertbefore19Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Node refNode;
-        EntityReference newNode;
-        EntityReference inserted;
-        HTMLCollection childList;
-        String nodeName;
-        Element element;
+        final Document doc;
+        final Node refNode;
+        final EntityReference newNode;
+        final EntityReference inserted;
+        final HTMLCollection childList;
+        final String nodeName;
+        final Element element;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("var");
         element = (Element) childList.item(2);
@@ -63,7 +61,7 @@ public class nodeinsertbefore19Test extends LoboUnitTest {
         newNode = doc.createEntityReference("alpha");
         inserted = (EntityReference) element.insertBefore(newNode, refNode);
         nodeName = inserted.getNodeName();
-        assertEquals("nodeinsertbefore19", "alpha", nodeName);
+        assertEquals("alpha", nodeName, "Nodeinsertbefore19Assert2");
     }
 }
 

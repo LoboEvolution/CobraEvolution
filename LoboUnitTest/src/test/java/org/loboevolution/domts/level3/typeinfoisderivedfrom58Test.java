@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,38 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Check if a type derived by extension from a union returns true
  * when asked if it derives by union from a member type of the union.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom58Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom58Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element codeElem;
-        Attr attr;
-        TypeInfo typeInfo;
-        boolean isDerived;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element codeElem;
+        final TypeInfo typeInfo;
+        final boolean isDerived;
         doc = sampleXmlFile("typeinfo.xml");
         elemList = doc.getElementsByTagName("code");
         codeElem = (Element) elemList.item(0);
         typeInfo = codeElem.getSchemaTypeInfo();
-        assertNotNull("typeInfoNotNull", typeInfo);
+        assertNotNull(typeInfo, "Typeinfoisderivedfrom58Assert3");
         isDerived = typeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "unbounded", 4);
-        assertTrue("isDerived", isDerived);
+        assertTrue(isDerived, "Typeinfoisderivedfrom58Assert4");
     }
 }
 

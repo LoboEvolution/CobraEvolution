@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -48,31 +48,27 @@ import static org.junit.Assert.assertTrue;
  * Do the same for another document and retreive its street attribute.  Call the setNamedItemNS
  * using the first namedNodeMap and the retreive street attribute of the second.  This should
  * raise a WRONG_DOCUMENT_ERR.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=408">http://www.w3.org/Bugs/Public/show_bug.cgi?id=408</a>
  */
-public class namednodemapsetnameditemns03Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docAlt;
-        NamedNodeMap attributes;
-        NamedNodeMap attributesAlt;
-        HTMLCollection elementList;
-        HTMLCollection elementListAlt;
-        Element element;
-        Element elementAlt;
-        Attr attr;
-        String nullNS = null;
-
+        final Document doc;
+        final Document docAlt;
+        final NamedNodeMap attributes;
+        final NamedNodeMap attributesAlt;
+        final HTMLCollection elementList;
+        final HTMLCollection elementListAlt;
+        final Element element;
+        final Element elementAlt;
+        final Attr attr;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
         element = (Element) elementList.item(1);
@@ -81,21 +77,21 @@ public class namednodemapsetnameditemns03Test extends LoboUnitTest {
         elementListAlt = docAlt.getElementsByTagNameNS("*", "address");
         elementAlt = (Element) elementListAlt.item(1);
         attributesAlt = elementAlt.getAttributes();
-        attr = (Attr) attributesAlt.getNamedItemNS(nullNS, "street");
+        attr = (Attr) attributesAlt.getNamedItemNS(null, "street");
         boolean success = false;
 
         try {
-            attributesAlt.removeNamedItemNS(nullNS, "street");
-        } catch (DOMException ex) {
+            attributesAlt.removeNamedItemNS(null, "street");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_FOUND);
         }
 
         try {
             attributes.setNamedItemNS(attr);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
         }
-        assertTrue("throw_WRONG_DOCUMENT_ERR", success);
+        assertTrue(success);
 
     }
 }

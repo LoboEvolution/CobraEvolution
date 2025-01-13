@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,28 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Set the strictErrorChecking attribute value on a new Document to false and check if it was
  * correctly set using getStrictErrorChecking.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-strictErrorChecking</a>
  */
-public class documentsetstricterrorchecking03Test extends LoboUnitTest {
+public class Documentsetstricterrorchecking03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        boolean strictErrorCheckingValue;
+        final Document doc;
+        final boolean strictErrorCheckingValue;
         doc = sampleXmlFile("hc_staff.xml");
         doc.setStrictErrorChecking(false);
         strictErrorCheckingValue = doc.getStrictErrorChecking();
-        assertFalse("documentsetstricterrorchecking03", strictErrorCheckingValue);
+        assertFalse(strictErrorCheckingValue, "Documentsetstricterrorchecking03Assert2");
     }
 }
 

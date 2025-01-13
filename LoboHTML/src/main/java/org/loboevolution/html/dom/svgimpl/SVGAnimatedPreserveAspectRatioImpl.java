@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@ import org.htmlunit.cssparser.dom.DOMException;
 import org.loboevolution.html.dom.svg.SVGAnimatedPreserveAspectRatio;
 import org.loboevolution.html.dom.svg.SVGPreserveAspectRatio;
 
+import java.util.List;
+
 /**
  * <p>SVGAnimatedPreserveAspectRatioImpl class.</p>
  */
@@ -37,8 +39,8 @@ public class SVGAnimatedPreserveAspectRatioImpl extends SVGAnimatedValue impleme
 
     private SVGPreserveAspectRatio baseVal;
 
-    public SVGAnimatedPreserveAspectRatioImpl(SVGPreserveAspectRatio baseVal, SVGElementImpl owner) {
-        this.owner = owner;
+    public SVGAnimatedPreserveAspectRatioImpl(final SVGPreserveAspectRatio baseVal, final SVGElementImpl owner) {
+        this.setOwner(owner);
         this.baseVal = baseVal;
     }
 
@@ -47,20 +49,19 @@ public class SVGAnimatedPreserveAspectRatioImpl extends SVGAnimatedValue impleme
         return baseVal;
     }
 
-    void setBaseVal(SVGPreserveAspectRatio baseVal) throws DOMException {
+    void setBaseVal(final SVGPreserveAspectRatio baseVal) throws DOMException {
         this.baseVal = baseVal;
     }
 
     @Override
     public SVGPreserveAspectRatio getAnimVal() {
+        List<SVGAnimationElementImpl> animations = getAnimations();
         if (animations == null) {
             return baseVal;
         } else {
-            int numAnimations = animations.size();
             SVGPreserveAspectRatio result = null;
-            for (int i = 0; i < numAnimations; i++) {
-                SVGAnimationElementImpl animation = (SVGAnimationElementImpl) animations.elementAt(i);
-                SVGPreserveAspectRatio animVal = (SVGPreserveAspectRatio) animation.getCurrentValue(ANIMTYPE_PRESERVEASPECTRATIO);
+            for (SVGAnimationElementImpl svgAnimationElement : animations) {
+                final SVGPreserveAspectRatio animVal = (SVGPreserveAspectRatio) svgAnimationElement.getCurrentValue(ANIMTYPE_PRESERVEASPECTRATIO);
                 if (animVal != null) {
                     result = animVal;
                     break;

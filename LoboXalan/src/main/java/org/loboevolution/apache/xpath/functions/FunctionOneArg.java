@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ public class FunctionOneArg extends Function {
 
   /** {@inheritDoc} */
   @Override
-  public void setArg(Expression arg, int argNum) throws WrongNumberArgsException {
+  public void setArg(final Expression arg, final int argNum) throws WrongNumberArgsException {
 
     if (0 == argNum) {
       m_arg0 = arg;
@@ -51,7 +51,7 @@ public class FunctionOneArg extends Function {
 
   /** {@inheritDoc} */
   @Override
-  public void checkNumberArgs(int argNum) throws WrongNumberArgsException {
+  public void checkNumberArgs(final int argNum) throws WrongNumberArgsException {
     if (argNum != 1) reportWrongNumberArgs();
   }
 
@@ -69,13 +69,13 @@ public class FunctionOneArg extends Function {
 
   /** {@inheritDoc} */
   @Override
-  public void callArgVisitors(XPathVisitor visitor) {
+  public void callArgVisitors(final XPathVisitor visitor) {
     if (null != m_arg0) m_arg0.callVisitors(visitor);
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!super.deepEquals(expr)) return false;
 
     if (null != m_arg0) {

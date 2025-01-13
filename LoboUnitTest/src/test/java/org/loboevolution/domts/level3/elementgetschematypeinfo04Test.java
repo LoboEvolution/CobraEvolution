@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,28 +43,26 @@ import static org.junit.Assert.assertEquals;
  * Invoke getSchemaTypeInfo method on an element having [type definition] property.  Expose {name} and {target namespace}
  * properties of the [type definition] property.  Verity that the typeName and typeNamespace of the code element's
  * schemaTypeInfo are correct.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo</a>
  */
-public class elementgetschematypeinfo04Test extends LoboUnitTest {
+public class Elementgetschematypeinfo04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element codeElem;
-        TypeInfo elemTypeInfo;
-        String typeName;
-        String typeNamespace;
-        HTMLCollection elemList;
+        final Document doc;
+        final Element codeElem;
+        final TypeInfo elemTypeInfo;
+        final String typeName;
+        final String typeNamespace;
+        final HTMLCollection elemList;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("code");
         codeElem = (Element) elemList.item(1);
         elemTypeInfo = codeElem.getSchemaTypeInfo();
         typeName = elemTypeInfo.getTypeName();
         typeNamespace = elemTypeInfo.getTypeNamespace();
-        assertEquals("elementgetschematypeinfo04_typeName", "code", typeName);
-        assertEquals("elementgetschematypeinfo04_typeNamespace", "http://www.w3.org/1999/xhtml", typeNamespace);
+        assertEquals("code", typeName, "Elementgetschematypeinfo04Assert2");
+        assertEquals("http://www.w3.org/1999/xhtml", typeNamespace, "Elementgetschematypeinfo04Assert3");
     }
 }
 

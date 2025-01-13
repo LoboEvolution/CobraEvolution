@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of a Document node contains and precedes
  * its DocumentElement, and the DocumentElement is contained and follows the Document node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition06Test extends LoboUnitTest {
+public class Nodecomparedocumentposition06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        int documentPositionDoc;
-        int documentPositionDocElem;
+        final Document doc;
+        final Element docElem;
+        final int documentPositionDoc;
+        final int documentPositionDocElem;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         documentPositionDoc = doc.compareDocumentPosition(docElem);
-        assertEquals("nodecomparedocumentpositionIsContainedFollowing06", 20, documentPositionDoc);
+        assertEquals(20, documentPositionDoc, "Nodecomparedocumentposition06Assert2");
         documentPositionDocElem = docElem.compareDocumentPosition(doc);
-        assertEquals("nodecomparedocumentpotionContainsPRECEDING06", 10, documentPositionDocElem);
+        assertEquals(10, documentPositionDocElem, "Nodecomparedocumentposition06Assert3");
     }
 }
 

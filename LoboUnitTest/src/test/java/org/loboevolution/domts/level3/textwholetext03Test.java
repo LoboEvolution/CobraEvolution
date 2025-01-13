@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke wholetext on two newly created text nodes and verify if the value returned
  * is correct.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-wholeText">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-wholeText</a>
  */
-public class textwholetext03Test extends LoboUnitTest {
+public class Textwholetext03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        Text text1;
-        Text text2;
-        Node appendedChild;
-        String combinedText;
+        final Document doc;
+        final Element elem;
+        final Text text1;
+        final Text text2;
+        final String combinedText;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "p");
         text1 = doc.createTextNode("Text I");
         text2 = doc.createTextNode(" Text II");
-        appendedChild = elem.appendChild(text1);
-        appendedChild = elem.appendChild(text2);
+        elem.appendChild(text1);
+        elem.appendChild(text2);
         combinedText = text1.getWholeText();
-        assertEquals("textwholetext03", "Text I Text II", combinedText);
+        assertEquals("Text I Text II", combinedText, "Textwholetext03Assert2");
     }
 }
 

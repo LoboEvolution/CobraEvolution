@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,20 @@
 
 package org.loboevolution.html.renderer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.GUITasks;
 import org.loboevolution.common.Strings;
+import org.loboevolution.css.CSS2Properties;
+import org.loboevolution.css.CSS3Properties;
 import org.loboevolution.gui.HtmlRendererContext;
+import org.loboevolution.html.HTMLTag;
 import org.loboevolution.html.dom.HTMLDocument;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.html.dom.domimpl.HTMLImageElementImpl;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
 import org.loboevolution.gui.HtmlPanel;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.renderstate.RenderState;
 import org.loboevolution.html.style.BorderInsets;
 import org.loboevolution.html.style.HtmlInsets;
@@ -52,11 +56,12 @@ import java.awt.image.ImageObserver;
 import java.net.URL;
 import java.util.List;
 import java.util.*;
-import java.util.logging.Level;
+import java.util.function.Function;
 
 /**
  * <p>Abstract BaseElementRenderable class.</p>
  */
+@Slf4j
 public abstract class BaseElementRenderable extends BaseRCollection implements RElement, RenderableContainer, ImageObserver {
 
 	/** Constant INVALID_SIZE */
@@ -122,14 +127,14 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 * @param modelNode a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
 	 * @param ucontext a {@link org.loboevolution.http.UserAgentContext} object.
 	 */
-	public BaseElementRenderable(RenderableContainer container, ModelNode modelNode, UserAgentContext ucontext) {
+	public BaseElementRenderable(final RenderableContainer container, final ModelNode modelNode, final UserAgentContext ucontext) {
 		super(container, modelNode);
 		this.userAgentContext = ucontext;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Component addComponent(Component component) {
+	public Component addComponent(final Component component) {
 		Collection<Component> gc = this.guiComponents;
 		if (gc == null) {
 			gc = new HashSet<>(1);
@@ -138,19 +143,19 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		gc.add(component);
 		return component;
 	}
-	
-    /**
-     * <p>Getter for the field borderInsets.</p>
-     *
-     * @return a {@link java.awt.Insets} object.
-     */
-    public Insets getBorderInsets() {
-        return this.borderInsets == null ? RBlockViewport.ZERO_INSETS : this.borderInsets;
-    }
+
+	/**
+	 * <p>Getter for the field borderInsets.</p>
+	 *
+	 * @return a {@link java.awt.Insets} object.
+	 */
+	public Insets getBorderInsets() {
+		return this.borderInsets == null ? RBlockViewport.ZERO_INSETS : this.borderInsets;
+	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void addDelayedPair(DelayedPair pair) {
+	public void addDelayedPair(final DelayedPair pair) {
 		List<DelayedPair> gc = this.delayedPairs;
 		if (gc == null) {
 			gc = new LinkedList<>();
@@ -162,22 +167,24 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	/**
 	 * <p>applyStyle.</p>
 	 *
-	 * @param availWidth a int.
-	 * @param availHeight a int.
+	 * @param availWidth a {@link java.lang.Integer} object.
+	 * @param availHeight a {@link java.lang.Integer} object.
 	 */
-	protected void applyStyle(int availWidth, int availHeight) {
+	protected void applyStyle(final int availWidth, final int availHeight) {
 		final Object rootNode = this.modelNode;
-		HTMLElementImpl rootElement;
-		boolean isRootBlock;
+		final HTMLElementImpl rootElement;
+		final boolean isRootBlock;
 
-		if (rootNode instanceof HTMLDocumentImpl) {
+		if (rootNode instanceof HTMLDocument) {
 			isRootBlock = true;
 			final HTMLDocumentImpl doc = (HTMLDocumentImpl) rootNode;
-			rootElement = (HTMLElementImpl) doc.getBody();
+			rootElement = (HTMLElementImpl) doc.getElementsByName(HTMLTag.HTML.getValue()).item(0);
 		} else {
 			isRootBlock = false;
 			rootElement = (HTMLElementImpl) rootNode;
 		}
+
+
 		if (rootElement == null) {
 			clearStyle(isRootBlock);
 			return;
@@ -203,7 +210,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		}
 	}
 
-	private void backgroundApplyStyle(RenderState rs) {
+	private void backgroundApplyStyle(final RenderState rs) {
 		binfo = rs.getBackgroundInfo();
 		this.backgroundColor = binfo == null ? null : binfo.getBackgroundColor();
 		final URL backgroundImageUri = binfo == null ? null : binfo.getBackgroundImage();
@@ -212,8 +219,8 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 			this.lastBackgroundImageUri = null;
 		} else if (!Objects.equals(backgroundImageUri, this.lastBackgroundImageUri)) {
 			this.lastBackgroundImageUri = backgroundImageUri;
-			HTMLImageElementImpl img = new HTMLImageElementImpl();
-			TimingInfo info = new TimingInfo();
+			final HTMLImageElementImpl img = new HTMLImageElementImpl();
+			final TimingInfo info = new TimingInfo();
 			img.setSrc(lastBackgroundImageUri.toString());
 			backgroundImage = HttpNetwork.getImage(img, info, false);
 			if (backgroundImage != null) {
@@ -232,10 +239,10 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		}
 	}
 
-	private void insetsApplyStyle(RenderState rs, int availWidth, int availHeight, boolean isRootBlock) {
+	private void insetsApplyStyle(final RenderState rs, final int availWidth, final int availHeight, final boolean isRootBlock) {
 		borderInsets(rs, availWidth, availHeight);
-		Insets paddingInsets = paddingInsets(rs, availWidth, availHeight);
-		Insets tentativeMarginInsets = marginInsets(rs, availWidth, availHeight);
+		final Insets paddingInsets = paddingInsets(rs, availWidth, availHeight);
+		final Insets tentativeMarginInsets = marginInsets(rs, availWidth, availHeight);
 
 		if (isRootBlock) {
 			final int top = paddingInsets.top + tentativeMarginInsets.top;
@@ -251,13 +258,13 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		}
 	}
 
-	private void borderInsets(RenderState rs, int availWidth, int availHeight) {
+	private void borderInsets(final RenderState rs, final int availWidth, final int availHeight) {
 		Insets ins = null;
 		final BorderInfo borderInfo = rs.getBorderInfo();
 		this.borderInfo = borderInfo;
 
 		if (borderInfo != null) {
-			HtmlInsets html = (HtmlInsets) borderInfo.getInsets();
+			final HtmlInsets html = (HtmlInsets) borderInfo.getInsets();
 			if (html == null) {
 				ins = RBlockViewport.ZERO_INSETS;
 			} else {
@@ -277,9 +284,9 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		this.borderInsets = ins;
 	}
 
-	private Insets marginInsets(RenderState rs, int availWidth, int availHeight) {
-		Insets ins;
-		HtmlInsets html = rs.getMarginInsets();
+	private Insets marginInsets(final RenderState rs, final int availWidth, final int availHeight) {
+		final Insets ins;
+		final HtmlInsets html = rs.getMarginInsets();
 		if (html == null) {
 			ins = RBlockViewport.ZERO_INSETS;
 		} else {
@@ -288,9 +295,9 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		return ins;
 	}
 
-	private Insets paddingInsets(RenderState rs, int availWidth, int availHeight) {
-		Insets ins;
-		HtmlInsets html = rs.getPaddingInsets();
+	private Insets paddingInsets(final RenderState rs, final int availWidth, final int availHeight) {
+		final Insets ins;
+		final HtmlInsets html = rs.getPaddingInsets();
 		if (html == null) {
 			ins = RBlockViewport.ZERO_INSETS;
 		} else {
@@ -299,16 +306,14 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		return ins;
 	}
 
-	private void zIndexApplyStyle(CSSStyleDeclaration props) {
+	private void zIndexApplyStyle(final CSSStyleDeclaration props) {
 		final String zIndex = props.getzIndex();
-		if (Strings.isNotBlank(zIndex) && this.modelNode instanceof HTMLElementImpl) {
-			HTMLElementImpl element = (HTMLElementImpl) this.modelNode;
-			HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
+		if (Strings.isNotBlank(zIndex) && this.modelNode instanceof HTMLElementImpl element) {
+            final HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
 			try {
 				this.zIndex =  HtmlValues.getPixelSize(zIndex, null, doc.getDefaultView(), 0);
 			} catch (final NumberFormatException err) {
-				logger.log(Level.WARNING,
-						"Unable to parse z-index [" + zIndex + "] in element " + this.modelNode + ".", err);
+				log.warn("Unable to parse z-index {} in element {} ", zIndex, this.modelNode, err);
 				this.zIndex = 0;
 			}
 		} else {
@@ -340,7 +345,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 *
 	 * @param isRootBlock a boolean.
 	 */
-	protected void clearStyle(boolean isRootBlock) {
+	protected void clearStyle(final boolean isRootBlock) {
 		this.borderInfo = null;
 		this.borderInsets = null;
 		this.borderTopColor = null;
@@ -364,8 +369,8 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 	private void setupRelativePosition(final RenderState rs, final int availWidth, final int availHeight) {
 		if (rs.getPosition() == RenderState.POSITION_RELATIVE) {
-			HTMLElementImpl element = (HTMLElementImpl) this.modelNode;
-			HTMLDocumentImpl doc = (HTMLDocumentImpl) element.getDocumentNode();
+			final HTMLElementImpl element = (HTMLElementImpl) this.modelNode;
+			final HTMLDocumentImpl doc = (HTMLDocumentImpl) element.getDocumentNode();
 			final String leftText = rs.getLeft();
 			final String rightText = rs.getRight();
 			int left = 0;
@@ -398,11 +403,11 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	/**
 	 * <p>doLayout.</p>
 	 *
-	 * @param availWidth a int.
-	 * @param availHeight a int.
+	 * @param availWidth a {@link java.lang.Integer} object.
+	 * @param availHeight a {@link java.lang.Integer} object.
 	 * @param sizeOnly a boolean.
 	 */
-	protected abstract void doLayout(int availWidth, int availHeight, boolean sizeOnly);
+	protected abstract void doLayout(int availWidth, final int availHeight, boolean sizeOnly);
 
 	private Color getBorderBottomColor() {
 		final Color c = this.borderBottomColor;
@@ -422,22 +427,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	private Color getBorderTopColor() {
 		final Color c = this.borderTopColor;
 		return c == null ? Color.black : c;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Rectangle getBoundsRelativeToBlock() {
-		RCollection parent = this;
-		int x = 0, y = 0;
-		while (parent != null) {
-			x += parent.getX();
-			y += parent.getY();
-			parent = parent.getParent();
-			if (parent instanceof RElement) {
-				break;
-			}
-		}
-		return new Rectangle(x, y, getWidth(), getHeight());
 	}
 
 	/** {@inheritDoc} */
@@ -502,7 +491,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 * @param actualAvailHeight a {@link java.lang.Integer} object.
 	 * @return a {@link java.lang.Integer} object.
 	 */
-	public Integer getDeclaredHeight(int actualAvailHeight) {
+	public Integer getDeclaredHeight(final int actualAvailHeight) {
 		Integer dh = this.declaredHeight;
 		if (INVALID_SIZE.equals(dh) || actualAvailHeight != this.lastAvailHeightForDeclared) {
 			this.lastAvailHeightForDeclared = actualAvailHeight;
@@ -523,7 +512,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 * @param actualAvailWidth a {@link java.lang.Integer} object.
 	 * @return a {@link java.lang.Integer} object.
 	 */
-	protected Integer getDeclaredWidth(int actualAvailWidth) {
+	protected Integer getDeclaredWidth(final int actualAvailWidth) {
 		Integer dw = this.declaredWidth;
 		if (INVALID_SIZE.equals(dw) || actualAvailWidth != this.lastAvailWidthForDeclared) {
 			this.lastAvailWidthForDeclared = actualAvailWidth;
@@ -538,57 +527,107 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		return dw;
 	}
 
+	protected Integer getDeclaredMaxWidth(final RenderState renderState, final int actualAvailWidth) {
+		return getDeclaredHelper(renderState, actualAvailWidth, CSS2Properties::getMaxWidth, !isParentWidthDeclared());
+	}
+
+	protected Integer getDeclaredMinWidth(final RenderState renderState, final int actualAvailWidth) {
+		return getDeclaredHelper(renderState, actualAvailWidth, CSS2Properties::getMinWidth, !isParentWidthDeclared());
+	}
+
+	protected Integer getDeclaredMaxHeight(final RenderState renderState, final int actualAvailHeight) {
+		return getDeclaredHelper(renderState, actualAvailHeight, CSS2Properties::getMaxHeight, !isParentHeightDeclared());
+	}
+
+	protected Integer getDeclaredMinHeight(final RenderState renderState, final int actualAvailHeight) {
+		return getDeclaredHelper(renderState, actualAvailHeight, CSS2Properties::getMinHeight, !isParentHeightDeclared());
+	}
+
+	private Integer getDeclaredHelper(final RenderState renderState, final int baseValue,
+										final Function<CSS3Properties, String> propertyGetter, final boolean ignorePercentage) {
+		final Object rootNode = this.modelNode;
+		if (rootNode instanceof HTMLElementImpl element) {
+            final HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getDocumentNode();
+			final CSS3Properties props = element.getCurrentStyle();
+			final String valueText = propertyGetter.apply(props);
+			if (Strings.isBlank(valueText) || "none".equals(valueText) || (ignorePercentage && valueText.endsWith("%"))) {
+				return null;
+			}
+			return HtmlValues.getPixelSize(valueText, renderState, doc.getDefaultView().getWindow(), -1, baseValue);
+		} else {
+			return null;
+		}
+	}
+
+	private boolean isParentWidthDeclared() {
+		final ModelNode parentNode = getModelNode().getParentModelNode();
+		if (parentNode instanceof HTMLElementImpl element) {
+            final CSS2Properties props = element.getCurrentStyle();
+			final String decWidth = props.getWidth();
+			return !(Strings.isBlank(decWidth) || "auto".equals(decWidth));
+		}
+		return false;
+	}
+
+	private boolean isParentHeightDeclared() {
+		final ModelNode parentNode = getModelNode().getParentModelNode();
+		if (parentNode instanceof HTMLElementImpl element) {
+            final CSS2Properties props = element.getCurrentStyle();
+			final String decHeight = props.getHeight();
+			return !(Strings.isBlank(decHeight) || "auto".equals(decHeight));
+		}
+		return false;
+	}
+
 	/** {@inheritDoc} */
 	@Override
-	public final Collection<DelayedPair> getDelayedPairs() {
+	public final List<DelayedPair> getDelayedPairs() {
 		return this.delayedPairs;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int getInnerWidth() {
 		final Object rootNode = this.modelNode;
-		if (rootNode instanceof HTMLDocumentImpl) {
-			HTMLDocumentImpl doc = (HTMLDocumentImpl) rootNode;
+		if (rootNode instanceof HTMLDocument) {
+			final HTMLDocumentImpl doc = (HTMLDocumentImpl) rootNode;
 			return doc.getHtmlRendererContext().getInnerWidth();
 		}
 
-		if (rootNode instanceof HTMLElementImpl) {
-			HTMLElementImpl elem = (HTMLElementImpl) rootNode;
-			return elem.getHtmlRendererContext().getInnerWidth();
+		if (rootNode instanceof HTMLElementImpl elem) {
+            return elem.getHtmlRendererContext().getInnerWidth();
 		}
 
 		return getWidth();
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int getInnerHeight() {
 		final Object rootNode = this.modelNode;
-		if (rootNode instanceof HTMLDocumentImpl) {
-			HTMLDocumentImpl doc = (HTMLDocumentImpl) rootNode;
+		if (rootNode instanceof HTMLDocument) {
+			final HTMLDocumentImpl doc = (HTMLDocumentImpl) rootNode;
 			return doc.getHtmlRendererContext().getInnerHeight();
 		}
 
-		if (rootNode instanceof HTMLElementImpl) {
-			HTMLElementImpl elem = (HTMLElementImpl) rootNode;
-			return elem.getHtmlRendererContext().getInnerHeight();
+		if (rootNode instanceof HTMLElementImpl elem) {
+            return elem.getHtmlRendererContext().getInnerHeight();
 		}
 
 		return getHeight();
 	}
-	
-    /** {@inheritDoc} */
-	@Override
-    public Insets getInsets(final boolean hscroll, final boolean vscroll) {
-        return getInsets(hscroll, vscroll, true, true, true);
-    }
 
-    /** {@inheritDoc} */
+	/** {@inheritDoc} */
 	@Override
-    public Insets getInsetsMarginBorder(final boolean hscroll, final boolean vscroll) {
-        return getInsets(hscroll, vscroll, true, true, false);
-    }
+	public Insets getInsets(final boolean hscroll, final boolean vscroll) {
+		return getInsets(hscroll, vscroll, true, true, true);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Insets getInsetsMarginBorder(final boolean hscroll, final boolean vscroll) {
+		return getInsets(hscroll, vscroll, true, true, false);
+	}
 
 	/**
 	 * <p>getInsetsPadding.</p>
@@ -599,43 +638,43 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 */
 	public Insets getInsetsPadding(final boolean hscroll, final boolean vscroll) {
 		return getInsets(hscroll, vscroll, false, false, true);
-	}	 
+	}
 
-    private Insets getInsets(final boolean hscroll, final boolean vscroll, final boolean includeMI,
-            final boolean includeBI, final boolean includePI) {
+	private Insets getInsets(final boolean hscroll, final boolean vscroll, final boolean includeMI,
+							 final boolean includeBI, final boolean includePI) {
 		final Insets mi = this.marginInsets;
 		final Insets bi = this.borderInsets;
-        final Insets pi = this.paddingInsets;
+		final Insets pi = this.paddingInsets;
 		int top = 0;
 		int bottom = 0;
 		int left = 0;
 		int right = 0;
-		
-        if (includeMI && mi != null) {
+
+		if (includeMI && mi != null) {
 			top += mi.top;
 			left += mi.left;
 			bottom += mi.bottom;
 			right += mi.right;
 		}
-        
-        if (includeBI && bi != null) {
+
+		if (includeBI && bi != null) {
 			top += bi.top;
 			left += bi.left;
 			bottom += bi.bottom;
 			right += bi.right;
 		}
-        
-        if (includePI && pi != null) {
-            top += pi.top;
-            left += pi.left;
-            bottom += pi.bottom;
-            right += pi.right;
-        }
-        
+
+		if (includePI && pi != null) {
+			top += pi.top;
+			left += pi.left;
+			bottom += pi.bottom;
+			right += pi.right;
+		}
+
 		if (hscroll) {
 			bottom += SCROLL_BAR_THICKNESS;
 		}
-		
+
 		if (vscroll) {
 			right += SCROLL_BAR_THICKNESS;
 		}
@@ -691,9 +730,8 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		final Integer dw = this.declaredWidth;
 		if (INVALID_SIZE.equals(dw)) {
 			final Object rootNode = this.modelNode;
-			if (rootNode instanceof HTMLElementImpl) {
-				final HTMLElementImpl element = (HTMLElementImpl) rootNode;
-				final CSSStyleDeclaration props = element.getCurrentStyle();
+			if (rootNode instanceof HTMLElementImpl element) {
+                final CSSStyleDeclaration props = element.getCurrentStyle();
 				if (props == null) {
 					return false;
 				}
@@ -706,7 +744,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+	public boolean imageUpdate(final Image img, final int infoflags, final int x, final int y, final int w, final int h) {
 		// This is so that a loading image doesn't cause
 		// too many repaint events.
 		if ((infoflags & ImageObserver.ALLBITS) != 0 || (infoflags & ImageObserver.FRAMEBITS) != 0) {
@@ -722,7 +760,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 * instead of this one.
 	 */
 	@Override
-	public void layout(int availWidth, int availHeight, boolean sizeOnly) {
+	public void layout(final int availWidth, final int availHeight, final boolean sizeOnly) {
 		// Must call doLayout regardless of validity state.
 		try {
 			doLayout(availWidth, availHeight, sizeOnly);
@@ -743,26 +781,25 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		if (this.layoutDeepCanBeInvalidated) {
 			this.layoutDeepCanBeInvalidated = false;
 			invalidateLayoutLocal();
-			final Iterator<Renderable> i = getRenderables();
-			if (i != null) {
-				while (i.hasNext()) {
-					final Renderable rn = i.next();
+			final List<Renderable> renderables = getRenderables();
+			if (renderables != null) {
+				renderables.forEach(rn -> {
 					final Renderable r = (rn instanceof PositionedRenderable) ? ((PositionedRenderable) rn).getRenderable() : rn;
 					if (r instanceof RCollection) {
 						((RCollection) r).invalidateLayoutDeep();
 					}
-				}
+				});
 			}
 		}
 	}
-	
-	  /** {@inheritDoc} */
+
+	/** {@inheritDoc} */
 	@Override
-	  public Point translateDescendentPoint(BoundableRenderable descendent, int x, int y) {
-	    final Point p = descendent.getOriginRelativeTo(this);
-	    p.translate(x, y);
-	    return p;
-	  }
+	public Point translateDescendentPoint(final BoundableRenderable descendent, final int x, final int y) {
+		final Point p = descendent.getOriginRelativeTo(this);
+		p.translate(x, y);
+		return p;
+	}
 
 	/** {@inheritDoc} */
 	@Override
@@ -792,39 +829,36 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 */
 	protected boolean isMarginBoundary() {
 		return this.overflowY != RenderState.OVERFLOW_VISIBLE && this.overflowX != RenderState.OVERFLOW_NONE
-				|| this.modelNode instanceof HTMLDocumentImpl;
+				|| this.modelNode instanceof HTMLDocument;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void paint(final Graphics g) {}
 
-	  /** {@inheritDoc} */
-	 @Override
-	  public Rectangle getClipBounds() {
-	    final Insets insets = this.getInsetsPadding(false, false);
-	    final int hInset = insets.left + insets.right;
-	    final int vInset = insets.top + insets.bottom;
-	    if (((overflowX == RenderState.OVERFLOW_NONE) || (overflowX == RenderState.OVERFLOW_VISIBLE))
-	        && ((overflowY == RenderState.OVERFLOW_NONE) || (overflowY == RenderState.OVERFLOW_VISIBLE))) {
+	/** {@inheritDoc} */
+	@Override
+	public Rectangle getClipBounds() {
+		final Insets insets = this.getInsetsPadding(false, false);
+		final int hInset = insets.left + insets.right;
+		final int vInset = insets.top + insets.bottom;
+		if (((overflowX == RenderState.OVERFLOW_NONE) || (overflowX == RenderState.OVERFLOW_VISIBLE))
+				&& ((overflowY == RenderState.OVERFLOW_NONE) || (overflowY == RenderState.OVERFLOW_VISIBLE))) {
 			return null;
-	    } else {
-	      return new Rectangle(insets.left, insets.top, this.getWidth() - hInset, this.getHeight() - vInset);
-	    }
-	  }
+		} else {
+			return new Rectangle(insets.left, insets.top, this.getWidth() - hInset, this.getHeight() - vInset);
+		}
+	}
 
 	/**
 	 * <p>sendDelayedPairsToParent.</p>
 	 */
 	protected final void sendDelayedPairsToParent() {
-		// Ensures that parent has all the components
-		// below this renderer node. (Parent expected to have removed them).
 		final Collection<DelayedPair> gc = this.delayedPairs;
 		if (gc != null) {
-			final RenderableContainer rc = this.container;
-			for (DelayedPair pair : gc) {
+            for (final DelayedPair pair : gc) {
 				if (pair.getContainingBlock() != this) {
-					rc.addDelayedPair(pair);
+					this.container.addDelayedPair(pair);
 				}
 			}
 		}
@@ -836,9 +870,8 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	protected final void sendGUIComponentsToParent() {
 		final Collection<Component> gc = this.guiComponents;
 		if (gc != null) {
-			final RenderableContainer rc = this.container;
-			for (Component component : gc) {
-				rc.addComponent(component);
+            for (final Component component : gc) {
+				this.container.addComponent(component);
 			}
 		}
 	}
@@ -863,7 +896,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 	 *
 	 * @param g a {@link java.awt.Graphics} object.
 	 */
-	protected void prePaint(Graphics g) {
+	protected void prePaint(final Graphics g) {
 		final int startWidth = this.getWidth();
 		final int startHeight = this.getHeight();
 		int totalWidth = startWidth;
@@ -875,9 +908,8 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		if (marginInsets != null) {
 			final Object rootNode = this.modelNode;
 			RenderState rs = null;
-			if (rootNode instanceof HTMLElementImpl) {
-				HTMLElementImpl element = (HTMLElementImpl) rootNode;
-				rs = element.getRenderState();
+			if (rootNode instanceof HTMLElementImpl element) {
+                rs = element.getRenderState();
 			}
 
 			if (rs == null || (RenderState.POSITION_ABSOLUTE != rs.getPosition() && RenderState.POSITION_FIXED != rs.getPosition())) {
@@ -894,7 +926,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 	}
 
-	private void prePaintBackground(Graphics g, ModelNode node, int totalWidth, int totalHeight, int startX, int startY) {
+	private void prePaintBackground(final Graphics g, final ModelNode node, final int totalWidth, final int totalHeight, final int startX, final int startY) {
 		final RenderState rs = node.getRenderState();
 		final Graphics clientG = g.create(startX, startY, totalWidth, totalHeight);
 		try {
@@ -906,10 +938,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 				clientG.fillRect(bkgBounds.x, bkgBounds.y, bkgBounds.width, bkgBounds.height);
 			}
 
-			if (binfo == null) {
-				binfo = rs == null ? null : rs.getBackgroundInfo();
-			}
-
 			final Image image = this.backgroundImage;
 			if (image != null) {
 				if (bkgBounds == null) {
@@ -919,8 +947,20 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 				final int h = image.getHeight(this);
 				if (w != -1 && h != -1) {
 
-					final int imageY = getImageY(totalHeight, binfo, h);
-					final int imageX = getImageX(totalWidth, binfo, w);
+					if (rs != null) {
+						binfo = rs.getBackgroundImageInfo(w, h);
+					}
+
+					if(binfo != null && binfo.getBackgroundXPosition() == 0) {
+						binfo.setBackgroundXPosition(startX);
+					}
+
+					if(binfo != null && binfo.getBackgroundYPosition() == 0) {
+						binfo.setBackgroundYPosition(startY);
+					}
+
+					final int imageY = binfo == null ? 0 : binfo.getBackgroundYPosition();
+					final int imageX = binfo == null ? 0 : binfo.getBackgroundXPosition();
 
 					final int baseX = (bkgBounds.x / w) * w - (w - imageX);
 					final int baseY = (bkgBounds.y / h) * h - (h - imageY);
@@ -930,19 +970,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 
 					switch (binfo == null ? BackgroundInfo.BR_REPEAT : binfo.getBackgroundRepeat()) {
 						case BackgroundInfo.BR_NO_REPEAT:
-							int _imageX;
-							if (binfo.isBackgroundXPositionAbsolute()) {
-								_imageX = binfo.getBackgroundXPosition();
-							} else {
-								_imageX = binfo.getBackgroundXPosition() * (totalWidth - w) / 100;
-							}
-							int _imageY;
-							if (binfo.isBackgroundYPositionAbsolute()) {
-								_imageY = binfo.getBackgroundYPosition();
-							} else {
-								_imageY = binfo.getBackgroundYPosition() * (totalHeight - h) / 100;
-							}
-							g.drawImage(image, _imageX, _imageY, w, h, this);
+							g.drawImage(image, imageX, 	imageY, w, h, this);
 							break;
 
 						case BackgroundInfo.BR_REPEAT_X:
@@ -975,7 +1003,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		}
 	}
 
-	private void prePaintBorder(Graphics g, int totalWidth, int totalHeight, int startX, int startY) {
+	private void prePaintBorder(final Graphics g, final int totalWidth, final int totalHeight, final int startX, final int startY) {
 
 		final Insets borderInsets = this.borderInsets;
 
@@ -991,7 +1019,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 			final int newStartY = startY + btop;
 			final Rectangle clientRegion = new Rectangle(newStartX, newStartY, newTotalWidth, newTotalHeight);
 			final Rectangle clipBounds = g.getClipBounds();
-			if (!clientRegion.contains(clipBounds)) {
+			if (clipBounds == null || !clientRegion.contains(clipBounds)) {
 				final BorderInfo borderInfo = this.borderInfo;
 				int x1;
 				int y1;
@@ -1061,7 +1089,7 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 		}
 	}
 
-	private void paintBorder(Graphics g, int x1, int y1, int x2, int y2, int dashSize, int width, int borderStyle) {
+	private void paintBorder(final Graphics g, final int x1, final int y1, final int x2, final int y2, final int dashSize, final int width, final int borderStyle) {
 
 		switch (borderStyle) {
 			case BorderInsets.BORDER_STYLE_DASHED:
@@ -1079,30 +1107,6 @@ public abstract class BaseElementRenderable extends BaseRCollection implements R
 			default:
 				g.drawLine(x1, y1, x2, y2);
 				break;
-		}
-	}
-
-	private static int getImageY(final int totalHeight, final BackgroundInfo binfo, final int h) {
-		if (binfo == null) {
-			return 0;
-		} else {
-			if (binfo.isBackgroundYPositionAbsolute()) {
-				return binfo.getBackgroundYPosition();
-			} else {
-				return (binfo.getBackgroundYPosition() * (totalHeight - h)) / 100;
-			}
-		}
-	}
-
-	private static int getImageX(final int totalWidth, final BackgroundInfo binfo, final int w) {
-		if (binfo == null) {
-			return 0;
-		} else {
-			if (binfo.isBackgroundXPositionAbsolute()) {
-				return binfo.getBackgroundXPosition();
-			} else {
-				return (binfo.getBackgroundXPosition() * (totalWidth - w)) / 100;
-			}
 		}
 	}
 }

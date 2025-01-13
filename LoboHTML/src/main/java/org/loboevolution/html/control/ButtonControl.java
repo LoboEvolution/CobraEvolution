@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,14 @@ package org.loboevolution.html.control;
 import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.html.dom.domimpl.HTMLButtonElementImpl;
 
+import java.io.Serial;
+
 /**
  * <p>ButtonControl class.</p>
  */
 public class ButtonControl extends BaseControl implements UIControl {
 
+@Serial
 private static final long serialVersionUID = 1L;
 	
 	private final HTMLButtonElementImpl  modelNode;
@@ -43,7 +46,7 @@ private static final long serialVersionUID = 1L;
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLButtonElementImpl} object.
 	 */
-	public ButtonControl(HTMLButtonElementImpl modelNode) {
+	public ButtonControl(final HTMLButtonElementImpl modelNode) {
 		super(modelNode);
 		setLayout(WrapperLayout.getInstance());
 		this.modelNode = modelNode;

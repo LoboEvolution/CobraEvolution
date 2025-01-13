@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -48,49 +47,45 @@ import static org.junit.Assert.assertTrue;
  * new document does not provide the same default attributes.
  * Import it into another instance of the source document
  * and then the imported node and the source should be equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=529">http://www.w3.org/Bugs/Public/show_bug.cgi?id=529</a>
  */
-public class nodeisequalnode11Test extends LoboUnitTest {
+public class Nodeisequalnode11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        HTMLCollection employeeList;
-        Document newDoc;
-        Document dupDoc;
-        Element elem1;
-        Element elem2;
-        Element elem3;
-        Element elem4;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final HTMLCollection employeeList;
+        final Document newDoc;
+        final Document dupDoc;
+        final Element elem1;
+        final Element elem2;
+        final Element elem3;
+        final Element elem4;
         boolean isEqual;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         employeeList = doc.getElementsByTagName("p");
         elem1 = (Element) employeeList.item(0);
         elem2 = (Element) newDoc.importNode(elem1, false);
         isEqual = elem1.isEqualNode(elem2);
-        assertFalse("nodeisequalnodeFalse11", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode11Assert3");
         elem3 = (Element) newDoc.importNode(elem1, true);
         isEqual = elem1.isEqualNode(elem3);
 
-        assertFalse("deepImportNoDTD", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode11Assert4");
         dupDoc = sampleXmlFile("hc_staff.xml");
         elem4 = (Element) dupDoc.importNode(elem1, true);
         isEqual = elem1.isEqualNode(elem4);
-        assertTrue("deepImportSameDTD", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode11Assert5");
     }
 }
 

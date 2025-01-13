@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,42 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.DOMError;
 import org.loboevolution.html.dom.DOMLocator;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Add a L1 element to a L2 namespace aware document and perform namespace normalization.  Should result
  * in an error.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/namespaces-algorithms#normalizeDocumentAlgo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/namespaces-algorithms#normalizeDocumentAlgo</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-canonical-form</a>
  */
-public class canonicalform05Test extends LoboUnitTest {
+public class Canonicalform05Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        DOMConfiguration domConfig;
-        HTMLCollection pList;
-        Element newChild;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
-        List errors;
-        DOMError error;
+        final Document doc;
+        final Element elem;
+        final DOMConfiguration domConfig;
+        final HTMLCollection pList;
+        final Element newChild;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final List<DOMError> errors;
         int errorCount = 0;
         int severity;
         Node problemNode;
@@ -76,7 +74,7 @@ public class canonicalform05Test extends LoboUnitTest {
         String uri;
         String message;
         int length;
-        boolean canSet;
+        final boolean canSet;
         doc = sampleXmlFile("barfoo.xml");
         pList = doc.getElementsByTagName("p");
         elem = (Element) pList.item(0);
@@ -91,34 +89,32 @@ public class canonicalform05Test extends LoboUnitTest {
             domConfig.setParameter("error-handler", errorMonitor);
             doc.normalizeDocument();
             errors = errorMonitor.getErrors();
-            for (Object o : errors) {
-                error = (DOMError) o;
+            for (final DOMError error : errors) {
                 severity = error.getSeverity();
-
                 if (severity == 2) {
                     location = error.getLocation();
                     problemNode = location.getRelatedNode();
-                    assertSame("relatedNodeIsL1Node", newChild, problemNode);
+                    assertSame(newChild, problemNode, "Canonicalform05Assert1");
                     lineNumber = location.getLineNumber();
-                    assertEquals("lineNumber", -1, lineNumber);
+                    assertEquals(-1, lineNumber, "Canonicalform05Assert2");
                     columnNumber = location.getColumnNumber();
-                    assertEquals("columnNumber", -1, columnNumber);
+                    assertEquals(-1, columnNumber, "Canonicalform05Assert3");
                     byteOffset = location.getByteOffset();
-                    assertEquals("byteOffset", -1, byteOffset);
+                    assertEquals(-1, byteOffset, "Canonicalform05Assert4");
                     utf16Offset = location.getUtf16Offset();
-                    assertEquals("utf16Offset", -1, utf16Offset);
+                    assertEquals(-1, utf16Offset, "Canonicalform05Assert5");
                     uri = location.getUri();
-                    assertNull("uri", uri);
+                    assertNull(uri, "Canonicalform05Assert6");
                     message = error.getMessage();
                     length = message.length();
-                    assertTrue("messageNotEmpty", (length > 0));
+                    assertTrue(length > 0, "Canonicalform05Assert7");
                     errorCount += 1;
                 } else {
-                    assertEquals("anyOthersShouldBeWarnings", 1, severity);
+                    assertEquals(1, severity, "Canonicalform05Assert8");
                 }
 
             }
-            assertEquals("oneError", 1, errorCount);
+            assertEquals(1, errorCount, "Canonicalform05Assert9");
         }
     }
 }

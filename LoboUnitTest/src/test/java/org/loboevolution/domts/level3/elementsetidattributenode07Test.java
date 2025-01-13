@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,29 +35,27 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setIdAttributeNode on the 2nd and 3rd acronym element using the class attribute as a parameter .  Verify by calling
  * isID on the attribute node and getElementById on document node.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttrNode</a>
  */
-public class elementsetidattributenode07Test extends LoboUnitTest {
+public class Elementsetidattributenode07Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList1;
-        HTMLCollection elemList2;
-        Element acronymElem1;
-        Element acronymElem2;
+        final Document doc;
+        final HTMLCollection elemList1;
+        final HTMLCollection elemList2;
+        final Element acronymElem1;
+        final Element acronymElem2;
         NamedNodeMap attributesMap;
         Attr attr;
-        boolean id = false;
+        boolean id;
         Element elem;
         String elemName;
         doc = sampleXmlFile("hc_staff.xml");
@@ -69,18 +67,18 @@ public class elementsetidattributenode07Test extends LoboUnitTest {
         attr = (Attr) attributesMap.getNamedItem("class");
         acronymElem1.setIdAttributeNode(attr, true);
         id = attr.isId();
-        assertTrue("elementsetidattributenodeIsId1True07", id);
+        assertTrue(id, "Elementsetidattributenode07Assert3");
         attributesMap = acronymElem2.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("class");
         acronymElem2.setIdAttributeNode(attr, true);
         id = attr.isId();
-        assertTrue("elementsetidattributenodeIsId2True07", id);
+        assertTrue(id, "Elementsetidattributenode07Assert4");
         elem = doc.getElementById("No");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributenode1GetElementById07", "ACRONYM", elemName);
+        assertEquals("ACRONYM", elemName, "Elementsetidattributenode07Assert5");
         elem = doc.getElementById("Yes");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributenode2GetElementById07", "ACRONYM", elemName);
+        assertEquals("ACRONYM", elemName, "Elementsetidattributenode07Assert6");
     }
 }
 

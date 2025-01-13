@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,12 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,38 +43,33 @@ import static org.junit.Assert.assertTrue;
  * Call the createDocument on this DOMImplementation with null namespaceURI and a
  * qualifiedName that has a namespace prefix using this DOMImplementation.
  * Check if the NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocument</a>
  */
-public class domimplementationcreatedocument04Test extends LoboUnitTest {
+public class Domimplementationcreatedocument04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        String namespaceURI = null;
+        final Document doc;
+        final DOMImplementation domImpl;
 
-        String qualifiedName = "dom:root";
-        DocumentType docType = null;
+        final String qualifiedName = "dom:root";
 
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
 
         boolean success = false;
         try {
-            domImpl.createDocument(namespaceURI, qualifiedName, docType);
-        } catch (DOMException ex) {
+            domImpl.createDocument(null, qualifiedName, null);
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("domimplementationcreatedocument04", success);
+        assertTrue(success);
 
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,36 +27,32 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Invoke lookupNamespaceURI on a new Child of a new Element node with a namespace URI
  * and prefix and using the parents prefix as an argument, verify if the namespaceURI
  * returned is a valid namespaceURI for the parent.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI</a>
  */
-public class nodelookupnamespaceuri10Test extends LoboUnitTest {
+public class Nodelookupnamespaceuri10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element parent;
-        Element child;
-        String namespaceURI;
-        Node appendedChild;
+        final Document doc;
+        final Element parent;
+        final Element child;
+        final String namespaceURI;
         doc = sampleXmlFile("hc_staff.xml");
         parent = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:body");
         child = doc.createElement("p");
-        appendedChild = parent.appendChild(child);
+        parent.appendChild(child);
         namespaceURI = child.lookupNamespaceURI("xhtml");
-        assertEquals("nodelookupnamespaceuri10", "http://www.w3.org/1999/xhtml", namespaceURI);
+        assertEquals("http://www.w3.org/1999/xhtml", namespaceURI, "Nodelookupnamespaceuri10Assert2");
     }
 }

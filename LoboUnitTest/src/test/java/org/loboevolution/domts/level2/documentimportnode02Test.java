@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -49,44 +49,41 @@ import static org.junit.Assert.assertNull;
  * element node which is retreived by its elementId="CANADA", into the another document.
  * Check the parentNode, nodeName, nodeType and nodeValue of the imported node to
  * verify if it has been imported correctly.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode02Test extends LoboUnitTest {
+public class Documentimportnode02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docImported;
-        Element element;
-        Attr attr;
-        Node importedAttr;
-        String nodeName;
-        int nodeType;
-        String nodeValue;
-        HTMLCollection addresses;
-        Node attrsParent;
+        final Document doc;
+        final Document docImported;
+        final Element element;
+        final Attr attr;
+        final Node importedAttr;
+        final String nodeName;
+        final int nodeType;
+        final String nodeValue;
+        final HTMLCollection addresses;
+        final Node attrsParent;
         doc = sampleXmlFile("staffNS.xml");
         docImported = sampleXmlFile("staff.xml");
-        addresses = doc.getElementsByTagName( "address");
+        addresses = doc.getElementsByTagName("address");
         element = (Element) addresses.item(1);
-        attr = element.getAttributeNode( "zone");
+        attr = element.getAttributeNode("zone");
         importedAttr = docImported.importNode(attr, false);
         nodeName = importedAttr.getNodeName();
         nodeType = importedAttr.getNodeType();
         nodeValue = importedAttr.getNodeValue();
         attrsParent = importedAttr.getParentNode();
-        assertNull("documentimportnode02_parentNull", attrsParent);
-        assertEquals("documentimportnode02_nodeName", "zone", nodeName);
-        assertEquals("documentimportnode02_nodeType", 2, nodeType);
-        assertEquals("documentimportnode02_nodeValue", "CANADA", nodeValue);
+        assertNull(attrsParent);
+        assertEquals("zone", nodeName);
+        assertEquals(2, nodeType);
+        assertEquals("CANADA", nodeValue);
     }
 }
 

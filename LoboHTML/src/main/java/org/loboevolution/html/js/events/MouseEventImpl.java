@@ -1,9 +1,9 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * Permission is hereby granted, free of che, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -25,249 +25,205 @@
  */
 package org.loboevolution.html.js.events;
 
-import org.loboevolution.html.node.events.EventTarget;
-import org.loboevolution.html.node.events.MouseEvent;
-import org.loboevolution.html.node.js.Window;
-
-import java.awt.event.InputEvent;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.loboevolution.events.EventTarget;
+import org.loboevolution.events.MouseEvent;
+import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
+import org.loboevolution.js.Window;
+import org.mozilla.javascript.NativeObject;
 
 /**
- * <p>
  * MouseEventImpl class.
- * </p>
- *
- *
- *
  */
+@Getter
+@NoArgsConstructor
 public class MouseEventImpl extends UIEventImpl implements MouseEvent {
 
-	private double screenX;
+    private Long buttons = 0L;
+    private Long button = 0L;
+    private Long x = 0L;
+    private Long y = 0L;
+    private Long screenX = 0L;
+    private Long screenY = 0L;
+    private Long clientX = 0L;
+    private Long clientY = 0L;
+    private Long offsetX = 0L;
+    private Long offsetY = 0L;
+    private Long pageX = 0L;
+    private Long pageY = 0L;
+    private Long movementX = 0L;
+    private Long movementY = 0L;
+    private Boolean ctrlKey = false;
+    private Boolean shiftKey = false;
+    private Boolean altKey = false;
+    private Boolean metaKey = false;
 
-	private double screenY;
+    private EventTarget relatedTarget;
+    private java.awt.event.MouseEvent mouseEvent;
 
-	private double clientX;
+    public MouseEventImpl(java.awt.event.MouseEvent mouseEvent) {
+        super(mouseEvent);
+        this.mouseEvent = mouseEvent;
+    }
 
-	private double clientY;
+    public MouseEventImpl(final Object[] params) {
+        setParams(params);
+        if (params.length > 1) {
+            if (params[1] != null && params[1] instanceof NativeObject obj) {
+                this.x = getLongVal(obj, "x");
+                this.y = getLongVal(obj, "y");
+                this.screenX = getLongVal(obj, "screenX");
+                this.screenY = getLongVal(obj, "screenY");
+                this.clientX = getLongVal(obj, "clientX");
+                this.clientY = getLongVal(obj, "clientY");
+                this.offsetX = getLongVal(obj, "offsetX");
+                this.offsetY = getLongVal(obj, "offsetY");
+                this.pageX = getLongVal(obj, "pageX");
+                this.pageY = getLongVal(obj, "pageY");
+                this.movementX = getLongVal(obj, "movementX");
+                this.movementY = getLongVal(obj, "movementY");
+                this.button = getLongVal(obj, "button");
+                this.buttons = getLongVal(obj, "buttons");
+                this.ctrlKey = getBoolVal(obj, "ctrlKey");
+                this.shiftKey = getBoolVal(obj, "shiftKey");
+                this.altKey = getBoolVal(obj, "altKey");
+                this.metaKey = getBoolVal(obj, "metaKey");
+            }
+        }
+    }
 
-	private boolean ctrlKey;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY,
+                               Boolean ctrlKey, Boolean altKey, Boolean shiftKey, Boolean metaKey,
+                               Integer button, EventTarget relatedTarget) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY,
+                ctrlKey, altKey, shiftKey, metaKey, button);
+        this.relatedTarget = relatedTarget;
+        this.setTarget((HTMLElementImpl) relatedTarget);
+    }
 
-	private boolean shiftKey;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY,
+                               Boolean ctrlKey, Boolean altKey, Boolean shiftKey, Boolean metaKey, Integer button) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY,
+                ctrlKey, altKey, shiftKey, metaKey);
+        this.button = button != null ? button.longValue() : 0;
+    }
 
-	private boolean altKey;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY, Boolean ctrlKey, Boolean altKey, Boolean shiftKey, Boolean metaKey) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY,
+                ctrlKey, altKey, shiftKey);
+        this.metaKey = metaKey;
+    }
 
-	private boolean metaKey;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY,
+                               Boolean ctrlKey, Boolean altKey, Boolean shiftKey) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY, ctrlKey, altKey);
+        this.shiftKey = shiftKey;
+    }
 
-	private int button;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY,
+                               Boolean ctrlKey, Boolean altKey) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY, ctrlKey);
+        this.altKey = altKey;
+    }
 
-	private EventTarget relatedTarget;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY, Boolean ctrlKey) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX, clientY);
+        this.ctrlKey = ctrlKey;
+    }
 
-	private InputEvent ie;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX, Integer clientY) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY, clientX);
+        this.clientY = clientY != null ? clientY.longValue() : 0;
+    }
 
-	/**
-	 * <p>
-	 * Constructor for MouseEventImpl.
-	 * </p>
-	 *
-	 * @param type     a {@link java.lang.String} object.
-	 * @param shiftKey a boolean.
-	 * @param ctrlKey  a boolean.
-	 * @param altKey   a boolean.
-	 * @param button   a int.
-	 */
-	public MouseEventImpl(final String type, final boolean shiftKey, final boolean ctrlKey, final boolean altKey,
-			final int button) {
-		super(type, ("dblclick".equals(type) ? 2 : 1), null);
-		this.shiftKey = shiftKey;
-		this.ctrlKey = ctrlKey;
-		this.altKey = altKey;
-		this.button = (short) button;
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY, Integer clientX) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX, screenY);
+        this.clientX = clientX != null ? clientX.longValue() : 0;
+    }
 
-	/**
-	 * <p>
-	 * Constructor for MouseEventImpl.
-	 * </p>
-	 */
-	public MouseEventImpl() {
-		this.shiftKey = false;
-		this.ctrlKey = false;
-		this.altKey = false;
-		this.button = 0;
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view,
+                               Integer detail, Integer screenX, Integer screenY) {
+        initMouseEvent(type, bubbles, cancelable, view, detail, screenX);
+        this.screenY = screenY != null ? screenY.longValue() : 0;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void initMouseEvent(String typeArg, boolean canBubbleArg, boolean cancelableArg, Window viewArg,
-			double detailArg, double screenXArg, double screenYArg, double clientXArg, double clientYArg,
-			boolean ctrlKeyArg, boolean altKeyArg, boolean shiftKeyArg, boolean metaKeyArg, int buttonArg,
-			EventTarget relatedTargetArg) {
-		super.initUIEvent(typeArg, canBubbleArg, cancelableArg, viewArg, detailArg);
-		screenX = screenXArg;
-		screenY = screenYArg;
-		clientX = clientXArg;
-		clientY = clientYArg;
-		ctrlKey = ctrlKeyArg;
-		altKey = altKeyArg;
-		shiftKey = shiftKeyArg;
-		metaKey = metaKeyArg;
-		button = buttonArg;
-		relatedTarget = relatedTargetArg;
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view, Integer detail, Integer screenX) {
+        initUIEvent(type, bubbles, cancelable, view, Double.valueOf(detail));
+        this.screenX = screenX != null ? screenX.longValue() : 0;
+    }
 
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view, Integer detail) {
+        initUIEvent(type, bubbles, cancelable, view, Double.valueOf(detail));
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public double getScreenX() {
-		return screenX;
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable, Window view) {
+        initUIEvent(type, bubbles, cancelable, view);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public double getScreenY() {
-		return screenY;
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles, Boolean cancelable) {
+        super.initUIEvent(type, bubbles, cancelable);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public double getClientX() {
-		return clientX;
-	}
+    @Override
+    public void initMouseEvent(String type, Boolean bubbles) {
+        super.initUIEvent(type, bubbles);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public double getClientY() {
-		return clientY;
-	}
+    @Override
+    public void initMouseEvent(String type) {
+        super.initUIEvent(type);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isCtrlKey() {
-		return ctrlKey && ie.isControlDown();
-	}
+    @Override
+    public EventTarget relatedTarget() {
+        return relatedTarget;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isShiftKey() {
-		return shiftKey && ie.isShiftDown();
-	}
+    @Override
+    public Boolean getModifierState(String key) {
+        return false;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isAltKey() {
-		return altKey && ie.isAltDown();
-	}
+    @Override
+    public Double getWhich() {
+        if (mouseEvent != null) {
+            return (double) (mouseEvent.getButton() - 1);
+        }
+        return (double) (buttons > 0 ? buttons - 1 : 1);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isMetaKey() {
-		return metaKey;
-	}
+    @Override
+    public Long getButton() {
+        if (mouseEvent != null) {
+            return (long) mouseEvent.getButton();
+        }
+        return button;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public int getButton() {
-		if (ie instanceof MouseEvent) {
-			return (short) (((MouseEvent) ie).getButton() - 1);
-		} else {
-			return button;
-		}
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public EventTarget getRelatedTarget() {
-		return this.relatedTarget;
-	}
-
-	/**
-	 * <p>
-	 * Getter for the field ie.
-	 * </p>
-	 *
-	 * @return a {@link java.awt.event.InputEvent} object.
-	 */
-	public InputEvent getIe() {
-		return ie;
-	}
-
-	/**
-	 * <p>
-	 * Setter for the field ie.
-	 * </p>
-	 *
-	 * @param ie a {@link java.awt.event.InputEvent} object.
-	 */
-	public void setIe(InputEvent ie) {
-		this.ie = ie;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getButtons() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getMovementX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getMovementY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getOffsetX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getOffsetY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getPageX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getPageY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public boolean getModifierState(String keyArg) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public String toString() {
+        return "[object MouseEvent]";
+    }
 }

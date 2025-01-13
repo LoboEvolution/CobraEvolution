@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -41,33 +42,29 @@ import static org.junit.Assert.assertTrue;
  * The parameter entities is turned on by default.  Check to see if this feature can be set
  * to false by invoking canSetParameter method.  Also check that this method does not change the
  * value of parameter by checking if entities still exist in the document.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration</a>
  */
-public class domconfigurationcansetparameter03Test extends LoboUnitTest {
+public class Domconfigurationcansetparameter03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMConfiguration domConfig;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        String nullNS = null;
-
-        Node entity;
-        String entityName;
-        boolean canSet;
+        final Document doc;
+        final DOMConfiguration domConfig;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final Node entity;
+        final String entityName;
+        final boolean canSet;
         doc = sampleXmlFile("hc_staff.xml");
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter("entities", Boolean.FALSE);
-        assertTrue("domconfigurationcansetparameter03_1", canSet);
+        assertTrue(canSet, "Domconfigurationcansetparameter03Assert3");
         doc.normalizeDocument();
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
-        entity = entitiesMap.getNamedItemNS(nullNS, "epsilon");
+        entity = entitiesMap.getNamedItemNS(null, "epsilon");
         entityName = entity.getNodeName();
-        assertEquals("domconfigurationcansetparameter03_2", "epsilon", entityName);
+        assertEquals("epsilon", entityName, "Domconfigurationcansetparameter03Assert4");
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,26 +45,23 @@ import static org.junit.Assert.assertNull;
  * the "cloneNode(deep)" method with deep=false.   The
  * duplicate node returned by the method should not copy
  * any text data contained in this node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4</a>
  */
-public class nodeclonefalsenocopytextTest extends LoboUnitTest {
+public class NodeclonefalsenocopytextTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node childNode;
-        Node clonedNode;
-        Node lastChildNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node childNode;
+        final Node clonedNode;
+        final Node lastChildNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
@@ -72,7 +69,7 @@ public class nodeclonefalsenocopytextTest extends LoboUnitTest {
         childNode = childList.item(3);
         clonedNode = childNode.cloneNode(false);
         lastChildNode = clonedNode.getLastChild();
-        assertNull("noTextNodes", lastChildNode);
+        assertNull(lastChildNode, "NodeclonefalsenocopytextAssert2");
     }
 }
 

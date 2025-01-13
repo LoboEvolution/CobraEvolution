@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,30 +44,27 @@ import static org.junit.Assert.assertNull;
  * "cloneNode(deep)" method with deep=false.   The
  * duplicate node returned should return null when the
  * "getParentNode()" is invoked.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-3A0ED0A4</a>
  */
-public class nodeclonegetparentnullTest extends LoboUnitTest {
+public class NodeclonegetparentnullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        Node clonedNode;
-        Node parentNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node clonedNode;
+        final Node parentNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
         clonedNode = employeeNode.cloneNode(false);
         parentNode = clonedNode.getParentNode();
-        assertNull("nodeCloneGetParentNullAssert1", parentNode);
+        assertNull(parentNode, "NodeclonegetparentnullAssert2");
     }
 }
 

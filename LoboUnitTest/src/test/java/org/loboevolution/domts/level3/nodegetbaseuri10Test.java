@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,38 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Append as a child of this documentElement a new Processing Instruction.  Using getBaseURI
- * check if the baseURI attribute of the new Processing Instruction node is "'http://www.w3.org/DOM/L3Test".
- *
- * @author IBM
- * @author Neil Delima
+ * check if the baseURI attribute of the new Processing Instruction node is "'<a href="http://www.w3.org/DOM/L3Test">...</a>".
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2ProcessingInstruction">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2ProcessingInstruction</a>
  */
-public class nodegetbaseuri10Test extends LoboUnitTest {
+public class Nodegetbaseuri10Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        ProcessingInstruction newPI;
-        String baseURI;
+        final Document doc;
+        final Element docElem;
+        final ProcessingInstruction newPI;
+        final String baseURI;
         doc = sampleXmlFile("barfoo_base.xml");
         docElem = doc.getDocumentElement();
         newPI = doc.createProcessingInstruction("TARGET", "DATA");
         docElem.appendChild(newPI);
         baseURI = newPI.getBaseURI();
-        assertEquals("nodegetbaseuri10", "http://www.w3.org/DOM/L3Test", baseURI);
+        assertEquals("http://www.w3.org/DOM/L3Test", baseURI, "Nodegetbaseuri10Assert2");
     }
 }
 

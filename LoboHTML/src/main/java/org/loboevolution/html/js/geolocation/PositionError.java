@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,20 @@
 
 package org.loboevolution.html.js.geolocation;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * The PositionError class provides a way to provide error when the position
  * cannot be calculated due to any reason. An object of this class is created by the
  * Geolocation object and is provided to the calling application via the
  * PositionCallback interface.
- *
  * Note: This class must not have any sub-classes to ensure W3C Specifications are being
  * strictly followed by the system or application that uses this geolocation package. These
- * specifications are avilable at http://www.w3.org/TR/geolocation-API/#position-error
- *
- *
- *
+ * specifications are avilable at <a href="http://www.w3.org/TR/geolocation-API/#position-error">...</a>
  */
+@Data
+@AllArgsConstructor
 public final class PositionError {
 
 	/**
@@ -72,37 +73,7 @@ public final class PositionError {
 	 *
 	 * @param code	the error code.
 	 */
-	public PositionError(short code) {
+	public PositionError(final short code) {
 		this(code, null);
-	}
-	
-	/**
-	 * Constructs an instance of PositionError class using the error code
-	 * and error message.
-	 *
-	 * @param code	the error code.
-	 * @param message	the error message.
-	 */
-	public PositionError(short code, final String message) {
-		this.code = code;
-		this.message = message;
-	}
-
-	/**
-	 * Returns the error code.
-	 *
-	 * @return	the error code.
-	 */
-	public short getCode() {
-		return code;
-	}
-
-	/**
-	 * Returns the error message.
-	 *
-	 * @return	the error message.
-	 */
-	public String getMessage() {
-		return message;
 	}
 }

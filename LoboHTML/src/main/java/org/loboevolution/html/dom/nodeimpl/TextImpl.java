@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import org.loboevolution.html.node.Text;
  * <p>TextImpl class.</p>
  */
 public class TextImpl extends CharacterDataImpl implements Text {
+
 	/**
 	 * <p>Constructor for TextImpl.</p>
 	 */
@@ -46,12 +47,12 @@ public class TextImpl extends CharacterDataImpl implements Text {
 	 *
 	 * @param text a {@link java.lang.String} object.
 	 */
-	public TextImpl(String text) {
+	public TextImpl(final String text) {
 		this.text = text;
 	}
 
 	@Override
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "This node type does not support this method.");
 	}
 
@@ -93,17 +94,17 @@ public class TextImpl extends CharacterDataImpl implements Text {
 	@Override
 	public boolean isElementContentWhitespace() {
 		final String t = this.text;
-		return t == null || t.trim().equals("");
+		return t == null || t.trim().isEmpty();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Text replaceWholeText(String content) {
+	public Text replaceWholeText(final String content) {
 		if (content == null) {
 			throw new DOMException(DOMException.INVALID_CHARACTER_ERR, "null content (use empty string instead)");
 		}
 
-		if ("".equals(content)) {
+		if (content.isEmpty()) {
 			return null;
 		}
 
@@ -116,19 +117,19 @@ public class TextImpl extends CharacterDataImpl implements Text {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setNodeValue(String nodeValue) {
+	public void setNodeValue(final String nodeValue) {
 		this.text = nodeValue;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void setTextContent(String textContent) {
+	public void setTextContent(final String textContent) {
 		this.text = textContent;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Text splitText(int offset) {
+	public Text splitText(final int offset) {
 		final NodeImpl parent = (NodeImpl) getParentNode();
 		final String t = this.text;
 		if (offset < 0 || offset > t.length()) {
@@ -152,6 +153,11 @@ public class TextImpl extends CharacterDataImpl implements Text {
 	public HTMLSlotElement getAssignedSlot() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean hasAttributes() {
+		return false;
 	}
 
 	/** {@inheritDoc} */

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,36 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Get the first child of the third employee using NodeList.item(0)
  * which will either be a Text node (whitespace) or employeeId element.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-844377136</a>
  */
-public class nodelistreturnfirstitemTest extends LoboUnitTest {
+public class NodelistreturnfirstitemTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList employeeList;
-        Node child;
-        String childName;
-        int length;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList employeeList;
+        final Node child;
+        final String childName;
+        final int length;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(2);
@@ -69,9 +66,9 @@ public class nodelistreturnfirstitemTest extends LoboUnitTest {
         length = employeeList.getLength();
 
         if (length == 6) {
-            assertEquals("firstChildNoWhitespace", "EMPLOYEEID",childName);
+            assertEquals("EMPLOYEEID", childName, "NodelistreturnfirstitemAssert1");
         } else {
-            assertEquals("firstChildWithWhitespace", "#text", childName);
+            assertEquals("#text", childName, "NodelistreturnfirstitemAssert2");
         }
 
     }

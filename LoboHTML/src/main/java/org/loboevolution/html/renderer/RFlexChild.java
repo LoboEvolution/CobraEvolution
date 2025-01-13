@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ class RFlexChild {
 	 *
 	 * @param renderState a {@link org.loboevolution.html.renderstate.RenderState} object.
 	 */
-	protected RFlexChild(RenderState renderState) {
+	protected RFlexChild(final RenderState renderState) {
 		this.renderState = renderState;
 	}
 
@@ -96,10 +96,10 @@ class RFlexChild {
 	 *
 	 * @param markupElement a {@link org.loboevolution.html.dom.domimpl.HTMLElementImpl} object.
 	 */
-	protected void flexAlign(HTMLElementImpl markupElement) {
+	protected void flexAlign(final HTMLElementImpl markupElement) {
 		final RenderState previous = renderState.getPreviousRenderState();
 		final String justText = previous.getJustifyContent();
-		CSSValues flex = CSSValues.get(justText);
+		final CSSValues flex = CSSValues.get(justText);
 		
 		if (CSSValues.SPACE_AROUND.equals(flex)) {
 			markupElement.getCurrentStyle().setTextAlign("center");

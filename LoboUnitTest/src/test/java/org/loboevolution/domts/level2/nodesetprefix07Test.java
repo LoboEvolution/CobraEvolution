@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,36 +28,32 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The method setPrefix raises a NAMESPACE_ERR if this node is an attribute and the specified
  * prefix is "xmlns" and the namespaceURI of this node is different from
- * "http://www.w3.org/2000/xmlns/".
- * Create a new attribute node whose namespaceURI is different form "http://www.w3.org/2000/xmlns/"
+ * "<a href="http://www.w3.org/2000/xmlns/">...</a>".
+ * Create a new attribute node whose namespaceURI is different form "<a href="http://www.w3.org/2000/xmlns/">...</a>"
  * and node prefix is "xmlns".
  * Check if the NAMESPACE_ERR was thrown.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodesetprefix07Test extends LoboUnitTest {
+public class Nodesetprefix07Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr attribute;
+        final Document doc;
+        final Attr attribute;
         doc = sampleXmlFile("staffNS.xml");
         attribute = doc.createAttributeNS("http://www.w3.org/DOM/Test/L2", "abc:elem");
 
@@ -65,10 +61,10 @@ public class nodesetprefix07Test extends LoboUnitTest {
             boolean success = false;
             try {
                 attribute.setPrefix("xmlns");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NAMESPACE_ERR);
             }
-            assertTrue("throw_NAMESPACE_ERR", success);
+            assertTrue(success);
         }
     }
 }

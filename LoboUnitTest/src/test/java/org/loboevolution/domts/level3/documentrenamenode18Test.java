@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,51 +28,48 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the renameNode method on this document and try to rename a new element
  * node of a new document.
  * Check if a WRONG_DOCUMENT_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode18Test extends LoboUnitTest {
+public class Documentrenamenode18Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Element element;
-        Node renamedNode;
-        Element docElem;
-        String rootNS;
-        String rootTagname;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Element element;
+        final Element docElem;
+        final String rootNS;
+        final String rootTagname;
 
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootTagname = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootTagname, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootTagname, null);
         element = newDoc.createElementNS("http://www.w3.org/1999/xhtml", "body");
 
         {
             boolean success = false;
             try {
-                renamedNode = doc.renameNode(element, "http://www.w3.org/1999/xhtml", "head");
-            } catch (DOMException ex) {
+                doc.renameNode(element, "http://www.w3.org/1999/xhtml", "head");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.WRONG_DOCUMENT_ERR);
             }
-            assertTrue("documentrenamenode18_WRONG_DOCUMENT_ERR", success);
+            assertTrue(success, "Documentrenamenode18Assert2");
         }
     }
 }

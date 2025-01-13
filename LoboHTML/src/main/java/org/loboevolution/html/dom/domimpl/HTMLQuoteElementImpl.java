@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class HTMLQuoteElementImpl extends HTMLElementImpl implements HTMLQuoteEl
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new QuoteRenderState(prevRenderState, this);
 	}
 
@@ -60,14 +60,19 @@ public class HTMLQuoteElementImpl extends HTMLElementImpl implements HTMLQuoteEl
 
 	/** {@inheritDoc} */
 	@Override
-	public void setCite(String cite) {
+	public void setCite(final String cite) {
 		setAttribute("cite", cite);
 	}
 
 	@Override
 	public int getClientHeight() {
-		int clientHeight = super.getClientHeight();
+		final int clientHeight = super.getClientHeight();
 		return clientHeight == 0 ? 17 : clientHeight;
+	}
+
+	@Override
+	public Integer getOffsetWidth() {
+		return "Q".equals(getNodeName()) ? 25 : super.getOffsetWidth();
 	}
 
 

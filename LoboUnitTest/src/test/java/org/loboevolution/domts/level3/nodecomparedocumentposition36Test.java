@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,36 +27,34 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition to check if the document position of an Attribute compared with
  * the element that follows its parent as a parameter is FOLLOWING, and is PRECEDING
  * vice versa.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition36Test extends LoboUnitTest {
+public class Nodecomparedocumentposition36Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        HTMLCollection elemListFollows;
-        Element elemFollows;
-        Attr attr;
-        int attrPosition;
-        int elemFollowsPosition;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final HTMLCollection elemListFollows;
+        final Element elemFollows;
+        final Attr attr;
+        final int attrPosition;
+        final int elemFollowsPosition;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("p");
         elem = (Element) elemList.item(3);
@@ -64,9 +62,9 @@ public class nodecomparedocumentposition36Test extends LoboUnitTest {
         elemListFollows = doc.getElementsByTagName("strong");
         elemFollows = (Element) elemListFollows.item(3);
         attrPosition = attr.compareDocumentPosition(elemFollows);
-        assertEquals("nodecomparedocumentpositionFollowing36", 4, attrPosition);
+        assertEquals(4, attrPosition, "Nodecomparedocumentposition36Assert2");
         elemFollowsPosition = elemFollows.compareDocumentPosition(attr);
-        assertEquals("nodecomparedocumentpositionPRECEEDING36", 2, elemFollowsPosition);
+        assertEquals(2, elemFollowsPosition, "Nodecomparedocumentposition36Assert3");
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ public class FuncNormalizeSpace extends FunctionDef1Arg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
-    XString s1 = getArg0AsString(xctxt);
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
+    final XString s1 = getArg0AsString(xctxt);
 
     return s1.fixWhiteSpace(true, true, false);
   }

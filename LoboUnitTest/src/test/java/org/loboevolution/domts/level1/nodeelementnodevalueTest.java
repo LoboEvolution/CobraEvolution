@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,37 +27,34 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * The string returned by the "getNodeValue()" method for an
  * Element Node is null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  */
-public class nodeelementnodevalueTest extends LoboUnitTest {
+public class NodeelementnodevalueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element elementNode;
-        String elementValue;
+        final Document doc;
+        final Element elementNode;
+        final String elementValue;
         doc = sampleXmlFile("staff.xml");
         elementNode = doc.getDocumentElement();
         elementValue = elementNode.getNodeValue();
-        assertNull("elementNodeValueNull", elementValue);
+        assertNull(elementValue, "NodeelementnodevalueAssert2");
     }
 }
 

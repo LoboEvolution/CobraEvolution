@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,39 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Using isEqualNode check if 2 Attr nodes having the same nodeName and a null namespaceURI
  * attribute, one created using createAttribute and the other createAttributeNS, are not equal.
  * Note the localName for an Attr created with DOM Level 1 methods is null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode14Test extends LoboUnitTest {
+public class Nodeisequalnode14Test extends LoboUnitTest {
 
-
+    
     /**
      * Runs the test case.
-     *
-     * @throws Throwable Any uncaught exception causes test to fail
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr1;
-        Attr attr2;
-        boolean isEqual;
-        String nullNSURI = null;
+        final Document doc;
+        final Attr attr1;
+        final Attr attr2;
+        final boolean isEqual;
 
         doc = sampleXmlFile("hc_staff.xml");
         attr1 = doc.createAttribute("root");
-        attr2 = doc.createAttributeNS(nullNSURI, "root");
+        attr2 = doc.createAttributeNS(null, "root");
         isEqual = attr1.isEqualNode(attr2);
-        assertFalse("nodeisequalnode14", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode14Assert2");
     }
 }
 

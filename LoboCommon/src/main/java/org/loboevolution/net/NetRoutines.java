@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public class NetRoutines {
 	 * @param host a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isLocalAddress(String host) {
+	public static boolean isLocalAddress(final String host) {
 		try {
 			final InetAddress address = InetAddress.getByName(host);
 			return address.isAnyLocalAddress() || address.isLinkLocalAddress() || address.isLoopbackAddress()

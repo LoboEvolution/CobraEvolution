@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -37,7 +37,7 @@ import org.loboevolution.html.node.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -50,44 +50,28 @@ import static org.junit.Assert.*;
  * removed first and the new one inserted.   The node is
  * inserted at a different position in the tree to assure
  * that it was indeed inserted.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  */
-public class nodeinsertbeforenewchildexistsTest extends LoboUnitTest {
+public class NodeinsertbeforenewchildexistsTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node refChild;
-        Node newChild;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node refChild;
+        final Node newChild;
         Node child;
-        int length;
+        final int length;
         String childName;
-        List<String> expectedWhitespace = new ArrayList<>();
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("name");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("position");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("salary");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("gender");
-        expectedWhitespace.add("#text");
-        expectedWhitespace.add("employeeId");
-        expectedWhitespace.add("ADDRESS");
-        expectedWhitespace.add("#text");
+        final List<String> expectedWhitespace = getStrings();
 
-        List<String> expectedNoWhitespace = new ArrayList<String>();
+        final List<String> expectedNoWhitespace = new ArrayList<>();
         expectedNoWhitespace.add("EMPLOYEEID");
         expectedNoWhitespace.add("NAME");
         expectedNoWhitespace.add("POSITION");
@@ -95,8 +79,8 @@ public class nodeinsertbeforenewchildexistsTest extends LoboUnitTest {
         expectedNoWhitespace.add("GENDER");
         expectedNoWhitespace.add("ADDRESS");
 
-        List<String> expected;
-        List<String> result = new ArrayList<>();
+        final List<String> expected;
+        final List<String> result = new ArrayList<>();
 
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
@@ -120,7 +104,25 @@ public class nodeinsertbeforenewchildexistsTest extends LoboUnitTest {
             childName = child.getNodeName();
             result.add(childName);
         }
-        assertEquals("childNames", expected, result);
+        assertEquals(expected, result, "NodeinsertbeforenewchildexistsAssert1");
+    }
+
+    private static List<String> getStrings() {
+        final List<String> expectedWhitespace = new ArrayList<>();
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("name");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("position");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("salary");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("gender");
+        expectedWhitespace.add("#text");
+        expectedWhitespace.add("employeeId");
+        expectedWhitespace.add("ADDRESS");
+        expectedWhitespace.add("#text");
+        return expectedWhitespace;
     }
 
 }

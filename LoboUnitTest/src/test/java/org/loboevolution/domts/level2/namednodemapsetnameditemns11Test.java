@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.dom.Notation;
@@ -37,8 +37,8 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -48,30 +48,28 @@ import static org.junit.Assert.assertTrue;
  * Attempt to add a notation node to a NamedNodeMap of attribute nodes,
  * Since notations nodes do not belong in the attribute node map a HIERARCHY_REQUEST_ERR
  * should be raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class namednodemapsetnameditemns11Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns11Test extends LoboUnitTest {
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notations;
-        NamedNodeMap attributes;
-        Notation notation;
-        Element element;
-        HTMLCollection elementList;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notations;
+        final NamedNodeMap attributes;
+        final Notation notation;
+        final Element element;
+        final HTMLCollection elementList;
 
         doc = sampleXmlFile("staffNS.xml");
         docType = doc.getDoctype();
         notations = docType.getNotations();
-        assertNotNull("notationsNotNull", notations);
+        assertNotNull(notations);
         notation = (Notation) notations.getNamedItem("notation1");
         elementList = doc.getElementsByTagName("address");
         element = (Element) elementList.item(0);
@@ -79,10 +77,10 @@ public class namednodemapsetnameditemns11Test extends LoboUnitTest {
         boolean success = false;
         try {
             attributes.setNamedItemNS(notation);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
         }
-        assertTrue("throw_HIERARCHY_REQUEST_ERR", success);
+        assertTrue(success);
 
     }
 }

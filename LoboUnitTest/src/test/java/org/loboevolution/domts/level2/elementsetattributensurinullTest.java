@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,14 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -46,33 +46,31 @@ import static org.junit.Assert.assertTrue;
  * Attempt to add a new attribute on the first employee node.
  * An exception should be raised since the "qualifiedName" has a
  * prefix and the namespaceURI is null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElSetAttrNS</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-ElSetAttrNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])">http://www.w3.org/TR/DOM-Level-2-Core/core#xpointer(id('ID-ElSetAttrNS')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='NAMESPACE_ERR'])</a>
  */
-public class elementsetattributensurinullTest extends LoboUnitTest {
+public class ElementsetattributensurinullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        String qualifiedName = "qualifiedName";
-        Document doc;
-        HTMLCollection elementList;
-        Node testAddr;
+        final String qualifiedName = "qualifiedName";
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node testAddr;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         testAddr = elementList.item(0);
         boolean success = false;
         try {
             ((Element) testAddr).setAttributeNS(null, qualifiedName, "newValue");
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
-        assertTrue("throw_NAMESPACE_ERR", success);
+        assertTrue(success);
     }
 }
 

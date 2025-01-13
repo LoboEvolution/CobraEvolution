@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
  */
 package org.loboevolution.apache.xml.dtm;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.apache.xml.dtm.ref.DTMManagerDefault;
 import org.loboevolution.apache.xml.utils.PrefixResolver;
 import org.loboevolution.html.node.Node;
@@ -42,10 +43,11 @@ import org.loboevolution.html.node.Node;
  * allow sharing of DTMs across multiple processes.
  *
  * <p>Note: this class is incomplete right now. It will be pretty much modeled after
- * org.loboevolution.javax.xml.transform.TransformerFactory in terms of its factory support.
+ * javax.xml.transform.TransformerFactory in terms of its factory support.
  *
  * <p>State: In progress!!
  */
+@Slf4j
 public abstract class DTMManager {
   /** Default constructor is protected on purpose. */
   protected DTMManager() {}
@@ -94,7 +96,7 @@ public abstract class DTMManager {
    * @return a non-null DTM reference.
    */
   public abstract DTM getDTM(
-      org.loboevolution.javax.xml.transform.Source source, boolean unique, boolean incremental, boolean doIndexing);
+      javax.xml.transform.Source source, boolean unique, boolean incremental, boolean doIndexing);
 
   /**
    * Get the instance of DTM that "owns" a node handle.
@@ -122,7 +124,7 @@ public abstract class DTMManager {
    * @param pos The position in the expression.
    * @return The newly created <code>DTMIterator</code>.
    */
-  public abstract DTMIterator createDTMIterator(Object xpathCompiler, int pos);
+  public abstract DTMIterator createDTMIterator(Object xpathCompiler, final int pos);
 
   /**
    * Create a new <code>DTMIterator</code> based on an XPath <a
@@ -135,7 +137,7 @@ public abstract class DTMManager {
    * @param presolver An object that can resolve prefixes to namespace URLs.
    * @return The newly created <code>DTMIterator</code>.
    */
-  public abstract DTMIterator createDTMIterator(String xpathString, PrefixResolver presolver);
+  public abstract DTMIterator createDTMIterator(final String xpathString, PrefixResolver presolver);
 
   /**
    * Create a new <code>DTMIterator</code> based only on a whatToShow and a DTMFilter. The traversal
@@ -163,8 +165,9 @@ public abstract class DTMManager {
   static {
     try {
       /* Temp debug code - this will be removed after we test everything */
-      boolean debug = System.getProperty("dtm.debug") != null;
-    } catch (SecurityException ex) {
+      final boolean debug = System.getProperty("dtm.debug") != null;
+    } catch (final SecurityException e) {
+      log.info(e.getMessage());
     }
   }
 

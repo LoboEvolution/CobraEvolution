@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,50 +28,47 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
-import org.loboevolution.html.node.DOMConfiguration;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.DOMConfiguration;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Checks behavior of "schema-type" configuration parameter.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-schema-type">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-schema-type</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-getParameter</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-setParameter">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMConfiguration-setParameter</a>
  */
-public class domconfigschematype1Test extends LoboUnitTest {
+public class Domconfigschematype1Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        DOMImplementation domImpl;
-        Document doc;
-        DOMConfiguration domConfig;
-        DocumentType nullDocType = null;
+        final DOMImplementation domImpl;
+        final Document doc;
+        final DOMConfiguration domConfig;
 
         boolean canSet;
         String state;
-        String parameter = "sChEma-type";
-        String xmlSchemaType = "http://www.w3.org/2001/XMLSchema";
-        String dtdType = "http://www.w3.org/TR/REC-xml";
+        final String parameter = "sChEma-type";
+        final String xmlSchemaType = "http://www.w3.org/2001/XMLSchema";
+        final String dtdType = "http://www.w3.org/TR/REC-xml";
         domImpl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
-        doc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", nullDocType);
+        doc = domImpl.createDocument("http://www.w3.org/1999/xhtml", "html", null);
         domConfig = doc.getDomConfig();
         canSet = domConfig.canSetParameter(parameter, Boolean.TRUE);
-        assertFalse("canSetTrue", canSet);
+        assertFalse(canSet, "Domconfigschematype1Assert1");
 
         try {
-            state = (String) domConfig.getParameter(parameter);
+            domConfig.getParameter(parameter);
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             if (ex.getCode() == 8) {
                 return;
             }
@@ -84,7 +81,7 @@ public class domconfigschematype1Test extends LoboUnitTest {
             /*DOMString */
             domConfig.setParameter(parameter, dtdType);
             state = (String) domConfig.getParameter(parameter);
-            assertEquals("setDTDEffective", dtdType, state);
+            assertEquals(dtdType, state, "Domconfigschematype1Assert2");
         } else {
 
             {
@@ -92,10 +89,10 @@ public class domconfigschematype1Test extends LoboUnitTest {
                 try {
                     /*DOMString */
                     domConfig.setParameter(parameter, dtdType);
-                } catch (DOMException ex) {
+                } catch (final DOMException ex) {
                     success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
                 }
-                assertTrue("throw_NOT_SUPPORTED_ERR_dtd", success);
+                assertTrue(success, "Domconfigschematype1Assert3");
             }
         }
 
@@ -106,7 +103,7 @@ public class domconfigschematype1Test extends LoboUnitTest {
             /*DOMString */
             domConfig.setParameter(parameter, xmlSchemaType);
             state = (String) domConfig.getParameter(parameter);
-            assertEquals("setSchemaEffective", xmlSchemaType, state);
+            assertEquals(xmlSchemaType, state, "Domconfigschematype1Assert4");
         } else {
 
             {
@@ -114,10 +111,10 @@ public class domconfigschematype1Test extends LoboUnitTest {
                 try {
                     /*DOMString */
                     domConfig.setParameter(parameter, xmlSchemaType);
-                } catch (DOMException ex) {
+                } catch (final DOMException ex) {
                     success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
                 }
-                assertTrue("throw_NOT_SUPPORTED_ERR_schema", success);
+                assertTrue(success, "Domconfigschematype1Assert5");
             }
         }
 

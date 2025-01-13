@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.html.renderer;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * A {@link org.loboevolution.html.renderer.Renderable} with children.
@@ -51,23 +51,23 @@ public interface RCollection extends BoundableRenderable {
 	/**
 	 * <p>updateWidgetBounds.</p>
 	 *
-	 * @param guiX a int.
-	 * @param guiY a int.
+	 * @param guiX a {@link java.lang.Integer} object.
+	 * @param guiY a {@link java.lang.Integer} object.
 	 */
-	void updateWidgetBounds(int guiX, int guiY);
+	void updateWidgetBounds(int guiX, final int guiY);
 	
 	/**
 	 * <p>getRenderables.</p>
 	 *
-	 * @return a {@link java.util.Iterator} object.
+	 * @return a {@link java.util.List} object.
 	 */
-	Iterator<Renderable> getRenderables();
+	List<Renderable> getRenderables();
 	
 	/**
 	 * <p>getRenderable.</p>
 	 *
-	 * @param x a int.
-	 * @param y a int.
+	 * @param x a {@link java.lang.Integer} object.
+	 * @param y a {@link java.lang.Integer} object.
 	 * @return a {@link org.loboevolution.html.renderer.BoundableRenderable} object.
 	 */
 	BoundableRenderable getRenderable(final int x, final int y);

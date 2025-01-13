@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,49 +27,46 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using insertBefore on an Element node attempt to insert a new Element, node before its
  * first element child and verify the name of the new first child node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore16Test extends LoboUnitTest {
+public class Nodeinsertbefore16Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         Element element;
-        Element newElem;
-        Element refElem;
+        final Element newElem;
+        final Element refElem;
         Node firstChild;
-        Element insertedElem;
+        final Element insertedElem;
         HTMLCollection childList;
-        String nodeName;
-        Node inserted;
+        final String nodeName;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("p");
         element = (Element) childList.item(0);
         firstChild = element.getFirstChild();
         refElem = (Element) firstChild.getNextSibling();
         newElem = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:br");
-        inserted = element.insertBefore(newElem, refElem);
+        element.insertBefore(newElem, refElem);
         childList = doc.getElementsByTagName("p");
         element = (Element) childList.item(0);
         firstChild = element.getFirstChild();
         insertedElem = (Element) firstChild.getNextSibling();
         nodeName = insertedElem.getNodeName();
-        assertEquals("nodeinsertbefore16", "xhtml:br", nodeName);
+        assertEquals("xhtml:br", nodeName, "Nodeinsertbefore16Assert2");
     }
 }
 

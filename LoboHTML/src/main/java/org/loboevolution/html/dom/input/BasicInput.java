@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,16 @@
 
 package org.loboevolution.html.dom.input;
 
+import lombok.Data;
 import org.loboevolution.common.Strings;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.html.dom.HTMLInputElement;
 import org.loboevolution.html.dom.domimpl.HTMLBasicInputElement;
+import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 import org.loboevolution.html.js.Executor;
 import org.loboevolution.html.js.WindowImpl;
+import org.loboevolution.js.LoboContextFactory;
 
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -44,6 +47,7 @@ import java.util.regex.Pattern;
 /**
  * <p>BasicInput class.</p>
  */
+@Data
 public class BasicInput implements FocusListener, KeyListener, CaretListener, MouseListener {
 
     private HTMLBasicInputElement element;
@@ -51,26 +55,26 @@ public class BasicInput implements FocusListener, KeyListener, CaretListener, Mo
     private JTextComponent jComponent;
 
     @Override
-    public void focusGained(FocusEvent e) {
+    public void focusGained(final FocusEvent e) {
         if (element.getOnfocus() != null) {
-            Executor.executeFunction(element, element.getOnfocus(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnfocus(), new Object[]{}, getWindowFactory());
         }
 
         if (element.getOnfocusin() != null) {
-            Executor.executeFunction(element, element.getOnfocusin(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnfocusin(), new Object[]{}, getWindowFactory());
         }
     }
 
     @Override
-    public void focusLost(FocusEvent event) {
+    public void focusLost(final FocusEvent event) {
         final boolean autocomplete = element.isAutocomplete();
         final String baseUrl = element.getBaseURI();
         final String type = element instanceof HTMLInputElement ? ((HTMLInputElement)element).getType() : "";
 
-        String selectedText = jComponent.getSelectedText();
+        final String selectedText = jComponent.getSelectedText();
         if (Strings.isNotBlank(selectedText) && Strings.isNotBlank(element.getValue())) {
-            Pattern word = Pattern.compile(selectedText);
-            Matcher match = word.matcher(element.getValue());
+            final Pattern word = Pattern.compile(selectedText);
+            final Matcher match = word.matcher(element.getValue());
 
             while (match.find()) {
                 element.setSelectionRange(match.start(), match.end() - 1);
@@ -78,9 +82,9 @@ public class BasicInput implements FocusListener, KeyListener, CaretListener, Mo
         }
 
         if (autocomplete || "password".equals(type)) {
-            HTMLInputElementImpl im =  (HTMLInputElementImpl)element;
-            WindowImpl win = (WindowImpl) im.getDocumentNode().getDefaultView();
-            HtmlRendererConfig config = win.getConfig();
+            final HTMLInputElementImpl im =  (HTMLInputElementImpl)element;
+            final WindowImpl win = (WindowImpl) im.getDocumentNode().getDefaultView();
+            final HtmlRendererConfig config = win.getConfig();
             final String text = jComponent.getText();
             final boolean isNavigation = element.getUserAgentContext().isNavigationEnabled();
             config.deleteInput(text, baseUrl);
@@ -88,73 +92,73 @@ public class BasicInput implements FocusListener, KeyListener, CaretListener, Mo
         }
 
         if (element.getOnblur() != null) {
-            Executor.executeFunction(element, element.getOnblur(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnblur(), new Object[]{}, getWindowFactory());
         }
 
         if (element.getOnfocusout() != null) {
             jComponent.setText(element.getValue());
-            Executor.executeFunction(element, element.getOnfocusout(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnfocusout(), new Object[]{}, getWindowFactory());
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(final KeyEvent e) {
         if (element.getOnkeydown() != null) {
-            Executor.executeFunction(element, element.getOnkeydown(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeydown(), new Object[]{}, getWindowFactory());
         }
 
         if (element.getOnkeypress() != null) {
-            Executor.executeFunction(element, element.getOnkeypress(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeypress(), new Object[]{}, getWindowFactory());
         }
 
         if (element.getOninput() != null) {
             element.setValue(Strings.isBlank(element.getValue()) ? String.valueOf(e.getKeyChar()) : element.getValue() + e.getKeyChar());
-            Executor.executeFunction(element, element.getOninput(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOninput(), new Object[]{}, getWindowFactory());
         }
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(final KeyEvent e) {
 
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(final KeyEvent e) {
         if (element.getOnkeyup() != null) {
-            Executor.executeFunction(element, element.getOnkeyup(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeyup(), new Object[]{}, getWindowFactory());
         }
     }
 
     @Override
-    public void caretUpdate(CaretEvent e) {
+    public void caretUpdate(final CaretEvent e) {
         final int dot = e.getDot();
         final int mark = e.getMark();
 
         if (dot != mark && element.getOnselect() != null) {
-            Executor.executeFunction(element, element.getOnselect(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnselect(), new Object[]{}, getWindowFactory());
         }
     }
 
     @Override
     public void mouseEntered(final MouseEvent e) {
         if (element.getOnmouseover() != null) {
-            Executor.executeFunction(element, element.getOnmouseover(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnmouseover(), new Object[]{}, getWindowFactory());
         }
     }
 
     public void mousePressed(final MouseEvent e) {
         if (element.getOnkeypress() != null) {
-            Executor.executeFunction(element, element.getOnkeypress(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeypress(), new Object[]{}, getWindowFactory());
         }
 
         if (element.getOnkeydown() != null) {
-            Executor.executeFunction(element, element.getOnkeydown(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeydown(), new Object[]{}, getWindowFactory());
         }
     }
 
     public void mouseReleased(final MouseEvent e) {
         if (element.getOnkeyup() != null) {
-            Executor.executeFunction(element, element.getOnkeyup(), null, new Object[]{});
+            Executor.executeFunction(element, element.getOnkeyup(), new Object[]{}, getWindowFactory());
         }
     }
 
@@ -168,19 +172,9 @@ public class BasicInput implements FocusListener, KeyListener, CaretListener, Mo
         // TODO Auto-generated method stub
     }
 
-    public HTMLBasicInputElement getElement() {
-        return element;
-    }
-
-    public void setElement(HTMLBasicInputElement element) {
-        this.element = element;
-    }
-
-    public JTextComponent getjComponent() {
-        return jComponent;
-    }
-
-    public void setjComponent(JTextComponent jComponent) {
-        this.jComponent = jComponent;
+    private LoboContextFactory getWindowFactory() {
+        final HTMLDocumentImpl doc = (HTMLDocumentImpl) element.getOwnerDocument();
+        final WindowImpl window = (WindowImpl) doc.getDefaultView();
+        return window.getContextFactory();
     }
 }

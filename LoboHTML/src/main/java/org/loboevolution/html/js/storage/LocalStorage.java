@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,8 @@
 package org.loboevolution.html.js.storage;
 
 import org.loboevolution.config.HtmlRendererConfig;
-import org.loboevolution.html.node.js.Window;
-import org.loboevolution.html.node.js.webstorage.Storage;
+import org.loboevolution.js.Window;
+import org.loboevolution.js.webstorage.Storage;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class LocalStorage implements Storage {
 	/**
 	 * <p>Constructor for LocalStorage.</p>
 	 */
-	public LocalStorage(Window win) {
+	public LocalStorage(final Window win) {
 		config = (HtmlRendererConfig) win.getConfig();
 		index = -1;
 	}
@@ -57,9 +57,10 @@ public class LocalStorage implements Storage {
 	
 	/** {@inheritDoc} */
 	@Override
-	public Object key(int index) {
+	public Object key(final int index) {
         int counter = 0;
-        Map<String, String> store = config.getMapStorage(index, 0);
+        final Map<String, String> store = config.getMapStorage(index, 0);
+
         for (final String key : store.keySet()) {
             if (counter++ == index) {
                 return key;
@@ -70,20 +71,20 @@ public class LocalStorage implements Storage {
 	
 	/** {@inheritDoc} */
 	@Override
-	public Object getItem(String key) {
+	public Object getItem(final String key) {
 		return config.getValue(key, 0, index);
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public void setItem(String keyName, String keyValue) {
+	public void setItem(final String keyName, final String keyValue) {
 		config.deleteStorage(keyName, 0, index);
 		config.insertStorage(keyName, keyValue, 0, index);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void removeItem(String keyName) {
+	public void removeItem(final String keyName) {
 		config.deleteStorage(keyName, 0, index);
 	}
 	

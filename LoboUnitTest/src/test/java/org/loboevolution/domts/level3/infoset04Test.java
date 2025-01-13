@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,60 +27,58 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.dom.HTMLCollection;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Normalize a document with a created CDATA section with the
  * 'infoset' to true and check if
  * the CDATASection has been coalesced.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=416">http://www.w3.org/Bugs/Public/show_bug.cgi?id=416</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset</a>
  */
-public class infoset04Test extends LoboUnitTest {
+public class Infoset04Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         Element elem;
-        CDATASection newCdata;
-        CDATASection cdata;
-        Node text;
-        String nodeName;
-        String nodeValue;
-        Node appendedChild;
-        DOMConfiguration domConfig;
+        final CDATASection newCdata;
+        final Node text;
+        final String nodeName;
+        final String nodeValue;
+        final DOMConfiguration domConfig;
         HTMLCollection pList;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
         doc = sampleXmlFile("barfoo.xml");
         pList = doc.getElementsByTagName("p");
         elem = (Element) pList.item(0);
         newCdata = doc.createCDATASection("CDATA");
-        appendedChild = elem.appendChild(newCdata);
+        elem.appendChild(newCdata);
         domConfig = doc.getDomConfig();
         domConfig.setParameter("infoset", Boolean.TRUE);
         /*DOMErrorMonitor */
         domConfig.setParameter("error-handler", errorMonitor);
         doc.normalizeDocument();
-        assertTrue("normalization2Error", errorMonitor.assertLowerSeverity(2));
+        assertTrue(errorMonitor.assertLowerSeverity(2), "Infoset04Assert3");
         pList = doc.getElementsByTagName("p");
         elem = (Element) pList.item(0);
         text = elem.getLastChild();
         nodeName = text.getNodeName();
-        assertEquals("documentnormalizedocument03_false", "#text", nodeName);
+        assertEquals("#text", nodeName, "Infoset04Assert4");
         nodeValue = text.getNodeValue();
-        assertEquals("normalizedValue", "barCDATA", nodeValue);
+        assertEquals("barCDATA", nodeValue, "Infoset04Assert5");
     }
 }
 

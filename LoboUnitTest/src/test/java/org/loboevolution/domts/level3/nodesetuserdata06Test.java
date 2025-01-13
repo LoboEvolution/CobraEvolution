@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,30 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on a new Comment to set its UserData to an Entity node
  * twice using the same key.  Verify if the UserData object that was by the
  * second setUserData is the same as original Entity.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData</a>
  */
-public class nodesetuserdata06Test extends LoboUnitTest {
+public class Nodesetuserdata06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entities;
-        Node entity;
-        Comment comment;
-        Object userData;
-        Object returned;
-        Object retUserData;
-        boolean success;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entities;
+        final Node entity;
+        final Comment comment;
+        final Object returned;
+        final boolean success;
 
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
@@ -62,11 +58,11 @@ public class nodesetuserdata06Test extends LoboUnitTest {
         entity = entities.getNamedItem("delta");
         comment = doc.createComment("COMMENT_NODE");
         /*Node */
-        retUserData = comment.setUserData("Key1", entity, null);
+        comment.setUserData("Key1", entity, null);
         /*Node */
         returned = comment.setUserData("Key1", entity, null);
         success = ((Node) /*DOMUserData */returned).isEqualNode(entity);
-        assertTrue("nodesetuserdata06", success);
+        assertTrue(success, "Nodesetuserdata06Assert2");
     }
 }
 

@@ -8,13 +8,13 @@ package org.mozilla.javascript;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Stack;
 import org.mozilla.javascript.json.JsonParser;
 import org.mozilla.javascript.xml.XMLObject;
 
@@ -23,22 +23,30 @@ import org.mozilla.javascript.xml.XMLObject;
  *
  * @author Matthew Crumley, Raphael Speyer
  */
-public final class NativeJSON extends IdScriptableObject {
+public final class NativeJSON extends ScriptableObject {
     private static final long serialVersionUID = -4567599697595654984L;
 
-    private static final Object JSON_TAG = "JSON";
+    private static final String JSON_TAG = "JSON";
 
     private static final int MAX_STRINGIFY_GAP_LENGTH = 10;
 
     static void init(Scriptable scope, boolean sealed) {
-        NativeJSON obj = new NativeJSON();
-        obj.activatePrototypeMap(MAX_ID);
-        obj.setPrototype(getObjectPrototype(scope));
-        obj.setParentScope(scope);
+        NativeJSON json = new NativeJSON();
+        json.setPrototype(getObjectPrototype(scope));
+        json.setParentScope(scope);
+
+        json.defineProperty(scope, "parse", 2, NativeJSON::parse, DONTENUM, DONTENUM | READONLY);
+        json.defineProperty(
+                scope, "stringify", 3, NativeJSON::stringify, DONTENUM, DONTENUM | READONLY);
+
+        json.defineProperty("toSource", "JSON", DONTENUM | READONLY | PERMANENT);
+
+        json.defineProperty(SymbolKey.TO_STRING_TAG, JSON_TAG, DONTENUM | READONLY);
+
+        ScriptableObject.defineProperty(scope, JSON_TAG, json, DONTENUM);
         if (sealed) {
-            obj.sealObject();
+            json.sealObject();
         }
-        ScriptableObject.defineProperty(scope, "JSON", obj, ScriptableObject.DONTENUM);
     }
 
     private NativeJSON() {}
@@ -48,77 +56,32 @@ public final class NativeJSON extends IdScriptableObject {
         return "JSON";
     }
 
-    @Override
-    protected void initPrototypeId(int id) {
-        if (id <= LAST_METHOD_ID) {
-            String name;
-            int arity;
-            switch (id) {
-                case Id_toSource:
-                    arity = 0;
-                    name = "toSource";
-                    break;
-                case Id_parse:
-                    arity = 2;
-                    name = "parse";
-                    break;
-                case Id_stringify:
-                    arity = 3;
-                    name = "stringify";
-                    break;
-                default:
-                    throw new IllegalStateException(String.valueOf(id));
-            }
-            initPrototypeMethod(JSON_TAG, id, name, arity);
-        } else {
-            throw new IllegalStateException(String.valueOf(id));
+    private static Object parse(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+        String jtext = ScriptRuntime.toString(args, 0);
+        Object reviver = null;
+        if (args.length > 1) {
+            reviver = args[1];
         }
+        if (reviver instanceof Callable) {
+            return parse(cx, scope, jtext, (Callable) reviver);
+        }
+        return parse(cx, scope, jtext);
     }
 
-    @Override
-    public Object execIdCall(
-            IdFunctionObject f, Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
-        if (!f.hasTag(JSON_TAG)) {
-            return super.execIdCall(f, cx, scope, thisObj, args);
-        }
-        int methodId = f.methodId();
-        switch (methodId) {
-            case Id_toSource:
-                return "JSON";
+    private static Object stringify(
+            Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+        Object value = Undefined.instance, replacer = null, space = null;
 
-            case Id_parse:
-                {
-                    String jtext = ScriptRuntime.toString(args, 0);
-                    Object reviver = null;
-                    if (args.length > 1) {
-                        reviver = args[1];
-                    }
-                    if (reviver instanceof Callable) {
-                        return parse(cx, scope, jtext, (Callable) reviver);
-                    }
-                    return parse(cx, scope, jtext);
+        if (args.length > 0) {
+            value = args[0];
+            if (args.length > 1) {
+                replacer = args[1];
+                if (args.length > 2) {
+                    space = args[2];
                 }
-
-            case Id_stringify:
-                {
-                    Object value = Undefined.instance, replacer = null, space = null;
-
-                    if (args.length > 0) {
-                        value = args[0];
-                        if (args.length > 1) {
-                            replacer = args[1];
-                            if (args.length > 2) {
-                                space = args[2];
-                            }
-                        }
-                    }
-
-                    return stringify(cx, scope, value, replacer, space);
-                }
-
-            default:
-                throw new IllegalStateException(String.valueOf(methodId));
+            }
         }
+        return stringify(cx, scope, value, replacer, space);
     }
 
     private static Object parse(Context cx, Scriptable scope, String jtext) {
@@ -210,7 +173,7 @@ public final class NativeJSON extends IdScriptableObject {
             this.propertyList = propertyList;
         }
 
-        Stack<Object> stack = new Stack<>();
+        ArrayDeque<Object> stack = new ArrayDeque<>();
         String indent;
         String gap;
         Callable replacer;
@@ -409,7 +372,7 @@ public final class NativeJSON extends IdScriptableObject {
             trackValue = unwrapped = ((Wrapper) value).unwrap();
         }
 
-        if (state.stack.search(trackValue) != -1) {
+        if (state.stack.contains(trackValue)) {
             throw ScriptRuntime.typeErrorById("msg.cyclic.value", trackValue.getClass().getName());
         }
         state.stack.push(trackValue);
@@ -452,7 +415,7 @@ public final class NativeJSON extends IdScriptableObject {
             k = value.getIds();
         }
 
-        Collection<Object> partial = new LinkedList<>();
+        ArrayList<Object> partial = new ArrayList<>();
 
         for (Object p : k) {
             Object strP = str(p, value, state);
@@ -490,14 +453,14 @@ public final class NativeJSON extends IdScriptableObject {
         if (value instanceof Wrapper) {
             trackValue = unwrapped = ((Wrapper) value).unwrap();
         }
-        if (state.stack.search(trackValue) != -1) {
+        if (state.stack.contains(trackValue)) {
             throw ScriptRuntime.typeErrorById("msg.cyclic.value", trackValue.getClass().getName());
         }
         state.stack.push(trackValue);
 
         String stepback = state.indent;
         state.indent = state.indent + state.gap;
-        Collection<Object> partial = new LinkedList<>();
+        ArrayList<Object> partial = new ArrayList<>();
 
         if (unwrapped != null) {
             Object[] elements = null;
@@ -560,6 +523,7 @@ public final class NativeJSON extends IdScriptableObject {
                 new StringBuilder(string.length() + 2); // two extra chars for " on either side
         product.append('"');
         int length = string.length();
+        char prev = 0;
         for (int i = 0; i < length; i++) {
             char c = string.charAt(i);
             switch (c) {
@@ -585,7 +549,14 @@ public final class NativeJSON extends IdScriptableObject {
                     product.append("\\t");
                     break;
                 default:
-                    if (c < ' ') {
+                    if (isLeadingSurrogate(c)
+                            && i < length - 1
+                            && isTrailingSurrogate(string.charAt(i + 1))) {
+                        // do nothing as the next case will add both surrogates
+                        break;
+                    } else if (isTrailingSurrogate(c) && isLeadingSurrogate(prev)) {
+                        product.append(prev).append(c);
+                    } else if (c < ' ' || isLeadingSurrogate(c) || isTrailingSurrogate(c)) {
                         product.append("\\u");
                         String hex = String.format("%04x", Integer.valueOf(c));
                         product.append(hex);
@@ -594,9 +565,18 @@ public final class NativeJSON extends IdScriptableObject {
                     }
                     break;
             }
+            prev = c;
         }
         product.append('"');
         return product.toString();
+    }
+
+    static boolean isLeadingSurrogate(char c) {
+        return c >= 0xD800 && c <= 0xDBFF;
+    }
+
+    static boolean isTrailingSurrogate(char c) {
+        return c >= 0xDC00 && c <= 0xDFFF;
     }
 
     private static Object javaToJSON(Object value, StringifyState state) {
@@ -616,34 +596,8 @@ public final class NativeJSON extends IdScriptableObject {
         }
         if (o instanceof NativeJavaObject) {
             Object unwrapped = ((NativeJavaObject) o).unwrap();
-            return (unwrapped instanceof Collection) || (unwrapped.getClass().isArray());
+            return (unwrapped instanceof Collection) || unwrapped.getClass().isArray();
         }
         return false;
     }
-
-    @Override
-    protected int findPrototypeId(String s) {
-        int id;
-        switch (s) {
-            case "toSource":
-                id = Id_toSource;
-                break;
-            case "parse":
-                id = Id_parse;
-                break;
-            case "stringify":
-                id = Id_stringify;
-                break;
-            default:
-                id = 0;
-                break;
-        }
-        return id;
-    }
-
-    private static final int Id_toSource = 1,
-            Id_parse = 2,
-            Id_stringify = 3,
-            LAST_METHOD_ID = 3,
-            MAX_ID = 3;
 }

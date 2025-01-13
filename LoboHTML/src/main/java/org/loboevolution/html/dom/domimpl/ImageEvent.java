@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import java.io.Serial;
 import java.util.EventObject;
 
 /**
@@ -37,7 +38,8 @@ public class ImageEvent extends EventObject {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	public final java.awt.Image image;
 
 	/**
@@ -46,7 +48,7 @@ public class ImageEvent extends EventObject {
 	 * @param source a {@link java.lang.Object} object.
 	 * @param image a {@link java.awt.Image} object.
 	 */
-	public ImageEvent(Object source, java.awt.Image image) {
+	public ImageEvent(final Object source, final java.awt.Image image) {
 		super(source);
 		this.image = image;
 	}

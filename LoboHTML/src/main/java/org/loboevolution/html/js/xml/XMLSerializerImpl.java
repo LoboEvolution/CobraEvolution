@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,76 +26,115 @@
 
 package org.loboevolution.html.js.xml;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Nodes;
+import org.loboevolution.html.HTMLTag;
 import org.loboevolution.html.dom.nodeimpl.NodeListImpl;
 import org.loboevolution.html.node.*;
-import org.loboevolution.html.node.js.xml.XMLSerializer;
+import org.loboevolution.js.xml.XMLSerializer;
 import org.loboevolution.js.AbstractScriptableDelegate;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 /**
  * <p>XMLSerializer class.</p>
  */
+@Slf4j
 public class XMLSerializerImpl extends AbstractScriptableDelegate implements XMLSerializer {
 
-    /**
-     * The Constant logger.
-     */
-    private static final Logger logger = Logger.getLogger(XMLSerializerImpl.class.getName());
+    private static final Set<HTMLTag> NON_EMPTY = new HashSet<>(Arrays.asList(
+            HTMLTag.HTML, HTMLTag.A, HTMLTag.AUDIO, HTMLTag.BLOCKQUOTE,
+            HTMLTag.BODY, HTMLTag.B, HTMLTag.BUTTON, HTMLTag.CANVAS,
+            HTMLTag.CAPTION, HTMLTag.CENTER, HTMLTag.CODE, HTMLTag.DEFS,
+            HTMLTag.DIR, HTMLTag.DIV, HTMLTag.EMBED, HTMLTag.FIELDSET,
+            HTMLTag.FORM,HTMLTag.H1,HTMLTag.H2, HTMLTag.H3,
+            HTMLTag.H4, HTMLTag.H5,HTMLTag.H6, HTMLTag.HEAD,
+            HTMLTag.IFRAME,HTMLTag.I,HTMLTag.LI, HTMLTag.LEGEND, HTMLTag.MARQUEE,
+            HTMLTag.MENU,HTMLTag.NOSCRIPT, HTMLTag.OBJECT, HTMLTag.OPTGROUP,
+            HTMLTag.OPTION, HTMLTag.P, HTMLTag.SCRIPT, HTMLTag.SELECT,
+            HTMLTag.SMALL, HTMLTag.SPAN, HTMLTag.STRIKE, HTMLTag.STRONG,
+            HTMLTag.STYLE, HTMLTag.SUB, HTMLTag.SUP, HTMLTag.TITLE,
+            HTMLTag.TABLE, HTMLTag.COL, HTMLTag.COLGROUP, HTMLTag.TBODY,
+            HTMLTag.TR, HTMLTag.TEXTAREA, HTMLTag.TFOOT, HTMLTag.TH,
+            HTMLTag.VAR, HTMLTag.VIDEO
+    ));
+
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String serializeToString(Node node) {
+    public String serializeToString(final Node node) {
         try {
-            StringBuffer buff = new StringBuffer();
-			if (node instanceof Document) {
-				NodeListImpl children = (NodeListImpl)node.getChildNodes();
-				children.forEach(elem -> getXString((Element) elem, true, buff, true));
-			} else{
-				getXString((Element) node, true, buff, true);
-			}
+            final StringBuilder buff = new StringBuilder();
+            if (node instanceof Document || node instanceof DocumentFragment) {
+                final NodeListImpl children = (NodeListImpl) node.getChildNodes();
+                children.forEach(elem -> getXString(elem, true, buff, true));
+            }
+
+            if (node instanceof CDATASection cdataSection) {
+                buff.append("<![CDATA[");
+                if (cdataSection.getData() != null) {
+                    buff.append(cdataSection.getData());
+                    buff.append("]]>");
+                } else {
+                    buff.append("<>&?]]>");
+                }
+            }
+            if (node instanceof ProcessingInstruction processingInstruction) {
+                buff.append("<?");
+                buff.append(processingInstruction.getTarget());
+                buff.append(" ");
+                buff.append(processingInstruction.getData());
+                buff.append("?>");
+            } else if (node instanceof Element) {
+                getXString(node, true, buff, true);
+            }
             return buff.toString();
-        } catch (Exception e) {
-            logger.severe(e.getMessage());
+        } catch (final Exception e) {
+            log.error(e.getMessage(), e);
         }
         return "";
     }
 
-    public static void getXString(Element node, boolean withoutNamespaces, StringBuffer buff, boolean endTag) {
+    public static void getXString(final Node node, final boolean withoutNamespaces, final StringBuilder buff, boolean endTag) {
         try {
 
             buff.append("<")
-                    .append(namespace(node.getNodeName(), withoutNamespaces));
+                    .append(namespace(node.getNodeName(), withoutNamespaces))
+                    .append(" ")
+                    .append("xmlns=\"http://www.w3.org/1999/xhtml\"");
 
             if (node.hasAttributes()) {
                 buff.append(" ");
 
-				NamedNodeMap attributes = node.getAttributes();
-                for (Node nodeAttr : Nodes.iterable(attributes)) {
-                    Attr attrItem = (Attr) nodeAttr;
-                    String name = namespace(attrItem.getNodeName(), withoutNamespaces);
-                    String value = attrItem.getNodeValue();
+                final NamedNodeMap attributes = node.getAttributes();
+                if (attributes != null) {
+                    for (final Node nodeAttr : Nodes.iterable(attributes)) {
+                        final Attr attrItem = (Attr) nodeAttr;
+                        final String name = namespace(attrItem.getNodeName(), withoutNamespaces);
+                        final String value = attrItem.getNodeValue();
 
-                    buff.append(name)
-                            .append("=")
-                            .append("\"")
-                            .append(value)
-                            .append("\"");
+                        buff.append(name)
+                                .append("=")
+                                .append("\"")
+                                .append(value)
+                                .append("\"");
+                    }
                 }
             }
 
             if (node.hasChildNodes()) {
                 buff.append(">");
 
-                NodeList children = node.getChildNodes();
-                int childrenCount = children.getLength();
+                final NodeList children = node.getChildNodes();
+                final int childrenCount = children.getLength();
 
                 if (childrenCount == 1) {
-                    Node item = children.item(0);
+                    final Node item = children.item(0);
                     if (item.getNodeType() == Node.TEXT_NODE) {
                         if (item.getNodeValue() == null) {
                             buff.append("/>");
@@ -110,18 +149,24 @@ public class XMLSerializerImpl extends AbstractScriptableDelegate implements XML
                     }
                 }
 
-				NodeListImpl child = (NodeListImpl) children;
-				AtomicBoolean tag = new AtomicBoolean(endTag);
+				final NodeListImpl child = (NodeListImpl) children;
+				final AtomicBoolean tag = new AtomicBoolean(endTag);
 				child.forEach(item -> {
 					final int itemType = item.getNodeType();
 					if (itemType == Node.DOCUMENT_NODE || itemType == Node.ELEMENT_NODE) {
-						getXString((Element) item, withoutNamespaces, buff, tag.get());
+						getXString(item, withoutNamespaces, buff, tag.get());
 					}
 				});
 
             } else {
                 if (node.getNodeValue() == null) {
-                    buff.append("/>");
+
+                    if(NON_EMPTY.contains(HTMLTag.get(node.getNodeName().toUpperCase()))){
+                        buff.append(">").append("</").append(node.getNodeName()).append(">");
+                    } else{
+                        buff.append(" />");
+                    }
+
                 } else {
                     buff.append(node.getNodeValue());
                     buff.append("</")
@@ -132,23 +177,23 @@ public class XMLSerializerImpl extends AbstractScriptableDelegate implements XML
                 endTag = false;
             }
 
-            if (endTag) {
+           if (endTag) {
                 buff.append("</")
                         .append(namespace(node.getNodeName(), withoutNamespaces))
                         .append(">");
             }
 
-        } catch (Exception e) {
-            logger.severe(e.getMessage());
+        } catch (final Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
-    private static String namespace(String str, boolean withoutNamespace) {
-        if (withoutNamespace && str.contains(":")) {
-            return str.substring(str.indexOf(":") + 1);
+    private static String namespace(final String nodeName, final boolean withoutNamespace) {
+        if (withoutNamespace && nodeName.contains(":")) {
+            return nodeName.substring(nodeName.indexOf(":") + 1);
         }
 
-        return str;
+        return nodeName;
     }
 
 }

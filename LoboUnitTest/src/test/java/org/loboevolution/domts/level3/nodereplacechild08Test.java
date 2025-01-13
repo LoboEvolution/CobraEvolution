@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,56 +28,50 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
-import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.gui.LocalHtmlRendererConfig;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
 import org.loboevolution.html.node.*;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
  * Using replaceChild on this Document node attempt to replace this DocumentElement node
  * with  a new element that was created in another document and verify if a
  * WRONG_DOCUMENT_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild08Test extends LoboUnitTest {
+public class Nodereplacechild08Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document doc2;
-        Element docElem;
-        Element elem;
-        String nodeName;
-        Node replaced;
-        String rootNS;
-        String rootName;
-        DOMImplementation domImpl;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document doc2;
+        final Element docElem;
+        final Element elem;
+        final String rootNS;
+        final String rootName;
+        final DOMImplementation domImpl;
 
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
-        doc2 = domImpl.createDocument(rootNS, rootName, nullDocType);
+        doc2 = domImpl.createDocument(rootNS, rootName, null);
         elem = doc2.createElementNS(rootNS, rootName);
 
         try {
-            replaced = doc.replaceChild(elem, docElem);
+            doc.replaceChild(elem, docElem);
             fail("throw_WRONG_DOCUMENT_OR_NOT_SUPPORTED");
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             switch (ex.getCode()) {
-                case 4:
-                    break;
-                case 9:
+                case 4, 9:
                     break;
                 default:
                     throw ex;

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -35,7 +35,10 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,29 +50,26 @@ import static org.junit.Assert.*;
  * the cloneNode method.   The
  * duplicate node returned by the method should copy the
  * attributes associated with this node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  */
-public class nodecloneattributescopiedTest extends LoboUnitTest {
+public class NodecloneattributescopiedTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node addressNode;
-        Element clonedNode;
-        NamedNodeMap attributes;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node addressNode;
+        final Element clonedNode;
+        final NamedNodeMap attributes;
         Node attributeNode;
         String attributeName;
-        java.util.Collection result = new java.util.ArrayList();
+        final List<String> result = new ArrayList<>();
 
-        java.util.Collection expectedResult = new java.util.ArrayList();
+        final List<String> expectedResult = new ArrayList<>();
         expectedResult.add("domestic");
         expectedResult.add("street");
 
@@ -83,7 +83,7 @@ public class nodecloneattributescopiedTest extends LoboUnitTest {
             attributeName = attributeNode.getNodeName();
             result.add(attributeName);
         }
-        assertEquals("nodeCloneAttributesCopiedAssert1", expectedResult, result);
+        assertEquals(expectedResult, result, "NodecloneattributescopiedAssert1");
     }
 }
 

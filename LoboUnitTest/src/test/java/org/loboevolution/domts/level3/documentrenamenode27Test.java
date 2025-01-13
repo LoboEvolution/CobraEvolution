@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,49 +28,41 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the renameNode method to attempt to rename new Text, Comment, CDataSection,
  * ProcessingInstruction and EntityReference nodes of a new Document.
  * Check if a NOT_SUPPORTED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode27Test extends LoboUnitTest {
+public class Documentrenamenode27Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        Text text;
-        Comment comment;
-        CDATASection cdata;
-        ProcessingInstruction pi;
-        EntityReference entref;
-        Node renamedTxt;
-        Node renamedComment;
-        Node renamedCdata;
-        Node renamedPi;
-        Node renamedEntRef;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final Text text;
+        final Comment comment;
+        final CDATASection cdata;
+        final ProcessingInstruction pi;
+        final EntityReference entref;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         text = newDoc.createTextNode("text");
         comment = newDoc.createComment("comment");
         cdata = newDoc.createCDATASection("cdata");
@@ -80,50 +72,50 @@ public class documentrenamenode27Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                renamedTxt = newDoc.renameNode(text, "http://www.w3.org/DOM/Test", "text");
-            } catch (DOMException ex) {
+                newDoc.renameNode(text, "http://www.w3.org/DOM/Test", "text");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
             }
-            assertTrue("throw_NOT_SUPPORTED_ERR_1", success);
+            assertTrue(success, "Documentrenamenode27Assert2");
         }
 
         {
             boolean success = false;
             try {
-                renamedComment = newDoc.renameNode(comment, "http://www.w3.org/DOM/Test", "comment");
-            } catch (DOMException ex) {
+                newDoc.renameNode(comment, "http://www.w3.org/DOM/Test", "comment");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
             }
-            assertTrue("throw_NOT_SUPPORTED_ERR_2", success);
+            assertTrue(success, "Documentrenamenode27Assert3");
         }
 
         {
             boolean success = false;
             try {
-                renamedCdata = newDoc.renameNode(cdata, "http://www.w3.org/DOM/Test", "cdata");
-            } catch (DOMException ex) {
+                newDoc.renameNode(cdata, "http://www.w3.org/DOM/Test", "cdata");
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
             }
-            assertTrue("throw_NOT_SUPPORTED_ERR_3", success);
+            assertTrue(success, "Documentrenamenode27Assert4");
         }
 
 
         boolean success = false;
         try {
-            renamedPi = newDoc.renameNode(pi, "http://www.w3.org/DOM/Test", "pi");
-        } catch (DOMException ex) {
+            newDoc.renameNode(pi, "http://www.w3.org/DOM/Test", "pi");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("throw_NOT_SUPPORTED_ERR_4", success);
+        assertTrue(success, "Documentrenamenode27Assert5");
 
 
         success = false;
         try {
-            renamedEntRef = newDoc.renameNode(entref, "http://www.w3.org/DOM/Test", "entref");
-        } catch (DOMException ex) {
+            newDoc.renameNode(entref, "http://www.w3.org/DOM/Test", "entref");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("throw_NOT_SUPPORTED_ERR_5", success);
+        assertTrue(success, "Documentrenamenode27Assert6");
 
     }
 

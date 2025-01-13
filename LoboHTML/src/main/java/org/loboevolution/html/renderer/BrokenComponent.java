@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 package org.loboevolution.html.renderer;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * <p>BrokenComponent class.</p>
@@ -36,7 +37,8 @@ import java.awt.*;
  */
 public class BrokenComponent extends Component {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/** {@inheritDoc} */
 	@Override
@@ -56,7 +58,7 @@ public class BrokenComponent extends Component {
 
 	/** {@inheritDoc} */
 	@Override
-	public void update(Graphics g) {
+	public void update(final Graphics g) {
 		paint(g);
 	}
 }

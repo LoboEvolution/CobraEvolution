@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,8 @@
 package org.loboevolution.html.renderstate;
 
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
-import org.loboevolution.html.style.BorderInsets;
 import org.loboevolution.html.style.HtmlInsets;
 import org.loboevolution.html.style.HtmlValues;
-import org.loboevolution.info.BorderInfo;
-
-import java.awt.*;
 
 /**
  * <p>FieldsetRenderState class.</p>
@@ -45,7 +41,7 @@ public class FieldsetRenderState extends AbstractMarginRenderState {
      * @param prevRenderState a {@link RenderState} object.
      * @param element         a {@link HTMLElementImpl} object.
      */
-    public FieldsetRenderState(RenderState prevRenderState, HTMLElementImpl element) {
+    public FieldsetRenderState(final RenderState prevRenderState, final HTMLElementImpl element) {
         super(prevRenderState, element);
     }
 
@@ -53,11 +49,11 @@ public class FieldsetRenderState extends AbstractMarginRenderState {
     @Override
     protected HtmlInsets getDefaultMarginInsets() {
         final HtmlInsets insets = new HtmlInsets();
-        final int leftRight = HtmlValues.getPixelSize("2px", null, element.getDocumentNode().getDefaultView(), -1);
-        insets.setLeft(leftRight);
-        insets.setRight(leftRight);
-        insets.setLeftType(HtmlInsets.TYPE_PIXELS);
-        insets.setRightType(HtmlInsets.TYPE_PIXELS);
+        final int topBottom = HtmlValues.getPixelSize("1.12em", null, element.getDocumentNode().getDefaultView(), -1);
+        insets.setTop(topBottom);
+        insets.setBottom(topBottom);
+        insets.setTopType(HtmlInsets.TYPE_PIXELS);
+        insets.setBottomType(HtmlInsets.TYPE_PIXELS);
         return insets;
     }
 
@@ -76,7 +72,7 @@ public class FieldsetRenderState extends AbstractMarginRenderState {
     }
 
     private HtmlInsets getDefaultPaddingInsets() {
-        HtmlInsets insets = new HtmlInsets();
+        final HtmlInsets insets = new HtmlInsets();
         final int leftRight = HtmlValues.getPixelSize("0.75em", null, element.getDocumentNode().getDefaultView(), -1);
         final int top = HtmlValues.getPixelSize("0.35em", null, element.getDocumentNode().getDefaultView(), -1);
         final int bottom = HtmlValues.getPixelSize("0.625em", null, element.getDocumentNode().getDefaultView(), -1);

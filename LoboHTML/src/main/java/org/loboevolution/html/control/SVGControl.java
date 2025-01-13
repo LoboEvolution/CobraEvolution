@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,21 +29,16 @@ package org.loboevolution.html.control;
 import org.loboevolution.html.dom.svgimpl.SVGSVGElementImpl;
 
 import java.awt.*;
-import java.util.logging.Logger;
+import java.io.Serial;
 
 /**
  * <p>SVGControl class.</p>
- *
- *
- *
  */
 public class SVGControl extends BaseControl {
 
 	/** The Constant serialVersionUID. */
+	@Serial
 	private static final long serialVersionUID = 1L;
-
-	/** Constant logger */
-	protected static final Logger logger = Logger.getLogger(SVGControl.class.getName());
 
 	private final SVGSVGElementImpl modelNode;
 
@@ -52,7 +47,7 @@ public class SVGControl extends BaseControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.svgimpl.SVGSVGElementImpl} object.
 	 */
-	public SVGControl(SVGSVGElementImpl modelNode) {
+	public SVGControl(final SVGSVGElementImpl modelNode) {
 		super(modelNode);
 		this.modelNode = modelNode;
 		modelNode.setPainted(false);

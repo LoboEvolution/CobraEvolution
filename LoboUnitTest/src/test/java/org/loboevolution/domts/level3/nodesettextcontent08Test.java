@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using setTextContent on a new Processing Instruction node, attempt to set its data to PID.
  * Retreive the textContent and verify if it is was set to PID.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent08Test extends LoboUnitTest {
+public class Nodesettextcontent08Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        ProcessingInstruction pi;
-        String textContent;
-        Node appendedChild;
+        final Document doc;
+        final Element elem;
+        final ProcessingInstruction pi;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:p");
         pi = doc.createProcessingInstruction("PIT", "PID");
-        appendedChild = elem.appendChild(pi);
+        elem.appendChild(pi);
         pi.setTextContent("PID");
         textContent = pi.getTextContent();
-        assertEquals("nodesettextcontent08", "PID", textContent);
+        assertEquals("PID", textContent, "Nodesettextcontent08Assert2");
     }
 }
 

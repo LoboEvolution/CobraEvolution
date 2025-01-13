@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,7 @@ public class HTMLTableCaptionElementImpl extends HTMLElementImpl implements HTML
 
 	/** {@inheritDoc} */
 	@Override
-	public void setAlign(String align) {
+	public void setAlign(final String align) {
 		this.setAttribute("align", align);
 	}
 
@@ -73,13 +73,13 @@ public class HTMLTableCaptionElementImpl extends HTMLElementImpl implements HTML
 	 * @param captionSide
 	 *            the new caption side
 	 */
-	public void setCaptionSide(String captionSide) {
+	public void setCaptionSide(final String captionSide) {
 		this.setAttribute("caption-side", captionSide);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
+	protected RenderState createRenderState(final RenderState prevRenderState) {
 		return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_TABLE_CAPTION);
 	}
 

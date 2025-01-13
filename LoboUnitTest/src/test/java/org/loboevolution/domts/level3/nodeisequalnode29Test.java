@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 new Comment nodes having the same data are equal and two others
  * having different data are not equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode29Test extends LoboUnitTest {
+public class Nodeisequalnode29Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Comment comment1;
-        Comment comment2;
-        Comment comment3;
+        final Document doc;
+        final Comment comment1;
+        final Comment comment2;
+        final Comment comment3;
         boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         comment1 = doc.createComment("comment");
         comment2 = doc.createComment("comment");
         comment3 = doc.createComment("#Comment");
         isEqual = comment1.isEqualNode(comment2);
-        assertTrue("nodeisequalnodeTrue29", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode29Assert3");
         isEqual = comment1.isEqualNode(comment3);
-        assertFalse("nodeisequalnodeFalse29", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode29Assert4");
     }
 }
 

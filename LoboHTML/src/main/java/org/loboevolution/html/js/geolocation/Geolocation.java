@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,16 @@
 
 package org.loboevolution.html.js.geolocation;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.js.Executor;
 import org.loboevolution.html.js.WindowImpl;
 import org.loboevolution.js.AbstractScriptableDelegate;
+import org.loboevolution.js.Window;
 import org.mozilla.javascript.Function;
 
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <p>
@@ -50,23 +50,18 @@ import java.util.logging.Logger;
  * Specifications are being strictly followed by the system or application that
  * uses this geolocation package.</b>
  * </p>
- *
- *
- *
  */
+@Slf4j
 public class Geolocation extends AbstractScriptableDelegate {
-	
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(Geolocation.class.getName());
 
 	private final WindowImpl window;
 
 	/**
 	 * <p>Constructor for Geolocation.</p>
 	 *
-	 * @param window a {@link org.loboevolution.html.node.js.Window} object.
+	 * @param window a {@link Window} object.
 	 */
-	public Geolocation(WindowImpl window) {
+	public Geolocation(final WindowImpl window) {
 		this.window = window;
 	}
 
@@ -80,7 +75,7 @@ public class Geolocation extends AbstractScriptableDelegate {
 		final IPAddressBasedGeoAcquirer ip = new IPAddressBasedGeoAcquirer();
 		final Position acquireLocation = ip.acquireLocation();
 		final NodeImpl node = (NodeImpl) window.getDocumentNode();
-		Executor.executeFunction(node, success, null, new Object[] { acquireLocation });
+		Executor.executeFunction(node, success, new Object[] { acquireLocation }, window.getContextFactory());
 	}
 
 	/**
@@ -92,7 +87,7 @@ public class Geolocation extends AbstractScriptableDelegate {
 	public void getCurrentPosition(final Function success, final Function error) {
 		try {
 			getCurrentPosition(success);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			geoError(error, e);
 		}
 	}
@@ -105,13 +100,13 @@ public class Geolocation extends AbstractScriptableDelegate {
 	 */
 	public long watchPosition(final Function success) {
 		final long watchId = System.currentTimeMillis();
-		Thread t = new Thread(() -> {
+		final Thread t = new Thread(() -> {
 			while (true) {
 				try {
 					getCurrentPosition(success);
 					Thread.sleep(500);
-				} catch (Exception e) {
-					logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (final Exception e) {
+					log.error(e.getMessage(), e);
 				}
 			}
 		});
@@ -128,12 +123,12 @@ public class Geolocation extends AbstractScriptableDelegate {
 	 */
 	public long watchPosition(final Function success, final Function error) {
 		final long watchId = System.currentTimeMillis();
-		Thread t = new Thread(() -> {
+		final Thread t = new Thread(() -> {
 			while (true) {
 				try {
 					getCurrentPosition(success, error);
 					Thread.sleep(500);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					geoError(error, e);
 					break;
 				}
@@ -143,7 +138,7 @@ public class Geolocation extends AbstractScriptableDelegate {
 		return watchId;
 	}
 
-	private void geoError(final Function error, Exception e) {
+	private void geoError(final Function error, final Exception e) {
 		final NodeImpl node = (NodeImpl) window.getDocumentNode();
 		PositionError pError = null;
 		if (e instanceof UnknownHostException) {
@@ -151,6 +146,6 @@ public class Geolocation extends AbstractScriptableDelegate {
 		} else if (e instanceof TimeoutException) {
 			pError = new PositionError(PositionError.TIMEOUT);
 		}
-		Executor.executeFunction(node, error, null, new Object[] { pError });
+		Executor.executeFunction(node, error, new Object[] { pError }, window.getContextFactory());
 	}
 }

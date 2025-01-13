@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +26,37 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Invoke lookupNamespaceURI on a Element's new Text node, which has a namespace attribute declaration
  * with a namespace prefix in its parent Element node and check if the value of the namespaceURI
  * returned by using its prefix as a parameter is valid.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespaceURI</a>
  */
-public class nodelookupnamespaceuri13Test extends LoboUnitTest {
+public class Nodelookupnamespaceuri13Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        Element elem;
-        Text txt;
-        String namespaceURI;
-        Node appendedChild;
+        final Document doc;
+        final Element docElem;
+        final Element elem;
+        final Text txt;
+        final String namespaceURI;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         txt = doc.createTextNode("Text");
-        appendedChild = elem.appendChild(txt);
-        appendedChild = docElem.appendChild(elem);
+        elem.appendChild(txt);
+        docElem.appendChild(elem);
         namespaceURI = txt.lookupNamespaceURI("dom3");
-        assertEquals("nodelookupnamespaceuri13", "http://www.w3.org/1999/xhtml", namespaceURI);
+        assertEquals("http://www.w3.org/1999/xhtml", namespaceURI, "Nodelookupnamespaceuri13Assert2");
     }
 }
 

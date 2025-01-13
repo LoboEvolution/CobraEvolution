@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,13 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.svg.SVGPreserveAspectRatio;
 
 /**
  * <p>SVGPreserveAspectRatioImpl class.</p>
  */
+@Slf4j
 public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
 
     protected short align;
@@ -49,7 +51,7 @@ public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
     /**
      * Copy constructor.
      */
-    public SVGPreserveAspectRatioImpl(SVGPreserveAspectRatio preserveAspectRatio) {
+    public SVGPreserveAspectRatioImpl(final SVGPreserveAspectRatio preserveAspectRatio) {
         this.align = preserveAspectRatio.getAlign();
         this.meetOrSlice = preserveAspectRatio.getMeetOrSlice();
     }
@@ -73,7 +75,7 @@ public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
      *            The value to set the alginment to.
      */
     @Override
-    public void setAlign(short align) {
+    public void setAlign(final short align) {
         this.align = align;
     }
 
@@ -96,7 +98,7 @@ public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
      *            The value to set the meetOrSlice to.
      */
     @Override
-    public void setMeetOrSlice(short meetOrSlice) {
+    public void setMeetOrSlice(final short meetOrSlice) {
         this.meetOrSlice = meetOrSlice;
     }
 
@@ -108,7 +110,7 @@ public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
      *            The alignment string.
      * @return The alignment constant.
      */
-    public static short getAlignConst(String alignString) {
+    public static short getAlignConst(final String alignString) {
 
         if (alignString.equalsIgnoreCase("none")) {
             return SVG_PRESERVEASPECTRATIO_NONE;
@@ -151,54 +153,39 @@ public class SVGPreserveAspectRatioImpl implements SVGPreserveAspectRatio {
      *            The meetOrSlice string.
      * @return The meetOrSlice constant.
      */
-    public static short getMeetOrSliceConst(String meetOrSliceString) {
+    public static short getMeetOrSliceConst(final String meetOrSliceString) {
         if (meetOrSliceString.equalsIgnoreCase("meet")) {
             return SVG_MEETORSLICE_MEET;
         }
         if (meetOrSliceString.equalsIgnoreCase("slice")) {
             return SVG_MEETORSLICE_SLICE;
         }
-        System.out.println("Cannot decode preserveAspectRatio meetOrSlice value: " + meetOrSliceString
-                + ", returning default value MEET");
+        log.info("Cannot decode preserveAspectRatio meetOrSlice value: {} , returning default value MEET",  meetOrSliceString);
         return SVG_MEETORSLICE_MEET;
     }
 
-    public static String getAlignString(short align) {
-        switch (align) {
-            case SVG_PRESERVEASPECTRATIO_NONE:
-                return "none";
-            case SVG_PRESERVEASPECTRATIO_XMINYMIN:
-                return "xMinYMin";
-            case SVG_PRESERVEASPECTRATIO_XMIDYMIN:
-                return "xMidYMin";
-            case SVG_PRESERVEASPECTRATIO_XMAXYMIN:
-                return "xMaxYMin";
-            case SVG_PRESERVEASPECTRATIO_XMINYMID:
-                return "xMinYMid";
-            case SVG_PRESERVEASPECTRATIO_XMIDYMID:
-                return "xMidYMid";
-            case SVG_PRESERVEASPECTRATIO_XMAXYMID:
-                return "xMinYMax";
-            case SVG_PRESERVEASPECTRATIO_XMINYMAX:
-                return "xMidYMax";
-            case SVG_PRESERVEASPECTRATIO_XMIDYMAX:
-                return "xMidYMax";
-            case SVG_PRESERVEASPECTRATIO_XMAXYMAX:
-                return "xMaxYMax";
-            default:
-                return "xMidYMid";
-        }
+    public static String getAlignString(final short align) {
+        return switch (align) {
+            case SVG_PRESERVEASPECTRATIO_NONE -> "none";
+            case SVG_PRESERVEASPECTRATIO_XMINYMIN -> "xMinYMin";
+            case SVG_PRESERVEASPECTRATIO_XMIDYMIN -> "xMidYMin";
+            case SVG_PRESERVEASPECTRATIO_XMAXYMIN -> "xMaxYMin";
+            case SVG_PRESERVEASPECTRATIO_XMINYMID -> "xMinYMid";
+            case SVG_PRESERVEASPECTRATIO_XMIDYMID -> "xMidYMid";
+            case SVG_PRESERVEASPECTRATIO_XMAXYMID -> "xMinYMax";
+            case SVG_PRESERVEASPECTRATIO_XMINYMAX -> "xMidYMax";
+            case SVG_PRESERVEASPECTRATIO_XMIDYMAX -> "xMidYMax";
+            case SVG_PRESERVEASPECTRATIO_XMAXYMAX -> "xMaxYMax";
+            default -> "xMidYMid";
+        };
     }
 
-    public static String getMeetOrSliceString(short meetOrSlice) {
-        switch (meetOrSlice) {
-            case SVG_MEETORSLICE_MEET:
-                return "meet";
-            case SVG_MEETORSLICE_SLICE:
-                return "slice";
-            default:
-                return "meet";
-        }
+    public static String getMeetOrSliceString(final short meetOrSlice) {
+        return switch (meetOrSlice) {
+            case SVG_MEETORSLICE_MEET -> "meet";
+            case SVG_MEETORSLICE_SLICE -> "slice";
+            default -> "meet";
+        };
     }
 
     @Override

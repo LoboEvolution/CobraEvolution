@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ package org.loboevolution.html.renderer;
 
 import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 
-interface MarkupLayout {
+public interface MarkupLayout {
 	/**
 	 * <p>layoutMarkup.</p>
 	 *

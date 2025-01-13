@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class InputRadio {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputRadio(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputRadio(final HTMLInputElementImpl modelNode, final InputControl ic) {
 		radio.setOpaque(false);
 		if (modelNode.getTitle() != null) radio.setToolTipText(modelNode.getTitle());
 		radio.setVisible(!modelNode.isHidden());

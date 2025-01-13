@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,14 +38,14 @@ public interface ElementTest {
      * @exception DOMException
      *                NO_MODIFICATION_ALLOWED_ERR: Raised if this attribute is
      *                readonly.
-     * @return a int.
+     * @return a {@link java.lang.Integer} object.
      */
     int getSystemBitrate();
 
     /**
      * <p>setSystemBitrate.</p>
      *
-     * @param systemBitrate a int.
+     * @param systemBitrate a {@link java.lang.Integer} object.
      * @throws DOMException if any.
      */
     void setSystemBitrate(int systemBitrate) throws DOMException;

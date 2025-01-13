@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -47,35 +47,30 @@ import static org.junit.Assert.*;
  * should be added to the end of the list.   The last item
  * in the list is checked after insertion.   The last Element
  * node of the list should be "newChild".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  */
-public class nodeinsertbeforerefchildnullTest extends LoboUnitTest {
+public class NodeinsertbeforerefchildnullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        Node refChild = null;
-
-        Node newChild;
-        Node child;
-        String childName;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node newChild;
+        final Node child;
+        final String childName;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
         newChild = doc.createElement("newChild");
-        employeeNode.insertBefore(newChild, refChild);
+        employeeNode.insertBefore(newChild, null);
         child = employeeNode.getLastChild();
         childName = child.getNodeName();
-        assertEquals("nodeInsertBeforeRefChildNullAssert1", "newChild", childName);
+        assertEquals("NEWCHILD", childName, "NodeinsertbeforerefchildnullAssert1");
     }
 
 }

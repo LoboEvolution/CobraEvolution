@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,32 +27,30 @@
 package org.loboevolution.domts.level3;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using replaceChild on an Element node attempt to replace a new Element node with
  * another new Element node and verify if a NOT_FOUND_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild29Test extends LoboUnitTest {
+public class Nodereplacechild29Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Element elem;
-        Element oldChild;
-        Element newChild;
+        final Document doc;
+        final HTMLCollection childList;
+        final Element elem;
+        final Element oldChild;
+        final Element newChild;
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("p");
         elem = (Element) childList.item(0);
@@ -62,10 +60,10 @@ public class nodereplacechild29Test extends LoboUnitTest {
         boolean success = false;
         try {
             elem.replaceChild(newChild, oldChild);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
         }
-        assertTrue("throw_NOT_FOUND_ERR", success);
+        assertTrue(success, "Nodereplacechild29Assert2");
 
     }
 }

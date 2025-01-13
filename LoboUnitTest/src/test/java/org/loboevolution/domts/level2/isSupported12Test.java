@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,15 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -49,20 +52,37 @@ import static org.junit.Assert.assertTrue;
  * node object on which the "isSupported(feature,version)"
  * method is invoked with "feature" equal to "CORE" and the version equal to 1.0.
  * The method should return a boolean "true".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-Node-supports</a>
  */
-public class isSupported12Test extends LoboUnitTest {
+public class IsSupported12Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        java.util.List features = new java.util.ArrayList();
+        final List<String> features = getStrings();
+        final Document doc;
+        final Node rootNode;
+        String featureElement;
+        boolean state;
+        doc = sampleXmlFile("staff.xml");
+        rootNode = doc.getDocumentElement();
+        state = rootNode.isSupported("Core", "2.0");
+        assertTrue(state);
+        for (String feature : features) {
+            featureElement = feature;
+            rootNode.isSupported(featureElement, "1.0");
+        }
+        for (String feature : features) {
+            featureElement = feature;
+            rootNode.isSupported(featureElement, "2.0");
+        }
+    }
+
+    private static List<String> getStrings() {
+        final List<String> features = new ArrayList<>();
         features.add("Core");
         features.add("XML");
         features.add("HTML");
@@ -70,31 +90,15 @@ public class isSupported12Test extends LoboUnitTest {
         features.add("StyleSheets");
         features.add("CSS");
         features.add("CSS2");
-        features.add("Events");
-        features.add("UIEvents");
-        features.add("MouseEvents");
-        features.add("MutationEvents");
+        features.add("Event");
+        features.add("UIEvent");
+        features.add("MouseEvent");
+        features.add("MutationEvent");
         features.add("HTMLEvents");
         features.add("Range");
         features.add("Traversal");
         features.add("bogus.bogus.bogus");
-
-        Document doc;
-        Node rootNode;
-        String featureElement;
-        boolean state;
-        doc = sampleXmlFile("staff.xml");
-        rootNode = doc.getDocumentElement();
-        state = rootNode.isSupported("Core", "2.0");
-        assertTrue("Core2", state);
-        for (int indexN10078 = 0; indexN10078 < features.size(); indexN10078++) {
-            featureElement = (String) features.get(indexN10078);
-            state = rootNode.isSupported(featureElement, "1.0");
-        }
-        for (int indexN10083 = 0; indexN10083 < features.size(); indexN10083++) {
-            featureElement = (String) features.get(indexN10083);
-            state = rootNode.isSupported(featureElement, "2.0");
-        }
+        return features;
     }
 }
 

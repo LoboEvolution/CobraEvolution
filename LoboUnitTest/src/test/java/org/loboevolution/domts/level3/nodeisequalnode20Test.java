@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Using isEqualNode check if an Element and an Attr nodes having the same nodeName
  * and namsepaceURI are not equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode20Test extends LoboUnitTest {
+public class Nodeisequalnode20Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr1;
-        Element elem1;
-        boolean isEqual;
+        final Document doc;
+        final Attr attr1;
+        final Element elem1;
+        final boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         elem1 = doc.createElementNS("http://www.w3.org/1999/xhtml", "xhtml:html");
         attr1 = doc.createAttributeNS("http://www.w3.org/1999/xhtml", "xhtml:html");
         isEqual = attr1.isEqualNode(elem1);
-        assertFalse("nodeisequalnode20", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode20Assert2");
     }
 }
 

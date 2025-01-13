@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,9 +46,9 @@ public class HTMLStrikeElementImpl extends HTMLElementImpl {
 
 	/** {@inheritDoc} */
 	@Override
-	protected RenderState createRenderState(RenderState prevRenderState) {
-        prevRenderState = new TextDecorationRenderState(prevRenderState, RenderState.MASK_TEXTDECORATION_LINE_THROUGH);
-		return super.createRenderState(prevRenderState);
+	protected RenderState createRenderState(final RenderState prevRenderState) {
+		final RenderState renderState = new TextDecorationRenderState(prevRenderState, RenderState.MASK_TEXTDECORATION_LINE_THROUGH);
+		return super.createRenderState(renderState);
 	}
 	
 	/** {@inheritDoc} */

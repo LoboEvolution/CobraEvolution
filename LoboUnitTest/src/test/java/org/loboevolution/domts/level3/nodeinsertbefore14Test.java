@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,13 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,18 +44,15 @@ import static org.junit.Assert.assertTrue;
  * Using insertBefore on this Document node attempt to insert a new Attr node before
  * this DocumentType node and verfiy if a NO_MODIFICATION_ALLOWED_ERR is raised.
  * (This can also raise a HIERARCHY_REQUEST_ERR and NOT_FOUND_ERR)
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore14Test extends LoboUnitTest {
+public class Nodeinsertbefore14Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        Attr newAttr;
-        Node inserted;
+        final Document doc;
+        final DocumentType docType;
+        final Attr newAttr;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         newAttr = doc.createAttributeNS("http://www.w3.org/DOM/Test", "dom3:attr");
@@ -64,11 +60,11 @@ public class nodeinsertbefore14Test extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                inserted = docType.insertBefore(newAttr, docType);
-            } catch (DOMException ex) {
+                docType.insertBefore(newAttr, docType);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("NO_MODIFICATION_ALLOWED_ERR_nodeinsertbefore14", success);
+            assertTrue(success, "Nodeinsertbefore14Assert2");
         }
     }
 }

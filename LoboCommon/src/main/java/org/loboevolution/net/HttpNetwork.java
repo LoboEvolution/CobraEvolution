@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.net;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Strings;
 import org.loboevolution.common.Urls;
 import org.loboevolution.html.dom.HTMLElement;
@@ -44,8 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
@@ -53,10 +53,8 @@ import java.util.zip.GZIPInputStream;
 /**
  * <p>HttpNetwork class.</p>
  */
+@Slf4j
 public class HttpNetwork {
-	
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(HttpNetwork.class.getName());
 
 	/** Constant GZIP_ENCODING="gzip" */
 	public static final String GZIP_ENCODING = "gzip";
@@ -64,7 +62,7 @@ public class HttpNetwork {
 	/** Constant TIMEOUT_VALUE="2000" */
 	public static final int TIMEOUT_VALUE = 2000;
 
-	private static InputStream getGzipStream(URLConnection con) throws IOException {
+	private static InputStream getGzipStream(final URLConnection con) throws IOException {
 		final InputStream cis = con.getInputStream();
 		if (cis != null) {
 			if (GZIP_ENCODING.equals(con.getContentEncoding())) {
@@ -77,7 +75,7 @@ public class HttpNetwork {
 		}
 	}
 
-	private static InputStream getGzipStreamError(HttpURLConnection con) throws IOException {
+	private static InputStream getGzipStreamError(final HttpURLConnection con) throws IOException {
 		final InputStream cis = con.getErrorStream();
 		if (cis != null) {
 			if (GZIP_ENCODING.equals(con.getContentEncoding())) {
@@ -97,7 +95,7 @@ public class HttpNetwork {
 	 * @return a {@link java.io.InputStream} object.
 	 * @throws java.io.IOException if any.
 	 */
-	public static InputStream getInputStream(URLConnection connection) throws IOException {
+	public static InputStream getInputStream(final URLConnection connection) throws IOException {
 		InputStream in;
 		if (connection instanceof HttpURLConnection) {
 			in = getGzipStreamError((HttpURLConnection) connection);
@@ -117,8 +115,8 @@ public class HttpNetwork {
 	 * @param useBaseUri a {@link java.lang.Boolean} object.
 	 * @return a {@link java.awt.Image} object.
 	 */
-	public static Image getImage(HTMLElement element, TimingInfo info, boolean useBaseUri) {
-		Instant start = Instant.now();
+	public static Image getImage(final HTMLElement element, final TimingInfo info, final boolean useBaseUri) {
+		final Instant start = Instant.now();
 		String href = null;
 		if(element instanceof HTMLImageElement) {
 			href = ((HTMLImageElement) element).getSrc();
@@ -128,50 +126,31 @@ public class HttpNetwork {
 			href = ((SVGImageElement) element).getHref().getBaseVal();
 		}
 
-		String baseUri = useBaseUri ? element.getBaseURI() : null;
+		final String baseUri = useBaseUri ? element.getBaseURI() : null;
 		try {
+
 			if (Strings.isBlank(href))
 				return null;
 
 			if (href.contains(";base64,")) {
 				final String base64 = href.split(";base64,")[1];
-				byte[] decodedBytes = Base64.getDecoder().decode(Strings.linearize(base64));
-				try (InputStream stream = new ByteArrayInputStream(decodedBytes)) {
+				final byte[] decodedBytes = Base64.getDecoder().decode(Strings.linearize(base64));
+				try (final InputStream stream = new ByteArrayInputStream(decodedBytes)) {
 					return ImageIO.read(stream);
 				}
 			} else {
-				String scriptURI = href;
-				if (Strings.isNotBlank(baseUri)) {
-					final URL baseURL = new URL(baseUri);
-					final URL scriptURL = Urls.createURL(baseURL, href);
-					scriptURI = scriptURL == null ? href : scriptURL.toExternalForm();
-				}
-
-				info.setPath(scriptURI);
-				final URL u = new URL(scriptURI);
-				info.setName(u.getFile());
-				URLConnection connection = u.openConnection();
-				if (connection instanceof HttpURLConnection) {
-					final HttpURLConnection conn =(HttpURLConnection)u.openConnection();
-					conn.setRequestProperty("User-Agent", UserAgent.getUserAgent());
-					conn.getHeaderField("Set-Cookie");
-					info.setHttpResponse(conn.getResponseCode());
-					connection = conn;
-				}
-
-				try (InputStream in = HttpNetwork.openConnectionCheckRedirects(connection)) {
-					info.setType(connection.getContentType());
-
+				URI uri = Strings.isNotBlank(baseUri) ? Urls.createURI(baseUri, href) : new URI(href);
+				try (final InputStream in = HttpNetwork.openConnectionCheckRedirects(getURLConnection(uri, Proxy.NO_PROXY,null))) {
 					if (href.contains(";base64,")) {
 						final String base64 = href.split(";base64,")[1];
-						byte[] decodedBytes = Base64.getDecoder().decode(base64);
-						InputStream stream = new ByteArrayInputStream(decodedBytes);
+						final byte[] decodedBytes = Base64.getDecoder().decode(base64);
+						final InputStream stream = new ByteArrayInputStream(decodedBytes);
 						return ImageIO.read(stream);
 					} else if (href.endsWith(".svg")) {
 						return null; //TODO SVG From URL
 					} else if (href.startsWith("https")) {
 						if (in != null) {
-							BufferedImage bi = ImageIO.read(in);
+							final BufferedImage bi = ImageIO.read(in);
 							if (bi != null) {
 								return Toolkit.getDefaultToolkit().createImage(bi.getSource());
 							}
@@ -179,7 +158,7 @@ public class HttpNetwork {
 						return null;
 					} else if (href.endsWith(".gif")) {
 						try {
-							return new ImageIcon(u).getImage();
+							return new ImageIcon(uri.toURL()).getImage();
 						} catch (final Exception e) {
 							return ImageIO.read(in);
 						}
@@ -187,26 +166,20 @@ public class HttpNetwork {
 						try {
 							return ImageIO.read(in);
 						} catch (final IOException e) {
-							logger.log(Level.SEVERE, e.getMessage(), e);
+							log.error(e.getMessage(), e);
 						}
 					} else {
 						return ImageIO.read(in);
 					}
-				} catch (SocketTimeoutException e) {
-					if (connection instanceof HttpURLConnection) {
-						info.setHttpResponse(((HttpURLConnection)connection).getResponseCode());
-					}
-
-					logger.log(Level.SEVERE, "More than " + TIMEOUT_VALUE + " elapsed.");
-				} catch (FileNotFoundException e) {
-					logger.log(Level.INFO, e.getMessage());
+				} catch (final FileNotFoundException e) {
+					log.error(e.getMessage(), e);
 				}
 			}
 		} catch (final Exception e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		} finally {
-			Instant finish = Instant.now();
-			long timeElapsed = Duration.between(start, finish).toMillis();
+			final Instant finish = Instant.now();
+			final long timeElapsed = Duration.between(start, finish).toMillis();
 			info.setTimeElapsed(timeElapsed);
 		}
 		return null;
@@ -215,50 +188,78 @@ public class HttpNetwork {
 	/**
 	 * <p>getSource.</p>
 	 *
-	 * @param uri a {@link java.lang.String} object.
+	 * @param uri        a {@link String} object.
+	 * @param integrity  a {@link String} object.
 	 * @return a {@link java.lang.String} object.
 	 * @throws java.lang.Exception if any.
 	 */
-	public static String getSource(String uri) throws Exception {
-
-		final URL url = new URL(uri);
-		final URLConnection connection = url.openConnection();
-		connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
-		connection.getHeaderField("Set-Cookie");
-		try (InputStream in = openConnectionCheckRedirects(connection)) {
-			return toString(in);
-		} catch (SocketTimeoutException e) {
-			logger.log(Level.SEVERE, "More than " + TIMEOUT_VALUE + " elapsed.");
+	public static String getSource(URI uri, final String integrity) throws Exception {
+		try (final InputStream in = openConnectionCheckRedirects(getURLConnection(uri, Proxy.NO_PROXY,null))) {
+			if(AlgorithmDigest.validate(IOUtil.readFully(in), integrity)){
+				return toString(in);
+			}
+		} catch (final SocketTimeoutException e) {
+			log.error("More time elapsed {}", TIMEOUT_VALUE);
 	    }
 		return "";
 	}
 
-	public static String sourceResponse(String scriptURI, String type) {
-		URL url;
-		try {
-			if ("CSS".equals(type)) {
-				try {
-					if (scriptURI.startsWith("//")) {
-						scriptURI = "http:" + scriptURI;
-					}
-					url = new URL(scriptURI);
-				} catch (MalformedURLException mfu) {
-					int idx = scriptURI.indexOf(':');
-					if (idx == -1 || idx == 1) {
-						url = new URL("file:" + scriptURI);
-					} else {
-						throw mfu;
-					}
-				}
+
+	public static URLConnection getURLConnection(URI uri, Proxy proxy, String method) throws Exception {
+		URLConnection connection;
+		URL url = uri.toURL();
+		if (url.toString().contains("file")) {
+			url = new URI(url.toString().replace("//", "///")).toURL();
+			connection = proxy == null || proxy.equals(Proxy.NO_PROXY) ? url.openConnection() : url.openConnection(proxy);
+
+			if ("POST".equals(method)) {
+				String boundary = UUID.randomUUID().toString();
+				connection.setUseCaches(false);
+				connection.setDoOutput(true);
+				connection.setDoInput(true);
+				connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 			} else {
-				url = new URL(scriptURI);
-				URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-				url = uri.toURL();
+				connection.setDoInput(true);
 			}
 
-			return getSource(url.toString());
-		} catch (Exception err) {
-			logger.log(Level.SEVERE, err.getMessage(), err);
+			connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
+			connection.getHeaderField("Set-Cookie");
+
+			if (Strings.isNotBlank(method) && connection instanceof HttpURLConnection hc) {
+				hc.setRequestMethod(method.toUpperCase());
+			}
+
+			connection.connect();
+		} else {
+
+			connection = url.openConnection();
+
+			if (Strings.isNotBlank(method) && connection instanceof HttpURLConnection hc) {
+				hc.setRequestMethod(method.toUpperCase());
+			}
+
+			if ("POST".equals(method)) {
+				String boundary = UUID.randomUUID().toString();
+				connection.setUseCaches(false);
+				connection.setDoOutput(true);
+				connection.setDoInput(false);
+				connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+			} else {
+				connection.setDoInput(true);
+				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			}
+
+			connection.setRequestProperty("User-Agent", UserAgent.getUserAgent());
+			connection.getHeaderField("Set-Cookie");
+		}
+		return connection;
+	}
+
+	public static String sourceResponse(final URI scriptURI, final String integrity) {
+		try {
+			return getSource(scriptURI, integrity);
+		} catch (final Exception err) {
+			log.error(err.getMessage(), err);
 			return "";
 		}
 	}
@@ -286,15 +287,13 @@ public class HttpNetwork {
 			}
 			in = getInputStream(c);
 			redir = false;
-			if (c instanceof HttpURLConnection) {
-				final HttpURLConnection http = (HttpURLConnection) c;
-				final int stat = http.getResponseCode();
+			if (c instanceof HttpURLConnection http) {
+                final int stat = http.getResponseCode();
 				if (stat >= 300 && stat <= 307 && stat != 306 && stat != HttpURLConnection.HTTP_NOT_MODIFIED) {
-					final URL base = http.getURL();
 					final String loc = http.getHeaderField("Location");
 					URL target = null;
 					if (loc != null) {
-						target = new URL(base, loc);
+						target = new URI(loc).toURL();
 					}
 					http.disconnect();
 					if (target == null || !(target.getProtocol().equals("http") || target.getProtocol().equals("https"))
@@ -317,17 +316,17 @@ public class HttpNetwork {
 	 * @return a {@link java.lang.String} object.
 	 * @throws java.io.IOException if any.
 	 */
-	public static String toString(InputStream inputStream) throws IOException {
-		InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-		Stream<String> lines = new BufferedReader(inputStreamReader).lines();
-		String text = lines.collect(Collectors.joining("\n"));
+	public static String toString(final InputStream inputStream) throws IOException {
+		final InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+		final Stream<String> lines = new BufferedReader(inputStreamReader).lines();
+		final String text = lines.collect(Collectors.joining("\n"));
 		return removeNonASCIIChar(text);
 	}
 	
-	private static String removeNonASCIIChar(String str) {
-		StringBuilder buff = new StringBuilder();
-		char[] chars = str.toCharArray();
-		for (char c : chars) {
+	private static String removeNonASCIIChar(final String str) {
+		final StringBuilder buff = new StringBuilder();
+		final char[] chars = str.toCharArray();
+		for (final char c : chars) {
 			if (0 < c && c < 127) {
 				buff.append(c);
 			}

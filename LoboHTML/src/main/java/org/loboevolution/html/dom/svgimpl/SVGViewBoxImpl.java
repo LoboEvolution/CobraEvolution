@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,13 @@
 package org.loboevolution.html.dom.svgimpl;
 
 
+import lombok.Data;
 import org.loboevolution.html.dom.svg.SVGSVGElement;
 
 /**
  * <p>SVGViewBoxImpl class.</p>
- *
- *
- *
  */
+@Data
 public class SVGViewBoxImpl {
 
 	private float x;
@@ -47,26 +46,32 @@ public class SVGViewBoxImpl {
 	 * <p>Constructor for SVGViewBoxImpl.</p>
 	 *
 	 * @param svgElem a {@link org.loboevolution.html.dom.svg.SVGSVGElement} object.
-	 * @param x a float.
-	 * @param y a float.
-	 * @param width a float.
-	 * @param height a float.
-	 * @param r a float.
+	 * @param svgX a {@link java.lang.Float} object.
+	 * @param svgY a {@link java.lang.Float} object
+	 * @param svgWidth a {@link java.lang.Float} object
+	 * @param svgHeight a {@link java.lang.Float} object
+	 * @param svgR a {@link java.lang.Float} object
 	 */
-	public SVGViewBoxImpl(SVGSVGElement svgElem, float x, float y, float width, float height, float r) {
+	public SVGViewBoxImpl(final SVGSVGElement svgElem, final float svgX, final float svgY,
+						  final float svgWidth, final float svgHeight, final float svgR) {
+		float x = svgX;
+		float y = svgY;
+		float r = svgR;
+		float width = svgWidth;
+		float height = svgHeight;
 
-		float svgWidth = svgElem.getWidth().getBaseVal().getValue();
-		float svgHeigth = svgElem.getHeight().getBaseVal().getValue();
-		float vbx = svgElem.getViewBox().getBaseVal().getX();
-		float vby = svgElem.getViewBox().getBaseVal().getY();
-		float vbw = svgElem.getViewBox().getBaseVal().getWidth();
-		float vbh = svgElem.getViewBox().getBaseVal().getHeight();
-		float xUnit = svgWidth / vbx;
-		float yUnit = svgHeigth / vby;
-		float widthUnit = svgWidth / vbw;
-		float heigthUnit = svgHeigth / vbh;
+		final float sWidth = svgElem.getWidth().getBaseVal().getValue();
+		final float svgHeigth = svgElem.getHeight().getBaseVal().getValue();
+		final float vbx = svgElem.getViewBox().getBaseVal().getX();
+		final float vby = svgElem.getViewBox().getBaseVal().getY();
+		final float vbw = svgElem.getViewBox().getBaseVal().getWidth();
+		final float vbh = svgElem.getViewBox().getBaseVal().getHeight();
+		final float xUnit = sWidth / vbx;
+		final float yUnit = svgHeigth / vby;
+		final float widthUnit = sWidth / vbw;
+		final float heigthUnit = svgHeigth / vbh;
 
-		if (xUnit != svgWidth) {
+		if (xUnit != sWidth) {
 			x = x * widthUnit;
 		}
 
@@ -74,7 +79,7 @@ public class SVGViewBoxImpl {
 			y = y * heigthUnit;
 		}
 
-		if (widthUnit != svgWidth) {
+		if (widthUnit != sWidth) {
 			width = width * widthUnit;
 		}
 
@@ -88,95 +93,5 @@ public class SVGViewBoxImpl {
 		this.r = r;
 		this.width = width;
 		this.height = height;
-	}
-
-	/**
-	 * <p>Getter for the field x.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getX() {
-		return x;
-	}
-
-	/**
-	 * <p>Setter for the field x.</p>
-	 *
-	 * @param x a float.
-	 */
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	/**
-	 * <p>Getter for the field y.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getY() {
-		return y;
-	}
-
-	/**
-	 * <p>Setter for the field y.</p>
-	 *
-	 * @param y a float.
-	 */
-	public void setY(final float y) {
-		this.y = y;
-	}
-
-	/**
-	 * <p>Getter for the field width.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getWidth() {
-		return width;
-	}
-
-	/**
-	 * <p>Setter for the field width.</p>
-	 *
-	 * @param width a float.
-	 */
-	public void setWidth(float width) {
-		this.width = width;
-	}
-
-	/**
-	 * <p>Getter for the field height.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getHeight() {
-		return height;
-	}
-
-	/**
-	 * <p>Setter for the field height.</p>
-	 *
-	 * @param height a float.
-	 */
-	public void setHeight(float height) {
-		this.height = height;
-	}
-
-	/**
-	 * <p>Getter for the field r.</p>
-	 *
-	 * @return a float.
-	 */
-	public float getR() {
-		return r;
-	}
-
-	/**
-	 * <p>Setter for the field r.</p>
-	 *
-	 * @param r a float.
-	 */
-	public void setR(float r) {
-		this.r = r;
 	}
 }

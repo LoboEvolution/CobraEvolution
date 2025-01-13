@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -40,33 +40,29 @@ import static org.junit.Assert.*;
  * NamedNodeMap should add a node using its namespaceURI and localName given that
  * there is no existing node with the same namespaceURI and localName in the map.
  * <p>
- * Create an attr node with namespaceURI "http://www.nist.gov",qualifiedName
+ * Create an attr node with namespaceURI "<a href="http://www.nist.gov">...</a>",qualifiedName
  * "prefix:newAttr" and value "newValue".
  * Invoke method setNamedItemNS((Attr)arg) on the map of the first "address"
  * element where arg is identified by the namespaceURI and qualifiedName
  * from above.  Method should return the newly added attr node.
- *
- * @author NIST
- * @author Mary Brady
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D080">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-F68D080</a>
  */
-public class setNamedItemNS03Test extends LoboUnitTest {
+public class SetNamedItemNS03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        String namespaceURI = "http://www.nist.gov";
-        String qualifiedName = "prefix:newAttr";
-        Document doc;
-        Attr arg;
-        HTMLCollection elementList;
-        Element testAddress;
-        NamedNodeMap attributes;
-        Node retnode;
-        String value;
+        final String namespaceURI = "http://www.nist.gov";
+        final String qualifiedName = "prefix:newAttr";
+        final Document doc;
+        final Attr arg;
+        final HTMLCollection elementList;
+        final Element testAddress;
+        final NamedNodeMap attributes;
+        final Node retnode;
+        final String value;
         doc = sampleXmlFile("staffNS.xml");
         arg = doc.createAttributeNS(namespaceURI, qualifiedName);
         arg.setNodeValue("newValue");
@@ -76,7 +72,7 @@ public class setNamedItemNS03Test extends LoboUnitTest {
         attributes.setNamedItemNS(arg);
         retnode = attributes.getNamedItemNS(namespaceURI, "newAttr");
         value = retnode.getNodeValue();
-        assertEquals("throw_Equals", "newValue", value);
+        assertEquals("newValue", value);
     }
 }
 

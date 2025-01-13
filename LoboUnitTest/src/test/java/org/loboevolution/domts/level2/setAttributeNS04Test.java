@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,8 +35,8 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -52,41 +52,38 @@ import static org.junit.Assert.assertNotNull;
  * by getting the attributes value, namespace URI, local Name and prefix.
  * The prefix will be changed to the prefix part of the "qualifiedName"
  * and its value changed to the "value" parameter.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#">http://www.w3.org/TR/DOM-Level-2-Core/core#</a>
  */
-public class setAttributeNS04Test extends LoboUnitTest {
+public class SetAttributeNS04Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node testAddr;
-        Attr addrAttr;
-        String resultAttr;
-        String resultNamespaceURI;
-        String resultLocalName;
-        String resultPrefix;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node testAddr;
+        final Attr addrAttr;
+        final String resultAttr;
+        final String resultNamespaceURI;
+        final String resultLocalName;
+        final String resultPrefix;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("address");
         testAddr = elementList.item(0);
-        assertNotNull("empAddrNotNull", testAddr);
-        ((Element) testAddr).setAttribute( "newprefix:zone", "newValue");
-        addrAttr = ((Element) testAddr).getAttributeNode( "zone");
-        resultAttr = ((Element) testAddr).getAttribute( "zone");
-        assertEquals("attrValue", "newValue", resultAttr);
+        assertNotNull(testAddr);
+        ((Element) testAddr).setAttribute("newprefix:zone", "newValue");
+        addrAttr = ((Element) testAddr).getAttributeNode("zone");
+        resultAttr = ((Element) testAddr).getAttribute("zone");
+        assertEquals("newValue", resultAttr);
         resultNamespaceURI = addrAttr.getNamespaceURI();
-        assertEquals("nsuri", "http://www.nist.gov", resultNamespaceURI);
+        assertEquals("http://www.nist.gov", resultNamespaceURI);
         resultLocalName = addrAttr.getLocalName();
-        assertEquals("lname", "zone", resultLocalName);
+        assertEquals("zone", resultLocalName);
         resultPrefix = addrAttr.getPrefix();
-        assertEquals("prefix", "newprefix", resultPrefix);
+        assertEquals("newprefix", resultPrefix);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,33 +27,31 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on a Notation to set its UserData to a Comment node
  * twice using the same key.  Verify if the UserData object that was returned
  * by second setUserData is the Comment node set in the first setUserData call.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData</a>
  */
-public class nodesetuserdata07Test extends LoboUnitTest {
+public class Nodesetuserdata07Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notations;
-        Notation notation;
-        Comment comment;
-        Object returned;
-        boolean success;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notations;
+        final Notation notation;
+        final Comment comment;
+        final Object returned;
+        final boolean success;
 
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
@@ -65,7 +63,7 @@ public class nodesetuserdata07Test extends LoboUnitTest {
         /*Node */
         returned = notation.setUserData("Key1", comment, null);
         success = ((Node) /*DOMUserData */returned).isEqualNode(comment);
-        assertTrue("nodesetuserdata07", success);
+        assertTrue(success, "Nodesetuserdata07Assert2");
     }
 }
 

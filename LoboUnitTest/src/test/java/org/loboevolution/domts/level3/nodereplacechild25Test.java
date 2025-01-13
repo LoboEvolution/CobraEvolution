@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,33 +28,31 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using replaceChild on an Element node attempt to replace an
  * EntityReference or Text child node
  * with an Entity node and with itself and verify if a HIERARCHY_REQUEST_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild25Test extends LoboUnitTest {
+public class Nodereplacechild25Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entities;
-        Node entity;
-        HTMLCollection childList;
-        EntityReference entRef;
-        Element elem;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entities;
+        final Node entity;
+        final HTMLCollection childList;
+        final EntityReference entRef;
+        final Element elem;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entities = docType.getEntities();
@@ -67,20 +65,20 @@ public class nodereplacechild25Test extends LoboUnitTest {
             boolean success = false;
             try {
                 elem.replaceChild(entity, entRef);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
             }
-            assertTrue("throw_HIERARCHY_REQUEST_ERR_1", success);
+            assertTrue(success, "Nodereplacechild25Assert2");
         }
 
         {
             boolean success = false;
             try {
                 elem.replaceChild(elem, entRef);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
             }
-            assertTrue("throw_HIERARCHY_REQUEST_ERR_2", success);
+            assertTrue(success, "Nodereplacechild25Assert3");
         }
     }
 }

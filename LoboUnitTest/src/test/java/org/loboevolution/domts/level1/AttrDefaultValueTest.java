@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,9 +46,7 @@ import static org.junit.Assert.*;
  * attribute in the DTD file.  The test uses the
  * "getNamedItem(name)" method from the NamedNodeMap
  * interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1074577549</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Mar/0002.html</a>
@@ -57,23 +55,22 @@ public class AttrDefaultValueTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Node streetAttr;
-        String value;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Node streetAttr;
+        final String value;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
         testNode = (Element) addressList.item(4);
         attributes = testNode.getAttributes();
-        streetAttr = (Attr) attributes.getNamedItem("street");
+        streetAttr = attributes.getNamedItem("street");
         value = streetAttr.getNodeValue();
-        assertEquals("attrDefaultValueAssert", "Yes", value);
+        assertEquals("Yes", value, "AttrDefaultValueAssert1");
     }
 }
 

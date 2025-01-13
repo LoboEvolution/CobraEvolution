@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,48 +27,44 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using replaceChild on a DocumentFragment node attempt to replace an Element node with
  * another Element and the replaced element.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-785887307</a>
  */
-public class nodereplacechild15Test extends LoboUnitTest {
+public class Nodereplacechild15Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        Element elem;
-        Element elem2;
-        Element replaced;
-        DOMImplementation domImpl;
-        String title;
-        Node appendedChild;
-        Element docElem;
-        String rootName;
-        String rootNS;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final Element elem;
+        final Element elem2;
+        final Element replaced;
+        final String title;
+        final Element docElem;
+        final String rootName;
+        final String rootNS;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         elem = doc.createElementNS(rootNS, rootName);
-        domImpl = doc.getImplementation();
+        doc.getImplementation();
         docFrag = doc.createDocumentFragment();
         elem2 = doc.createElementNS(rootNS, rootName);
         elem2.setAttribute("title", "new element");
-        appendedChild = docFrag.appendChild(elem2);
+        docFrag.appendChild(elem2);
         replaced = (Element) docFrag.replaceChild(elem, elem2);
         title = replaced.getAttribute("title");
-        assertEquals("nodereplacechild15", "new element", title);
+        assertEquals("new element", title, "Nodereplacechild15Assert2");
     }
 }
 

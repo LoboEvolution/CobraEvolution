@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,38 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * An comment is created, setNodeValue is called with a non-null argument, but getNodeValue
  * should still return null.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D080</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1728279322">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1728279322</a>
  */
-public class nodevalue02Test extends LoboUnitTest {
+public class Nodevalue02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Node newNode;
+        final Document doc;
+        final Node newNode;
         String newValue;
         doc = sampleXmlFile("staff.xml");
         newNode = doc.createComment("This is a new Comment node");
         newValue = newNode.getNodeValue();
-        assertEquals("initial", "This is a new Comment node", newValue);
+        assertEquals("This is a new Comment node", newValue, "Nodevalue02Assert1");
         newNode.setNodeValue("This should have an effect");
         newValue = newNode.getNodeValue();
-        assertEquals("afterChange", "This should have an effect", newValue);
+        assertEquals("This should have an effect", newValue, "Nodevalue02Assert2");
     }
 
 }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,36 +41,32 @@ import static org.junit.Assert.*;
  * <p>
  * Retreive the default attribute defaultAttr and check its owner element.  Verify if the name
  * the nodeName of the returned ownerElement is employee.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement">http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class attrgetownerelement01Test extends LoboUnitTest {
+public class Attrgetownerelement01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Attr attr;
-        Element element;
-        Node ownerElement;
-        String ownerElementName;
-        HTMLCollection elementList;
-        NamedNodeMap attributes;
-        String nullNS = null;
+        final Document doc;
+        final Attr attr;
+        final Element element;
+        final Node ownerElement;
+        final String ownerElementName;
+        final HTMLCollection elementList;
+        final NamedNodeMap attributes;
         doc = sampleXmlFile("staffNS.xml");
-        elementList = doc.getElementsByTagName( "employee");
+        elementList = doc.getElementsByTagName("employee");
         element = (Element) elementList.item(1);
         attributes = element.getAttributes();
-        attr = (Attr) attributes.getNamedItemNS(nullNS, "defaultAttr");
+        attr = (Attr) attributes.getNamedItemNS(null, "defaultAttr");
         ownerElement = attr.getOwnerElement();
         ownerElementName = ownerElement.getNodeName();
-        assertEquals("attrgetownerelement01", "EMPLOYEE", ownerElementName);
+        assertEquals("EMPLOYEE", ownerElementName);
     }
 }
 

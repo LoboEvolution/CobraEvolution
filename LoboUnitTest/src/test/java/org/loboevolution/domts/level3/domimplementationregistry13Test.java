@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,49 +28,48 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementationList;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * DOMImplementationRegistry.getDOMImplementationList("cOrE") should return a
  * list of at least one DOMImplementation
  * where hasFeature("Core", null) returns true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementationList-item">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementationList-item</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementationList-length">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#DOMImplementationList-length</a>
  */
-public class domimplementationregistry13Test extends LoboUnitTest {
+public class Domimplementationregistry13Test extends LoboUnitTest {
     @Test
     @SneakyThrows
     public void runTest() {
-       
+
         boolean hasFeature;
         DOMImplementation domImpl;
-        DOMImplementationList domImplList;
-        int length;
-        String nullVersion = null;
-
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        final DOMImplementationList domImplList;
+        final int length;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry13Assert1");
         domImplList = domImplRegistry.getDOMImplementationList("cOrE");
-        length = (int) domImplList.getLength();
-        domImpl = domImplList.item(((int) /*int */length));
-        assertNull("item_Length_shouldBeNull", domImpl);
-        assertTrue("atLeastOne", (length > 0));
+        length = domImplList.getLength();
+        /*int */
+        domImpl = domImplList.item(length);
+        assertNull(domImpl, "Domimplementationregistry13Assert2");
+        assertNull(null, "Domimplementationregistry13Assert3");
+        assertTrue((length > 0), "Domimplementationregistry13Assert4");
         for (int indexN10067 = 0; indexN10067 < domImplList.getLength(); indexN10067++) {
-            domImpl = (DOMImplementation) domImplList.item(indexN10067);
-            hasFeature = domImpl.hasFeature("Core", nullVersion);
-            assertTrue("hasCore", hasFeature);
+            domImpl = domImplList.item(indexN10067);
+            hasFeature = domImpl.hasFeature("Core", null);
+            assertTrue(hasFeature, "Domimplementationregistry13Assert5");
         }
     }
 }

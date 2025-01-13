@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using compareDocumentPosition check if the return value of document position of a Notation node compared to another
  * that is the same is not flagged.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition24Test extends LoboUnitTest {
+public class Nodecomparedocumentposition24Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap notaionsMap;
-        Notation notation;
-        Notation notation2;
-        int notationPosition;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap notaionsMap;
+        final Notation notation;
+        final Notation notation2;
+        final int notationPosition;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         notaionsMap = docType.getNotations();
         notation = (Notation) notaionsMap.getNamedItem("notation1");
         notation2 = (Notation) notaionsMap.getNamedItem("notation1");
         notationPosition = notation.compareDocumentPosition(notation2);
-        assertEquals("nodecomparedocumentposition24", 0, notationPosition);
+        assertEquals(0, notationPosition, "Nodecomparedocumentposition24Assert2");
     }
 }

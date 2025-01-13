@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,15 @@
 
 package org.loboevolution.html.dom.svgimpl;
 
-import java.util.Vector;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>SVGAnimatedValue class.</p>
  */
+@Data
 public abstract class SVGAnimatedValue {
 
     public static final short ANIMTYPE_ANGLE = 0;
@@ -47,22 +51,14 @@ public abstract class SVGAnimatedValue {
     public static final short ANIMTYPE_TEXTROTATE = 11;
     public static final short ANIMTYPE_TRANSFORMLIST = 12;
 
-    protected SVGElementImpl owner;
-    protected Vector animations;
+    private SVGElementImpl owner;
+    private List<SVGAnimationElementImpl> animations;
 
-    public SVGElementImpl getOwner() {
-        return owner;
-    }
-
-    public void addAnimation(SVGAnimationElementImpl animation) {
+    public void addAnimation(final SVGAnimationElementImpl animation) {
         if (animations == null) {
-            animations = new Vector();
+            animations = new ArrayList<>();
         }
-        animations.addElement(animation);
-    }
-
-    public Vector getAnimations() {
-        return animations;
+        animations.add(animation);
     }
 
 }

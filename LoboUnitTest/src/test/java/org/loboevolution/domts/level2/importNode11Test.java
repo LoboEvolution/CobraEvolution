@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -49,35 +49,32 @@ import static org.junit.Assert.assertNotNull;
  * being "ent3".
  * Method should return a node of type Entity_Reference whose first child's value is "Texas" as defined
  * in this document.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode11Test extends LoboUnitTest {
+public class ImportNode11Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        EntityReference entRef;
-        Node aNode;
-        String name;
-        Node child;
-        String childValue;
+        final Document doc;
+        final Document aNewDoc;
+        final EntityReference entRef;
+        final Node aNode;
+        final String name;
+        final Node child;
+        final String childValue;
         doc = sampleXmlFile("staff.xml");
         aNewDoc = sampleXmlFile("staff.xml");
         entRef = aNewDoc.createEntityReference("ent3");
-        assertNotNull("createdEntRefNotNull", entRef);
+        assertNotNull(entRef);
         aNode = doc.importNode(entRef, true);
         name = aNode.getNodeName();
-        assertEquals("entityName", "ent3", name);
+        assertEquals("ent3", name);
         child = aNode.getFirstChild();
-        assertNotNull("child", child);
+        assertNotNull(child);
         childValue = child.getNodeValue();
         assertEquals("childValue", "Texas", childValue);
     }

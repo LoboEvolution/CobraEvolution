@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,46 +28,41 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using setTextContent on a new EntityReference node, attempt to set its value.
  * Since EntityReference nodes are ReadOnly, check if a NO_MODIFICATION_ALLOWED_ERR
  * is raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent12Test extends LoboUnitTest {
+public class Nodesettextcontent12Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        EntityReference entRef;
-        String textContent;
-        Node appendedChild;
+        final Document doc;
+        final Element elem;
+        final EntityReference entRef;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.getDocumentElement();
         entRef = doc.createEntityReference("beta");
-        appendedChild = elem.appendChild(entRef);
+        elem.appendChild(entRef);
 
         {
             boolean success = false;
             try {
                 entRef.setTextContent("NA");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
             }
-            assertTrue("nodesettextcontent12", success);
+            assertTrue(success, "Nodesettextcontent12Assert2");
         }
     }
 }

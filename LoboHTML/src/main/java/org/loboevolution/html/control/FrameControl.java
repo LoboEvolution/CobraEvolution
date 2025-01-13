@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@ package org.loboevolution.html.control;
 import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.html.dom.domimpl.HTMLIFrameElementImpl;
 
+import java.io.Serial;
+
 /**
  * <p>FrameControl class.</p>
  *
@@ -37,7 +39,8 @@ import org.loboevolution.html.dom.domimpl.HTMLIFrameElementImpl;
  */
 public class FrameControl extends BaseControl {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	/** The element. */
 	private final HTMLIFrameElementImpl modelNode;
@@ -47,7 +50,7 @@ public class FrameControl extends BaseControl {
 	 *
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLIFrameElementImpl} object.
 	 */
-	public FrameControl(HTMLIFrameElementImpl modelNode) {
+	public FrameControl(final HTMLIFrameElementImpl modelNode) {
 		super(modelNode);
 		setLayout(WrapperLayout.getInstance());
 		this.modelNode = modelNode;

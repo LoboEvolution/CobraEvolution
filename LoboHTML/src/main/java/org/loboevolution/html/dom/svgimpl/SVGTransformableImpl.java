@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import org.loboevolution.common.Strings;
 import org.loboevolution.html.dom.svg.SVGAnimatedTransformList;
 import org.loboevolution.html.dom.svg.SVGTransformList;
 import org.loboevolution.html.dom.svg.SVGTransformable;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 
 /**
  * <p>SVGTransformableImpl class.</p>

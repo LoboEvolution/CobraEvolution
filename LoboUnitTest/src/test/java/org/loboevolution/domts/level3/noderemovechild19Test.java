@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.EntityReference;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Using removeChild on the first 'p' Element node attempt to remove a EntityReference
@@ -44,35 +44,32 @@ import static org.junit.Assert.*;
  * to remove a non-child from an entity reference and expect either a NOT_FOUND_ERR or
  * a NO_MODIFICATION_ALLOWED_ERR.  Renove a child from an entity reference and expect
  * a NO_MODIFICATION_ALLOWED_ERR.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild19Test extends LoboUnitTest {
+public class Noderemovechild19Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection parentList;
-        Element parent;
-        EntityReference child;
-        EntityReference removed;
-        String removedName;
-        Node removedNode;
-        Node entRefChild;
+        final Document doc;
+        final HTMLCollection parentList;
+        final Element parent;
+        final EntityReference child;
+        final EntityReference removed;
+        final String removedName;
+        final Node entRefChild;
         doc = sampleXmlFile("hc_staff.xml");
         parentList = doc.getElementsByTagName("acronym");
         parent = (Element) parentList.item(1);
         child = (EntityReference) parent.getFirstChild();
         removed = (EntityReference) parent.removeChild(child);
         removedName = removed.getNodeName();
-        assertEquals("noderemovechild19", "beta", removedName);
+        assertEquals("beta", removedName, "Noderemovechild19Assert1");
 
         try {
-            removedNode = child.removeChild(parent);
+            child.removeChild(parent);
             fail("throw_DOMException");
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             switch (ex.getCode()) {
                 case 7:
                 case 8:
@@ -88,11 +85,11 @@ public class noderemovechild19Test extends LoboUnitTest {
             {
                 boolean success = false;
                 try {
-                    removedNode = child.removeChild(entRefChild);
-                } catch (DOMException ex) {
+                    child.removeChild(entRefChild);
+                } catch (final DOMException ex) {
                     success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
                 }
-                assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+                assertTrue(success, "Noderemovechild19Assert2");
             }
         }
     }

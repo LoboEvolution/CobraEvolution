@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,21 +43,18 @@ import static org.junit.Assert.assertEquals;
  * Attribute "dir" as the source.  Verify if the node has been adopted correctly by
  * checking the nodeName of the adopted Element and by checking if the attribute was adopted.
  * Note the default attribute should be adopted in this case.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode28Test extends LoboUnitTest {
+public class Documentadoptnode28Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection childList;
-        Node adoptedNode;
-        Node employeeElem;
-        Attr attrImp;
-        String nodeName;
-        String nullNSURI = null;
+        final Document doc;
+        final HTMLCollection childList;
+        final Node adoptedNode;
+        final Node employeeElem;
+        final Attr attrImp;
+        final String nodeName;
 
         doc = sampleXmlFile("hc_staff.xml");
         childList = doc.getElementsByTagName("p");
@@ -67,7 +64,7 @@ public class documentadoptnode28Test extends LoboUnitTest {
         if ((adoptedNode != null)) {
             attrImp = ((Element) /*Node */adoptedNode).getAttributeNodeNS("*", "dir");
             nodeName = attrImp.getNodeName();
-            assertEquals("documentadoptnode28", "dir", nodeName);
+            assertEquals("dir", nodeName, "Documentadoptnode28Assert2");
         }
     }
 }

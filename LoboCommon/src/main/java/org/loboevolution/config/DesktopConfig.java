@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,26 +42,36 @@ public class DesktopConfig {
 
     public static String PATH_IMAGE = "image";
 
+    public static String PATH_PDF_IMAGE = "pdfview";
+
     public static String PATH_WELCOME = "welcome";
 
     /**
-     * <p>createWallpapersDirectorys.</p>
+     * <p>createDirectory.</p>
      * @param path a {@link java.lang.String} object.
      */
-    public static void createWallpapersDirectory(String path) throws Exception {
-        Path pathDir = Paths.get(System.getProperty("user.home"), "lobo", path);
+    public void createDirectory(final String path) throws Exception {
+        final Path pathDir = Paths.get(System.getProperty("user.home"), "lobo", path);
         if(!Files.exists(pathDir)) Files.createDirectories(pathDir);
     }
 
     /**
-     * <p>createWallpapersFile.</p>
+     * <p>createDatabaseDirectory.</p>
+     */
+    public void createDatabaseDirectory() throws Exception {
+        final Path path = Paths.get(System.getProperty("user.home"), "lobo", "store");
+        if(!Files.exists(path)) Files.createDirectories(path);
+    }
+
+    /**
+     * <p>createFile.</p>
      * @param inputStream a {@link java.io.InputStream} object.
      * @param path a {@link java.lang.String} object.
      * @param name a {@link java.lang.String} object.
      */
-    public static void createWallpapersFile(InputStream inputStream, String path, String name) throws Exception {
-        String filename = name.substring(name.lastIndexOf("/") +1, name.length());
-        Path pathFile = Files.createFile(Paths.get(System.getProperty("user.home"), "lobo", path, filename));
+    public void createFile(final InputStream inputStream, final String path, final String name) throws Exception {
+        final String filename = name.substring(name.lastIndexOf("/") +1);
+        final Path pathFile = Files.createFile(Paths.get(System.getProperty("user.home"), "lobo", path, filename));
         org.loboevolution.common.Files.copyInputStreamToFile(inputStream, pathFile.toFile());
     }
 
@@ -70,11 +80,11 @@ public class DesktopConfig {
      */
     public static File[] getResourceFolderFiles() {
         final Path dir = Paths.get(System.getProperty("user.home"), "lobo", PATH_WELCOME);
-        List<File> list = new ArrayList<>();
-        try (Stream<Path> paths = Files.list(dir)) {
+        final List<File> list = new ArrayList<>();
+        try (final Stream<Path> paths = Files.list(dir)) {
             paths.forEach(path -> list.add(path.toFile()));
             return list.toArray(new File[0]);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -82,12 +92,13 @@ public class DesktopConfig {
     /**
      * <p>getResourceFile.</p>
      * @param fileName a {@link java.lang.String} object.
+     * @param path a {@link java.lang.String} object.
      */
-    public static URL getResourceFile(String fileName)  {
+    public static URL getResourceFile(final String fileName, final String path)  {
         try {
-            final Path dir = Paths.get(System.getProperty("user.home"), "lobo", PATH_IMAGE, fileName);
+            final Path dir = Paths.get(System.getProperty("user.home"), "lobo", path, fileName);
             return dir.toUri().toURL();
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,31 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * The "getPreviousSibling()" method returns the node
  * immediately preceding this node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-640FB3C8">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-640FB3C8</a>
  */
-public class nodegetprevioussiblingTest extends LoboUnitTest {
+public class NodegetprevioussiblingTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node nameNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node nameNode;
         Node psNode;
         String psName;
         doc = sampleXmlFile("staff.xml");
@@ -62,12 +59,7 @@ public class nodegetprevioussiblingTest extends LoboUnitTest {
         nameNode = elementList.item(1);
         psNode = nameNode.getPreviousSibling();
         psName = psNode.getNodeName();
-
-        if ("#text".equals(psName)) {
-            psNode = psNode.getPreviousSibling();
-            psName = psNode.getNodeName();
-        }
-        assertEquals("nodeName", "EMPLOYEEID",psName);
+        assertEquals("EMPLOYEEID", psName, "NodegetprevioussiblingAssert1");
     }
 }
 

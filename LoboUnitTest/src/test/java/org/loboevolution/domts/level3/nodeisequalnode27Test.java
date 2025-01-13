@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -35,27 +35,25 @@ import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
  * Using isEqualNode check if 2 EntityNode having the same name of two DocumentType nodes
  * returned by parsing the same xml document are equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode27Test extends LoboUnitTest {
+public class Nodeisequalnode27Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        NamedNodeMap notationsMap;
-        Node alpha;
-        Notation notation1;
-        boolean isEqual;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final NamedNodeMap notationsMap;
+        final Node alpha;
+        final Notation notation1;
+        final boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
@@ -63,7 +61,7 @@ public class nodeisequalnode27Test extends LoboUnitTest {
         alpha = entitiesMap.getNamedItem("alpha");
         notation1 = (Notation) notationsMap.getNamedItem("notation1");
         isEqual = notation1.isEqualNode(alpha);
-        assertFalse("nodeisequalnode27", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode27Assert2");
     }
 }
 

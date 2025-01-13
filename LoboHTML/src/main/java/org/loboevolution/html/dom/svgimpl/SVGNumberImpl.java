@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class SVGNumberImpl implements SVGNumber {
 	 *
 	 * @param value a {@link java.lang.Float} object.
 	 */
-	public SVGNumberImpl(float value) {
+	public SVGNumberImpl(final float value) {
 		this.value = value;
 	}
 
@@ -56,7 +56,7 @@ public class SVGNumberImpl implements SVGNumber {
 	 *
 	 * @param strValue a {@link java.lang.String} object.
 	 */
-	public SVGNumberImpl(String strValue) {
+	public SVGNumberImpl(final String strValue) {
 		this.value = Float.parseFloat(strValue);
 	}
 
@@ -68,7 +68,7 @@ public class SVGNumberImpl implements SVGNumber {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setValue(float value) {
+	public void setValue(final float value) {
 		this.value = value;
 	}
 }

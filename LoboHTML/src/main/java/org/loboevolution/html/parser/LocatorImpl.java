@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,10 @@ class LocatorImpl implements Locator {
 	 *
 	 * @param pid a {@link java.lang.String} object.
 	 * @param sid a {@link java.lang.String} object.
-	 * @param lnumber a int.
-	 * @param cnumber a int.
+	 * @param lnumber a {@link java.lang.Integer} object.
+	 * @param cnumber a {@link java.lang.Integer} object.
 	 */
-	public LocatorImpl(String pid, String sid, int lnumber, int cnumber) {
+	public LocatorImpl(final String pid, final String sid, final int lnumber, final int cnumber) {
 		super();
 		this.publicId = pid;
 		this.systemId = sid;

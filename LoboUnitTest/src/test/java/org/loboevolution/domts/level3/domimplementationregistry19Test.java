@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,54 +28,51 @@ package org.loboevolution.domts.level3;
 
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.gui.LocalHtmlRendererConfig;
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationImpl;
+import org.loboevolution.html.dom.domimpl.DOMImplementationImpl;
 import org.loboevolution.html.dom.nodeimpl.bootstrap.DOMImplementationRegistry;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementationList;
 import org.loboevolution.http.UserAgentContext;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * DOMImplementationRegistry.getDOMImplementationList("SVG") should return
  * zero-length list or a list of DOMImplementation
  * where hasFeature("SVG", null) returns true.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/java-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/ecma-script-binding</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-getDOMImpls</a>
  */
-public class domimplementationregistry19Test extends LoboUnitTest {
+public class Domimplementationregistry19Test extends LoboUnitTest {
     @Test
     @SneakyThrows
     public void runTest() {
-       
-        DOMImplementation domImpl;
-        DOMImplementation baseImpl;
-        boolean hasFeature;
-        String nullVersion = null;
 
-        DOMImplementationList domImplList;
-        int length;
-         DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
-        assertNotNull("domImplRegistryNotNull", domImplRegistry);
+        DOMImplementation domImpl;
+        final DOMImplementation baseImpl;
+        boolean hasFeature;
+        final DOMImplementationList domImplList;
+        final int length;
+        final DOMImplementationRegistry domImplRegistry = DOMImplementationRegistry.newInstance();
+        assertNotNull(domImplRegistry, "Domimplementationregistry19Assert1");
         domImplList = domImplRegistry.getDOMImplementationList("SVG");
-        length = (int) domImplList.getLength();
+        length = domImplList.getLength();
 
         if (length == 0) {
             baseImpl = new DOMImplementationImpl(new UserAgentContext(new LocalHtmlRendererConfig(), true));
             hasFeature = baseImpl.hasFeature("SVG", null);
-            assertFalse("baseImplSupportsSVG", hasFeature);
+            assertFalse(hasFeature, "Domimplementationregistry19Assert2");
         } else {
             for (int indexN10067 = 0; indexN10067 < domImplList.getLength(); indexN10067++) {
-                domImpl = (DOMImplementation) domImplList.item(indexN10067);
-                hasFeature = domImpl.hasFeature("SVG", nullVersion);
-                assertTrue("hasCore", hasFeature);
+                domImpl = domImplList.item(indexN10067);
+                hasFeature = domImpl.hasFeature("SVG", null);
+                assertTrue(hasFeature, "Domimplementationregistry19Assert3");
             }
         }
 

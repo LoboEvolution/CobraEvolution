@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,13 +45,13 @@ public class InputRange {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputRange(HTMLInputElementImpl modelNode, InputControl ic) {
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)modelNode.getDocumentNode();
+	public InputRange(final HTMLInputElementImpl modelNode, final InputControl ic) {
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)modelNode.getDocumentNode();
 		final int min = HtmlValues.getPixelSize(modelNode.getAttribute("min"), null, doc.getDefaultView(), 0);
 		final int max = HtmlValues.getPixelSize(modelNode.getAttribute("max"), null, doc.getDefaultView(), 0);
 		final int value = HtmlValues.getPixelSize(modelNode.getAttribute("value"), null, doc.getDefaultView(), 0);
 
-		JSlider rangeSlider = new JSlider();
+		final JSlider rangeSlider = new JSlider();
 		rangeSlider.setPreferredSize(new Dimension(240, rangeSlider.getPreferredSize().height));
 		rangeSlider.setMinimum(min);
 		rangeSlider.setMaximum(max);

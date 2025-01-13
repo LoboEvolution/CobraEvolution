@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,12 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,20 +43,17 @@ import static org.junit.Assert.assertTrue;
  * neither ELEMENT_NODE nor ATTRIBUTE_NODE.
  * <p>
  * Invoke the renameNode method on this document node to rename a text node such that its
- * qualifiedName has a prefix that is "xmlns"and namespaceURI is "http://www.w3.org/XML/1998/namespace".
+ * qualifiedName has a prefix that is "xmlns"and namespaceURI is "<a href="http://www.w3.org/XML/1998/namespace">...</a>".
  * Check if a NOT_SUPPORTED_ERR gets thrown instead of a NAMESPACE_ERR since the type of node is not valid
  * for this method.
- *
- * @author IBM
- * @author Neil Delima
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode13Test extends LoboUnitTest {
+public class Documentrenamenode13Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String textEntry = "hello";
-        Text textNode;
+        final Document doc;
+        final String textEntry = "hello";
+        final Text textNode;
         doc = sampleXmlFile("hc_staff.xml");
         textNode = doc.createTextNode(textEntry);
 
@@ -64,10 +61,10 @@ public class documentrenamenode13Test extends LoboUnitTest {
             boolean success = false;
             try {
                 doc.renameNode(textNode, "http://www.w3.org/XML/1998/namespace", "xmlns:prefix");
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
             }
-            assertTrue("documentrenamenode13_NOT_SUPPORTED_ERR", success);
+            assertTrue(success, "Documentrenamenode13Assert2");
         }
     }
 }

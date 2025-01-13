@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,9 @@
 package org.loboevolution.html.style.setter;
 
 import org.loboevolution.common.Strings;
+import org.loboevolution.html.CSSValues;
 import org.loboevolution.html.js.css.CSSStyleDeclarationImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.html.style.HtmlValues;
 import org.loboevolution.laf.ColorFactory;
 
@@ -44,47 +45,51 @@ public class BorderSetter2 implements SubPropertySetter {
 	 *
 	 * @param baseName a {@link java.lang.String} object.
 	 */
-	public BorderSetter2(String baseName) {
+	public BorderSetter2(final String baseName) {
 		this.name = baseName;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void changeValue(CSSStyleDeclaration declaration, String value) {
-		CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
+	public void changeValue(final CSSStyleDeclaration declaration, final String value) {
+		final CSSStyleDeclarationImpl properties = (CSSStyleDeclarationImpl) declaration;
 		properties.setProperty(this.name, value);
+		final String name = this.name;
 		if (Strings.isNotBlank(value)) {
 			final String[] array = HtmlValues.splitCssValue(value);
 			String color = null;
 			String style = null;
 			String width = null;
 			for (final String token : array) {
+
 				if (HtmlValues.isBorderStyle(token)) {
-					style = token;
+					style = token.toLowerCase();
 				} else if (ColorFactory.getInstance().isColor(token)) {
-					color = token;
+					color = token.toLowerCase();
 				} else {
-					width = token;
+					width = token.toLowerCase();
 				}
 			}
-			final String name = this.name;
-			if (style != null) {
-				properties.setProperty(name + "-style", style);
-				if (color == null) {
-					color = "black";
-				}
-				
-				if (width == null) {
-					width = "2px";
-				}
+
+			if (style == null) {
+				style = CSSValues.INITIAL.getValue();
 			}
-			
-			if (color != null) {
-				properties.setProperty(name + "-color", color);
+
+			if (color == null) {
+				color = CSSValues.INITIAL.getValue();
 			}
-			if (width != null) {
-				properties.setProperty(name + "-width", width);
-			}				
+
+			if (width == null) {
+				width = CSSValues.INITIAL.getValue();
+			}
+
+			properties.setProperty(name + "-style", style);
+			properties.setProperty(name + "-color", color);
+			properties.setProperty(name + "-width", width);
+
+			new FourCornersSetter(name, name + "-", "-style").changeValue(declaration, style);
+			new BorderStyleSetter(name, name + "-", "-color").changeValue(declaration, color);
+			new FourCornersSetter(name, name + "-", "-width").changeValue(declaration, width);
 		}
 	}
 }

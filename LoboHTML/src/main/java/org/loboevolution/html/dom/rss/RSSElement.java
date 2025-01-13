@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public class RSSElement extends HTMLElementImpl {
 	 *
 	 * @param name a {@link java.lang.String} object.
 	 */
-	public RSSElement(String name) {
+	public RSSElement(final String name) {
 		super(name);
 
 	}
@@ -51,13 +51,13 @@ public class RSSElement extends HTMLElementImpl {
 	 * @return a {@link java.lang.String} object.
 	 */
 	public String getText() {
-		StringBuilder text = new StringBuilder();
+		final StringBuilder text = new StringBuilder();
 		if (hasChildNodes()) {
-			NodeListImpl childNodes = (NodeListImpl) getChildNodes();
+			final NodeListImpl childNodes = (NodeListImpl) getChildNodes();
 			childNodes.forEach(child -> {
 				if (child.getNodeType() == Node.TEXT_NODE) {
 					String nodeValue = child.getNodeValue();
-					String childText = "";
+					String childText;
 					nodeValue = nodeValue.replace('\n', ' ');
 					nodeValue = nodeValue.replace('\r', ' ');
 					nodeValue = nodeValue.replace('\t', ' ');
@@ -66,7 +66,7 @@ public class RSSElement extends HTMLElementImpl {
 				}
 			});
 		}
-		if (text.length() > 0) {
+		if (!text.isEmpty()) {
 			return text.substring(0, text.length() - 1);
 		} else {
 			return text.toString();

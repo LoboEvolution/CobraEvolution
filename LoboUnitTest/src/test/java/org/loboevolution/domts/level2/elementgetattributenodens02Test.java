@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,41 +27,38 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
  * The method getAttributeNodeNS retrieves an Attr node by local name and namespace URI.
  * Create a new element node and add a new attribute node to it.  Using the getAttributeNodeNS,
  * retrieve the newly added attribute node and check its value.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS</a>
  */
-public class elementgetattributenodens02Test extends LoboUnitTest {
+public class Elementgetattributenodens02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
+        final Document doc;
+        final Element element;
         Attr attribute;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("namespaceURI", "root");
         attribute = doc.createAttributeNS("http://www.w3.org/DOM/Level2", "l2:att");
         element.setAttributeNodeNS(attribute);
         attribute = element.getAttributeNodeNS("http://www.w3.org/DOM/Level2", "att");
-        assertEquals("elementgetattributenodens02", null, attribute);
+        assertNull(attribute);
     }
 }
 

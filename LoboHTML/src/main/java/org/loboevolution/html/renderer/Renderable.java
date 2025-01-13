@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,14 @@ import org.loboevolution.html.dom.HTMLHtmlElement;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents a renderer (view) node.
  */
 public interface Renderable {
+
 	/** Constant EMPTY_ARRAY */
 	Renderable[] EMPTY_ARRAY = new Renderable[0];
 
@@ -70,16 +72,16 @@ public interface Renderable {
 	 * @param root a {@link org.loboevolution.html.renderer.RCollection} object.
 	 * @return a {@link org.loboevolution.html.renderer.Renderable} object.
 	 */
-	default Renderable findHtmlRenderable(RCollection root) {
-		final Iterator<? extends Renderable> rs = root.getRenderables();
-		if (rs != null) {
-			while (rs.hasNext()) {
-				final Renderable r = rs.next();
-				if (r.getModelNode() instanceof HTMLHtmlElement) {
-					return r;
+	default Renderable findHtmlRenderable(final RCollection root) {
+		final List<Renderable> renderables = root.getRenderables();
+		final AtomicReference<Renderable> renderable = new AtomicReference<>(null);
+		if (renderables != null) {
+			renderables.forEach(rn -> {
+				if (rn.getModelNode() instanceof HTMLHtmlElement) {
+					renderable.set(rn);
 				}
-			}
+			});
 		}
-		return null;
+		return renderable.get();
 	}
 }

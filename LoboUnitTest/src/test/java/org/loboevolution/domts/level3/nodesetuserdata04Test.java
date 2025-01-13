@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,48 +27,44 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke setUserData on a new Element to set its UserData to a new Text node
  * twice using different Keys.  Using getUserData with each Key and isNodeEqual
  * verify if the returned nodes are Equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-setUserData</a>
  */
-public class nodesetuserdata04Test extends LoboUnitTest {
+public class Nodesetuserdata04Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Object userData;
-        Object returned1;
-        Object returned2;
-        Object retUserData;
-        boolean success;
-        Element elem;
-        Text txt;
+        final Document doc;
+        final Object returned1;
+        final Object returned2;
+        final boolean success;
+        final Element elem;
+        final Text txt;
 
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "p");
         txt = doc.createTextNode("TEXT");
         /*Node */
-        retUserData = elem.setUserData("Key1", txt, null);
+        elem.setUserData("Key1", txt, null);
         /*Node */
-        retUserData = elem.setUserData("Key2", txt, null);
+        elem.setUserData("Key2", txt, null);
         returned1 = elem.getUserData("Key1");
         returned2 = elem.getUserData("Key2");
         success = ((Node) /*DOMUserData */returned1).isEqualNode(((Node) /*DOMUserData */returned2));
-        assertTrue("nodesetuserdata04", success);
+        assertTrue(success, "Nodesetuserdata04Assert2");
     }
 }
 

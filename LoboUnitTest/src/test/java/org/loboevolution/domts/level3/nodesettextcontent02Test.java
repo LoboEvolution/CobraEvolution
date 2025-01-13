@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The method setTextContent has no effect when the node is defined to be null.
@@ -40,36 +41,31 @@ import static org.junit.Assert.assertEquals;
  * Using setTextContent on a new Document node, attempt to set the textContent of this
  * new Document node to textContent.  Check if it was not set by checking the nodeName
  * attribute of a new Element of this Document node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent02Test extends LoboUnitTest {
+public class Nodesettextcontent02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document newDoc;
-        String nodeName;
-        Element elemChild;
-        Element newElem;
-        HTMLCollection elemList;
-        DocumentType nullDocType = null;
-
-        Node appendedChild;
-        Element documentElem;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final String nodeName;
+        final Element elemChild;
+        final Element newElem;
+        final HTMLCollection elemList;
+        final Element documentElem;
         doc = sampleXmlFile("hc_staff.xml");
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom3:elem", nullDocType);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom3:elem", null);
         newElem = newDoc.createElementNS("http://www.w3.org/DOM/Test", "dom3:childElem");
         documentElem = newDoc.getDocumentElement();
-        appendedChild = documentElem.appendChild(newElem);
+        documentElem.appendChild(newElem);
         newDoc.setTextContent("textContent");
         elemList = newDoc.getElementsByTagNameNS("*", "childElem");
         elemChild = (Element) elemList.item(0);
         nodeName = elemChild.getNodeName();
-        assertEquals("nodesettextcontent02", "dom3:childElem", nodeName);
+        assertEquals("dom3:childElem", nodeName, "Nodesettextcontent02Assert2");
     }
 }
 

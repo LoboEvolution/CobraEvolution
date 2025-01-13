@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,30 +43,27 @@ import static org.junit.Assert.assertNull;
  * Retrieve the first child of the second employee and
  * invoke the "getNextSibling()" method.   It should
  * be set to null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-6AC54C2F">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-6AC54C2F</a>
  */
-public class nodegetnextsiblingnullTest extends LoboUnitTest {
+public class NodegetnextsiblingnullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        Node lcNode;
-        Node nsNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node lcNode;
+        final Node nsNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(1);
         lcNode = employeeNode.getLastChild();
         nsNode = lcNode.getNextSibling();
-        assertNull("nodeGetNextSiblingNullAssert1", nsNode);
+        assertNull(nsNode, "NodegetnextsiblingnullAssert2");
     }
 }
 

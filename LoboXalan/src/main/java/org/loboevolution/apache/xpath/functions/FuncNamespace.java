@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,14 +35,14 @@ public class FuncNamespace extends FunctionDef1Arg {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    int context = getArg0AsNode(xctxt);
+    final int context = getArg0AsNode(xctxt);
 
     String s;
     if (context != DTM.NULL) {
-      DTM dtm = xctxt.getDTM(context);
-      int t = dtm.getNodeType(context);
+      final DTM dtm = xctxt.getDTM(context);
+      final int t = dtm.getNodeType(context);
       if (t == DTM.ELEMENT_NODE) {
         s = dtm.getNamespaceURI(context);
       } else if (t == DTM.ATTRIBUTE_NODE) {

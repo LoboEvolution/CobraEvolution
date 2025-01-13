@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.html.dom.input;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.control.InputControl;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 
@@ -34,15 +35,12 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * <p>InputDataTime class.</p>
  */
+@Slf4j
 public class InputDataTime extends BasicInput {
-
-	private static final  Logger logger = Logger.getLogger(InputDataTime.class.getName());
 
 	/**
 	 * <p>Constructor for InputDataTime.</p>
@@ -50,35 +48,32 @@ public class InputDataTime extends BasicInput {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputDataTime(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputDataTime(final HTMLInputElementImpl modelNode, final InputControl ic) {
 
 		try {
 			final String type = modelNode.getType();
-			JFormattedTextField tf = null;
-			MaskFormatter dateMask = null;
+			JFormattedTextField tf;
+			MaskFormatter dateMask = switch (type.toLowerCase()) {
+                case "datetime-local" -> {
+                    tf = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy hh:mm"));
+                    yield new MaskFormatter("##/##/#### ##:##");
+                }
+                case "time" -> {
+                    tf = new JFormattedTextField(new SimpleDateFormat("hh:mm:ss"));
+                    yield new MaskFormatter("##:##:##");
+                }
+                case "month" -> {
+                    tf = new JFormattedTextField(new SimpleDateFormat("MM/yyyy"));
+                    yield new MaskFormatter("##/####");
+                }
+                default -> {
+                    tf = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy"));
+                    yield new MaskFormatter("##/##/####");
+                }
+            };
 
-			switch (type.toLowerCase()) {
-			case "datetime-local":
-				tf = new JFormattedTextField(new SimpleDateFormat("dd/mm/yyyy hh:mm"));
-				dateMask = new MaskFormatter("##/##/#### ##:##");
-				break;
-			case "time":
-				tf = new JFormattedTextField(new SimpleDateFormat("hh:mm:ss"));
-				dateMask = new MaskFormatter("##:##:##");
-				break;
-			case "month":
-				tf = new JFormattedTextField(new SimpleDateFormat("mm/yyyy"));
-				dateMask = new MaskFormatter("##/####");
-				break;
-			case "date":
-			default:
-				tf = new JFormattedTextField(new SimpleDateFormat("dd/mm/yyyy"));
-				dateMask = new MaskFormatter("##/##/####");
-				break;
-			}
-
-			setElement(modelNode);
-			setjComponent(tf);
+            setElement(modelNode);
+			setJComponent(tf);
 			final Dimension ps = tf.getPreferredSize();
 			tf.setPreferredSize(new Dimension(128, ps.height));
 			ic.add(tf);
@@ -89,8 +84,8 @@ public class InputDataTime extends BasicInput {
 			tf.addCaretListener(this);
 			tf.addMouseListener(this);
 
-		} catch (ParseException err) {
-			logger.log(Level.SEVERE, err.getMessage(), err);
+		} catch (final ParseException err) {
+			log.error(err.getMessage(), err);
 		}
 	}
 }

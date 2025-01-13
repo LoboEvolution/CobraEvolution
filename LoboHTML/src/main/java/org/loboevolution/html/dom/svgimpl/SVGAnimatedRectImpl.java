@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class SVGAnimatedRectImpl implements SVGAnimatedRect {
 	 *
 	 * @param baseVal a {@link org.loboevolution.html.dom.svg.SVGRect} object.
 	 */
-	public SVGAnimatedRectImpl(SVGRect baseVal) {
+	public SVGAnimatedRectImpl(final SVGRect baseVal) {
 		this.baseVal = baseVal;
 	}
 
@@ -55,7 +55,7 @@ public class SVGAnimatedRectImpl implements SVGAnimatedRect {
 		return baseVal;
 	}
 
-	void setBaseVal(SVGRect baseVal) {
+	void setBaseVal(final SVGRect baseVal) {
 		this.baseVal = baseVal;
 	}
 

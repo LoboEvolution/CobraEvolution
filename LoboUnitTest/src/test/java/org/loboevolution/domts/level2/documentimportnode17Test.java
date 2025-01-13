@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -44,32 +44,28 @@ import static org.junit.Assert.*;
  * Using the method importNode with deep=true, import a newly created Comment node for this
  * Document.  Verify if the node has been imported correctly by checking the value of the
  * imported Comment node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode17Test extends LoboUnitTest {
+public class Documentimportnode17Test extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document docImp;
-        Node commentImport;
-        Node commentToImport;
-        String nodeValue;
+        final Document doc;
+        final Node commentImport;
+        final Node commentToImport;
+        final String nodeValue;
         doc = sampleXmlFile("staffNS.xml");
-        docImp =  sampleXmlFile("staffNS.xml");
+        sampleXmlFile("staffNS.xml");
         commentToImport = doc.createComment("Document.importNode test for a COMMENT_NODE");
         commentImport = doc.importNode(commentToImport, true);
         nodeValue = commentImport.getNodeValue();
-        assertEquals("documentimportnode17", "Document.importNode test for a COMMENT_NODE", nodeValue);
+        assertEquals("Document.importNode test for a COMMENT_NODE", nodeValue);
     }
 }
 

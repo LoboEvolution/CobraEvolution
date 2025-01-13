@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,18 @@
 
 package org.loboevolution.html.js;
 
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
+import org.loboevolution.js.LoboContextFactory;
 import org.mozilla.javascript.Context;
 
 import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ * The class ExpressionTimerTask.
+ */
+@Slf4j
 class ExpressionTimerTask extends WeakWindowTask {
-	
-	private static final Logger logger = Logger.getLogger(ExpressionTimerTask.class.getName());
 	
 	private final String expression;
 	
@@ -51,7 +53,7 @@ class ExpressionTimerTask extends WeakWindowTask {
 	 * @param expression a {@link java.lang.String} object.
 	 * @param removeTask a boolean.
 	 */
-	public ExpressionTimerTask(WindowImpl window, Integer timeIDInt, String expression, boolean removeTask) {
+	public ExpressionTimerTask(final WindowImpl window, final Integer timeIDInt, final String expression, final boolean removeTask) {
 		super(window);
 		this.timeIDInt = timeIDInt;
 		this.expression = expression;
@@ -65,9 +67,7 @@ class ExpressionTimerTask extends WeakWindowTask {
 		try {
 			final WindowImpl window = this.getWindow();
 			if (window == null) {
-				if (logger.isLoggable(Level.INFO)) {
-					logger.info("actionPerformed(): WindowImpl is no longer available.");
-				}
+				log.info("actionPerformed(): WindowImpl is no longer available.");
 				return;
 			}
 			if (this.removeTask) {
@@ -79,18 +79,15 @@ class ExpressionTimerTask extends WeakWindowTask {
 			}
 			evalInScope(window, this.expression);
 		} catch (final Throwable err) {
-			logger.log(Level.WARNING, "actionPerformed()", err);
+			log.error("actionPerformed()", err);
 		}
 	}
-	
-	private Object evalInScope(WindowImpl window, final String javascript) {
-		HTMLDocumentImpl document = (HTMLDocumentImpl)window.getDocumentNode();
-		final Context ctx = Executor.createContext(document.getDocumentURL(), window.getUaContext());
-		try {
+
+	private void evalInScope(final WindowImpl window, final String javascript) {
+		LoboContextFactory contextFactory =  window.getContextFactory();
+		try (Context ctx = contextFactory.enterContext()) {
 			final String scriptURI = "window.eval";
-			return ctx.evaluateString(window.getWindowScope(), javascript, scriptURI, 1, null);
-		} finally {
-			Context.exit();
+			ctx.evaluateString(window.getWindowScope(ctx), javascript, scriptURI, 1, null);
 		}
 	}
 }

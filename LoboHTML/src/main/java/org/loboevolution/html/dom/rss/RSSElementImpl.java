@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,11 +54,10 @@ public class RSSElementImpl extends RSSElement {
 	 */
 	public void draw(final Graphics2D graphics) {
 		if (hasChildNodes()) {
-			NodeListImpl children = (NodeListImpl)getChildNodes();
+			final NodeListImpl children = (NodeListImpl)getChildNodes();
 			children.forEach(child -> {
-				if (child instanceof RSSChanelElementImpl) {
-					RSSChanelElementImpl channel = (RSSChanelElementImpl) child;
-					channel.draw(graphics);
+				if (child instanceof RSSChanelElementImpl channel) {
+                    channel.draw(graphics);
 				}
 			});
 		}

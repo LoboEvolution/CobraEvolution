@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.html.dom.domimpl;
 
 import org.loboevolution.html.dom.HTMLFormControlsCollection;
 import org.loboevolution.html.dom.nodeimpl.NodeImpl;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
 
 /**
  * <p>HTMLFormControlsCollectionImpl class.</p>
@@ -43,7 +43,7 @@ public class HTMLFormControlsCollectionImpl extends HTMLCollectionImpl implement
      * @param rootNode a {@link NodeImpl} object.
      * @param filter   a {@link NodeFilter} object.
      */
-    public HTMLFormControlsCollectionImpl(NodeImpl rootNode, NodeFilter filter) {
+    public HTMLFormControlsCollectionImpl(final NodeImpl rootNode, final NodeFilter filter) {
         super(rootNode, filter);
     }
 }

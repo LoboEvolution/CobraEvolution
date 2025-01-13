@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Document;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -45,44 +45,40 @@ import static org.junit.Assert.assertNotNull;
  * Create a dom tree consisting of elements, comments, processing instructions, CDATA sections,
  * and entity references nodes seperated by text nodes.  Check the length of the node list of each
  * before and after normalize has been called.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-normalize">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-normalize</a>
  */
-public class nodenormalize01Test extends LoboUnitTest {
+public class Nodenormalize01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        DocumentType docTypeNull = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
 
-        Element documentElement;
-        Element element1;
-        Element element2;
-        Element element3;
-        Element element4;
-        Element element5;
-        Element element6;
-        Element element7;
+        final Element documentElement;
+        final Element element1;
+        final Element element2;
+        final Element element3;
+        final Element element4;
+        final Element element5;
+        final Element element6;
+        final Element element7;
         Text text1;
         Text text2;
         Text text3;
-        ProcessingInstruction pi;
-        CDATASection cData;
-        Comment comment;
+        final ProcessingInstruction pi;
+        final CDATASection cData;
+        final Comment comment;
         EntityReference entRef;
         NodeList elementList;
         doc = sampleXmlFile("staffNS.xml");
-        
+
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:root", docTypeNull);
+        newDoc = domImpl.createDocument("http://www.w3.org/DOM/Test", "dom:root", null);
         element1 = newDoc.createElement("element1");
         element2 = newDoc.createElement("element2");
         element3 = newDoc.createElement("element3");
@@ -97,7 +93,7 @@ public class nodenormalize01Test extends LoboUnitTest {
         comment = newDoc.createComment("comment");
         pi = newDoc.createProcessingInstruction("PITarget", "PIData");
         entRef = newDoc.createEntityReference("EntRef");
-        assertNotNull("createdEntRefNotNull", entRef);
+        assertNotNull(entRef);
         documentElement = newDoc.getDocumentElement();
         documentElement.appendChild(element1);
         element2.appendChild(text1);
@@ -138,34 +134,34 @@ public class nodenormalize01Test extends LoboUnitTest {
         element7.appendChild(text3);
         element1.appendChild(element7);
         elementList = element1.getChildNodes();
-        assertEquals( "nodeNormalize01_1Bef", 6, elementList.getLength());
+        assertEquals(6, elementList.getLength());
         elementList = element2.getChildNodes();
-        assertEquals( "nodeNormalize01_2Bef", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
         elementList = element3.getChildNodes();
-        assertEquals( "nodeNormalize01_3Bef", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
         elementList = element4.getChildNodes();
-        assertEquals( "nodeNormalize01_4Bef", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
         elementList = element5.getChildNodes();
-        assertEquals( "nodeNormalize01_5Bef", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
         elementList = element6.getChildNodes();
-        assertEquals( "nodeNormalize01_6Bef", 3, elementList.getLength());
+        assertEquals(3, elementList.getLength());
         elementList = element7.getChildNodes();
-        assertEquals( "nodeNormalize01_7Bef", 4, elementList.getLength());
+        assertEquals(4, elementList.getLength());
         newDoc.normalize();
         elementList = element1.getChildNodes();
-        assertEquals( "nodeNormalize01_1Aft", 6, elementList.getLength());
+        assertEquals(6, elementList.getLength());
         elementList = element2.getChildNodes();
-        assertEquals( "nodeNormalize01_2Aft", 1, elementList.getLength());
+        assertEquals(1, elementList.getLength());
         elementList = element3.getChildNodes();
-        assertEquals( "nodeNormalize01_3Aft", 2, elementList.getLength());
+        assertEquals(2, elementList.getLength());
         elementList = element4.getChildNodes();
-        assertEquals( "nodeNormalize01_4Aft", 2, elementList.getLength());
+        assertEquals(2, elementList.getLength());
         elementList = element5.getChildNodes();
-        assertEquals( "nodeNormalize01_5Aft", 2, elementList.getLength());
+        assertEquals(2, elementList.getLength());
         elementList = element6.getChildNodes();
-        assertEquals( "nodeNormalize01_6Aft", 2, elementList.getLength());
+        assertEquals(2, elementList.getLength());
         elementList = element7.getChildNodes();
-        assertEquals( "nodeNormalize01_7Aft", 2, elementList.getLength());
+        assertEquals(2, elementList.getLength());
     }
 }
 

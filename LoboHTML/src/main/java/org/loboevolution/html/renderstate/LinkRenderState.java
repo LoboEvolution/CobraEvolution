@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,14 @@ package org.loboevolution.html.renderstate;
 
 import org.loboevolution.common.Strings;
 import org.loboevolution.gui.HtmlRendererContext;
+import org.loboevolution.html.dom.HTMLAnchorElement;
 import org.loboevolution.html.dom.HTMLBodyElement;
 import org.loboevolution.html.dom.HTMLDocument;
-import org.loboevolution.html.dom.domimpl.HTMLLinkElementImpl;
-import org.loboevolution.html.node.css.CSSStyleDeclaration;
+import org.loboevolution.html.dom.domimpl.HTMLAnchorElementImpl;
+import org.loboevolution.css.CSSStyleDeclaration;
 import org.loboevolution.laf.ColorFactory;
 
 import java.awt.*;
-import java.util.Optional;
 
 /**
  * <p>LinkRenderState class.</p>
@@ -44,14 +44,14 @@ public class LinkRenderState extends StyleSheetRenderState {
 
     private final HtmlRendererContext rcontext;
 
-    private final HTMLLinkElementImpl element;
+    private final HTMLAnchorElement element;
 
     /**
      * <p>Constructor for RenderStateDelegator.</p>
      *
      * @param delegate a {@link RenderState} object.
      */
-    public LinkRenderState(RenderState delegate, HtmlRendererContext rcontext, HTMLLinkElementImpl element) {
+    public LinkRenderState(final RenderState delegate, final HtmlRendererContext rcontext, final HTMLAnchorElementImpl element) {
         super(delegate, element);
         this.element = element;
         this.rcontext = rcontext;
@@ -63,8 +63,8 @@ public class LinkRenderState extends StyleSheetRenderState {
      */
     @Override
     public int getTextDecorationMask() {
-        CSSStyleDeclaration props = this.getCssProperties();
-        String tdText = props == null ? null : props.getTextDecoration();
+        final CSSStyleDeclaration props = this.getCssProperties();
+        final String tdText = props == null ? null : props.getTextDecoration();
         if (Strings.isNotBlank(tdText)) {
             return super.getTextDecorationMask();
         } else {
@@ -78,31 +78,31 @@ public class LinkRenderState extends StyleSheetRenderState {
     }
 
     @Override
-    public Optional<Cursor> getCursor() {
-        return Optional.of(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    public Cursor getCursor() {
+        return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     }
 
     private Color linkColor() {
         if (rcontext != null) {
-            boolean visited = rcontext.isVisitedLink(element);
+            final boolean visited = rcontext.isVisitedLink(element);
             String vlink = null;
             String link = null;
-            HTMLDocument doc = (HTMLDocument) element.getDocumentNode();
+            final HTMLDocument doc = (HTMLDocument) element.getOwnerDocument();
             if (doc != null) {
-                HTMLBodyElement body = (HTMLBodyElement) doc.getBody();
+                final HTMLBodyElement body = (HTMLBodyElement) doc.getBody();
                 if (body != null) {
                     vlink = body.getVLink();
                     link = body.getLink();
                 }
             }
-            String COLOR_VISITED = "#551A8B";
+            final String COLOR_VISITED = "#551A8B";
             vlink = (vlink == null) ? COLOR_VISITED : vlink;
-            String DEFAULT_COLOR = "Blue";
+            final String DEFAULT_COLOR = "Blue";
             link = (link == null) ? DEFAULT_COLOR : link;
-            String colorText = visited ? vlink : link;
+            final String colorText = visited ? vlink : link;
 
-            CSSStyleDeclaration props = this.getCssProperties();
-            String color = props == null ? null : props.getColor();
+            final CSSStyleDeclaration props = this.getCssProperties();
+            final String color = props == null ? null : props.getColor();
             return ColorFactory.getInstance().getColor(color == null ? colorText : color);
         }
         return Color.BLUE;

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,30 +43,27 @@ import static org.junit.Assert.assertNull;
  * Retrieve the first child of the second employee and
  * invoke the "getPreviousSibling()" method.   It should
  * be set to null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-640FB3C8">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-640FB3C8</a>
  */
-public class nodegetprevioussiblingnullTest extends LoboUnitTest {
+public class NodegetprevioussiblingnullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        Node fcNode;
-        Node psNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final Node fcNode;
+        final Node psNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(2);
         fcNode = employeeNode.getFirstChild();
         psNode = fcNode.getPreviousSibling();
-        assertNull("nodeGetPreviousSiblingNullAssert1", psNode);
+        assertNull(psNode, "NodegetprevioussiblingnullAssert2");
     }
 }
 

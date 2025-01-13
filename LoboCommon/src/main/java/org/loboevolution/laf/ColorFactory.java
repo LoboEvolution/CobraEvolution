@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,9 @@
 package org.loboevolution.laf;
 
 import org.loboevolution.common.Strings;
+import org.loboevolution.html.dom.HTMLElement;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -82,7 +82,7 @@ public final class ColorFactory {
 	 * @param colorSpec the color spec
 	 * @return the color
 	 */
-	public Color getColor(LAFColorType colorSpec) {
+	public Color getColor(final LAFColorType colorSpec) {
 		return getColor(colorSpec.getValue());
 
 	}
@@ -93,7 +93,7 @@ public final class ColorFactory {
 	 * @param colorSpec the color spec
 	 * @return the color
 	 */
-	public Color getColor(String colorSpec) {
+	public Color getColor(final String colorSpec) {
 
 		if (colorSpec == null) {
 			return null;
@@ -114,14 +114,44 @@ public final class ColorFactory {
 	}
 
 	/**
+	 * Gets the color string.
+	 *
+	 * @param element a {@link org.loboevolution.html.dom.HTMLElement} object.
+	 * @param colorSpec a {@link java.lang.String} object.
+	 * @param defaultValue a {@link java.lang.String} object.
+	 * @return the color
+	 */
+	public String getColorString(final HTMLElement element, final String colorSpec, String defaultValue) {
+
+	if (Strings.isBlank(colorSpec)) {
+		return element.getParentNode() == null ? null : defaultValue;
+	}
+	final Color c = ColorFactory.getInstance().getColor(colorSpec);
+        if (c != null) {
+		if (c.getRed() == 0 && c.getGreen() == 0 && c.getBlue() == 0) {
+			return element.getParentNode() == null ? null : defaultValue;
+		}
+		final float alpha = (float) (c.getAlpha()) / 255.0f;
+		if (alpha > 0 && alpha < 1) {
+			return element.getParentNode() == null ? null : "rgba(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ", " + alpha + ")";
+		} else {
+			return element.getParentNode() == null ? null : "rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ")";
+		}
+	} else {
+		return element.getParentNode() == null ? null : defaultValue;
+	}
+
+		}
+
+	/**
 	 * Get HEX color.
 	 *
 	 * @param c          the color
 	 * @param normalSpec the color spec
 	 * @return the color
 	 */
-	private Color getHex(Color c, String normalSpec) {
-		Color color;
+	private Color getHex(final Color c, final String normalSpec) {
+		final Color color;
 		if (normalSpec.startsWith("#")) {
 			color = HexToColor(normalSpec);
 			this.colorMap.put(normalSpec, color);
@@ -131,8 +161,8 @@ public final class ColorFactory {
 		return color;
 	}
 
-	private Color getHSL(Color c, String normalSpec, String colorStart) {
-		Color color;
+	private Color getHSL(final Color c, final String normalSpec, final String colorStart) {
+		final Color color;
 		if (c == null && normalSpec.startsWith(colorStart)) {
 			final String commaValues = getCommaValues(normalSpec, colorStart);
 			final String[] splitComma = commaValues.contains(",")  ? commaValues.split(",") : commaValues.split(" ");
@@ -158,8 +188,8 @@ public final class ColorFactory {
 	 * @param normalSpec the color spec
 	 * @return the color
 	 */
-	private Color getRGB(Color c, String normalSpec, String colorStart) {
-		Color color;
+	private Color getRGB(final Color c, final String normalSpec, final String colorStart) {
+		final Color color;
 		if (c == null && normalSpec.startsWith(colorStart) && normalSpec.endsWith(")")) {
 			final String commaValues = getCommaValues(normalSpec,colorStart);
 			final String[] splitComma = Strings.splitUsingTokenizer(commaValues, ",");
@@ -167,8 +197,8 @@ public final class ColorFactory {
 			final int green =  (int) parseValue(splitComma[1].trim(), 255);
 			final int blue =  (int) parseValue(splitComma[2].trim(), 255);
 			if (splitComma.length > 3) {
-				float alpha = parseAlpha(splitComma[splitComma.length - 1].trim());
-				color = new Color(normalize(red), normalize(green), normalize(blue), Math.round(alpha));
+				final float alpha = parseAlpha(splitComma[splitComma.length - 1].trim());
+				color = new Color(normalize(red), normalize(green), normalize(blue), Math.round(alpha  * 255));
 			} else {
 				color = new Color(normalize(red), normalize(green), normalize(blue));
 			}
@@ -180,7 +210,9 @@ public final class ColorFactory {
 	}
 
 	/** Helper method that converts hue to rgb */
-	private float hueToRgb(float p, float q, float h) {
+	private float hueToRgb(final float p, final float q, final float h1) {
+		float h = h1;
+
 		if (h < 0) {
 			h += 1;
 		}
@@ -209,7 +241,7 @@ public final class ColorFactory {
 	 * @param colorSpec the color spec
 	 * @return true, if is color
 	 */
-	public boolean isColor(String colorSpec) {
+	public boolean isColor(final String colorSpec) {
 		final String normalSpec = colorSpec.toLowerCase();
 		final boolean starts = normalSpec.startsWith("#") ||
 				normalSpec.startsWith(RGBA_START) || normalSpec.startsWith(RGB_START) ||
@@ -223,7 +255,7 @@ public final class ColorFactory {
 	 * @param colorSpec a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public boolean isRgbOrHsl(String colorSpec) {
+	public boolean isRgbOrHsl(final String colorSpec) {
 		final String normalSpec = colorSpec.toLowerCase();
 		return (normalSpec.startsWith(RGBA_START) ||
 				normalSpec.startsWith(RGB_START) ||
@@ -238,37 +270,40 @@ public final class ColorFactory {
 	 * @param factor a double.
 	 * @return a {@link java.awt.Color} object.
 	 */
-	public static Color getAdjustedColor(Color c, double factor) {
-		double f = 1 - Math.min(Math.abs(factor), 1);
-		double inc = (factor > 0 ? 255 * (1 - f) : 0);
+	public static Color getAdjustedColor(final Color c, final double factor) {
+		final double f = 1 - Math.min(Math.abs(factor), 1);
+		final double inc = (factor > 0 ? 255 * (1 - f) : 0);
 		return new Color((int) (c.getRed() * f + inc), (int) (c.getGreen() * f + inc), (int) (c.getBlue() * f + inc));
 	}
 
-	private float parseAlpha(String alpha) {
+	private float parseAlpha(final String alpha) {
 		if (alpha.endsWith("%")) {
 			return parsePercent(alpha) / 100;
 		}
 		return Float.parseFloat(alpha);
 	}
 
-	private float parsePercent(String perc) {
+	private float parsePercent(final String perc) {
 		return Float.parseFloat(perc.substring(0, perc.length() - 1));
 	}
 
-	private float parseValue(String val, int max) {
+	private float parseValue(final String val, final int max) {
 		if (val.endsWith("%")) {
 			return (parsePercent(val) * max) / 100;
 		}
 		return Float.parseFloat(val);
 	}
 
-	private Color toRGB(float h, float s, float l, float alpha) {
+	private Color toRGB(final float h1, final float s1, final float l1, final float alpha) {
+		float h = h1;
+		float s = s1;
+		float l = l1;
 		h = h % 360.0f;
 		h /= 360f;
 		s /= 100f;
 		l /= 100f;
 
-		float q;
+		final float q;
 
 		if (l < 0.5) {
 			q = l * (1 + s);
@@ -288,12 +323,12 @@ public final class ColorFactory {
 		return new Color(r, g, b, alpha);
 	}
 
-	private Color HexToColor(String hex) {
-		int red;
-		int green;
-		int blue;
-		int alpha;
-		hex = hex.split("#")[1];
+	private Color HexToColor(final String hexColor) {
+		final int red;
+		final int green;
+		final int blue;
+		final int alpha;
+		final String hex = hexColor.split("#")[1];
 		switch (hex.length()) {
 		case 6:
 			red = Integer.valueOf(hex.substring(0, 2), 16);
@@ -325,9 +360,9 @@ public final class ColorFactory {
 		return colorComponent;
 	}
 
-	private String getCommaValues (String normalSpec, String str){
+	private String getCommaValues (final String normalSpec, final String str){
 		final int endIdx = normalSpec.lastIndexOf(')');
-		String commaValues;
+		final String commaValues;
 
 		if (endIdx == -1) {
 			commaValues = normalSpec.substring(str.length());

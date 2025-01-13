@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,53 +27,49 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /**
  * Using compareDocumentPosition check if the document position of a Document and a new Document node
  * are disconnected, implementation-specific and preceding/following.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition05Test extends LoboUnitTest {
+public class Nodecomparedocumentposition05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        int documentPosition1;
-        int documentPosition2;
-        int documentPosition3;
-        DocumentType nullDocType = null;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final int documentPosition1;
+        final int documentPosition2;
+        final int documentPosition3;
 
-        String rootName;
-        String rootNS;
-        Element docElem;
+        final String rootName;
+        final String rootNS;
+        final Element docElem;
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         documentPosition1 = doc.compareDocumentPosition(newDoc);
-        assertEquals("isImplSpecificDisconnected1", 33 & 57, documentPosition1 & 57);
+        assertEquals(33 & 57, documentPosition1 & 57, "Nodecomparedocumentposition05Assert3");
         documentPosition2 = newDoc.compareDocumentPosition(doc);
-        assertEquals("isImplSpecificDisconnected2", 33 & 57, documentPosition2 & 57);
-        assertNotEquals("notBothPreceding", documentPosition1 & 2, documentPosition2 & 2);
-        assertNotEquals("notBothFollowing", documentPosition1 & 4, documentPosition2 & 4);
+        assertEquals(33 & 57, documentPosition2 & 57, "Nodecomparedocumentposition05Assert4");
+        assertNotEquals(documentPosition1 & 2, documentPosition2 & 2, "Nodecomparedocumentposition05Assert5");
+        assertNotEquals(documentPosition1 & 4, documentPosition2 & 4, "Nodecomparedocumentposition05Assert6");
         documentPosition3 = doc.compareDocumentPosition(newDoc);
-        assertEquals("isConsistent", documentPosition1, documentPosition3);
+        assertEquals(documentPosition1, documentPosition3, "Nodecomparedocumentposition05Assert7");
     }
 }
 

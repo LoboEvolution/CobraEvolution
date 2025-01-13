@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,32 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Append a created element to a document and check that its baseURI
  * is inherited from its parent.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element</a>
  */
-public class nodegetbaseuri07Test extends LoboUnitTest {
+public class Nodegetbaseuri07Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element newElement;
-        String baseURI;
-        HTMLCollection bodyList;
-        Element bodyElem;
-        String htmlNS = "http://www.w3.org/1999/xhtml";
+        final Document doc;
+        final Element newElement;
+        final String baseURI;
+        final HTMLCollection bodyList;
+        final Element bodyElem;
+        final String htmlNS = "http://www.w3.org/1999/xhtml";
         doc = sampleXmlFile("barfoo_base.xml");
         bodyList = doc.getElementsByTagName("body");
         bodyElem = (Element) bodyList.item(0);
@@ -62,7 +60,7 @@ public class nodegetbaseuri07Test extends LoboUnitTest {
         newElement.setAttribute("content", "text/xml");
         bodyElem.appendChild(newElement);
         baseURI = newElement.getBaseURI();
-        assertEquals("nodegetbaseuri07", "http://www.w3.org/DOM/EmployeeID", baseURI);
+        assertEquals("http://www.w3.org/DOM/EmployeeID", baseURI, "Nodegetbaseuri07Assert2");
     }
 }
 

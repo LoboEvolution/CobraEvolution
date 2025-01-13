@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,31 +43,27 @@ import static org.junit.Assert.assertEquals;
  * Using insertBefore on a DocumentFragment node attempt to insert a new DocumentFragment node
  * before this DocumentFragment's Element node and verify the last child is still the only child
  * appended to docFrag.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore12Test extends LoboUnitTest {
+public class Nodeinsertbefore12Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFrag;
-        DocumentFragment docFragNew;
-        Element elem;
-        Node inserted;
-        Node appendedChild;
-        Node last;
-        String name;
+        final Document doc;
+        final DocumentFragment docFrag;
+        final DocumentFragment docFragNew;
+        final Element elem;
+        final Node last;
+        final String name;
         doc = sampleXmlFile("hc_staff.xml");
         docFrag = doc.createDocumentFragment();
         docFragNew = doc.createDocumentFragment();
         elem = doc.createElementNS("http://www.w3.org/DOM/Test", "dom3:elem");
-        appendedChild = docFrag.appendChild(elem);
-        inserted = docFrag.insertBefore(docFragNew, elem);
+        docFrag.appendChild(elem);
+        docFrag.insertBefore(docFragNew, elem);
         last = docFrag.getLastChild();
         name = last.getNodeName();
-        assertEquals("nodeinsertbefore12", "dom3:elem", name);
+        assertEquals("dom3:elem", name, "Nodeinsertbefore12Assert2");
     }
 }
 

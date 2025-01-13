@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,46 +27,45 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.nodeimpl.DOMErrorMonitor;
+import org.loboevolution.html.dom.domimpl.DOMErrorMonitor;
 import org.loboevolution.html.node.Attr;
-import org.loboevolution.html.node.DOMConfiguration;
+import org.loboevolution.html.dom.DOMConfiguration;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Normalize document with infoset set to true, check that
  * namespace declaration attributes are maintained.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-normalizeDocument</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#parameter-infoset</a>
  */
-public class infoset05Test extends LoboUnitTest {
+public class Infoset05Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        Element docElem;
-        DOMConfiguration domConfig;
-        DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
+        final Document doc;
+        final Element docElem;
+        final DOMConfiguration domConfig;
+        final DOMErrorMonitor errorMonitor = new DOMErrorMonitor();
 
-        Attr xmlnsAttr;
+        final Attr xmlnsAttr;
         doc = sampleXmlFile("barfoo.xml");
         domConfig = doc.getDomConfig();
         domConfig.setParameter("infoset", Boolean.TRUE);
         /*DOMErrorMonitor */
         domConfig.setParameter("error-handler", errorMonitor);
         doc.normalizeDocument();
-        assertTrue("normalizeError", errorMonitor.assertLowerSeverity(2));
+        assertTrue(errorMonitor.assertLowerSeverity(2), "Infoset05Assert3");
         docElem = doc.getDocumentElement();
         xmlnsAttr = docElem.getAttributeNode("xmlns");
-        assertNotNull("xmlnsAttrNotNull", xmlnsAttr);
+        assertNotNull(xmlnsAttr, "Infoset05Assert4");
     }
 }
 

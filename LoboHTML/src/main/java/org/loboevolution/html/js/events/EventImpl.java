@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,199 +25,181 @@
  */
 package org.loboevolution.html.js.events;
 
-import org.loboevolution.html.node.events.Event;
-import org.loboevolution.html.node.events.EventTarget;
+import lombok.*;
+import org.htmlunit.cssparser.dom.DOMException;
+import org.loboevolution.events.Event;
+import org.loboevolution.events.EventTarget;
+import org.loboevolution.html.dom.domimpl.HTMLElementImpl;
 import org.loboevolution.js.AbstractScriptableDelegate;
-import org.loboevolution.type.EventPhase;
+import org.mozilla.javascript.NativeObject;
 
+import java.awt.event.InputEvent;
 import java.util.List;
 
 /**
  * <p>EventImpl class.</p>
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class EventImpl extends AbstractScriptableDelegate implements Event {
-	
-	private String eventType;
-	
-	private boolean cancelable;
-	
-	private boolean canBubble;
-	
-	/**
-	 * <p>Constructor for EventImpl.</p>
-	 *
-	 * @param eventTypeArg a {@link java.lang.String} object.
-	 * @param canBubbleArg a boolean.
-	 * @param cancelableArg a boolean.
-	 */
-	public EventImpl(String eventTypeArg, boolean canBubbleArg, boolean cancelableArg) {
-		eventType = eventTypeArg;
-		canBubble = canBubbleArg;
-		cancelable = cancelableArg;
-	}
-	
-	/**
-	 * <p>Constructor for EventImpl.</p>
-	 */
-	public EventImpl() {
-		eventType = null;
-		canBubble = false;
-		cancelable = false;
-	}
-	
-	/** {@inheritDoc} */
-	@Override
-	public void initEvent(String eventTypeArg, boolean canBubbleArg, boolean cancelableArg) {
-		eventType = eventTypeArg;
-		canBubble = canBubbleArg;
-		cancelable = cancelableArg;
-	}
 
-	/** {@inheritDoc} */
-	@Override
-	public String getType() {
-		return this.eventType;
-	}
+    private final long mTimeStamp = System.currentTimeMillis();
+    private HTMLElementImpl target;
+    private HTMLElementImpl currentTarget;
+    private short eventPhase;
+    private int mSeekTo;
+    private Object type;
 
-	/** {@inheritDoc} */
-	@Override
-	public EventTarget getTarget() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private Boolean bubbles = false;
+    private Boolean cancelable = false;
+    private Boolean composed = false;
+    private Boolean stopPropagation = false;
+    private Boolean trusted = false;
+    private Boolean defaultPrevented = false;
+    private InputEvent inputEvent;
 
-	/** {@inheritDoc} */
-	@Override
-	public EventTarget getCurrentTarget() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isBubbles() {
-		return this.canBubble;
-	}
+    /**
+     * <p>Constructor for EventImpl.</p>
+     */
+    public EventImpl(InputEvent inputEvent){
+        this.inputEvent = inputEvent;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isCancelable() {
-		return this.cancelable;
-	}
+    /**
+     * <p>Constructor for EventImpl.</p>
+     */
+    public EventImpl(final Object[] params) throws DOMException {
+        setParams(params);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public double getTimeStamp() {
-		return System.currentTimeMillis();
-	}
+    protected void setParams(final Object[] params) throws DOMException {
+        if (params != null && params.length > 0) {
+            this.type = params[0];
+            if (params.length > 1) {
+                if (params[1] != null && params[1] instanceof NativeObject obj) {
+                    this.bubbles = obj.get("bubbles") != null;
+                    this.cancelable = obj.get("cancelable") != null ? (Boolean) obj.get("cancelable") : false;
+                    this.composed = obj.get("composed") != null ? (Boolean) obj.get("composed") : false;
+                }
+            }
+        } else {
+            throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Failed : 1 argument required, but only 0 present.");
+        }
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void stopPropagation() {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initEvent(final String type, final Boolean bubbles, final boolean cancelable) {
+        this.type = type;
+        this.bubbles = bubbles;
+        this.cancelable = cancelable;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void preventDefault() {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initEvent(final String type, final Boolean bubbles) {
+        initEvent(type, bubbles, false);
 
-	/** {@inheritDoc} */
-	@Override
-	public void setCancelBubble(boolean cancelBubble) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isComposed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initEvent(final String type) {
+        initEvent(type, false, false);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isDefaultPrevented() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public void preventDefault() {
+        if (cancelable) {
+            defaultPrevented = true;
+        }
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public EventPhase getEventPhase() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Boolean getDefaultPrevented() {
+        return cancelable && defaultPrevented;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isIsTrusted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public Boolean getReturnValue() {
+        return !defaultPrevented;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isReturnValue() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public EventTarget getSrcElement() {
+        return null;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void setReturnValue(boolean returnValue) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public double getTimeStamp() {
+        return System.currentTimeMillis();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public EventTarget getSrcElement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<EventTarget> getComposedPath() {
+        return List.of();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public List<EventTarget> composedPath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void getStopImmediatePropagation() {
+        getStopPropagation();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void initEvent(String type, boolean bubbles) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void getStopPropagation() {
+        stopPropagation = true;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void initEvent(String type) {
-		// TODO Auto-generated method stub
-		
-	}
+    public boolean isPropogationStopped() {
+        return stopPropagation;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void stopImmediatePropagation() {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setReturnValue(final Object newValue) {
+        if (newValue instanceof Boolean) {
+            if (cancelable) {
+                defaultPrevented = (Boolean) newValue;
+            }
+        }
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isCancelBubble() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    protected String getStringVal(NativeObject obj, String key) {
+        return obj.get(key) != null ? (String) obj.get(key) : "";
+    }
 
-	@Override
-	public String toString() {
-		return "[object Event]";
-	}
+    protected Double getDoubleVal(NativeObject obj, String key) {
+        return obj.get(key) != null ? ((Double) obj.get(key)) : 0d;
+    }
+
+    protected Long getLongVal(NativeObject obj, String key) {
+        return obj.get(key) != null ? ((Double) obj.get(key)).longValue() : 0;
+    }
+
+    protected Boolean getBoolVal(NativeObject obj, String key) {
+        if (obj.get(key) instanceof String) {
+            return "true".equals(obj.get(key)) || "1.0".equals(obj.get(key));
+        }
+
+        if (obj.get(key) instanceof Double) {
+            return ((Double) obj.get(key) == 1d);
+        }
+
+        if (obj.get(key) instanceof Boolean) {
+            return (Boolean) obj.get(key);
+        }
+
+        return obj.get(key) != null;
+    }
+
+    @Override
+    public String toString() {
+        return "[object Event]";
+    }
 }

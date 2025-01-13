@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,42 +26,41 @@
 
 package org.loboevolution.domts.level3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Call getSchemaTypeInfo on title attribute for the first "em" element from DTD validated document.
- *
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Element-schemaTypeInfo</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeName</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-typeNamespace</a>
  */
-public class elementgetschematypeinfo01Test extends LoboUnitTest {
+public class Elementgetschematypeinfo01Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        TypeInfo typeInfo;
-        String typeNS;
-        String typeName;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element elem;
+        final TypeInfo typeInfo;
+        final String typeNS;
+        final String typeName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("em");
         elem = (Element) elemList.item(0);
         typeInfo = elem.getSchemaTypeInfo();
-        assertNotNull("typeInfoNotNull", typeInfo);
+        assertNotNull(typeInfo, "Elementgetschematypeinfo01Assert3");
         typeName = typeInfo.getTypeName();
-        assertNull("nameIsNull", typeName);
+        assertNull(typeName, "Elementgetschematypeinfo01Assert4");
         typeNS = typeInfo.getTypeNamespace();
-        assertNull("nsIsNull", typeNS);
+        assertNull(typeNS, "Elementgetschematypeinfo01Assert5");
     }
 }
 

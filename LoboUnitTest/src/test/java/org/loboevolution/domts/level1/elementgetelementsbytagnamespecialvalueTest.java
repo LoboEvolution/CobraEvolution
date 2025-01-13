@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -37,7 +37,7 @@ import org.loboevolution.html.node.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -48,29 +48,26 @@ import static org.junit.Assert.*;
  * of the last employee by using the special value "*".
  * The method should return all the descendant children(6)
  * in the order the children were encountered.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D</a>
  */
-public class elementgetelementsbytagnamespecialvalueTest extends LoboUnitTest {
+public class ElementgetelementsbytagnamespecialvalueTest extends LoboUnitTest {
 
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element lastEmployee;
-        HTMLCollection lastempList;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element lastEmployee;
+        final HTMLCollection lastempList;
         Node child;
         String childName;
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
 
-        List<String> expectedResult = new ArrayList<>();
+        final List<String> expectedResult = new ArrayList<>();
         expectedResult.add("EMPLOYEEID");
         expectedResult.add("NAME");
         expectedResult.add("POSITION");
@@ -87,7 +84,7 @@ public class elementgetelementsbytagnamespecialvalueTest extends LoboUnitTest {
             childName = child.getNodeName();
             result.add(childName);
         }
-        assertEquals("tagNames", expectedResult, result);
+        assertEquals(expectedResult, result, "ElementgetelementsbytagnamespecialvalueAssert1");
     }
 }
 

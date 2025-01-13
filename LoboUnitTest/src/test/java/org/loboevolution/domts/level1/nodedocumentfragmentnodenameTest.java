@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,27 +42,24 @@ import static org.junit.Assert.*;
  * "createDocumentFragment()" method and check the string
  * returned by the "getNodeName()" method.   It should be
  * equal to "#document-fragment".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-F68D095</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-B63ED1A3">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-B63ED1A3</a>
  */
-public class nodedocumentfragmentnodenameTest extends LoboUnitTest {
+public class NodedocumentfragmentnodenameTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFragment;
-        String documentFragmentName;
+        final Document doc;
+        final DocumentFragment docFragment;
+        final String documentFragmentName;
         doc = sampleXmlFile("staff.xml");
         docFragment = doc.createDocumentFragment();
         documentFragmentName = docFragment.getNodeName();
-        assertEquals("nodeDocumentFragmentNodeNameAssert1", "[object DocumentFragment]", documentFragmentName);
+        assertEquals("[object DocumentFragment]", documentFragmentName, "NodedocumentfragmentnodenameAssert1");
     }
 }
 

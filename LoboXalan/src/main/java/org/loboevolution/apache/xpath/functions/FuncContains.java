@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,15 +34,15 @@ public class FuncContains extends Function2Args {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
 
-    String s1 = m_arg0.execute(xctxt).str();
-    String s2 = m_arg1.execute(xctxt).str();
+    final String s1 = m_arg0.execute(xctxt).str();
+    final String s2 = m_arg1.execute(xctxt).str();
 
     // Add this check for JDK consistency for empty strings.
     if (s1.length() == 0 && s2.length() == 0) return XBoolean.S_TRUE;
 
-    int index = s1.indexOf(s2);
+    final int index = s1.indexOf(s2);
 
     return (index > -1) ? XBoolean.S_TRUE : XBoolean.S_FALSE;
   }

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -42,30 +42,26 @@ import static org.junit.Assert.assertNotNull;
  * returns the namespace URI of this node, or null if unspecified.
  * <p>
  * Retrieve the first employee node and invoke the "getNamespaceURI()"
- * method.   The method should return "http://www.nist.gov".
- *
- * @author NIST
- * @author Mary Brady
+ * method.   The method should return "<a href="http://www.nist.gov">...</a>".
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSname">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSname</a>
  */
-public class namespaceURI03Test extends LoboUnitTest {
+public class NamespaceURI03Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        String employeeNamespace;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final String employeeNamespace;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagName("employee");
-        testEmployee = (Element)elementList.item(0);
-        assertNotNull("employeeNotNull", testEmployee);
+        testEmployee = (Element) elementList.item(0);
+        assertNotNull(testEmployee);
         employeeNamespace = testEmployee.getNamespaceURI();
-        assertEquals("namespaceURI", "http://www.nist.gov", employeeNamespace);
+        assertEquals("http://www.nist.gov", employeeNamespace);
     }
 }
 

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The "setValue()" method for an attribute creates a
@@ -46,9 +46,7 @@ import static org.junit.Assert.*;
  * parsed and therefore should still be the same upon
  * retrieval. This test uses the "getNamedItem(name)" method
  * from the NamedNodeMap interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-221662474">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-221662474</a>
  * @see <a href="http://lists.w3.org/Archives/Public/www-dom-ts/2002Apr/0057.html">http://lists.w3.org/Archives/Public/www-dom-ts/2002Apr/0057.html</a>
  */
@@ -56,15 +54,14 @@ public class AttrCreateTextNodeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection addressList;
-        Element testNode;
-        NamedNodeMap attributes;
-        Attr streetAttr;
+        final Document doc;
+        final HTMLCollection addressList;
+        final Element testNode;
+        final NamedNodeMap attributes;
+        final Attr streetAttr;
         String value;
         doc = sampleXmlFile("staff.xml");
         addressList = doc.getElementsByTagName("address");
@@ -73,9 +70,9 @@ public class AttrCreateTextNodeTest extends LoboUnitTest {
         streetAttr = (Attr) attributes.getNamedItem("street");
         streetAttr.setValue("Y&ent1;");
         value = streetAttr.getValue();
-        assertEquals("value", "Y&ent1;", value);
+        assertEquals("Y&ent1;", value, "AttrCreateTextNodeAssert1");
         value = streetAttr.getNodeValue();
-        assertEquals("nodeValue", "Y&ent1;", value);
+        assertEquals("Y&ent1;", value, "AttrCreateTextNodeAssert2");
     }
 }
 

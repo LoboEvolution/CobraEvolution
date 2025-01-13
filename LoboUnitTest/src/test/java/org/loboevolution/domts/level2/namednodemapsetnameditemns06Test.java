@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -36,7 +36,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -45,23 +45,21 @@ import static org.junit.Assert.assertTrue;
  * Retreieve the second element whose localName is address and its attributes into a named node map.
  * Invoke setNamedItemNS on the second NamedNodeMap specifying the first domestic attribute from
  * the first map.  This should raise an INUSE_ATTRIBIUTE_ERR.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-setNamedItemNS</a>
  */
-public class namednodemapsetnameditemns06Test extends LoboUnitTest {
+public class Namednodemapsetnameditemns06Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
      */
     @Test
     public void runTest() {
-        Document doc;
+        final Document doc;
         NamedNodeMap attributes;
-        HTMLCollection elementList;
+        final HTMLCollection elementList;
         Element element;
-        Attr attr;
+        final Attr attr;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
         element = (Element) elementList.item(0);
@@ -72,10 +70,10 @@ public class namednodemapsetnameditemns06Test extends LoboUnitTest {
         boolean success = false;
         try {
             attributes.setNamedItemNS(attr);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.INUSE_ATTRIBUTE_ERR);
         }
-        assertTrue("namednodemapsetnameditemns06", success);
+        assertTrue(success);
     }
 }
 

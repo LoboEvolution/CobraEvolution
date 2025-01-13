@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,52 +25,38 @@
  */
 package org.loboevolution.html.dom.canvas;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.loboevolution.html.dom.ImageData;
 
 import java.awt.image.BufferedImage;
 
 /**
  * <p>ImageDataImpl class.</p>
- *
- *
- *
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ImageDataImpl implements ImageData {
 
-	private final int width;
+	private int width;
 	
-	private final int height;
-	
-	private final BufferedImage image;
+	private int height;
+
+	private Object data;
+
 
 	/**
 	 * <p>Constructor for ImageDataImpl.</p>
 	 *
 	 * @param image a {@link java.awt.image.BufferedImage} object.
-	 * @param sw a int.
-	 * @param sh a int.
+	 * @param sw a {@link java.lang.Integer} object.
+	 * @param sh a {@link java.lang.Integer} object.
 	 */
-	public ImageDataImpl(BufferedImage image, int sw, int sh) {
-		this.image = image;
+	public ImageDataImpl(final BufferedImage image, final int sw, final int sh) {
+		this.data = image;
 		this.width = sw;
 		this.height = sh;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Object getData() {
-		return image;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getHeight() {
-		return height;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public int getWidth() {
-		return width;
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 package org.loboevolution.net;
 
+import lombok.Getter;
 import org.loboevolution.common.Strings;
 
 import java.util.Collections;
@@ -36,6 +37,7 @@ import java.util.Map;
 /**
  * <p>MimeType enum.</p>
  */
+@Getter
 public enum MimeType {
 
     ABW("application/x-abiword"),
@@ -117,33 +119,25 @@ public enum MimeType {
     private final String value;
     private static final Map<String, MimeType> ENUM_MAP;
 
-    MimeType(String value) {
+    MimeType(final String value) {
         this.value = value;
     }
 
     static {
-        Map<String, MimeType> map = new HashMap<>();
-        for (MimeType instance : MimeType.values()) {
+        final Map<String, MimeType> map = new HashMap<>();
+        for (final MimeType instance : MimeType.values()) {
             map.put(instance.getValue(), instance);
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
     /**
-     * <p> Getter for the field value </p>
-     *
-     * @return a {@link java.lang.String} object.
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
      * <p>get.</p>*
-     * @param actionName a {@link java.lang.String} object.
+     * @param action a {@link java.lang.String} object.
      * @return a {@link org.loboevolution.net.MimeType} object.
      */
-    public static MimeType get(String actionName) {
+    public static MimeType get(final String action) {
+        String actionName = action;
         if(Strings.isNotBlank(actionName) && actionName.contains(";")){
             actionName = actionName.split(";")[0];
         }

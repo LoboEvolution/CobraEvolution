@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,11 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -42,36 +41,27 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Invoke the createElementNS method on a new Document object with a null value for
  * namespaceURI, and a valid qualifiedName.  Check if a NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-DocCrElNS</a>
  */
-public class documentcreateelementNS05Test extends LoboUnitTest {
+public class DocumentcreateelementNS05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        String namespaceURI = null;
-
-        String qualifiedName = "null:xml";
+        final Document doc;
+        final String qualifiedName = "null:xml";
         doc = sampleXmlFile("staffNS.xml");
-
-        {
-            boolean success = false;
-            try {
-                element = doc.createElementNS(namespaceURI, qualifiedName);
-            } catch (DOMException ex) {
-                success = (ex.getCode() == DOMException.NAMESPACE_ERR);
-            }
-            assertTrue("documentcreateelementNS05", success);
+        boolean success = false;
+        try {
+            doc.createElementNS(null, qualifiedName);
+        } catch (final DOMException ex) {
+            success = (ex.getCode() == DOMException.NAMESPACE_ERR);
         }
+        assertTrue(success);
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,37 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.ProcessingInstruction;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using isEqualNode check if 2 new ProcessingInstruction nodes having the same data are equal and two others
  * having different data are not equal.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-isEqualNode</a>
  */
-public class nodeisequalnode32Test extends LoboUnitTest {
+public class Nodeisequalnode32Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        ProcessingInstruction pi1;
-        ProcessingInstruction pi2;
-        ProcessingInstruction pi3;
+        final Document doc;
+        final ProcessingInstruction pi1;
+        final ProcessingInstruction pi2;
+        final ProcessingInstruction pi3;
         boolean isEqual;
         doc = sampleXmlFile("hc_staff.xml");
         pi1 = doc.createProcessingInstruction("Target1", "pi");
         pi2 = doc.createProcessingInstruction("Target1", "pi");
         pi3 = doc.createProcessingInstruction("Target1", "#ProcessingInstruction");
         isEqual = pi1.isEqualNode(pi2);
-        assertTrue("nodeisequalnodeTrue29", isEqual);
+        assertTrue(isEqual, "Nodeisequalnode32Assert3");
         isEqual = pi1.isEqualNode(pi3);
-        assertFalse("nodeisequalnodeFalse29", isEqual);
+        assertFalse(isEqual, "Nodeisequalnode32Assert4");
     }
 }
 

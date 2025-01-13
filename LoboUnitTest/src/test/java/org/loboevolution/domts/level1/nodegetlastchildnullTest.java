@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -44,26 +44,23 @@ import static org.junit.Assert.assertNull;
  * Retrieve the Text node from the second child of the first
  * employee and invoke the "getLastChild()" method.   It
  * should return null.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-61AD09FB">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-61AD09FB</a>
  */
-public class nodegetlastchildnullTest extends LoboUnitTest {
+public class NodegetlastchildnullTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList employeeList;
-        Node secondChildNode;
-        Node textNode;
-        Node noChildNode;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList employeeList;
+        final Node secondChildNode;
+        final Node textNode;
+        final Node noChildNode;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("employee");
         employeeNode = elementList.item(0);
@@ -71,7 +68,7 @@ public class nodegetlastchildnullTest extends LoboUnitTest {
         secondChildNode = employeeList.item(1);
         textNode = secondChildNode.getFirstChild();
         noChildNode = textNode.getLastChild();
-        assertNull("nodeGetLastChildNullAssert1", noChildNode);
+        assertNull(noChildNode, "NodegetlastchildnullAssert2");
     }
 }
 

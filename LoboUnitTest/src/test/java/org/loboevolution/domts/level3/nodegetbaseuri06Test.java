@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,31 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * TODO Clarification: Create a new Element in this document.  Since its baseURI should be the baseURI of
  *  the Document Entity which I assume is not null, using getBaseURI check if the baseURI
  *  attribute of this Element node is not null.???
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Element</a>
  */
-public class nodegetbaseuri06Test extends LoboUnitTest {
+public class Nodegetbaseuri06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element newElement;
-        String baseURI;
+        final Document doc;
+        final String baseURI;
         doc = sampleXmlFile("barfoo.xml");
-        newElement = doc.createElementNS("http://www.w3.org/1999/xhtml", "br");
+        doc.createElementNS("http://www.w3.org/1999/xhtml", "br");
         baseURI = doc.getBaseURI();
-        assertNotNull("nodegetbaseuri06", baseURI);
+        assertNotNull(baseURI, "Nodegetbaseuri06Assert2");
     }
 }
 

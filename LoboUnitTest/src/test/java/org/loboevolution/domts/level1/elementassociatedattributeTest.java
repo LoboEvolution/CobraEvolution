@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,7 +35,7 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,32 +47,29 @@ import static org.junit.Assert.assertTrue;
  * Elements can actually have attributes.  This test uses
  * the "getNamedItem(name)" method from the NamedNodeMap
  * interface.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-84CF096</a>
  */
-public class elementassociatedattributeTest extends LoboUnitTest {
+public class ElementassociatedattributeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        NamedNodeMap attributes;
-        Attr domesticAttr;
-        boolean specified;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final NamedNodeMap attributes;
+        final Attr domesticAttr;
+        final boolean specified;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(0);
         attributes = testEmployee.getAttributes();
         domesticAttr = (Attr) attributes.getNamedItem("domestic");
         specified = domesticAttr.isSpecified();
-        assertTrue("domesticSpecified", specified);
+        assertTrue(specified, "ElementassociatedattributeAssert2");
     }
 }
 

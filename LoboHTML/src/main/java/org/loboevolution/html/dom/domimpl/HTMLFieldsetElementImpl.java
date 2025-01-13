@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class HTMLFieldsetElementImpl extends HTMLElementImpl implements HTMLFiel
 
     /** {@inheritDoc} */
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
+    protected RenderState createRenderState(final RenderState prevRenderState) {
         return new FieldsetRenderState(prevRenderState, this);
     }
 
@@ -61,7 +61,7 @@ public class HTMLFieldsetElementImpl extends HTMLElementImpl implements HTMLFiel
 
     /** {@inheritDoc} */
     @Override
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(final boolean disabled) {
 
     }
 
@@ -85,7 +85,7 @@ public class HTMLFieldsetElementImpl extends HTMLElementImpl implements HTMLFiel
 
     /** {@inheritDoc} */
     @Override
-    public void setName(String name) {
+    public void setName(final String name) {
 
     }
 
@@ -127,21 +127,18 @@ public class HTMLFieldsetElementImpl extends HTMLElementImpl implements HTMLFiel
 
     /** {@inheritDoc} */
     @Override
-    public void setCustomValidity(String error) {
+    public void setCustomValidity(final String error) {
 
     }
 
     /** {@inheritDoc} */
     @Override
     public Integer getClientWidth() {
-        int clientWidth = super.getClientWidth();
-        clientWidth = clientWidth == 0 ? getDocumentNode().getDocumentElement().getClientWidth() : clientWidth;
-
+        int clientWidth = getDocumentNode().getDocumentElement().getClientWidth();
         if (getRenderState() != null && getRenderState().getPaddingInsets() != null) {
             clientWidth -= getRenderState().getPaddingInsets().getRight();
             clientWidth -= getRenderState().getPaddingInsets().getLeft();
         }
-
         return clientWidth;
     }
 

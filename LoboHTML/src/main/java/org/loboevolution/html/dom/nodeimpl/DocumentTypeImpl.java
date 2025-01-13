@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@ package org.loboevolution.html.dom.nodeimpl;
 import org.htmlunit.cssparser.dom.DOMException;
 import lombok.NoArgsConstructor;
 import org.loboevolution.common.Strings;
-import org.loboevolution.html.dom.nodeimpl.event.EventTargetImpl;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 import org.loboevolution.html.node.Node;
@@ -40,7 +39,8 @@ import org.loboevolution.html.node.Node;
  * <p>DocumentTypeImpl class.</p>
  */
 @NoArgsConstructor
-public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
+public class DocumentTypeImpl extends NodeImpl implements DocumentType {
+
 	private String publicId;
 	private String qualifiedName;
 	private String systemId;
@@ -54,7 +54,7 @@ public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
 	 * @param publicId a {@link java.lang.String} object.
 	 * @param systemId a {@link java.lang.String} object.
 	 */
-	public DocumentTypeImpl(String qname, String publicId, String systemId) {
+	public DocumentTypeImpl(final String qname, final String publicId, final String systemId) {
 		this.qualifiedName = qname;
 		this.publicId = publicId;
 		this.systemId = systemId;
@@ -63,7 +63,7 @@ public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
 	/** {@inheritDoc} */
 	@Override
 	public String getLocalName() {
-		return null;
+		return "";
 	}
 
 	/** {@inheritDoc} */
@@ -84,6 +84,16 @@ public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
 		return Node.DOCUMENT_TYPE_NODE;
 	}
 
+	@Override
+	public String getNodeValue() throws DOMException {
+		return null;
+	}
+
+	@Override
+	public void setNodeValue(final String nodeValue) throws DOMException {
+		throw new DOMException(DOMException.INVALID_MODIFICATION_ERR, "readonly node");
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public String getPublicId() {
@@ -91,8 +101,18 @@ public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
 	}
 
 	@Override
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append node.");
+	}
+
+	@Override
+	public Node getParentNode() {
+		return getOwnerDocument();
+	}
+
+	@Override
+	public boolean hasAttributes() {
+		return false;
 	}
 
 	/** {@inheritDoc} */
@@ -120,7 +140,7 @@ public class DocumentTypeImpl extends EventTargetImpl implements DocumentType {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("<!DOCTYPE");
 		if (Strings.isNotBlank(getName())) {
 			builder.append(" ");

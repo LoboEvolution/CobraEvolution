@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,17 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -45,27 +47,35 @@ import static org.junit.Assert.assertNull;
  * Invoke createDocument on this DOMImplementation with a different valid qualifiedNames
  * and a valid publicId and systemId.  Check if the the DocumentType node was created
  * with its ownerDocument attribute set to null.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType">http://www.w3.org/TR/DOM-Level-2-Core/core#Level-2-Core-DOM-createDocType</a>
  */
-public class domimplementationcreatedocumenttype02Test extends LoboUnitTest {
+public class Domimplementationcreatedocumenttype02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
+        final Document doc;
+        final DOMImplementation domImpl;
         DocumentType newDocType;
         Document ownerDocument;
-        String publicId = "http://www.w3.org/DOM/Test/dom2.dtd";
-        String systemId = "dom2.dtd";
-        String qualifiedName;
-        java.util.List qualifiedNames = new java.util.ArrayList();
+        final String publicId = "http://www.w3.org/DOM/Test/dom2.dtd";
+        final String systemId = "dom2.dtd";
+        final List<String> qualifiedNames = getList();
+        doc = sampleXmlFile("staffNS.xml");
+        domImpl = doc.getImplementation();
+        for (String qualifiedName : qualifiedNames) {
+            newDocType = domImpl.createDocumentType(qualifiedName, publicId, systemId);
+            assertNotNull(newDocType);
+            ownerDocument = newDocType.getOwnerDocument();
+            assertNull(ownerDocument);
+        }
+    }
+
+    private static List<String> getList() {
+        final List<String> qualifiedNames = new ArrayList<>();
         qualifiedNames.add("_:_");
         qualifiedNames.add("_:h0");
         qualifiedNames.add("_:test");
@@ -80,17 +90,7 @@ public class domimplementationcreatedocumenttype02Test extends LoboUnitTest {
         qualifiedNames.add("a.b:c");
         qualifiedNames.add("a-b:c.j");
         qualifiedNames.add("a-b:c");
-
-        doc = sampleXmlFile("staffNS.xml");
-        
-        domImpl = doc.getImplementation();
-        for (int indexN10077 = 0; indexN10077 < qualifiedNames.size(); indexN10077++) {
-            qualifiedName = (String) qualifiedNames.get(indexN10077);
-            newDocType = domImpl.createDocumentType(qualifiedName, publicId, systemId);
-            assertNotNull("domimplementationcreatedocumenttype02_newDocType", newDocType);
-            ownerDocument = newDocType.getOwnerDocument();
-            assertNull("domimplementationcreatedocumenttype02_ownerDocument", ownerDocument);
-        }
+        return qualifiedNames;
     }
 }
 

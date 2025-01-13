@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -41,35 +41,31 @@ import static org.junit.Assert.*;
  * <p>
  * Retreive an element and its attributes.  Then remove the element and check the name of
  * the ownerElement of attribute of the attribute "street".
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement">http://www.w3.org/TR/DOM-Level-2-Core/core#Attr-ownerElement</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class attrgetownerelement05Test extends LoboUnitTest {
+public class Attrgetownerelement05Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Node ownerElement;
-        HTMLCollection elementList;
-        String ownerElementName;
-        NamedNodeMap nodeMap;
-        String nullNS = null;
+        final Document doc;
+        final Element element;
+        final Node ownerElement;
+        final HTMLCollection elementList;
+        final String ownerElementName;
+        final NamedNodeMap nodeMap;
         doc = sampleXmlFile("staffNS.xml");
         elementList = doc.getElementsByTagNameNS("*", "address");
         element = (Element) elementList.item(1);
         nodeMap = element.getAttributes();
-        Attr attr = (Attr) nodeMap.getNamedItemNS(nullNS, "street");
+        final Attr attr = (Attr) nodeMap.getNamedItemNS(null, "street");
         ownerElement = attr.getOwnerElement();
         ownerElementName = ownerElement.getNodeName();
-        assertEquals("attrgetownerelement05", "ADDRESS", ownerElementName);
+        assertEquals("ADDRESS", ownerElementName);
     }
 }
 

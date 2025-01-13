@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,24 +42,21 @@ import static org.junit.Assert.*;
  * using the string "employee" as the tagName.
  * The method should return a NodeList whose length is
  * "5".
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1938918D</a>
  */
-public class elementgetelementsbytagnamenomatchTest extends LoboUnitTest {
+public class ElementgetelementsbytagnamenomatchTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
+        final Document doc;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("noMatch");
-        assertEquals("elementGetElementsByTagNameNoMatchNoMatchAssert", 0, elementList.getLength());
+        assertEquals(0, elementList.getLength(), "ElementgetelementsbytagnamenomatchAssert1");
     }
 }
 

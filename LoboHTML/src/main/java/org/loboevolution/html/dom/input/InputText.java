@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,9 @@
 
 package org.loboevolution.html.dom.input;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.ArrayUtilities;
 import org.loboevolution.common.Strings;
 import org.loboevolution.component.input.Autocomplete;
@@ -34,6 +37,7 @@ import org.loboevolution.html.control.InputControl;
 import org.loboevolution.html.control.RUIControl;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 import org.loboevolution.html.js.Executor;
+import org.loboevolution.html.js.WindowImpl;
 import org.loboevolution.html.renderer.HtmlController;
 
 import javax.swing.*;
@@ -41,20 +45,24 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * <p>InputText class.</p>
  */
+@Slf4j
 public class InputText extends BasicInput {
-	
-	private static final Logger logger = Logger.getLogger(InputText.class.getName());
 
 	protected final JTextField iText = new JTextField();
 	
+	@Getter
+	@Setter
 	private boolean textWrittenIn;
 	
 	private final HTMLInputElementImpl modelNode;
@@ -65,10 +73,10 @@ public class InputText extends BasicInput {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.InputControl} object.
 	 */
-	public InputText(HTMLInputElementImpl modelNode, InputControl ic) {
+	public InputText(final HTMLInputElementImpl modelNode, final InputControl ic) {
 		this.modelNode = modelNode;
 		setElement(this.modelNode);
-		setjComponent(iText);
+		setJComponent(iText);
 		final String type = modelNode.getType();
 		final Font font = iText.getFont();
 		iText.setFont(font.deriveFont(modelNode.getHtmlRendererConfig().getFontSize()));
@@ -79,7 +87,7 @@ public class InputText extends BasicInput {
 		final String baseUrl = modelNode.getBaseURI();
 
 		if (modelNode.isAutocomplete()) {
-			List<String> list = suggestionList(type, baseUrl);
+			final List<String> list = suggestionList(type, baseUrl);
 			if (ArrayUtilities.isNotBlank(list)) {
 				Autocomplete.setupAutoComplete(iText, list);
 			}
@@ -96,7 +104,7 @@ public class InputText extends BasicInput {
 		iText.addKeyListener(this);
 		iText.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {
 				modelNode.setValue(modelNode.getValue().concat(String.valueOf(e.getKeyChar())));
 			}
 		});
@@ -105,7 +113,7 @@ public class InputText extends BasicInput {
 		iText.addMouseListener(this);
 		iText.addActionListener(event -> HtmlController.getInstance().onEnterPressed(modelNode));
 
-		RUIControl ruiControl = ic.getRUIControl();
+		final RUIControl ruiControl = ic.getRUIControl();
 		final Insets borderInsets = ruiControl.getBorderInsets();
 		
 		iText.setMargin(new Insets(ruiControl.getMarginTop(), ruiControl.getMarginLeft(), ruiControl.getMarginBottom(), ruiControl.getMarginRight()));
@@ -122,7 +130,8 @@ public class InputText extends BasicInput {
 			});
 			
 			if (modelNode.getOnselect() != null) {
-				Executor.executeFunction(modelNode, modelNode.getOnselect(), null, new Object[] {});
+				final WindowImpl win = (WindowImpl) modelNode.getDocumentNode().getDefaultView();
+				Executor.executeFunction(modelNode, modelNode.getOnselect(), new Object[] {}, win.getContextFactory());
 			}
 		}
 
@@ -158,10 +167,10 @@ public class InputText extends BasicInput {
 	/**
 	 * <p>setSelectionRange.</p>
 	 *
-	 * @param start a int.
-	 * @param end a int.
+	 * @param start a {@link java.lang.Integer} object.
+	 * @param end a {@link java.lang.Integer} object.
 	 */
-	public void setSelectionRange(int start, int end) {
+	public void setSelectionRange(final int start, final int end) {
 		iText.setSelectionStart(start);
 		iText.setSelectionEnd(end);
 	}
@@ -178,39 +187,39 @@ public class InputText extends BasicInput {
 	 *
 	 * @param value a {@link java.lang.String} object.
 	 */
-	public void setText(String value) {
+	public void setText(final String value) {
 		iText.setText(value);
 	}
 	
 	/**
 	 * <p>setRangeText.</p>
 	 *
-	 * @param start a int.
-	 * @param end a int.
+	 * @param start a {@link java.lang.Integer} object.
+	 * @param end a {@link java.lang.Integer} object.
 	 * @param text a {@link java.lang.String} object.
 	 */
-	public void setRangeText(int start, int end, String text) {
+	public void setRangeText(final int start, final int end, final String text) {
 		try {
 			iText.getDocument().insertString(start, text, null);
 			setSelectionRange(start, end);
-		} catch (BadLocationException e) {
-			logger.severe(e.getMessage());
+		} catch (final BadLocationException e) {
+			log.error(e.getMessage(), e);
 		}
 	}
 	
-	private void placeholder(String text) {
+	private void placeholder(final String text) {
 		this.customizeText(text);
 
 		iText.addFocusListener(new FocusListener() {
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void focusGained(final FocusEvent e) {
 				if (!isTextWrittenIn()) {
 					iText.setText("");
 				}
 			}
 
 			@Override
-			public void focusLost(FocusEvent e) {
+			public void focusLost(final FocusEvent e) {
 				if (Strings.isBlank(iText.getText())) {
 					customizeText(text);
 				}
@@ -218,27 +227,28 @@ public class InputText extends BasicInput {
 		});
 	}
 
-	private void customizeText(String text) {
+	private void customizeText(final String text) {
 		iText.setText(text);
 		iText.setForeground(new Color(160, 160, 160));
 		setTextWrittenIn(false);
 	}
 
-	private List<String> suggestionList(String type, String baseUrl) {
+	private List<String> suggestionList(final String type, final String baseUrl) {
 		final HtmlRendererConfig config = modelNode.getHtmlRendererConfig();
-		List<String> list = config.autocomplete(type, "", baseUrl);
+		final List<String> list = config.autocomplete(type, "", baseUrl);
 		if (ArrayUtilities.isNotBlank(list))
 			return list;
 		return new ArrayList<>();
 	}
 
-	private class LimitedDocument extends PlainDocument {
+	private final class LimitedDocument extends PlainDocument {
 
-		private static final long serialVersionUID = 1L;
+		@Serial
+        private static final long serialVersionUID = 1L;
 
 		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			int max = modelNode.getMaxLength();
+		public void insertString(final int offs, final String str, final AttributeSet a) throws BadLocationException {
+			final int max = modelNode.getMaxLength();
 
 			final int docLength = getLength();
 			if (docLength >= max) {
@@ -252,23 +262,5 @@ public class InputText extends BasicInput {
 				super.insertString(offs, str, a);
 			}
 		}
-	}
-	
-	/**
-	 * <p>isTextWrittenIn.</p>
-	 *
-	 * @return a boolean.
-	 */
-	public boolean isTextWrittenIn() {
-		return textWrittenIn;
-	}
-
-	/**
-	 * <p>Setter for the field textWrittenIn.</p>
-	 *
-	 * @param textWrittenIn a boolean.
-	 */
-	public void setTextWrittenIn(boolean textWrittenIn) {
-		this.textWrittenIn = textWrittenIn;
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,25 +35,23 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.TypeInfo;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Check that the simpleType of an attributes derives by restriction from itself
  * and from its base type.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#TypeInfo-isDerivedFrom</a>
  */
-public class typeinfoisderivedfrom64Test extends LoboUnitTest {
+public class Typeinfoisderivedfrom64Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acElem;
-        Attr classAttr;
-        TypeInfo attrTypeInfo;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acElem;
+        final Attr classAttr;
+        final TypeInfo attrTypeInfo;
         boolean retValue;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
@@ -61,9 +59,9 @@ public class typeinfoisderivedfrom64Test extends LoboUnitTest {
         classAttr = acElem.getAttributeNode("class");
         attrTypeInfo = classAttr.getSchemaTypeInfo();
         retValue = attrTypeInfo.isDerivedFrom("http://www.w3.org/1999/xhtml", "classType", 1);
-        assertTrue("derivedFromClassType", retValue);
+        assertTrue(retValue, "Typeinfoisderivedfrom64Assert2");
         retValue = attrTypeInfo.isDerivedFrom("http://www.w3.org/2001/XMLSchema", "string", 1);
-        assertTrue("derivedFromString", retValue);
+        assertTrue(retValue, "Typeinfoisderivedfrom64Assert3");
     }
 }
 

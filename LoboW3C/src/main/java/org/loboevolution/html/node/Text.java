@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ public interface Text extends CharacterData {
     /**
      * Splits data at the given offset and returns the remainder as Text node.
      *
-     * @param offset a int.
+     * @param offset a {@link java.lang.Integer} object.
      * @return a {@link org.loboevolution.html.node.Text} object.
      */
     Text splitText(int offset);

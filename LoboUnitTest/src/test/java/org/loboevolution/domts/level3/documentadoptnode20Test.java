@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,41 @@
 package org.loboevolution.domts.level3;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the adoptNode method on a new document with the notation notation2 as the source.  Since this is
  * read-only verify if a NO_MODIFICATION_ALLOWED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode20Test extends LoboUnitTest {
+public class Documentadoptnode20Test extends LoboUnitTest {
 
 
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        NamedNodeMap notationMap;
-        Notation notation;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
+        final NamedNodeMap notationMap;
+        final Notation notation;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         rootNS = docElem.getNamespaceURI();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         docType = doc.getDoctype();
         notationMap = docType.getNotations();
         notation = (Notation) notationMap.getNamedItem("notation2");
@@ -72,10 +69,10 @@ public class documentadoptnode20Test extends LoboUnitTest {
         boolean success = false;
         try {
             newDoc.adoptNode(notation);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NO_MODIFICATION_ALLOWED_ERR);
         }
-        assertTrue("throw_NO_MODIFICATION_ALLOWED_ERR", success);
+        assertTrue(success, "Documentadoptnode20Assert2");
 
     }
 }

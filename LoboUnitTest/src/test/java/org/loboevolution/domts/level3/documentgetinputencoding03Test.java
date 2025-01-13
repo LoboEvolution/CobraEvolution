@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,29 +27,27 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Call the getInputEncoding method on a on a UTF-16 (BE) encoded document and check if the value returned
  * is UTF-16BE.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-inputEncoding">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-inputEncoding</a>
  */
-public class documentgetinputencoding03Test extends LoboUnitTest {
+public class Documentgetinputencoding03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String encodingName;
+        final Document doc;
+        final String encodingName;
         doc = sampleXmlFile("barfoo_utf16.xml");
         encodingName = doc.getInputEncoding();
-        assertEquals("documentgetinputencoding03", "UTF-16BE", encodingName);
+        assertEquals("UTF-16BE", encodingName, "Documentgetinputencoding03Assert2");
     }
 }
 

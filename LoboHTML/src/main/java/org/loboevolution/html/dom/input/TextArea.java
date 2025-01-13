@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ import org.loboevolution.html.control.RUIControl;
 import org.loboevolution.html.control.TextAreaControl;
 import org.loboevolution.html.dom.domimpl.HTMLTextAreaElementImpl;
 import org.loboevolution.html.js.Executor;
+import org.loboevolution.html.js.WindowImpl;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -41,6 +42,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +53,7 @@ public class TextArea extends BasicInput {
 
 	private final JTextArea  jtArea = new JTextArea();
 	
-	private HTMLTextAreaElementImpl modelNode;
+	private final HTMLTextAreaElementImpl modelNode;
 	
 	/**
 	 * <p>Constructor for InputText.</p>
@@ -59,10 +61,10 @@ public class TextArea extends BasicInput {
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLTextAreaElementImpl} object.
 	 * @param ic a {@link org.loboevolution.html.control.TextAreaControl} object.
 	 */
-	public TextArea(HTMLTextAreaElementImpl modelNode, TextAreaControl ic) {
+	public TextArea(final HTMLTextAreaElementImpl modelNode, final TextAreaControl ic) {
 		this.modelNode = modelNode;
 		setElement(modelNode);
-		setjComponent(jtArea);
+		setJComponent(jtArea);
 		
 		final Font font = jtArea.getFont();
 		jtArea.setFont(font.deriveFont(modelNode.getHtmlRendererConfig().getFontSize()));
@@ -74,11 +76,12 @@ public class TextArea extends BasicInput {
 		jtArea.setEnabled(!modelNode.isDisabled());
 		jtArea.setEditable(!modelNode.isReadOnly());
 		
-		MouseInputAdapter mouseHandler = new MouseInputAdapter() {
+		final MouseInputAdapter mouseHandler = new MouseInputAdapter() {
 			@Override
 			public void mouseEntered(final MouseEvent e) {
 				if (modelNode.getOnmouseover() != null) {
-					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), null, new Object[] {});
+					final WindowImpl win = (WindowImpl) modelNode.getDocumentNode().getDefaultView();
+					Executor.executeFunction(modelNode, modelNode.getOnmouseover(), new Object[] {}, win.getContextFactory());
 				}
 			}
 		};
@@ -87,11 +90,11 @@ public class TextArea extends BasicInput {
 		
 		jtArea.addFocusListener(new FocusAdapter() {
 			@Override
-			public void focusLost(FocusEvent event) {
-				String selectedText = jtArea.getSelectedText();
+			public void focusLost(final FocusEvent event) {
+				final String selectedText = jtArea.getSelectedText();
 				if (Strings.isNotBlank(selectedText)) {
-					Pattern word = Pattern.compile(selectedText);
-					Matcher match = word.matcher(modelNode.getValue());
+					final Pattern word = Pattern.compile(selectedText);
+					final Matcher match = word.matcher(modelNode.getValue());
 					
 					while (match.find()) {
 					     modelNode.setSelectionRange(match.start(), match.end()-1);
@@ -105,7 +108,7 @@ public class TextArea extends BasicInput {
 		jtArea.addCaretListener(this);
 		jtArea.addMouseListener(this);
 		
-		RUIControl ruiControl = ic.getRUIControl();
+		final RUIControl ruiControl = ic.getRUIControl();
 		final Insets borderInsets = ruiControl.getBorderInsets();
 		
 		jtArea.setMargin(new Insets(ruiControl.getMarginTop(), ruiControl.getMarginLeft(), ruiControl.getMarginBottom(), ruiControl.getMarginRight()));
@@ -153,25 +156,25 @@ public class TextArea extends BasicInput {
 	}
 	
 	
-	private Dimension getPreferredSize(HTMLTextAreaElementImpl modelNode) {
-		int pw;
-		int cols =  this.modelNode.getCols();
+	private Dimension getPreferredSize(final HTMLTextAreaElementImpl modelNode) {
+		final int pw;
+		final int cols =  this.modelNode.getCols();
 		if (cols == -1) {
 			pw = modelNode.getClientWidth();
 		} else {
-			Font f = this.jtArea.getFont();
-			FontMetrics fm = this.jtArea.getFontMetrics(f);
-			Insets insets = this.jtArea.getInsets();
+			final Font f = this.jtArea.getFont();
+			final FontMetrics fm = this.jtArea.getFontMetrics(f);
+			final Insets insets = this.jtArea.getInsets();
 			pw = insets.left + insets.right + fm.charWidth('*') * cols;
 		}
-		int ph;
-		int rows = this.modelNode.getRows();
+		final int ph;
+		final int rows = this.modelNode.getRows();
 		if (rows == -1) {
 			ph = modelNode.getClientHeight();
 		} else {
-			Font f = this.jtArea.getFont();
-			FontMetrics fm = this.jtArea.getFontMetrics(f);
-			Insets insets = this.jtArea.getInsets();
+			final Font f = this.jtArea.getFont();
+			final FontMetrics fm = this.jtArea.getFontMetrics(f);
+			final Insets insets = this.jtArea.getInsets();
 			ph = insets.top + insets.bottom + fm.getHeight() * rows;
 		}
 		return new Dimension(pw, ph);
@@ -179,13 +182,14 @@ public class TextArea extends BasicInput {
 	}
 
 	
-	private class LimitedDocument extends PlainDocument {
+	private final class LimitedDocument extends PlainDocument {
 
-		private static final long serialVersionUID = 1L;
+		@Serial
+        private static final long serialVersionUID = 1L;
 
 		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			int max = modelNode.getMaxLength();
+		public void insertString(final int offs, final String str, final AttributeSet a) throws BadLocationException {
+			final int max = modelNode.getMaxLength();
 
 			final int docLength = getLength();
 			if (docLength >= max) {

@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,14 @@
 package org.loboevolution.domts.level1;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -47,30 +47,26 @@ import static org.junit.Assert.assertTrue;
  * node that is one of its ancestors(root node).   An
  * attempt to insert such a node should raise the
  * desired exception.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-258A00AF')/constant[@name='HIERARCHY_REQUEST_ERR'])">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-258A00AF')/constant[@name='HIERARCHY_REQUEST_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-952280727')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='HIERARCHY_REQUEST_ERR'])">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#xpointer(id('ID-952280727')/raises/exception[@name='DOMException']/descr/p[substring-before(.,':')='HIERARCHY_REQUEST_ERR'])</a>
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-952280727</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=249">http://www.w3.org/Bugs/Public/show_bug.cgi?id=249</a>
  */
-public class nodeinsertbeforenodeancestorTest extends LoboUnitTest {
+public class NodeinsertbeforenodeancestorTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Node newChild;
-        HTMLCollection elementList;
-        Node employeeNode;
-        NodeList childList;
-        Node refChild;
-        Node insertedNode;
+        final Document doc;
+        final Node newChild;
+        final HTMLCollection elementList;
+        final Node employeeNode;
+        final NodeList childList;
+        final Node refChild;
         doc = sampleXmlFile("staff.xml");
         newChild = doc.getDocumentElement();
         elementList = doc.getElementsByTagName("employee");
@@ -81,11 +77,11 @@ public class nodeinsertbeforenodeancestorTest extends LoboUnitTest {
         {
             boolean success = false;
             try {
-                insertedNode = employeeNode.insertBefore(newChild, refChild);
-            } catch (DOMException ex) {
+                employeeNode.insertBefore(newChild, refChild);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.HIERARCHY_REQUEST_ERR);
             }
-            assertTrue("throw_HIERARCHY_REQUEST_ERR", success);
+            assertTrue(success, "NodeinsertbeforenodeancestorAssert2");
         }
     }
 

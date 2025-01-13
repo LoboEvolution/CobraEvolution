@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
@@ -35,29 +35,27 @@ import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * First use setAttribute to change the class attribute of the third acronym element.  Invoke setIdAttribute
  * on the newly set attribute. Verify by calling isID on the new attribute and getElementById on document.
  * Invoke setIdAttribute again to reset.  Calling isID should return false.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttr">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-ElSetIdAttr</a>
  */
-public class elementsetidattribute03Test extends LoboUnitTest {
+public class Elementsetidattribute03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        NamedNodeMap attributesMap;
-        Attr attr;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final NamedNodeMap attributesMap;
+        final Attr attr;
         boolean id;
-        Element elem;
-        String elemName;
+        final Element elem;
+        final String elemName;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagName("acronym");
         acronymElem = (Element) elemList.item(2);
@@ -66,13 +64,13 @@ public class elementsetidattribute03Test extends LoboUnitTest {
         attributesMap = acronymElem.getAttributes();
         attr = (Attr) attributesMap.getNamedItem("class");
         id = attr.isId();
-        assertTrue("elementsetidattributeIsIdTrue03", id);
+        assertTrue(id, "Elementsetidattribute03Assert1");
         elem = doc.getElementById("Maybe");
         elemName = elem.getTagName();
-        assertEquals("elementsetidattributeGetElementById03", "ACRONYM", elemName);
+        assertEquals("ACRONYM", elemName, "Elementsetidattribute03Assert2");
         acronymElem.setIdAttribute("class", false);
         id = attr.isId();
-        assertFalse("elementsetidattributeIsIdFalse03", id);
+        assertFalse(id, "Elementsetidattribute03Assert3");
     }
 }
 

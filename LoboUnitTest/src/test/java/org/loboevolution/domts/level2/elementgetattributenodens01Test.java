@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -42,29 +43,26 @@ import static org.junit.Assert.*;
  * local name but different namespaceURIs and prefixes.
  * Retrieve an attribute using namespace and localname and check its value, name and
  * namespaceURI.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-ElGetAtNodeNS</a>
  */
-public class elementgetattributenodens01Test extends LoboUnitTest {
+public class Elementgetattributenodens01Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        Attr attribute1;
-        Attr attribute2;
-        Attr attribute;
-        String attrValue;
-        String attrName;
-        String attNodeName;
-        String attrLocalName;
-        String attrNS;
+        final Document doc;
+        final Element element;
+        final Attr attribute1;
+        final Attr attribute2;
+        final Attr attribute;
+        final String attrValue;
+        final String attrName;
+        final String attNodeName;
+        final String attrLocalName;
+        final String attrNS;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("namespaceURI", "root");
         attribute1 = doc.createAttributeNS("http://www.w3.org/DOM/Level2", "l2:att");
@@ -77,11 +75,11 @@ public class elementgetattributenodens01Test extends LoboUnitTest {
         attNodeName = attribute.getNodeName();
         attrLocalName = attribute.getLocalName();
         attrNS = attribute.getNamespaceURI();
-        assertEquals("elementgetattributenodens01_attrValue", null, attrValue);
-        assertEquals("elementgetattributenodens01_attrName", "l2:att", attrName);
-        assertEquals("elementgetattributenodens01_attrNodeName", "l2:att", attNodeName);
-        assertEquals("elementgetattributenodens01_attrLocalName", "att", attrLocalName);
-        assertEquals("elementgetattributenodens01_attrNs", "http://www.w3.org/DOM/Level2", attrNS);
+        assertNull(attrValue);
+        assertEquals("l2:att", attrName);
+        assertEquals("l2:att", attNodeName);
+        assertEquals("att", attrLocalName);
+        assertEquals("http://www.w3.org/DOM/Level2", attrNS);
     }
 }
 

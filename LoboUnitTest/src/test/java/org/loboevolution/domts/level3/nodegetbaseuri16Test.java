@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
@@ -37,27 +37,25 @@ import org.loboevolution.html.node.EntityReference;
 
 /**
  * Node.getBaseURI for an EntityReference to should be the baseURI where the entity declaration occurs.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2EntityReference">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2EntityReference</a>
  */
-public class nodegetbaseuri16Test extends LoboUnitTest {
+public class Nodegetbaseuri16Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        String baseURI;
-        EntityReference entRef;
-        HTMLCollection pList;
-        Element pElem;
+        final Document doc;
+        final String baseURI;
+        final EntityReference entRef;
+        final HTMLCollection pList;
+        final Element pElem;
         doc = sampleXmlFile("external_barfoo.xml");
         pList = doc.getElementsByTagName("p");
         pElem = (Element) pList.item(0);
         entRef = (EntityReference) pElem.getLastChild();
         baseURI = entRef.getBaseURI();
-        assertURIEquals("baseURI", null, null, null, null, "external_barfoo", null, null, Boolean.TRUE, baseURI);
+        assertURIEquals(new URIEquals(null, null, null, null, "external_barfoo", null, null, true, baseURI));
     }
 }
 

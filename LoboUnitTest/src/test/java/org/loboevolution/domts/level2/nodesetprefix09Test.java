@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,34 +28,31 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * The method setPrefix raises a INVALID_CHARACTER_ERR if the specified prefix contains an illegal character.
  * Create a new namespace aware element node and call the setPrefix method on it with a prefix having
  * an invalid character.  Check if a NAMESPACE_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-NodeNSPrefix</a>
  */
-public class nodesetprefix09Test extends LoboUnitTest {
+public class Nodesetprefix09Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        String value = "#$%&'()@";
-        Element element;
+        final Document doc;
+        final String value = "#$%&'()@";
+        final Element element;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.createElementNS("http://www.w3.org/DOM/Test/L2", "dom:elem");
 
@@ -63,10 +60,10 @@ public class nodesetprefix09Test extends LoboUnitTest {
             boolean success = false;
             try {
                 element.setPrefix(value);
-            } catch (DOMException ex) {
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.INVALID_CHARACTER_ERR);
             }
-            assertTrue("throw_INVALID_CHARACTER_ERR", success);
+            assertTrue(success);
         }
     }
 }

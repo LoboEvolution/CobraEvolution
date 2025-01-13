@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@ package org.loboevolution.gui;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.loboevolution.common.Urls;
 import org.loboevolution.component.IBrowserFrame;
 import org.loboevolution.component.IBrowserPanel;
 import org.loboevolution.component.IToolBar;
+import org.loboevolution.html.dom.HTMLAnchorElement;
 import org.loboevolution.html.dom.HTMLElement;
-import org.loboevolution.html.dom.HTMLLinkElement;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.dom.input.FormInput;
 import org.loboevolution.http.UserAgentContext;
@@ -41,20 +42,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.*;
 
 @Data
 @AllArgsConstructor
+@Slf4j
 public class LocalHtmlRendererContext implements HtmlRendererContext{
-
-    private static final Logger logger = Logger.getLogger(LocalHtmlRendererContext.class.getName());
-
     private UserAgentContext bcontext;
 
     protected URLConnection currentConnection;
@@ -65,7 +58,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     private final HtmlRendererContext parentRcontext;
 
-    private boolean testEnabled = false;
+    private final boolean testEnabled = false;
 
     private double scrollx;
 
@@ -77,7 +70,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
      * @param htmlPanel a {@link HtmlPanel} object.
      * @param ucontext a {@link org.loboevolution.http.UserAgentContext} object.
      */
-    public LocalHtmlRendererContext(HtmlPanel htmlPanel, UserAgentContext ucontext) {
+    public LocalHtmlRendererContext(final HtmlPanel htmlPanel, final UserAgentContext ucontext) {
         this.htmlPanel = htmlPanel;
         this.parentRcontext = null;
         this.bcontext = ucontext;
@@ -85,7 +78,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void alert(String message) {
+    public void alert(final String message) {
         JOptionPane.showMessageDialog(this.htmlPanel, message);
     }
 
@@ -108,7 +101,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public boolean confirm(String message) {
+    public boolean confirm(final String message) {
         final int retValue = JOptionPane.showConfirmDialog(this.htmlPanel, message, "Confirm",
                 JOptionPane.YES_NO_OPTION);
         return retValue == JOptionPane.YES_OPTION;
@@ -116,17 +109,17 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void error(String message) {
-        if (logger.isLoggable(Level.SEVERE)) {
-            logger.log(Level.SEVERE, message);
+    public void error(final String message) {
+        if (log.isErrorEnabled()) {
+            log.error(message);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void error(String message, Throwable throwable) {
-        if (logger.isLoggable(Level.SEVERE)) {
-            logger.log(Level.SEVERE, message, throwable);
+    public void error(final String message, final Throwable throwable) {
+        if (log.isErrorEnabled()) {
+            log.error(message, throwable);
         }
     }
 
@@ -144,12 +137,12 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
     /** {@inheritDoc} */
     @Override
     public String getCurrentURL() {
-        HtmlPanel html = htmlPanel;
-        IBrowserPanel panel = html.getBrowserPanel();
+        final HtmlPanel html = htmlPanel;
+        final IBrowserPanel panel = html.getBrowserPanel();
         if (panel != null) {
-            IBrowserFrame frame = panel.getBrowserFrame();
-            IToolBar toolbar = frame.getToolbar();
-            JTextField jtf = toolbar.getAddressBar();
+            final IBrowserFrame frame = panel.getBrowserFrame();
+            final IToolBar toolbar = frame.getToolbar();
+            final JTextField jtf = toolbar.getAddressBar();
             return jtf.getText();
         } else {
             return "";
@@ -212,29 +205,29 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public boolean isVisitedLink(HTMLLinkElement link) {
+    public boolean isVisitedLink(final HTMLAnchorElement link) {
         return false;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void linkClicked(URL url, boolean isNewTab) {
+    public void linkClicked(final URL url, final boolean isNewTab) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void moveInHistory(int offset) {
-        if (logger.isLoggable(Level.WARNING)) {
-            logger.log(Level.WARNING, "moveInHistory() does nothing, unless overridden.");
+    public void moveInHistory(final int offset) {
+        if (log.isWarnEnabled()) {
+            log.warn("moveInHistory() does nothing, unless overridden.");
         }
     }
 
     /** {@inheritDoc} */
     @Override
     public String getPreviousURL() {
-        if (logger.isLoggable(Level.WARNING)) {
-            logger.log(Level.WARNING, "getPreviousURL() does nothing, unless overridden.");
+        if (log.isWarnEnabled()) {
+            log.warn("getPreviousURL() does nothing, unless overridden.");
         }
         return null;
     }
@@ -242,8 +235,8 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
     /** {@inheritDoc} */
     @Override
     public String getNextURL() {
-        if (logger.isLoggable(Level.WARNING)) {
-            logger.log(Level.WARNING, "getNextURL() does nothing, unless overridden.");
+        if (log.isWarnEnabled()) {
+            log.warn("getNextURL() does nothing, unless overridden.");
         }
         return null;
     }
@@ -261,41 +254,43 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void navigate(String fullURL) throws Exception {
-        final URL href = Urls.createURL(null, fullURL);
-        this.navigate(href, "_this");
+    public void navigate(final String fullURL) throws Exception {
+        URI uri = Urls.createURI(null, fullURL);
+        if (uri != null) {
+            this.navigate(uri.toURL(), "_this");
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void navigate(final URL href, String target) {
+    public void navigate(final URL href, final String target) {
         submitForm("GET", href, target, null, null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean onContextMenu(HTMLElement element, MouseEvent event) {
+    public boolean onContextMenu(final HTMLElement element, final MouseEvent event) {
         return false;
     }
 
     /** {@inheritDoc} */
     @Override
-    public HtmlRendererContext open(URL url, String windowName, String windowFeatures, boolean replace) {
+    public HtmlRendererContext open(final URL url, final String windowName, final String windowFeatures, final boolean replace) {
         return null;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void openImageViewer(URL srcUrl) {}
+    public void openImageViewer(final URL srcUrl) {}
 
     /** {@inheritDoc} */
     @Override
-    public void openImageViewer(String fullURL, InputStream stream) { }
+    public void openImageViewer(final String fullURL, final InputStream stream) { }
 
     /** {@inheritDoc} */
     @Override
-    public String prompt(String message, String inputDefault) {
+    public String prompt(final String message, final String inputDefault) {
         return JOptionPane.showInputDialog(this.htmlPanel, message);
     }
 
@@ -305,9 +300,9 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
         final HTMLDocumentImpl document = (HTMLDocumentImpl) this.htmlPanel.getRootNode();
         if (document != null) {
             try {
-                final URL url = new URL(document.getDocumentURI());
+                final URL url = new URI(document.getDocumentURI()).toURL();
                 this.navigate(url, null);
-            } catch (final MalformedURLException throwable) {
+            } catch (Exception throwable) {
                 this.warn("reload(): Malformed URL", throwable);
             }
         }
@@ -315,7 +310,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void resizeBy(double byWidth, double byHeight) {
+    public void resizeBy(final double byWidth, final double byHeight) {
         final Window window = getWindow(this.htmlPanel);
         if (window != null) {
             window.setSize(window.getWidth() + (int)byWidth, window.getHeight() + (int)byHeight);
@@ -324,7 +319,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void resizeTo(double width, double height) {
+    public void resizeTo(final double width, final double height) {
         final Window window = getWindow(this.htmlPanel);
         if (window != null) {
             window.setSize((int)width, (int)height);
@@ -348,7 +343,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
         if (bpanel != null && bpanel.getWidth() > 0) {
             return bpanel.getWidth();
         }
-        return 900;
+        return 800;
     }
 
     /** {@inheritDoc} */
@@ -374,13 +369,13 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void scroll(double x, double y) {
+    public void scroll(final double x, final double y) {
         this.htmlPanel.scroll(x, y);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void scrollBy(double x, double y) {
+    public void scrollBy(final double x, final double y) {
         this.htmlPanel.scrollBy(x, y);
     }
 
@@ -392,7 +387,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void setScrollx(double scrollx) {
+    public void setScrollx(final double scrollx) {
         this.scrollx = scrollx;
     }
 
@@ -404,38 +399,38 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void setScrolly(double scrolly) {
+    public void setScrolly(final double scrolly) {
         this.scrolly = scrolly;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setDefaultStatus(String message) {
+    public void setDefaultStatus(final String message) {
         this.warn("setDefaultStatus(): Not overridden.");
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setHtmlPanel(HtmlPanel panel) {
+    public void setHtmlPanel(final HtmlPanel panel) {
         this.htmlPanel = panel;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setOpener(HtmlRendererContext opener) {
+    public void setOpener(final HtmlRendererContext opener) {
         this.opener = opener;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setStatus(String message) {
+    public void setStatus(final String message) {
         this.warn("setStatus(): Not overridden");
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setCursor(Optional<Cursor> cursorOpt) {
-        Cursor cursor = cursorOpt.orElse(Cursor.getDefaultCursor());
+    public void setCursor(final Cursor cursorOpt) {
+        final Cursor cursor = cursorOpt != null ? cursorOpt : Cursor.getDefaultCursor();
         htmlPanel.setCursor(cursor);
     }
 
@@ -446,21 +441,21 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
 
     /** {@inheritDoc} */
     @Override
-    public void warn(String message) {
-        if (logger.isLoggable(Level.WARNING)) {
-            logger.log(Level.WARNING, message);
+    public void warn(final String message) {
+        if (log.isWarnEnabled()) {
+            log.warn(message);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void warn(String message, Throwable throwable) {
-        if (logger.isLoggable(Level.WARNING)) {
-            logger.log(Level.WARNING, message, throwable);
+    public void warn(final String message, final Throwable throwable) {
+        if (log.isWarnEnabled()) {
+            log.warn(message, throwable);
         }
     }
 
-    private static Window getWindow(Component c) {
+    private static Window getWindow(final Component c) {
         Component current = c;
         while (current != null && !(current instanceof Window)) {
             current = current.getParent();
@@ -472,7 +467,7 @@ public class LocalHtmlRendererContext implements HtmlRendererContext{
         return Proxy.NO_PROXY;
     }
 
-    private void submitFormSync(final String method, final java.net.URL action, final String target, String enctype,
+    private void submitFormSync(final String method, final java.net.URL action, final String target, final String enctype,
                                 final FormInput[] formInputs) throws Exception {
     }
 

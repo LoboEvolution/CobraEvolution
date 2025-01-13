@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class SVGPathSegLinetoHorizontalAbsImpl implements SVGPathSegLinetoHorizo
 	 *
 	 * @param x a float.
 	 */
-	public SVGPathSegLinetoHorizontalAbsImpl(float x) {
+	public SVGPathSegLinetoHorizontalAbsImpl(final float x) {
 		this.x = x;
 	}
 
@@ -67,7 +67,7 @@ public class SVGPathSegLinetoHorizontalAbsImpl implements SVGPathSegLinetoHorizo
 
 	/** {@inheritDoc} */
 	@Override
-	public void setX(float x) {
+	public void setX(final float x) {
 		this.x = x;
 	}
 }

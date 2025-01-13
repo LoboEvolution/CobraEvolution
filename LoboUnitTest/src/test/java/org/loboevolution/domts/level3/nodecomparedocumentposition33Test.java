@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /**
@@ -43,39 +43,36 @@ import static org.junit.Assert.assertNotEquals;
  * the order of these two nodes is preserved.
  * Also compare the position of the Element node with respect to the Attr node and this should
  * be PRECEDING and contains, and the Attr node follows and is contained by the Element node
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-compareDocumentPosition</a>
  */
-public class nodecomparedocumentposition33Test extends LoboUnitTest {
+public class Nodecomparedocumentposition33Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Element elem;
-        Attr attr;
-        int position1;
-        int position2;
-        int position3;
-        int position4;
-        int position5;
-        Attr replacedAttr;
+        final Document doc;
+        final Element elem;
+        final Attr attr;
+        final int position1;
+        final int position2;
+        final int position3;
+        final int position4;
+        final int position5;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "br");
         attr = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang");
-        replacedAttr = elem.setAttributeNodeNS(attr);
+        elem.setAttributeNodeNS(attr);
         position4 = elem.compareDocumentPosition(attr);
-        assertEquals("nodecomparedocumentposition3FollowingisContained33", 20, position4);
+        assertEquals(20, position4, "Nodecomparedocumentposition33Assert3");
         position5 = attr.compareDocumentPosition(elem);
-        assertEquals("nodecomparedocumentposition4ContainsPRECEDING33", 10, position5);
+        assertEquals(10, position5, "Nodecomparedocumentposition33Assert4");
         position1 = doc.compareDocumentPosition(elem);
-        assertEquals("isImplSpecificDisconnected1", 33 & 57, position1 & 57);
+        assertEquals(33 & 57, position1 & 57, "Nodecomparedocumentposition33Assert5");
         position2 = elem.compareDocumentPosition(doc);
-        assertNotEquals("notBothPreceding", position1 & 2, position2 & 2);
-        assertNotEquals("notBothFollowing", position1 & 4, position2 & 4);
-        assertEquals("isImplSpecificDisconnected2", 33 & 57, position2 & 57);
+        assertNotEquals(position1 & 2, position2 & 2, "Nodecomparedocumentposition33Assert6");
+        assertNotEquals(position1 & 4, position2 & 4, "Nodecomparedocumentposition33Assert7");
+        assertEquals(33 & 57, position2 & 57, "Nodecomparedocumentposition33Assert8");
         position3 = doc.compareDocumentPosition(elem);
-        assertEquals("isConsistent", position1, position3);
+        assertEquals(position1, position3, "Nodecomparedocumentposition33Assert9");
     }
 }
 

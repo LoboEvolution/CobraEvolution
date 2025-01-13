@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -46,28 +46,26 @@ import static org.junit.Assert.assertTrue;
  * Import the newly created attribute node into this document.
  * Since user data assocated to the imported node is not carried over, verify that the method isId
  * returns false on the imported attribute node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Attr-isId</a>
  */
-public class attrisid07Test extends LoboUnitTest {
+public class Attrisid07Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element acronymElem;
-        Attr attr;
-        Attr attrImported;
+        final Document doc;
+        final HTMLCollection elemList;
+        final Element acronymElem;
+        final Attr attr;
+        final Attr attrImported;
         doc = sampleXmlFile("hc_staff.xml");
         elemList = doc.getElementsByTagNameNS("*", "acronym");
         acronymElem = (Element) elemList.item(2);
         acronymElem.setAttributeNS("http://www.w3.org/DOM", "dom3:newAttr", "null");
         acronymElem.setIdAttributeNS("http://www.w3.org/DOM", "newAttr", true);
         attr = acronymElem.getAttributeNodeNS("http://www.w3.org/DOM", "newAttr");
-        assertTrue("AttrIsIDTrue07_1", attr.isId());
+        assertTrue(attr.isId(), "Attrisid07Assert3");
         attrImported = (Attr) doc.importNode(attr, false);
-        assertFalse("AttrIsID07_isFalseforImportedNode", attrImported.isId());
+        assertFalse(attrImported.isId(), "Attrisid07Assert4");
     }
 }

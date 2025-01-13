@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 
 /**
@@ -43,30 +43,27 @@ import static org.junit.Assert.assertSame;
  * be inappropriate to throw an INUSE_ATTRIBUTE_ERR.
  * This test was derived from elementinuserattributeerr which
  * inadvertanly made this test.
- *
- * @author Curt Arnold
- * @author Curt Arnold
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-887236154">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-887236154</a>
  */
-public class elementreplaceattributewithselfTest extends LoboUnitTest {
+public class ElementreplaceattributewithselfTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elementList;
-        Element testEmployee;
-        Attr streetAttr;
-        Attr replacedAttr;
+        final Document doc;
+        final HTMLCollection elementList;
+        final Element testEmployee;
+        final Attr streetAttr;
+        final Attr replacedAttr;
         doc = sampleXmlFile("staff.xml");
         elementList = doc.getElementsByTagName("address");
         testEmployee = (Element) elementList.item(2);
         streetAttr = testEmployee.getAttributeNode("street");
         replacedAttr = testEmployee.setAttributeNode(streetAttr);
-        assertSame("replacedAttr", streetAttr, replacedAttr);
+        assertSame(streetAttr, replacedAttr, "ElementreplaceattributewithselfAssert2");
     }
 }
 

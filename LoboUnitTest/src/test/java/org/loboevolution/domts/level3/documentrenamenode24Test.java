@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,11 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -43,29 +42,24 @@ import static org.junit.Assert.assertTrue;
  * Invoke the renameNode method on this document node to attempt to rename itself.
  * The namespaceURI specified here is null and the name has a prefix.
  * Check if a NOT_SUPPORTED_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-renameNode</a>
  */
-public class documentrenamenode24Test extends LoboUnitTest {
+public class Documentrenamenode24Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Node renamedNode;
-        String nullNSURI = null;
+        final Document doc;
 
-        Document docowner;
         doc = sampleXmlFile("hc_staff.xml");
 
 
         boolean success = false;
         try {
-            renamedNode = doc.renameNode(doc, nullNSURI, "doc:root");
-        } catch (DOMException ex) {
+            doc.renameNode(doc, null, "doc:root");
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("documentrenamenode24_NOT_SUPPORTED_ERR", success);
+        assertTrue(success, "Documentrenamenode24Assert2");
 
     }
 }

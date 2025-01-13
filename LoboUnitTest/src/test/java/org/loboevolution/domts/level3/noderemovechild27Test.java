@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
@@ -42,21 +42,18 @@ import org.loboevolution.html.node.Node;
  * of children, and returns it.
  * Using removeChild on a Notation node attempt to remove an Entity node
  * and verify if a NO_MODIFICATION_ALLOWED_ERR or a NOT_FOUND_ERR gets thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild27Test extends LoboUnitTest {
+public class Noderemovechild27Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        NamedNodeMap entitiesMap;
-        NamedNodeMap notationsMap;
-        Node child;
-        Notation parent;
-        Node removed;
+        final Document doc;
+        final DocumentType docType;
+        final NamedNodeMap entitiesMap;
+        final NamedNodeMap notationsMap;
+        final Node child;
+        final Notation parent;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         entitiesMap = docType.getEntities();
@@ -65,9 +62,9 @@ public class noderemovechild27Test extends LoboUnitTest {
         parent = (Notation) notationsMap.getNamedItem("notation1");
 
         try {
-            removed = parent.removeChild(child);
+            parent.removeChild(child);
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             switch (ex.getCode()) {
                 case 8:
                 case 7:

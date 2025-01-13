@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import org.loboevolution.html.dom.domimpl.HTMLCanvasElementImpl;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 
 /**
  * The Class CanvasControl.
@@ -37,7 +38,8 @@ import java.awt.geom.AffineTransform;
 public class CanvasControl extends BaseControl {
 
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	
 	/** The canvas. */
 	private final HTMLCanvasElementImpl canvas;
@@ -48,7 +50,7 @@ public class CanvasControl extends BaseControl {
 	 * @param modelNode
 	 *            the model node
 	 */
-	public CanvasControl(HTMLCanvasElementImpl modelNode) {
+	public CanvasControl(final HTMLCanvasElementImpl modelNode) {
 		super(modelNode);
 		canvas = modelNode;
 	}
@@ -57,7 +59,7 @@ public class CanvasControl extends BaseControl {
 	@Override
 	public void paint(final Graphics g) {
 		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
+		final Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.drawRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		g2d.drawImage(canvas.getImage(), new AffineTransform(), null);

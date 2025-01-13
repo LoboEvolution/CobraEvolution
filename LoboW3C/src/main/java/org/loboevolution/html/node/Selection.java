@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,12 @@
 
 package org.loboevolution.html.node;
 
+import org.loboevolution.html.node.ranges.Range;
+
 /**
- * A Selection object represents the range of text selected by the user or the
+ * A Selection object presents the range of text selected by the user or the
  * current position of the caret. To obtain a Selection object for examination
- * or modification, call Window.getSelection().
- *
- *
- *
+ * or modification, call Window.getSelection().
  */
 public interface Selection {
 
@@ -46,7 +45,7 @@ public interface Selection {
 	/**
 	 * <p>getAnchorOffset.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getAnchorOffset();
 
@@ -60,7 +59,7 @@ public interface Selection {
 	/**
 	 * <p>getFocusOffset.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getFocusOffset();
 
@@ -74,7 +73,7 @@ public interface Selection {
 	/**
 	 * <p>getRangeCount.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getRangeCount();
 
@@ -88,7 +87,7 @@ public interface Selection {
 	/**
 	 * <p>addRange.</p>
 	 *
-	 * @param range a {@link org.loboevolution.html.node.Range} object.
+	 * @param range a {@link org.loboevolution.html.node.ranges.Range} object.
 	 */
 	void addRange(Range range);
 
@@ -96,7 +95,7 @@ public interface Selection {
 	 * <p>collapse.</p>
 	 *
 	 * @param node a {@link org.loboevolution.html.node.Node} object.
-	 * @param offset a int.
+	 * @param offset a {@link java.lang.Integer} object.
 	 */
 	void collapse(Node node, int offset);
 
@@ -148,7 +147,7 @@ public interface Selection {
 	 * <p>extend.</p>
 	 *
 	 * @param node a {@link org.loboevolution.html.node.Node} object.
-	 * @param offset a int.
+	 * @param offset a {@link java.lang.Integer} object.
 	 */
 	void extend(Node node, int offset);
 
@@ -162,8 +161,8 @@ public interface Selection {
 	/**
 	 * <p>getRangeAt.</p>
 	 *
-	 * @param index a int.
-	 * @return a {@link org.loboevolution.html.node.Range} object.
+	 * @param index a {@link java.lang.Integer} object.
+	 * @return a {@link org.loboevolution.html.node.ranges.Range} object.
 	 */
 	Range getRangeAt(int index);
 
@@ -175,7 +174,7 @@ public interface Selection {
 	/**
 	 * <p>removeRange.</p>
 	 *
-	 * @param range a {@link org.loboevolution.html.node.Range} object.
+	 * @param range a {@link org.loboevolution.html.node.ranges.Range} object.
 	 */
 	void removeRange(Range range);
 
@@ -190,9 +189,9 @@ public interface Selection {
 	 * <p>setBaseAndExtent.</p>
 	 *
 	 * @param anchorNode a {@link org.loboevolution.html.node.Node} object.
-	 * @param anchorOffset a int.
+	 * @param anchorOffset a {@link java.lang.Integer} object.
 	 * @param focusNode a {@link org.loboevolution.html.node.Node} object.
-	 * @param focusOffset a int.
+	 * @param focusOffset a {@link java.lang.Integer} object.
 	 */
 	void setBaseAndExtent(Node anchorNode, int anchorOffset, Node focusNode, int focusOffset);
 
@@ -200,7 +199,7 @@ public interface Selection {
 	 * <p>setPosition.</p>
 	 *
 	 * @param node a {@link org.loboevolution.html.node.Node} object.
-	 * @param offset a int.
+	 * @param offset a {@link java.lang.Integer} object.
 	 */
 	void setPosition(Node node, int offset);
 

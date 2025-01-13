@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.NodeList;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 /**
@@ -43,35 +43,32 @@ import static org.junit.Assert.assertNull;
  * returns it.
  * <p>
  * Remove the first employee by invoking the
- * "removeChild(oldChild)" method an checking the
- * node returned by the "getParentNode()" method.   It
- * should be set to null.
- *
- * @author NIST
- * @author Mary Brady
+ * "removeChild(oldChild)" method and checking the
+ * node returned by the "getParentNode()" method.
+ * It should be set to null.
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-1734834066</a>
  */
-public class noderemovechildTest extends LoboUnitTest {
+public class NoderemovechildTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element rootNode;
-        NodeList childList;
-        Node childToRemove;
-        Node removedChild;
-        Node parentNode;
+        final Document doc;
+        final Element rootNode;
+        final NodeList childList;
+        final Node childToRemove;
+        final Node removedChild;
+        final Node parentNode;
         doc = sampleXmlFile("staff.xml");
         rootNode = doc.getDocumentElement();
         childList = rootNode.getChildNodes();
         childToRemove = childList.item(1);
         removedChild = rootNode.removeChild(childToRemove);
         parentNode = removedChild.getParentNode();
-        assertNull("nodeRemoveChildAssert1", parentNode);
+        assertNull(parentNode, "NoderemovechildAssert2");
     }
 
 }

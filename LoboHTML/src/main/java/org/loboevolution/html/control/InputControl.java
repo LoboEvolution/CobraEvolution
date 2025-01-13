@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,15 @@ import org.loboevolution.common.WrapperLayout;
 import org.loboevolution.html.dom.domimpl.HTMLInputElementImpl;
 
 import java.awt.*;
+import java.io.Serial;
 
 /**
  * <p>InputControl class.</p>
  */
 public class InputControl extends BaseControl {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	
 	private final HTMLInputElementImpl  modelNode;
 
@@ -43,7 +45,7 @@ public class InputControl extends BaseControl {
 	 * <p>Constructor for InputControl.</p>
 	 * @param modelNode a {@link org.loboevolution.html.dom.domimpl.HTMLInputElementImpl} object.
 	 */
-	public InputControl(HTMLInputElementImpl modelNode) {
+	public InputControl(final HTMLInputElementImpl modelNode) {
 		super(modelNode);
 		setLayout(WrapperLayout.getInstance());
 		this.modelNode = modelNode;
@@ -62,7 +64,7 @@ public class InputControl extends BaseControl {
 	 * @param dir a {@link java.lang.String} object.
 	 * @return a {@link java.awt.ComponentOrientation} object.
 	 */
-	public ComponentOrientation direction(String dir) {
+	public ComponentOrientation direction(final String dir) {
 		if ("ltr".equalsIgnoreCase(dir)) {
 			return ComponentOrientation.LEFT_TO_RIGHT;
 		} else if ("rtl".equalsIgnoreCase(dir)) {

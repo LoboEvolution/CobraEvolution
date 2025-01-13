@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,13 @@
 package org.loboevolution.domts.level2;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DOMImplementation;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,36 +44,31 @@ import static org.junit.Assert.assertTrue;
  * <p>
  * Using the method importNode with deep=true, try to import a newly created DOcumentType
  * node. Since DocumentType nodes cannot be imported, a NOT_SUPPORTED_ERR should be raised.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=259">http://www.w3.org/Bugs/Public/show_bug.cgi?id=259</a>
  */
-public class documentimportnode08Test extends LoboUnitTest {
+public class Documentimportnode08Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        DOMImplementation domImpl;
-        String nullNS = null;
+        final Document doc;
+        final DocumentType docType;
+        final DOMImplementation domImpl;
         doc = sampleXmlFile("staffNS.xml");
         domImpl = doc.getImplementation();
-        docType = domImpl.createDocumentType("test:root", nullNS, nullNS);
-
+        docType = domImpl.createDocumentType("test:root", null, null);
         boolean success = false;
         try {
             doc.importNode(docType, true);
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("throw_NOT_SUPPORTED_ERR", success);
+        assertTrue(success);
     }
 }
 

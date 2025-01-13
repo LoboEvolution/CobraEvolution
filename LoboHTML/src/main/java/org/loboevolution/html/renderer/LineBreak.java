@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,13 @@
  */
 package org.loboevolution.html.renderer;
 
+import lombok.Data;
 import org.loboevolution.html.dom.nodeimpl.ModelNode;
 
 /**
  * <p>LineBreak class.</p>
- *
- *
- *
  */
+@Data
 public class LineBreak {
 	
 	/** Constant LEFT=1 */
@@ -44,60 +43,37 @@ public class LineBreak {
 	/** Constant BOTH=3 */
 	public static final int BOTH = 3;
 
-	/**
-	 * <p>Getter for the field breakType.</p>
-	 *
-	 * @param clearAttr a {@link java.lang.String} object.
-	 * @return a int.
-	 */
-	public static int getBreakType(String clearAttr) {
-		if (clearAttr == null) {
-			return NONE;
-		} else {
-			switch (clearAttr) {
-			case "right":
-				return RIGHT;
-			case "left":
-				return LEFT;
-			case "both":
-				return BOTH;
-			default:
-				return NONE;
-			}
-		}
-	}
-
 	private final int breakType;
 
-	private final ModelNode newLineNode;
+	private final ModelNode modelNode;
 
 	/**
 	 * <p>Constructor for LineBreak.</p>
 	 *
-	 * @param breakType a int.
+	 * @param breakType a {@link java.lang.Integer} object.
 	 * @param newLineNode a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
 	 */
-	public LineBreak(final int breakType, ModelNode newLineNode) {
-		super();
+	public LineBreak(final int breakType, final ModelNode newLineNode) {
 		this.breakType = breakType;
-		this.newLineNode = newLineNode;
+		this.modelNode = newLineNode;
 	}
 
 	/**
 	 * <p>Getter for the field breakType.</p>
 	 *
-	 * @return a int.
+	 * @param clearAttr a {@link java.lang.String} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
-	public int getBreakType() {
-		return this.breakType;
-	}
-
-	/**
-	 * <p>getModelNode.</p>
-	 *
-	 * @return a {@link org.loboevolution.html.dom.nodeimpl.ModelNode} object.
-	 */
-	public ModelNode getModelNode() {
-		return this.newLineNode;
+	public static int getBreakType(final String clearAttr) {
+		if (clearAttr == null) {
+			return NONE;
+		} else {
+            return switch (clearAttr) {
+                case "right" -> RIGHT;
+                case "left" -> LEFT;
+                case "both" -> BOTH;
+                default -> NONE;
+            };
+		}
 	}
 }

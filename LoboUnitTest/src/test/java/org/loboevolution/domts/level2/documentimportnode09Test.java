@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -46,35 +46,31 @@ import static org.junit.Assert.assertFalse;
  * Using the method importNode with deep=false, import a newly created DocumentFragment node
  * with the first address element from this Document appended to it into this document.
  * Since deep=false, an empty DocumentFragment should be returned
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core">http://www.w3.org/TR/DOM-Level-2-Core/core</a>
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class documentimportnode09Test extends LoboUnitTest {
+public class Documentimportnode09Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFragment;
-        HTMLCollection childList;
-        boolean success;
-        Node addressNode;
-        Node appendedChild;
-        Node importedDocFrag;
+        final Document doc;
+        final DocumentFragment docFragment;
+        final HTMLCollection childList;
+        final boolean success;
+        final Node addressNode;
+        final Node importedDocFrag;
         doc = sampleXmlFile("staffNS.xml");
         docFragment = doc.createDocumentFragment();
         childList = doc.getElementsByTagNameNS("*", "address");
         addressNode = childList.item(0);
-        appendedChild = docFragment.appendChild(addressNode);
+        docFragment.appendChild(addressNode);
         importedDocFrag = doc.importNode(docFragment, false);
         success = importedDocFrag.hasChildNodes();
-        assertFalse("documentimportnode09", success);
+        assertFalse(success);
     }
 }
 

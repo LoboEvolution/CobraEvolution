@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.Notation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.NamedNodeMap;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -47,44 +47,41 @@ import static org.junit.Assert.*;
  * contains the retrieved notation and deep is false.  Method should
  * return a node of type notation whose name is "notation1".
  * The returned node should belong to this document whose systemId is "staff.dtd"
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode">http://www.w3.org/TR/DOM-Level-2-Core/core#Core-Document-importNode</a>
  */
-public class importNode13Test extends LoboUnitTest {
+public class ImportNode13Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Document aNewDoc;
-        DocumentType doc1Type;
-        NamedNodeMap notationList;
-        Notation notation;
-        Notation aNode;
-        Document ownerDocument;
-        DocumentType docType;
+        final Document doc;
+        final Document aNewDoc;
+        final DocumentType doc1Type;
+        final NamedNodeMap notationList;
+        final Notation notation;
+        final Notation aNode;
+        final Document ownerDocument;
+        final DocumentType docType;
         String system;
-        String publicVal;
+        final String publicVal;
         doc = sampleXmlFile("staffNS.xml");
         aNewDoc = sampleXmlFile("staffNS.xml");
         doc1Type = aNewDoc.getDoctype();
         notationList = doc1Type.getNotations();
-        assertNotNull("notationsNotNull", notationList);
+        assertNotNull(notationList);
         notation = (Notation) notationList.getNamedItem("notation1");
         aNode = (Notation) doc.importNode(notation, false);
         ownerDocument = aNode.getOwnerDocument();
         docType = ownerDocument.getDoctype();
         system = docType.getSystemId();
-        assertEquals("systemId", "staffNS.dtd", system);
+        assertEquals("staffNS.dtd", system);
         publicVal = aNode.getPublicId();
-        assertEquals("publicId", "notation1File", publicVal);
+        assertEquals("notation1File", publicVal);
         system = aNode.getSystemId();
-        assertNull("notationSystemId", system);
+        assertNull(system);
     }
 }
 

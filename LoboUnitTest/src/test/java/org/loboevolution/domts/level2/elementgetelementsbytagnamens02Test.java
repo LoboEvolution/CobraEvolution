@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 package org.loboevolution.domts.level2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,26 +42,23 @@ import static org.junit.Assert.*;
  * of the Document tree.
  * Invoke getElementsByTagNameNS on the documentElement with values for namespaceURI '*' and
  * localName '*'. Verify if this returns a nodeList of 35 elements.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS">http://www.w3.org/TR/DOM-Level-2-Core/core#ID-getElBTNNS</a>
  */
-public class elementgetelementsbytagnamens02Test extends LoboUnitTest {
+public class Elementgetelementsbytagnamens02Test extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element element;
-        HTMLCollection elementList;
+        final Document doc;
+        final Element element;
+        final HTMLCollection elementList;
         doc = sampleXmlFile("staffNS.xml");
         element = doc.getDocumentElement();
         elementList = element.getElementsByTagNameNS("*", "*");
-        assertEquals( "elementgetelementsbytagnamens02", 35, elementList.getLength());
+        assertEquals(35, elementList.getLength());
     }
 }
 

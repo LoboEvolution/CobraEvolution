@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,47 +28,42 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Invoke the adoptNode method on this document with the value of the source parameter equal to a new
  * doctype node.  Verify if a NOT_SUPPORTED_ERR is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode11Test extends LoboUnitTest {
+public class Documentadoptnode11Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        DocumentType docType;
-        Node adoptedDocType;
-        String nullPubID = null;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final DocumentType docType;
 
-        String nullSysID = null;
-
-        Element docElem;
-        String rootName;
+        final Element docElem;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        docType = domImpl.createDocumentType(rootName, nullPubID, nullSysID);
+        docType = domImpl.createDocumentType(rootName, null, null);
 
         boolean success = false;
         try {
-            adoptedDocType = doc.adoptNode(docType);
-        } catch (DOMException ex) {
+            doc.adoptNode(docType);
+        } catch (final DOMException ex) {
             success = (ex.getCode() == DOMException.NOT_SUPPORTED_ERR);
         }
-        assertTrue("throw_NOT_SUPPORTED_ERR", success);
+        assertTrue(success, "Documentadoptnode11Assert2");
 
     }
 }

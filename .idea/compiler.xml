@@ -27,12 +27,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="LoboParser" />
       </profile>
-      <profile name="Annotation profile for Cobra Evolution" enabled="true">
-        <sourceOutputDir name="../target/LoboCommon/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/LoboCommon/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="LoboCommon" />
-      </profile>
       <profile name="Annotation profile for LoboApi" enabled="true">
         <sourceOutputDir name="../target/LoboApi/generated-sources/annotations" />
         <sourceTestOutputDir name="../target/LoboApi/generated-test-sources/test-annotations" />
@@ -45,16 +39,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="LoboUnitTest" />
       </profile>
+      <profile name="Annotation profile for Cobra Evolution" enabled="true">
+        <sourceOutputDir name="../target/LoboCommon/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/LoboCommon/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="LoboCommon" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="CobraEvolution" target="1.8" />
-      <module name="LoboApi" target="1.8" />
-      <module name="LoboCommon" target="1.8" />
-      <module name="LoboHTML" target="1.8" />
-      <module name="LoboParser" target="1.8" />
-      <module name="LoboUnitTest" target="1.8" />
-      <module name="LoboW3C" target="1.8" />
-      <module name="LoboXalan" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

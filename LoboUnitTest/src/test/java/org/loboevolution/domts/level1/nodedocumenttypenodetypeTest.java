@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,36 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
  * The "getNodeType()" method for a DocumentType Node
  * returns the constant value 10.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-111237558</a>
  */
-public class nodedocumenttypenodetypeTest extends LoboUnitTest {
+public class NodedocumenttypenodetypeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType documentTypeNode;
-        int nodeType;
+        final Document doc;
+        final DocumentType documentTypeNode;
+        final int nodeType;
         doc = sampleXmlFile("staff.xml");
         documentTypeNode = doc.getDoctype();
-        assertNotNull("doctypeNotNull", documentTypeNode);
+        assertNotNull(documentTypeNode, "NodedocumenttypenodetypeAssert1");
         nodeType = documentTypeNode.getNodeType();
-        assertEquals("nodeType", 10, nodeType);
+        assertEquals(10, nodeType, "NodedocumenttypenodetypeAssert2");
     }
 }
 

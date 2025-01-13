@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,43 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Comment;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Invoke lookupPrefix on a Element's new Comment node, which has a namespace attribute declaration
  * with a namespace prefix in its parent Element node and check if the value of the prefix
  * returned by using its namespaceURI as a parameter is valid.
- *
- * @author IBM
- * @author Jenny Hsu
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-lookupNamespacePrefix</a>
  */
-public class nodelookupprefix15Test extends LoboUnitTest {
+public class Nodelookupprefix15Test extends LoboUnitTest {
 
     @Test
     public void runTest() {
-        Document doc;
-        Element bodyElem;
-        Element elem;
-        Comment comment;
-        Comment clonedComment;
-        String prefix;
-        Node appendedChild;
-        HTMLCollection bodyList;
+        final Document doc;
+        final Element bodyElem;
+        final Element elem;
+        final Comment comment;
+        final Comment clonedComment;
+        final String prefix;
+        final HTMLCollection bodyList;
         doc = sampleXmlFile("hc_staff.xml");
         bodyList = doc.getElementsByTagName("body");
         bodyElem = (Element) bodyList.item(0);
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "dom3:p");
         comment = doc.createComment("Text");
         clonedComment = (Comment) comment.cloneNode(true);
-        appendedChild = elem.appendChild(clonedComment);
-        appendedChild = bodyElem.appendChild(elem);
+        elem.appendChild(clonedComment);
+        bodyElem.appendChild(elem);
         prefix = clonedComment.lookupPrefix("http://www.w3.org/1999/xhtml");
-        assertEquals("nodelookupprefix15", "dom3", prefix);
+        assertEquals("dom3", prefix, "Nodelookupprefix15Assert2");
     }
 }
 

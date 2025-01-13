@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,58 +28,54 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using removeChild on this Document node attempt to remove a new Document node and
  * vice versa and verify if a NOT_FOUND_ERR error is thrown.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-1734834066</a>
  */
-public class noderemovechild02Test extends LoboUnitTest {
+public class Noderemovechild02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DOMImplementation domImpl;
-        Document newDoc;
-        Node removed;
-        DocumentType nullDocType = null;
-
-        Element docElem;
-        String rootNS;
-        String rootName;
+        final Document doc;
+        final DOMImplementation domImpl;
+        final Document newDoc;
+        final Element docElem;
+        final String rootNS;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
 
         {
             boolean success = false;
             try {
-                removed = doc.removeChild(newDoc);
-            } catch (DOMException ex) {
+                doc.removeChild(newDoc);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR_1", success);
+            assertTrue(success, "Noderemovechild02Assert2");
         }
 
         {
             boolean success = false;
             try {
-                removed = newDoc.removeChild(doc);
-            } catch (DOMException ex) {
+                newDoc.removeChild(doc);
+            } catch (final DOMException ex) {
                 success = (ex.getCode() == DOMException.NOT_FOUND_ERR);
             }
-            assertTrue("throw_NOT_FOUND_ERR_2", success);
+            assertTrue(success, "Noderemovechild02Assert3");
         }
     }
 }

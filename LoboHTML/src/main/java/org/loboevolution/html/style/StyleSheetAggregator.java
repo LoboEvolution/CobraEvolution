@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,9 @@
 
 package org.loboevolution.html.style;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.htmlunit.cssparser.parser.CSSErrorHandler;
 import org.htmlunit.cssparser.parser.CSSException;
 import org.htmlunit.cssparser.parser.CSSOMParser;
@@ -40,6 +43,7 @@ import org.htmlunit.cssparser.parser.selector.*;
 import org.htmlunit.cssparser.parser.selector.Selector.SelectorType;
 import org.htmlunit.cssparser.dom.*;
 import org.loboevolution.common.Strings;
+import org.loboevolution.common.Urls;
 import org.loboevolution.config.HtmlRendererConfig;
 import org.loboevolution.html.dom.*;
 import org.loboevolution.html.dom.domimpl.*;
@@ -47,10 +51,11 @@ import org.loboevolution.html.dom.nodeimpl.NodeImpl;
 import org.loboevolution.html.js.css.StyleSheetListImpl;
 import org.loboevolution.html.node.Node;
 import org.loboevolution.html.node.Text;
-import org.loboevolution.html.node.css.CSSStyleSheet;
-import org.loboevolution.html.node.js.Window;
+import org.loboevolution.css.CSSStyleSheet;
+import org.loboevolution.js.Window;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,6 +66,7 @@ import java.util.regex.Pattern;
  * found, it is added to the style sheet aggreagator by means of the
  * {@link #addStyleSheet(CSSStyleSheetImpl)} method.
  */
+@Slf4j
 public class StyleSheetAggregator {
 
 	private static final Pattern UNESCAPE_SELECTOR = Pattern.compile("\\\\([\\[\\]\\.:])");
@@ -79,8 +85,12 @@ public class StyleSheetAggregator {
 
 	private final List<CSSStyleSheetImpl> styleSheets;
 
+	@Getter
+	@Setter
 	private boolean mouseOver = false;
 
+	@Getter
+	@Setter
 	private HTMLDocumentImpl doc;
 
 
@@ -101,9 +111,9 @@ public class StyleSheetAggregator {
 	 *
 	 * @param styleSheets a {@link org.loboevolution.html.js.css.StyleSheetListImpl} object.
 	 */
-	public final void addStyleSheets(StyleSheetListImpl styleSheets) {
-		for (CSSStyleSheet sheet : styleSheets) {
-			org.loboevolution.html.js.css.CSSStyleSheetImpl impl = (org.loboevolution.html.js.css.CSSStyleSheetImpl)sheet;
+	public final void addStyleSheets(final StyleSheetListImpl styleSheets) {
+		for (final CSSStyleSheet sheet : styleSheets) {
+			final org.loboevolution.html.js.css.CSSStyleSheetImpl impl = (org.loboevolution.html.js.css.CSSStyleSheetImpl)sheet;
 			addStyleSheet(impl.getCssStyleSheet());
 		}
 	}
@@ -117,10 +127,10 @@ public class StyleSheetAggregator {
 	 * @param mouseOver a {@link java.lang.Boolean } object.
 	 * @return a {@link java.util.List} object.
 	 */
-	public final List<CSSStyleSheetImpl.SelectorEntry> getActiveStyleDeclarations(HTMLElementImpl element, String elementName, final String[] classes, boolean mouseOver) {
+	public final List<CSSStyleSheetImpl.SelectorEntry> getActiveStyleDeclarations(final HTMLElementImpl element, final String elementName, final String[] classes, final boolean mouseOver) {
 		List<CSSStyleSheetImpl.SelectorEntry> matchingRules = new ArrayList<>();
-		for (CSSStyleSheetImpl sheet : styleSheets) {
-			if (matchingRules.size() == 0) {
+		for (final CSSStyleSheetImpl sheet : styleSheets) {
+			if (matchingRules.isEmpty()) {
 				matchingRules = selects(sheet.getRuleIndex(), element, elementName, mouseOver, classes);
 			} else {
 				final List<CSSStyleSheetImpl.SelectorEntry> _matchingRules = selects(sheet.getRuleIndex(), element, elementName, mouseOver, classes);
@@ -158,7 +168,7 @@ public class StyleSheetAggregator {
 				entry = iter.next();
 			}
 
-			for (CSSStyleSheetImpl.CSSStyleSheetRuleIndex child : index.getChildren()) {
+			for (final CSSStyleSheetImpl.CSSStyleSheetRuleIndex child : index.getChildren()) {
 				matchingRules.addAll(selects(child, element, pseudoElement, mouseOver, classes));
 			}
 		}
@@ -170,10 +180,11 @@ public class StyleSheetAggregator {
 		case ELEMENT_NODE_SELECTOR:
 			final ElementSelector es = (ElementSelector) selector;
 			final String name = es.getLocalNameLowerCase();
-			if (name == null || name.equals(element.getNodeName().toLowerCase())) {
+			if (name == null || element != null &&
+					name.equals(element.getNodeName().toLowerCase())) {
 				final List<Condition> conditions = es.getConditions();
 				if (conditions != null) {
-					for (Condition condition : conditions) {
+					for (final Condition condition : conditions) {
 						if (!selects(condition, element, mouseOver)) {
 							return false;
 						}
@@ -234,7 +245,7 @@ public class StyleSheetAggregator {
 			}
 			return false;
 		case PSEUDO_ELEMENT_SELECTOR:
-			if (pseudoElement != null && pseudoElement.length() != 0 && pseudoElement.charAt(0) == ':') {
+			if (pseudoElement != null && !pseudoElement.isEmpty() && pseudoElement.charAt(0) == ':') {
 				final String pseudoName = ((PseudoElementSelector) selector).getLocalName();
 				return pseudoName.equals(pseudoElement.substring(1));
 			}
@@ -265,7 +276,7 @@ public class StyleSheetAggregator {
 					value = UNESCAPE_SELECTOR.matcher(value).replaceAll("$1");
 				}
 				final String attrValue = element.getAttribute(condition.getLocalName());
-				return Strings.isNotBlank(attrValue) && attrValue.equals(value);
+				return attrValue != null && attrValue.equals(value);
 			}
 			return element.hasAttribute(condition.getLocalName());
 
@@ -313,14 +324,14 @@ public class StyleSheetAggregator {
 			final String v = beginHyphenAttributeCondition.getValue();
 			final String a = element.getAttribute(beginHyphenAttributeCondition.getLocalName());
 			if (beginHyphenAttributeCondition.isCaseInSensitive()) {
-				return  Strings.isNotBlank(v)
-						&& Strings.isNotBlank(a)
+				return  v != null
+						&& a != null
 						&& selectsHyphenSeparated(
 						v.toLowerCase(Locale.ROOT),
 						a.toLowerCase(Locale.ROOT));
 			}
-			return Strings.isNotBlank(v)
-					&& Strings.isNotBlank(a)
+			return v != null
+					&& a != null
 					&& selectsHyphenSeparated(v, a);
 
 		case ONE_OF_ATTRIBUTE_CONDITION:
@@ -328,14 +339,14 @@ public class StyleSheetAggregator {
 			final String v2 = oneOfAttributeCondition.getValue();
 			final String a2 = element.getAttribute(oneOfAttributeCondition.getLocalName());
 			if (oneOfAttributeCondition.isCaseInSensitive()) {
-				return Strings.isNotBlank(v2)
-						&& Strings.isNotBlank(a2)
+				return  v2 != null
+						&& a2 != null
 						&& selectsOneOf(
 						v2.toLowerCase(Locale.ROOT),
 						a2.toLowerCase(Locale.ROOT));
 			}
-			return Strings.isNotBlank(v2)
-					&& Strings.isNotBlank(a2)
+			return  v2 != null
+					&& a2 != null
 					&& selectsOneOf(v2, a2);
 
 		case LANG_CONDITION:
@@ -376,7 +387,7 @@ public class StyleSheetAggregator {
 				return mouseOver;
 
 			case "root":
-				NodeImpl parentDOMNodeImpl = (NodeImpl) element.getParentNode();
+				final NodeImpl parentDOMNodeImpl = (NodeImpl) element.getParentNode();
 				return parentDOMNodeImpl != null && parentDOMNodeImpl.getNodeType() == Node.DOCUMENT_NODE;
 
 			case "enabled":
@@ -399,16 +410,22 @@ public class StyleSheetAggregator {
 
 			case "out-of-range":
 				if (element instanceof HTMLInputElement) {
-					HTMLInputElementImpl input = (HTMLInputElementImpl)element;
+					final HTMLInputElementImpl input = (HTMLInputElementImpl)element;
 					if ("number".equals(input.getType())) {
-						String minTxt = input.getAttribute("min");
-						String maxTxt = input.getAttribute("max");
+						final String minTxt = input.getAttribute("min");
+						final String maxTxt = input.getAttribute("max");
 
-						int min = minTxt == null ? 0 : Integer.parseInt(input.getAttribute("min"));
-						int max = maxTxt == null ? Integer.MAX_VALUE : Integer.parseInt(input.getAttribute("max"));
-						int valueNumber = Integer.parseInt(input.getValue());
+						final int min = minTxt == null ? 0 : Integer.parseInt(input.getAttribute("min"));
+						final int max = maxTxt == null ? Integer.MAX_VALUE : Integer.parseInt(input.getAttribute("max"));
+						final int valueNumber = Integer.parseInt(input.getValue());
 						return (valueNumber < min || valueNumber > max);
 					}
+				}
+				break;
+
+			case "focus":
+				if (element instanceof HTMLInputElement) {
+					return ((HTMLInputElementImpl) element).isFocusable();
 				}
 
 			case "checked":
@@ -417,12 +434,12 @@ public class StyleSheetAggregator {
 				}
 
 				if (element instanceof HTMLOptionElement) {
-					AtomicInteger selected = new AtomicInteger(0);
-					AtomicInteger isSelected = new AtomicInteger(0);
-					HTMLSelectElement selectElement = (HTMLSelectElement) element.getParentNode();
-					HTMLOptionsCollectionImpl optionsCollection = (HTMLOptionsCollectionImpl) selectElement.getOptions();
+					final AtomicInteger selected = new AtomicInteger(0);
+					final AtomicInteger isSelected = new AtomicInteger(0);
+					final HTMLSelectElement selectElement = (HTMLSelectElement) element.getParentNode();
+					final HTMLOptionsCollectionImpl optionsCollection = (HTMLOptionsCollectionImpl) selectElement.getOptions();
 					optionsCollection.forEach(opt -> {
-						HTMLOptionElement optionElement = (HTMLOptionElement) opt;
+						final HTMLOptionElement optionElement = (HTMLOptionElement) opt;
 						if (optionElement.hasAttribute("selected")) {
 							selected.incrementAndGet();
 						}
@@ -449,12 +466,11 @@ public class StyleSheetAggregator {
 						|| element instanceof HTMLTextAreaElement) && !element.hasAttribute("required");
 
 			case "link":
-				return (element instanceof HTMLLinkElement);
+				return (element instanceof HTMLAnchorElementImpl);
 
 			case "visited":
-				if (element instanceof HTMLLinkElement) {
-					HTMLLinkElementImpl elem = (HTMLLinkElementImpl)element;
-					final HtmlRendererConfig config = elem.getHtmlRendererConfig();
+				if (element instanceof HTMLAnchorElementImpl elem) {
+                    final HtmlRendererConfig config = elem.getHtmlRendererConfig();
 					return config.isVisited(elem.getHref());
 				} else{
 					return false;
@@ -524,8 +540,14 @@ public class StyleSheetAggregator {
 			case "empty":
 				return isEmpty(element);
 
+			case "valid":
+				return isValid(element);
+
+			case "invalid":
+				return inValid(element);
+
 			case "target":
-				HTMLElementImpl impl = (HTMLElementImpl) element;
+				final HTMLElementImpl impl = (HTMLElementImpl) element;
 				final HTMLDocumentImpl document = (HTMLDocumentImpl) impl.getDocumentNode();
 				final String ref = document.getBaseURI();
 				return Strings.isNotBlank(ref) && ref.contains("#") && ref.split("#")[1].equals(element.getId());
@@ -602,13 +624,14 @@ public class StyleSheetAggregator {
 							}
 						}
 
-						return !selects(selectorList.get(0), element, null, mouseOver);
+						return !selects(selectorList.getFirst(), element, null, mouseOver);
 					} catch (final IOException e) {
 						throw new CSSException("Error parsing CSS selectors from '" + selectors + "': " + e.getMessage());
 					}
 				}
 				return false;
 		}
+		return false;
 	}
 
 	private boolean selectsWhitespaceSeparated(final String condition, final String attribute) {
@@ -641,7 +664,7 @@ public class StyleSheetAggregator {
 	private static boolean selectsHyphenSeparated(final String condition, final String attribute) {
 		final int conditionLength = condition.length();
 		if (conditionLength < 1) {
-			if (Strings.isNotBlank(attribute)) {
+			if (attribute != null) {
 				final int attribLength = attribute.length();
 				return attribLength == 0 || '-' == attribute.charAt(0);
 			}
@@ -754,11 +777,11 @@ public class StyleSheetAggregator {
 	/**
 	 * <p>isActive.</p>
 	 *
-	 * @param window a {@link org.loboevolution.html.node.js.Window} object.
+	 * @param window a {@link Window} object.
 	 * @param mediaList a {@link MediaListImpl} object.
 	 * @return a boolean.
 	 */
-	public static boolean isActive(Window window, final MediaListImpl mediaList) {
+	public static boolean isActive(final Window window, final MediaListImpl mediaList) {
 		if (mediaList.getLength() == 0) {
 			return true;
 		}
@@ -776,20 +799,20 @@ public class StyleSheetAggregator {
 		return false;
 	}
 
-	private static boolean isActive(HTMLElement element, final MediaListImpl mediaList) {
-        HTMLElementImpl impl = (HTMLElementImpl) element;
+	private static boolean isActive(final HTMLElement element, final MediaListImpl mediaList) {
+        final HTMLElementImpl impl = (HTMLElementImpl) element;
 		final HTMLDocumentImpl document = (HTMLDocumentImpl) impl.getDocumentNode();
 		return isActive(document.getDefaultView(), mediaList);
     }
 
-	private static boolean isActive(Window window, final MediaQuery mediaQuery) {
+	private static boolean isActive(final Window window, final MediaQuery mediaQuery) {
 		final String mediaType = mediaQuery.getMedia();
 		if ("screen".equalsIgnoreCase(mediaType) || "all".equalsIgnoreCase(mediaType) || "print".equalsIgnoreCase(mediaType)) {
 
 			for (final Property property : mediaQuery.getProperties()) {
 				int val = -1;
 				if(property.getValue() == null) return "resolution".equals(property.getName()) || "orientation".equals(property.getName());
-				String value = property.getValue().getCssText();
+				final String value = property.getValue().getCssText();
 				switch (property.getName()) {
 					case "max-width":
 						if (HtmlValues.isUnits(value)) {
@@ -897,7 +920,7 @@ public class StyleSheetAggregator {
 			}
 		}
 
-		return mediaQuery.getProperties().size() != 0 || !"print".equalsIgnoreCase(mediaType);
+		return !mediaQuery.getProperties().isEmpty() || !"print".equalsIgnoreCase(mediaType);
 	}
 	
 	private boolean isEmpty(final HTMLElement element) {
@@ -909,8 +932,25 @@ public class StyleSheetAggregator {
 		return true;
 	}
 
-	private boolean getNth(HTMLElement element, final String nth, final int index) {
-		HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getOwnerDocument();
+	private boolean isValid(final HTMLElement element) {
+		if (element instanceof HTMLInputElement) {
+			return !element.hasAttribute("required") ||
+					(Strings.isNotBlank(element.getAttribute("value")) && element.hasAttribute("required"));
+		}
+		return false;
+	}
+
+	private boolean inValid(final HTMLElement element) {
+		if (element instanceof HTMLInputElement || element instanceof HTMLFormElement) {
+			return (!element.hasAttribute("required") && element.getAttribute("value") == null) ||
+					(Strings.isBlank(element.getAttribute("value")) && element.hasAttribute("required"));
+		}
+		return false;
+	}
+
+
+	private boolean getNth(final HTMLElement element, final String nth, final int index) {
+		final HTMLDocumentImpl doc =  (HTMLDocumentImpl)element.getOwnerDocument();
 
 		if ("odd".equalsIgnoreCase(nth)) {
 			return index % 2 != 0;
@@ -927,7 +967,7 @@ public class StyleSheetAggregator {
 			if ("-".equals(value)) {
 				a = -1;
 			} else {
-				if (value.length() > 0 && value.charAt(0) == '+') {
+				if (!value.isEmpty() && value.charAt(0) == '+') {
 					value = value.substring(1);
 				}
 				a = HtmlValues.getPixelSize(value, null, doc.getDefaultView(), 1);
@@ -935,7 +975,7 @@ public class StyleSheetAggregator {
 		}
 
 		String value = nth.substring(nIndex + 1).trim();
-		if (value.length() > 0 && value.charAt(0) == '+') {
+		if (!value.isEmpty() && value.charAt(0) == '+') {
 			value = value.substring(1);
 		}
 		final int b = HtmlValues.getPixelSize(value, null, doc.getDefaultView(), 0);
@@ -947,8 +987,8 @@ public class StyleSheetAggregator {
 		return n >= 0 && n % 1 == 0;
 	}
 
-	private void addStyleSheet(CSSStyleSheetImpl styleSheet) {
-		CSSRuleListImpl ruleList = styleSheet.getCssRules();
+	private void addStyleSheet(final CSSStyleSheetImpl styleSheet) {
+		final CSSRuleListImpl ruleList = styleSheet.getCssRules();
 		CSSStyleSheetImpl.CSSStyleSheetRuleIndex index = styleSheet.getRuleIndex();
 		if (index == null) {
 			index = new CSSStyleSheetImpl.CSSStyleSheetRuleIndex();
@@ -959,18 +999,17 @@ public class StyleSheetAggregator {
 	}
 
 	private void index(final CSSStyleSheetImpl.CSSStyleSheetRuleIndex index, final CSSRuleListImpl ruleList) {
-		for (AbstractCSSRuleImpl rule : ruleList.getRules()) {
-			if (rule instanceof CSSStyleRuleImpl) {
-				final CSSStyleRuleImpl styleRule = (CSSStyleRuleImpl) rule;
-				final SelectorList selectors = styleRule.getSelectors();
-				for (Selector selector : selectors) {
+		for (final AbstractCSSRuleImpl rule : ruleList.getRules()) {
+			if (rule instanceof CSSStyleRuleImpl styleRule) {
+                final SelectorList selectors = styleRule.getSelectors();
+				for (final Selector selector : selectors) {
 					final SimpleSelector simpleSel = selector.getSimpleSelector();
 					if (SelectorType.ELEMENT_NODE_SELECTOR == simpleSel.getSelectorType()) {
 						final ElementSelector es = (ElementSelector) simpleSel;
 						boolean wasClass = false;
 						final List<Condition> conds = es.getConditions();
 						if (conds != null && conds.size() == 1) {
-							final Condition c = conds.get(0);
+							final Condition c = conds.getFirst();
 							if (ConditionType.CLASS_CONDITION == c.getConditionType()) {
 								index.addClassSelector(es, c.getValue(), selector, styleRule);
 								wasClass = true;
@@ -983,49 +1022,29 @@ public class StyleSheetAggregator {
 						index.addOtherSelector(selector, styleRule);
 					}
 				}
-			} else if (rule instanceof CSSMediaRuleImpl) {
-				final CSSMediaRuleImpl mediaRule = (CSSMediaRuleImpl) rule;
-				final MediaListImpl mediaList = mediaRule.getMediaList();
+			} else if (rule instanceof CSSMediaRuleImpl mediaRule) {
+                final MediaListImpl mediaList = mediaRule.getMediaList();
 				if (mediaList.getLength() == 0 && index.getMediaList().getLength() == 0) {
 					index(index, mediaRule.getCssRules());
 				} else {
 					index(index.addMedia(mediaList), mediaRule.getCssRules());
 				}
-			} else if (rule instanceof CSSPageRuleImpl) {
-				final CSSPageRuleImpl pageRule = (CSSPageRuleImpl) rule;
-				index(index, pageRule.getParentStyleSheet().getCssRules());
 			} else if (rule instanceof CSSImportRuleImpl) {
 				try {
 					final CSSImportRuleImpl importRule = (CSSImportRuleImpl) rule;
 					final MediaListImpl mediaList = importRule.getMedia();
-					HTMLDocumentImpl doc = getDoc();
-					String uri = doc.getFullURL(importRule.getHref(), doc.getBaseURI()).toString();
-					final CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getDoc().getHtmlRendererConfig(), uri, null, doc.getBaseURI(), false);
+					final HTMLDocumentImpl doc = getDoc();
+					final URI uri = Urls.createURI(doc.getBaseURI(), importRule.getHref());
+					final CSSStyleSheetImpl sheet = CSSUtilities.parseCssExternal(getDoc().getHtmlRendererConfig(), uri, doc.getBaseURI(), null, false);
 					if (mediaList.getLength() == 0 && index.getMediaList().getLength() == 0) {
 						index(index, sheet.getCssRules());
 					} else {
 						index(index.addMedia(mediaList), sheet.getCssRules());
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (final Exception ex) {
+					log.error(ex.getMessage(), ex);
 				}
 			}
 		}
-	}
-
-	public boolean isMouseOver() {
-		return mouseOver;
-	}
-
-	public void setMouseOver(boolean mouseOver) {
-		this.mouseOver = mouseOver;
-	}
-
-	public HTMLDocumentImpl getDoc() {
-		return doc;
-	}
-
-	public void setDoc(HTMLDocumentImpl doc) {
-		this.doc = doc;
 	}
 }

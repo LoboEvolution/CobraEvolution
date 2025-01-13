@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Ronald Brill.
+ * Copyright (c) 2019-2024 Ronald Brill.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ public class PseudoElementSelector extends AbstractSelector implements SimpleSel
 
     /**
      * Ctor.
-     *
      * @param localName the local name
      * @param locator the locator
      * @param doubleColon double column flag

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public interface PrefixResolver {
    *     Namespace.
    * @return The associated Namespace URI, or null if the prefix is undeclared in this context.
    */
-  String getNamespaceForPrefix(String prefix);
+  String getNamespaceForPrefix(final String prefix);
 
   /**
    * Given a namespace, get the corresponding prefix, based on the context node.
@@ -51,7 +51,7 @@ public interface PrefixResolver {
    * @return The associated Namespace URI as a string, or null if the prefix is undeclared in this
    *     context.
    */
-  String getNamespaceForPrefix(String prefix, org.loboevolution.html.node.Node context);
+  String getNamespaceForPrefix(final String prefix, org.loboevolution.html.node.Node context);
 
   boolean handlesNullPrefixes();
 }

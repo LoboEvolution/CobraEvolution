@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,50 +27,46 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.DocumentType;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using getBaseURI check if the baseURI attribute of a new Document node is null
  * and if affected by changes in Document.documentURI.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-baseURI</a>
  * @see <a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=419">http://www.w3.org/Bugs/Public/show_bug.cgi?id=419</a>
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Document">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/infoset-mapping#Infoset2Document</a>
  */
-public class nodegetbaseuri02Test extends LoboUnitTest {
+public class Nodegetbaseuri02Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Document newDoc;
-        DOMImplementation domImpl;
+        final Document doc;
+        final Document newDoc;
+        final DOMImplementation domImpl;
         String baseURI;
-        String rootNS;
-        String rootName;
-        Element docElem;
-        DocumentType nullDocType = null;
+        final String rootNS;
+        final String rootName;
+        final Element docElem;
 
         doc = sampleXmlFile("barfoo.xml");
         docElem = doc.getDocumentElement();
         rootNS = docElem.getNamespaceURI();
         rootName = docElem.getTagName();
         domImpl = doc.getImplementation();
-        newDoc = domImpl.createDocument(rootNS, rootName, nullDocType);
+        newDoc = domImpl.createDocument(rootNS, rootName, null);
         baseURI = newDoc.getBaseURI();
-        assertNull("baseURIIsNull", baseURI);
+        assertNull(baseURI, "Nodegetbaseuri02Assert3");
         newDoc.setDocumentURI("http://www.example.com/sample.xml");
         baseURI = newDoc.getBaseURI();
-        assertTrue("baseURISameAsDocURI", "http://www.example.com/sample.xml".equalsIgnoreCase(baseURI));
+        assertTrue("http://www.example.com/sample.xml".equalsIgnoreCase(baseURI), "Nodegetbaseuri02Assert4");
     }
 }
 

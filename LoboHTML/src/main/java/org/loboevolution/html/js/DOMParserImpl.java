@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,7 @@ package org.loboevolution.html.js;
 import org.loboevolution.html.dom.domimpl.HTMLDocumentImpl;
 import org.loboevolution.html.js.xml.XMLDocument;
 import org.loboevolution.html.node.Document;
-import org.loboevolution.html.node.Element;
-import org.loboevolution.html.node.js.DOMParser;
+import org.loboevolution.js.DOMParser;
 import org.loboevolution.js.AbstractScriptableDelegate;
 import org.mozilla.javascript.Context;
 
@@ -41,16 +40,16 @@ public class DOMParserImpl extends AbstractScriptableDelegate implements DOMPars
 
 	private final HTMLDocumentImpl document;
 
-	public DOMParserImpl(HTMLDocumentImpl document){
+	public DOMParserImpl(final HTMLDocumentImpl document){
 		this.document = document;
 	}
 
 
 	/** {@inheritDoc} */
 	@Override
-	public Document parseFromString(String html, String type) {
-		Element element = document.createElement("DIV");
-		element.setInnerHTML(html);
+	public Document parseFromString(final String html, final String type) {
+		String xml = html.replace("<", "><").replace(">>", ">");
+		xml = xml.substring(1);
 		if (!"text/html".equals(type) &&
 				!"text/xml".equals(type) &&
 				!"application/xml".equals(type) &&
@@ -58,8 +57,8 @@ public class DOMParserImpl extends AbstractScriptableDelegate implements DOMPars
 				!"image/svg+xml".equals(type)) {
 			throw Context.reportRuntimeError("Invalid 'type' parameter: " + type);
 		}
-		XMLDocument document = new XMLDocument();
-		document.loadXML(element.getInnerHTML());
+		final XMLDocument document = new XMLDocument();
+		document.loadXML(xml + ">");
 		return document;
 	}
 

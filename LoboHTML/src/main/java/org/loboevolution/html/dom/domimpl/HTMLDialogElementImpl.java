@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,67 +25,95 @@
  */
 package org.loboevolution.html.dom.domimpl;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.loboevolution.html.dom.HTMLDialogElement;
-import org.loboevolution.html.renderstate.DisplayRenderState;
+import org.loboevolution.html.js.events.EventImpl;
+import org.loboevolution.html.renderstate.DialogRenderState;
 import org.loboevolution.html.renderstate.RenderState;
 
 /**
  * <p>HTMLDialogElementImpl class.</p>
  */
-public class HTMLDialogElementImpl extends  HTMLElementImpl implements HTMLDialogElement {
+@Getter
+@Setter
+public class HTMLDialogElementImpl extends HTMLElementImpl implements HTMLDialogElement {
+
+    private boolean modal;
+    private String returnValue;
 
     /**
      * <p>Constructor for HTMLElementImpl.</p>
      *
      * @param name a {@link String} object.
      */
-    public HTMLDialogElementImpl(String name) {
+    public HTMLDialogElementImpl(final String name) {
         super(name);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected RenderState createRenderState(RenderState prevRenderState) {
-        return new DisplayRenderState(prevRenderState, this, RenderState.DISPLAY_NONE);
+    protected RenderState createRenderState(final RenderState prevRenderState) {
+        return new DialogRenderState(prevRenderState, this);
     }
 
     @Override
-    public boolean isOpen() {
-        return false;
+    public boolean getOpen() {
+        return hasAttribute("open");
     }
 
     @Override
-    public void setOpen(boolean open) {
-
+    public void setOpen(final boolean newValue) {
+        if (newValue) {
+            setAttribute("open", "");
+        }
+        else {
+            removeAttribute("open");
+            modal = false;
+        }
     }
 
     @Override
-    public String getReturnValue() {
-        return null;
-    }
-
-    @Override
-    public void setReturnValue(String returnValue) {
-
-    }
-
-    @Override
-    public void close(String returnValue) {
-
+    public void close(final String returnValue) {
+        if (getOpen()) {
+            setReturnValue(returnValue);
+            modal = false;
+            close();
+        }
     }
 
     @Override
     public void close() {
-
+        if (getOpen()) {
+            removeAttribute("open");
+            modal = false;
+            informNodeLoaded();
+            final EventImpl evt = new EventImpl();
+            evt.initEvent("close");
+            evt.setTarget(this);
+            dispatchEvent(evt);
+        }
     }
 
     @Override
     public void show() {
-
+        if (!getOpen()) {
+            setOpen(true);
+            informNodeLoaded();
+        }
     }
 
     @Override
     public void showModal() {
+        if (!getOpen()) {
+            setOpen(true);
+            informNodeLoaded();
+            modal = true;
+        }
+    }
 
+    @Override
+    public String toString() {
+        return "[object HTMLDialogElement]";
     }
 }

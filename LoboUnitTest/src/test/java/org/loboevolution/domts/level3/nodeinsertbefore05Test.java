@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,47 +28,42 @@ package org.loboevolution.domts.level3;
 
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.node.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementation;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentType;
-import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
  * Attempt to insert a second DocumentType node in a document using Node.insertBefore,
  * should raise either DOMException with either a HIERARCHY_REQUEST_ERR
  * or NOT_SUPPORTED_ERR code.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#ID-952280727</a>
  */
-public class nodeinsertbefore05Test extends LoboUnitTest {
+public class Nodeinsertbefore05Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentType docType;
-        DOMImplementation domImpl;
-        DocumentType newDocType;
-        String nullPubId = null;
-        String nullSysId = null;
+        final Document doc;
+        final DocumentType docType;
+        final DOMImplementation domImpl;
+        final DocumentType newDocType;
 
-        String rootName;
+        final String rootName;
         doc = sampleXmlFile("hc_staff.xml");
         docType = doc.getDoctype();
         rootName = docType.getName();
         domImpl = doc.getImplementation();
-        newDocType = domImpl.createDocumentType(rootName, nullPubId, nullSysId);
+        newDocType = domImpl.createDocumentType(rootName, null, null);
 
         try {
             doc.insertBefore(newDocType, docType);
             fail("throw_DOMException");
 
-        } catch (DOMException ex) {
+        } catch (final DOMException ex) {
             switch (ex.getCode()) {
                 case 3:
                 case 9:

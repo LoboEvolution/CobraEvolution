@@ -2,7 +2,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,14 @@
 
 package org.loboevolution.domts.level1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -46,25 +46,22 @@ import static org.junit.Assert.*;
  * This child contains a block of text that is spread
  * across multiple lines.  The content of the "name" child
  * should be parsed and treated as a single Text node.
- *
- * @author NIST
- * @author Mary Brady
+
  * @see <a href="http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-162CF083">http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core#ID-162CF083</a>
  */
-public class elementnormalizeTest extends LoboUnitTest {
+public class ElementnormalizeTest extends LoboUnitTest {
 
     /**
      * Runs the test case.
-     *
      */
     @Test
     public void runTest() {
-        Document doc;
-        Element root;
-        HTMLCollection elementList;
-        Element testName;
-        Node firstChild;
-        String childValue;
+        final Document doc;
+        final Element root;
+        final HTMLCollection elementList;
+        final Element testName;
+        final Node firstChild;
+        final String childValue;
         doc = sampleXmlFile("staff.xml");
         root = doc.getDocumentElement();
         root.normalize();
@@ -72,7 +69,7 @@ public class elementnormalizeTest extends LoboUnitTest {
         testName = (Element) elementList.item(2);
         firstChild = testName.getFirstChild();
         childValue = firstChild.getNodeValue();
-        assertEquals("elementNormalizeAssert", "Roger\n Jones", childValue);
+        assertEquals("Roger\n Jones", childValue, "ElementnormalizeAssert1");
     }
 }
 

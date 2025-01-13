@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,40 +27,35 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
-import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Attr;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Element;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Using setTextContent on a new Attr node with a null value, attempt to set its value to NA.  Retreive
  * the textContent and verify if it is was set to NA.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Node3-textContent</a>
  */
-public class nodesettextcontent06Test extends LoboUnitTest {
+public class Nodesettextcontent06Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        HTMLCollection elemList;
-        Element elem;
-        Attr attr;
-        Attr attrNode;
-        String textContent;
+        final Document doc;
+        final Element elem;
+        final Attr attr;
+        final String textContent;
         doc = sampleXmlFile("hc_staff.xml");
         elem = doc.createElementNS("http://www.w3.org/1999/xhtml", "p");
         attr = doc.createAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang");
-        attrNode = elem.setAttributeNodeNS(attr);
+        elem.setAttributeNodeNS(attr);
         attr.setTextContent("NA");
         textContent = attr.getTextContent();
-        assertEquals("nodesettextcontent06", "NA", textContent);
+        assertEquals("NA", textContent, "Nodesettextcontent06Assert2");
     }
 }
 

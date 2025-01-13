@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,15 +65,16 @@ public final class Domains {
 	 * @param hostName a {@link java.lang.String} object.
 	 * @return a boolean.
 	 */
-	public static boolean isValidCookieDomain(String domain, String hostName) {
-		String plainDomain;
-		if (!domain.startsWith(".")) {
+	public static boolean isValidCookieDomain(final String domain, final String hostName) {
+		final String plainDomain;
+		String dmain = domain;
+		if (!dmain.startsWith(".")) {
 			// Valid domains must start with a dot
 			// according to RFC 2109, but
 			// RFC 2965 specifies a dot is prepended
 			// in the Set-Cookie2 header.
-			plainDomain = domain;
-			domain = "." + domain;
+			plainDomain = dmain;
+			dmain = "." + dmain;
 		} else {
 			plainDomain = domain.substring(1);
 		}
@@ -82,15 +83,15 @@ public final class Domains {
 		if (!hostNameTL.endsWith(plainDomainTL)) {
 			return false;
 		}
-		final int lastDotIdx = domain.lastIndexOf('.');
+		final int lastDotIdx = dmain.lastIndexOf('.');
 		if (lastDotIdx == -1) {
 			return false;
 		}
-		final String suffix = domain.substring(lastDotIdx).toLowerCase();
+		final String suffix = dmain.substring(lastDotIdx).toLowerCase();
 		if (gTLDs.contains(suffix)) {
-			return Strings.countChars(domain, '.') >= 2;
+			return Strings.countChars(dmain, '.') >= 2;
 		} else {
-			return Strings.countChars(domain, '.') >= 3;
+			return Strings.countChars(dmain, '.') >= 3;
 		}
 	}
 }

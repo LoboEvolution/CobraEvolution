@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,30 @@
  */
 package org.loboevolution.html.dom.nodeimpl.bootstrap;
 
-import org.loboevolution.html.dom.nodeimpl.DOMImplementationSourceImpl;
-import org.loboevolution.html.node.DOMImplementation;
-import org.loboevolution.html.node.DOMImplementationList;
-import org.loboevolution.html.node.DOMImplementationSource;
+import lombok.extern.slf4j.Slf4j;
+import org.loboevolution.html.dom.domimpl.DOMImplementationSourceImpl;
+import org.loboevolution.html.dom.DOMImplementation;
+import org.loboevolution.html.dom.DOMImplementationList;
+import org.loboevolution.html.dom.DOMImplementationSource;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.List;
 
+@Slf4j
 public final class DOMImplementationRegistry {
 
     /**
      * The list of DOMImplementationSources.
      */
-    private Vector sources;
+    private final List<DOMImplementationSource> sources;
 
     /**
      * Default class name.
      */
     private static final String FALLBACK_CLASS =
-            "org.loboevolution.html.dom.nodeimpl.DOMImplementationSourceImpl";
+            "org.loboevolution.html.dom.domimpl.DOMImplementationSourceImpl";
     private static final String DEFAULT_PACKAGE =
             "org.loboevolution.html.dom.nodeimpl";
 
@@ -56,7 +57,7 @@ public final class DOMImplementationRegistry {
      *
      * @param srcs Vector List of DOMImplementationSources
      */
-    private DOMImplementationRegistry(final Vector srcs) {
+    private DOMImplementationRegistry(final List<DOMImplementationSource> srcs) {
         sources = srcs;
     }
 
@@ -88,30 +89,24 @@ public final class DOMImplementationRegistry {
             InstantiationException,
             IllegalAccessException,
             ClassCastException {
-        Vector sources = new Vector();
+        final List<DOMImplementationSource> sources = new ArrayList<>();
 
-        ClassLoader classLoader = getClassLoader();
-        StringTokenizer st = new StringTokenizer(FALLBACK_CLASS);
+        final ClassLoader classLoader = getClassLoader();
+        final StringTokenizer st = new StringTokenizer(FALLBACK_CLASS);
         while (st.hasMoreTokens()) {
-            String sourceName = st.nextToken();
-            // make sure we have access to restricted packages
-            boolean internal = false;
-            if (System.getSecurityManager() != null) {
-                if (sourceName != null && sourceName.startsWith(DEFAULT_PACKAGE)) {
-                    internal = true;
-                }
-            }
-            Class sourceClass = null;
+            final String sourceName = st.nextToken();
+            boolean internal = sourceName != null && sourceName.startsWith(DEFAULT_PACKAGE);
+            Class sourceClass;
             if (classLoader != null && !internal) {
                 sourceClass = classLoader.loadClass(sourceName);
             } else {
                 sourceClass = Class.forName(sourceName);
             }
             try {
-                DOMImplementationSourceImpl source =
+                final DOMImplementationSourceImpl source =
                         (DOMImplementationSourceImpl) sourceClass.getConstructor().newInstance();
-                sources.addElement(source);
-            } catch (NoSuchMethodException | InvocationTargetException e) {
+                sources.add(source);
+            } catch (final NoSuchMethodException | InvocationTargetException e) {
                 throw new InstantiationException(e.getMessage());
             }
         }
@@ -130,12 +125,8 @@ public final class DOMImplementationRegistry {
      * or <code>null</code> if none found.
      */
     public DOMImplementation getDOMImplementation(final String features) {
-        int size = sources.size();
-        String name = null;
-        for (int i = 0; i < size; i++) {
-            DOMImplementationSourceImpl source =
-                    (DOMImplementationSourceImpl) sources.elementAt(i);
-            DOMImplementation impl = source.getDOMImplementation(features);
+        for (final DOMImplementationSource source : sources) {
+            final DOMImplementation impl = source.getDOMImplementation(features);
             if (impl != null) {
                 return impl;
             }
@@ -154,24 +145,20 @@ public final class DOMImplementationRegistry {
      * @return A list of DOMImplementations that support the desired features.
      */
     public DOMImplementationList getDOMImplementationList(final String features) {
-        final Vector implementations = new Vector();
-        int size = sources.size();
-        for (int i = 0; i < size; i++) {
-            DOMImplementationSource source = (DOMImplementationSource) sources.elementAt(i);
-            DOMImplementationList impls =
-                    source.getDOMImplementationList(features);
+        final List<DOMImplementation> implementations = new ArrayList<>();
+        for (final DOMImplementationSource source : sources) {
+            final DOMImplementationList impls = source.getDOMImplementationList(features);
             for (int j = 0; j < impls.getLength(); j++) {
-                DOMImplementation impl = impls.item(j);
-                implementations.addElement(impl);
+                final DOMImplementation impl = impls.item(j);
+                implementations.add(impl);
             }
         }
         return new DOMImplementationList() {
             public DOMImplementation item(final int index) {
                 if (index >= 0 && index < implementations.size()) {
                     try {
-                        return (DOMImplementation)
-                                implementations.elementAt(index);
-                    } catch (ArrayIndexOutOfBoundsException e) {
+                        return implementations.get(index);
+                    } catch (final ArrayIndexOutOfBoundsException e) {
                         return null;
                     }
                 }
@@ -194,7 +181,7 @@ public final class DOMImplementationRegistry {
             throw new NullPointerException();
         }
         if (!sources.contains(s)) {
-            sources.addElement(s);
+            sources.add(s);
         }
     }
 
@@ -204,56 +191,6 @@ public final class DOMImplementationRegistry {
      * @return A class loader, possibly <code>null</code>
      */
     private static ClassLoader getClassLoader() {
-        try {
-            ClassLoader contextClassLoader = getContextClassLoader();
-
-            if (contextClassLoader != null) {
-                return contextClassLoader;
-            }
-        } catch (Exception e) {
-            // Assume that the DOM application is in a JRE 1.1, use the
-            // current ClassLoader
-            return DOMImplementationRegistry.class.getClassLoader();
-        }
         return DOMImplementationRegistry.class.getClassLoader();
-    }
-
-    /**
-     * A simple JRE (Java Runtime Environment) 1.1 test
-     *
-     * @return <code>true</code> if JRE 1.1
-     */
-    private static boolean isJRE11() {
-        try {
-            Class c = Class.forName("java.security.AccessController");
-            // java.security.AccessController existed since 1.2 so, if no
-            // exception was thrown, the DOM application is running in a JRE
-            // 1.2 or higher
-            return false;
-        } catch (Exception ex) {
-            // ignore
-        }
-        return true;
-    }
-
-    /**
-     * This method returns the ContextClassLoader or <code>null</code> if
-     * running in a JRE 1.1
-     *
-     * @return The Context Classloader
-     */
-    private static ClassLoader getContextClassLoader() {
-        return isJRE11()
-                ? null
-                : (ClassLoader)
-                AccessController.doPrivileged((PrivilegedAction) () -> {
-                    ClassLoader classLoader = null;
-                    try {
-                        classLoader =
-                                Thread.currentThread().getContextClassLoader();
-                    } catch (SecurityException ex) {
-                    }
-                    return classLoader;
-                });
     }
 }

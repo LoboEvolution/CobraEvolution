@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +27,32 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.dom.HTMLCollection;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Node;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Using the method adoptNode, adopt a newly created DocumentFragment node populated with
  * with the first acronym element of this Document.  Since the decendants of a documentFragment
  * are recursively adopted, check if the adopted node has children.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Document3-adoptNode</a>
  */
-public class documentadoptnode13Test extends LoboUnitTest {
+public class Documentadoptnode13Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        DocumentFragment docFragment;
-        HTMLCollection childList;
-        boolean success;
-        Node acronymNode;
-        Node adoptedDocFrag;
+        final Document doc;
+        final DocumentFragment docFragment;
+        final HTMLCollection childList;
+        final boolean success;
+        final Node acronymNode;
+        final Node adoptedDocFrag;
         doc = sampleXmlFile("hc_staff.xml");
         docFragment = doc.createDocumentFragment();
         childList = doc.getElementsByTagName("acronym");
@@ -64,7 +62,7 @@ public class documentadoptnode13Test extends LoboUnitTest {
 
         if ((adoptedDocFrag != null)) {
             success = adoptedDocFrag.hasChildNodes();
-            assertTrue("documentadoptnode13", success);
+            assertTrue(success, "Documentadoptnode13Assert2");
         }
     }
 }

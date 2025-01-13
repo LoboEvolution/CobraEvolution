@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,12 @@
  */
 package org.loboevolution.html.renderer;
 
-interface FloatingBounds {
+public interface FloatingBounds {
 	/**
 	 * The Y at which the float clears starting at the given Y.
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getClearY(int y);
 
@@ -38,47 +38,47 @@ interface FloatingBounds {
 	 * The Y at which the first float clears. It does not recurse to check other
 	 * floats.
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getFirstClearY(int y);
 
 	/**
 	 * The offset from the left at the given Y, not counting insets.
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getLeft(int y);
 
 	/**
 	 * <p>getLeftClearY.</p>
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getLeftClearY(int y);
 
 	/**
 	 * <p>getMaxY.</p>
 	 *
-	 * @return a int.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getMaxY();
 
 	/**
 	 * The offset from the right at the given Y, not counting insets.
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getRight(int y);
 
 	/**
 	 * <p>getRightClearY.</p>
 	 *
-	 * @param y a int.
-	 * @return a int.
+	 * @param y a {@link java.lang.Integer} object.
+	 * @return a {@link java.lang.Integer} object.
 	 */
 	int getRightClearY(int y);
 }

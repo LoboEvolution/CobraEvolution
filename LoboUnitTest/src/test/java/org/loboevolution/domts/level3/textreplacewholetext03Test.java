@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +27,33 @@
 package org.loboevolution.domts.level3;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.loboevolution.driver.LoboUnitTest;
 import org.loboevolution.html.node.Document;
 import org.loboevolution.html.node.Text;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * Invoke replaceWholeText on an new Text Node to replace its value with a
  * new value.  Verify the repalceWholeText by verifying the values returned by
  * wholeText of the returned Text node.
- *
- * @author IBM
- * @author Neil Delima
+
  * @see <a href="http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-replaceWholeText">http://www.w3.org/TR/2003/CR-DOM-Level-3-Core-20031107/core#Text3-replaceWholeText</a>
  */
-public class textreplacewholetext03Test extends LoboUnitTest {
+public class Textreplacewholetext03Test extends LoboUnitTest {
     @Test
     public void runTest() {
-        Document doc;
-        Text textNode;
-        Text replacedText;
-        String wholeText;
+        final Document doc;
+        final Text textNode;
+        final Text replacedText;
+        final String wholeText;
         doc = sampleXmlFile("hc_staff.xml");
         textNode = doc.createTextNode("New Text");
         replacedText = textNode.replaceWholeText(" a b c b ");
         wholeText = replacedText.getWholeText();
-        assertEquals("textreplacewholetext03", " a b c b ", wholeText);
+        assertEquals(" a b c b ", wholeText, "Textreplacewholetext03Assert2");
     }
 }
 

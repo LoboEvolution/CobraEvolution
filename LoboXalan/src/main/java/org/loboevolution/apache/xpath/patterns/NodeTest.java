@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ import org.loboevolution.apache.xpath.objects.XNumber;
 import org.loboevolution.apache.xpath.objects.XObject;
 import org.loboevolution.apache.xml.dtm.DTM;
 import org.loboevolution.apache.xml.dtm.DTMFilter;
-import org.loboevolution.html.node.traversal.NodeFilter;
+import org.loboevolution.traversal.NodeFilter;
+
+import java.util.Objects;
 
 /** This is the basic node test class for both match patterns and location path steps. */
 public class NodeTest extends Expression {
@@ -74,7 +76,7 @@ public class NodeTest extends Expression {
    *
    * @param what bitset mainly defined in {@link NodeFilter}.
    */
-  public void setWhatToShow(int what) {
+  public void setWhatToShow(final int what) {
     m_whatToShow = what;
   }
 
@@ -99,7 +101,7 @@ public class NodeTest extends Expression {
    *
    * @param ns The namespace to be tested for, or {@link #WILD}, or null.
    */
-  public void setNamespace(String ns) {
+  public void setNamespace(final String ns) {
     m_namespace = ns;
   }
 
@@ -124,7 +126,7 @@ public class NodeTest extends Expression {
    *
    * @param name the local name to be tested, or {@link #WILD}, or an empty string.
    */
-  public void setLocalName(String name) {
+  public void setLocalName(final String name) {
     m_name = name;
   }
 
@@ -184,7 +186,7 @@ public class NodeTest extends Expression {
    * @param namespace The namespace to be tested.
    * @param name The local name to be tested.
    */
-  public NodeTest(int whatToShow, String namespace, String name) {
+  public NodeTest(final int whatToShow, final String namespace, final String name) {
     initNodeTest(whatToShow, namespace, name);
   }
 
@@ -193,16 +195,16 @@ public class NodeTest extends Expression {
    *
    * @param whatToShow Bit set defined mainly by {@link NodeFilter}.
    */
-  public NodeTest(int whatToShow) {
+  public NodeTest(final int whatToShow) {
     initNodeTest(whatToShow);
   }
 
   /** {@inheritDoc} */
   @Override
-  public boolean deepEquals(Expression expr) {
+  public boolean deepEquals(final Expression expr) {
     if (!isSameClass(expr)) return false;
 
-    NodeTest nt = (NodeTest) expr;
+    final NodeTest nt = (NodeTest) expr;
 
     if (null != nt.m_name) {
       if (null == m_name) return false;
@@ -228,7 +230,7 @@ public class NodeTest extends Expression {
    *
    * @param whatToShow Bit set defined mainly by {@link NodeFilter}.
    */
-  public void initNodeTest(int whatToShow) {
+  public void initNodeTest(final int whatToShow) {
 
     m_whatToShow = whatToShow;
 
@@ -243,7 +245,7 @@ public class NodeTest extends Expression {
    * @param namespace The namespace to be tested.
    * @param name The local name to be tested.
    */
-  public void initNodeTest(int whatToShow, String namespace, String name) {
+  public void initNodeTest(final int whatToShow, final String namespace, final String name) {
 
     m_whatToShow = whatToShow;
     m_namespace = namespace;
@@ -273,7 +275,7 @@ public class NodeTest extends Expression {
    *
    * @param score Should be one of the SCORE_XXX constants.
    */
-  public void setStaticScore(XNumber score) {
+  public void setStaticScore(final XNumber score) {
     m_score = score;
   }
 
@@ -281,12 +283,12 @@ public class NodeTest extends Expression {
   protected void calcScore() {
 
     if ((m_namespace == null) && (m_name == null)) m_score = SCORE_NODETEST;
-    else if (((m_namespace == WILD) || (m_namespace == null)) && (m_name == WILD))
+    else if (((Objects.equals(m_namespace, WILD)) || (m_namespace == null)) && (Objects.equals(m_name, WILD)))
       m_score = SCORE_NODETEST;
-    else if ((m_namespace != WILD) && (m_name == WILD)) m_score = SCORE_NSWILD;
+    else if ((!Objects.equals(m_namespace, WILD)) && (Objects.equals(m_name, WILD))) m_score = SCORE_NSWILD;
     else m_score = SCORE_QNAME;
 
-    m_isTotallyWild = m_namespace == null && m_name == WILD;
+    m_isTotallyWild = m_namespace == null && Objects.equals(m_name, WILD);
   }
 
   /**
@@ -299,7 +301,7 @@ public class NodeTest extends Expression {
    *     that this is the function they really want to call. If none of the known bits are set, this
    *     function will return zero.
    */
-  public static int getNodeTypeTest(int whatToShow) {
+  public static int getNodeTypeTest(final int whatToShow) {
     // %REVIEW% Is there a better way?
     if (0 != (whatToShow & DTMFilter.SHOW_ELEMENT)) return DTM.ELEMENT_NODE;
 
@@ -339,8 +341,8 @@ public class NodeTest extends Expression {
    * @param t target string, which may be {@link #WILD}.
    * @return true if the strings match according to the rules of this method.
    */
-  private static boolean subPartMatch(String p, String t) {
-    return (p == t) || ((null != p) && ((t == WILD) || p.equals(t)));
+  private static boolean subPartMatch(final String p, final String t) {
+    return Objects.equals(p, t) || (p != null && (Objects.equals(t, WILD)));
   }
 
   /**
@@ -350,23 +352,23 @@ public class NodeTest extends Expression {
    * @param t target string, which may be {@link #WILD}.
    * @return true if the strings match according to the rules of this method.
    */
-  private static boolean subPartMatchNS(String p, String t) {
+  private static boolean subPartMatchNS(final String p, final String t) {
 
-    return (p == t)
-        || ((null != p) && ((p.length() > 0) ? ((t == WILD) || p.equals(t)) : null == t));
+    return Objects.equals(p, t)
+            || (p != null && ((p.length() > 0) ? (Objects.equals(t, WILD) || Objects.equals(p, t)) : Objects.equals(null, t)));
   }
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt, int context)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt, final int context)
+      throws javax.xml.transform.TransformerException {
 
-    DTM dtm = xctxt.getDTM(context);
-    short nodeType = dtm.getNodeType(context);
+    final DTM dtm = xctxt.getDTM(context);
+    final short nodeType = dtm.getNodeType(context);
 
     if (m_whatToShow == DTMFilter.SHOW_ALL) return m_score;
 
-    int nodeBit = m_whatToShow & (0x00000001 << (nodeType - 1));
+    final int nodeBit = m_whatToShow & (0x00000001 << (nodeType - 1));
 
     switch (nodeBit) {
       case DTMFilter.SHOW_DOCUMENT_FRAGMENT:
@@ -394,7 +396,7 @@ public class NodeTest extends Expression {
         // the prefix expands, regardless of the local part of the name."
       case DTMFilter.SHOW_NAMESPACE:
         {
-          String ns = dtm.getLocalName(context);
+          final String ns = dtm.getLocalName(context);
 
           return (subPartMatch(ns, m_name)) ? m_score : SCORE_NONE;
         }
@@ -414,12 +416,12 @@ public class NodeTest extends Expression {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt, int context, DTM dtm, int expType)
-      throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt, final int context, final DTM dtm, final int expType)
+      throws javax.xml.transform.TransformerException {
 
     if (m_whatToShow == DTMFilter.SHOW_ALL) return m_score;
 
-    int nodeBit = m_whatToShow & (0x00000001 << ((dtm.getNodeType(context)) - 1));
+    final int nodeBit = m_whatToShow & (0x00000001 << ((dtm.getNodeType(context)) - 1));
 
     switch (nodeBit) {
       case DTMFilter.SHOW_DOCUMENT_FRAGMENT:
@@ -447,7 +449,7 @@ public class NodeTest extends Expression {
         // the prefix expands, regardless of the local part of the name."
       case DTMFilter.SHOW_NAMESPACE:
         {
-          String ns = dtm.getLocalName(context);
+          final String ns = dtm.getLocalName(context);
 
           return (subPartMatch(ns, m_name)) ? m_score : SCORE_NONE;
         }
@@ -467,13 +469,13 @@ public class NodeTest extends Expression {
 
   /** {@inheritDoc} */
   @Override
-  public XObject execute(XPathContext xctxt) throws org.loboevolution.javax.xml.transform.TransformerException {
+  public XObject execute(final XPathContext xctxt) throws javax.xml.transform.TransformerException {
     return execute(xctxt, xctxt.getCurrentNode());
   }
 
   /** {@inheritDoc} */
   @Override
-  public void callVisitors(XPathVisitor visitor) {
+  public void callVisitors(final XPathVisitor visitor) {
     assertion(false, "callVisitors should not be called for this object!!!");
   }
 }

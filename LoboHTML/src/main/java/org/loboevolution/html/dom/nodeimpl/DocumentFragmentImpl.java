@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2014 - 2023 LoboEvolution
+ * Copyright (c) 2014 - 2025 LoboEvolution
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,19 +29,16 @@
 package org.loboevolution.html.dom.nodeimpl;
 
 import org.htmlunit.cssparser.dom.DOMException;
-import org.loboevolution.html.dom.nodeimpl.event.EventTargetImpl;
 import org.loboevolution.html.node.DocumentFragment;
 import org.loboevolution.html.node.Node;
 
 /**
  * <p>DocumentFragmentImpl class. </p>
  */
-public class DocumentFragmentImpl extends EventTargetImpl implements DocumentFragment {
+public class DocumentFragmentImpl extends NodeImpl implements DocumentFragment {
 
 	/** Constructor for DocumentFragmentImpl.*/
-	public DocumentFragmentImpl() {
-		super();
-	}
+	public DocumentFragmentImpl() {}
 
 	/** {@inheritDoc} */
 	@Override
@@ -50,23 +47,43 @@ public class DocumentFragmentImpl extends EventTargetImpl implements DocumentFra
 	}
 
 	@Override
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 		if (newChild.getNodeType() == Node.DOCUMENT_TYPE_NODE) {
 			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append a fragment.");
 		}
 		return super.appendChild(newChild);
 	}
 	@Override
-	public Node prependChild(Node newChild) {
+	public Node prependChild(final Node newChild) {
 		if (newChild.getNodeType() == Node.DOCUMENT_TYPE_NODE) {
 			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Cannot append a fragment.");
 		}
 		return super.prependChild(newChild);
 	}
 
+	@Override
+	public boolean hasAttributes() {
+		return false;
+	}
+
+	@Override
+	public String getLocalName() {
+		return "";
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public int getNodeType() {
 		return Node.DOCUMENT_FRAGMENT_NODE;
+	}
+
+	@Override
+	public String getNodeValue() throws DOMException {
+		return null;
+	}
+
+	@Override
+	public void setNodeValue(final String nodeValue) throws DOMException {
+		throw new DOMException(DOMException.INVALID_MODIFICATION_ERR, "readonly node");
 	}
 }
